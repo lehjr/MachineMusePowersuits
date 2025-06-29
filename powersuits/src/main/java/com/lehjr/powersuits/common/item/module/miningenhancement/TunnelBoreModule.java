@@ -1,6 +1,8 @@
 package com.lehjr.powersuits.common.item.module.miningenhancement;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import com.lehjr.numina.common.base.Numina;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.enhancement.MiningEnhancement;
@@ -8,8 +10,10 @@ import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.render.highlight.IHighlight;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.module.MiningEnhancementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -24,6 +28,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -31,14 +38,11 @@ public class TunnelBoreModule extends AbstractPowerModule {
     public static class Enhancement extends MiningEnhancement implements IHighlight {
         public Enhancement(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-            addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.ENERGY_CONSUMPTION, 9500);
-            // FIXME: mix of radius and diameter??? Just pick one!!!
-
-            addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.MINING_RADIUS, 5, "m", 2, 1);
-            // TODO: overclock overrides for block breaking modules or recheck breaking speed?
-
-
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MiningEnhancementModuleConfig.tunnelBoreModuleEnergyConsumptionBase, "FE/Block");
+            addBaseProperty(NuminaConstants.HARVEST_SPEED, MiningEnhancementModuleConfig.tunnelBoreModuleHarvestSpeedBase, "x");
+            addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MiningEnhancementModuleConfig.tunnelBoreModuleEnergyConsumptionOverclockMultiplier);
+            addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, MiningEnhancementModuleConfig.tunnelBoreModuleHarvestSpeedOverclockMultiplier);
+            addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.MINING_DIAMETER, 5, "m", 2, 1);
         }
 
         @Override
@@ -49,7 +53,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
         @Override
         public boolean isAllowed() {
             // FIXME
-            return true;
+            return MiningEnhancementModuleConfig.tunnelBoreModuleIsAllowed;
         }
 
 
@@ -72,8 +76,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                 return false; // fixme : check?
             }
 
-            // Fixme!!! figure out if this should be radius or diameter. Looks like diameter to me
-            int radius = (int) (applyPropertyModifiers(MPSConstants.MINING_RADIUS) - 1) / 2;
+            int radius = (int) (applyPropertyModifiers(MPSConstants.MINING_DIAMETER) - 1) / 2;
             if (radius == 0) {
                 return false;
             }
@@ -84,9 +87,6 @@ public class TunnelBoreModule extends AbstractPowerModule {
                 return false;
             }
             playerEnergy -= getEnergyUsage();
-
-            // TODO: check if stats are added to player blocks broken
-            AtomicInteger blocksBroken = new AtomicInteger(0);
 
             IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(itemStack);
             if (mci != null) {
@@ -99,13 +99,13 @@ public class TunnelBoreModule extends AbstractPowerModule {
                         modules.add(bm);
                     }
                 }
-
-                NonNullList<BlockPostions> posList = getBlockPositions(itemStack, hitResult, player, level, modules, playerEnergy);
-
-                double energyUsage = getEnergyUsage();
-                for (BlockPostions postionsRecord : posList) {
-                    if (postionsRecord.canHarvest()) {
-                        BlockPos blockPos = postionsRecord.pos().immutable();
+                double moduleEnergyUsage = getEnergyUsage();
+                double energyUsage = 0;
+                for (Map.Entry<IHighlight.BlockPostionData, Integer> entry : getBlockPositions(itemStack, hitResult, player, level, modules, playerEnergy).entrySet()) {
+                    IHighlight.BlockPostionData blockPostionData = entry.getKey();
+                    int miningLevel = entry.getValue();
+                    if (blockPostionData.canHarvest()) {
+                        BlockPos blockPos = blockPostionData.pos().immutable();
                         BlockState state = level.getBlockState(blockPos);
                         BlockEntity blockEntity = level.getBlockEntity(blockPos);
                         // setup drops checking for enchantments
@@ -114,9 +114,12 @@ public class TunnelBoreModule extends AbstractPowerModule {
                         level.destroyBlock(blockPos, false, player, 512);
 
                         // if creative then bbm will be null
-                        if (!player.isCreative() && state.requiresCorrectToolForDrops() && postionsRecord.bbm() != null) {
-                            IBlockBreakingModule bbm = postionsRecord.bbm();
+                        if (!player.isCreative() && state.requiresCorrectToolForDrops() && blockPostionData.bbm() != null) {
+                            IBlockBreakingModule bbm = blockPostionData.bbm();
                             energyUsage += bbm.getEnergyUsage();
+                            if(miningLevel == 2) {
+                                energyUsage += moduleEnergyUsage;
+                            }
                         }
                     }
                 }
@@ -131,13 +134,12 @@ public class TunnelBoreModule extends AbstractPowerModule {
         }
 
         @Override
-        public NonNullList<BlockPostions> getBlockPositions(@Nonnull ItemStack tool, @Nonnull BlockHitResult result, @Nonnull Player player, @Nonnull Level level, NonNullList<IBlockBreakingModule> modules, double playerEnergy) {
-            NonNullList<BlockPostions> retList = NonNullList.create();
+        public HashMap<BlockPostionData, Integer> getBlockPositions(@Nonnull ItemStack tool, @Nonnull BlockHitResult result, @Nonnull Player player, @Nonnull Level level, NonNullList<IBlockBreakingModule> modules, double playerEnergy) {
+            HashMap<BlockPostionData, Integer> retMap = new HashMap<>();
             BlockPos pos = result.getBlockPos();
             Direction side = result.getDirection();
             Stream<BlockPos> posList;
-
-            int radius = (int) (applyPropertyModifiers(MPSConstants.MINING_RADIUS) - 1) / 2; // Block position +/- half diameter
+            int radius = (int) (applyPropertyModifiers(MPSConstants.MINING_DIAMETER) - 1) / 2; // Block position +/- half diameter
             AtomicDouble energyRemaining = new AtomicDouble(playerEnergy);
 
             posList = switch (side) {
@@ -158,24 +160,41 @@ public class TunnelBoreModule extends AbstractPowerModule {
                 if(!state.isAir()) {
                     for (IBlockBreakingModule bbm : modules) {
                         if (player.isCreative()) {
-                            if(retList.isEmpty() || retList.stream().noneMatch(p->p.pos()==immutablePos)) {
-                                retList.add(new BlockPostions(immutablePos, true, null));
-                                break;
-                            }
-                        } else if(bbm.canHarvestBlock(tool, state, player, immutablePos, energyRemaining.get())) {
-                            if(retList.isEmpty() || retList.stream().noneMatch(p->p.pos()==immutablePos)) {
-                                retList.add(new BlockPostions(immutablePos, true, bbm));
+                            retMap.put(new BlockPostionData(immutablePos, true, null), 2);
+                            break;
+                        } else if (bbm.canHarvestBlock(tool, state, player, immutablePos, energyRemaining.get())) {
+                            if(retMap.isEmpty() || retMap.keySet().stream().noneMatch(p->p.pos()==immutablePos)) {
+                                retMap.put(new BlockPostionData(immutablePos, true, bbm), 1);
                                 energyRemaining.getAndAdd(-bbm.getEnergyUsage());
                                 break;
                             }
                         }
                     }
-                    if(retList.isEmpty() ||retList.stream().noneMatch(p->p.pos()==immutablePos)) {
-                        retList.add(new BlockPostions(immutablePos, false, null));
+                    if(retMap.isEmpty() ||retMap.keySet().stream().noneMatch(p->p.pos()==immutablePos)) {
+                        retMap.put(new BlockPostionData(immutablePos, false, null), 0);
                     }
                 }
             });
-            return retList;
+
+            final int energyUsage = getEnergyUsage();
+            if (energyUsage <= energyRemaining.get()) {
+                HashMap<BlockPostionData, Integer> retMap2 = new HashMap<>();
+                retMap.forEach((key, value) -> {
+                    int val = value;
+                    if (val == 0) {
+                        retMap2.put(key, 0);
+                    } else {
+                        if (energyRemaining.get() >= energyUsage) {
+                            energyRemaining.getAndAdd(-energyUsage);
+                            retMap2.put(key, 2);
+                        } else {
+                            retMap2.put(key, value);
+                        }
+                    }
+                });
+                return retMap2;
+            }
+            return retMap;
         }
     }
 }

@@ -63,11 +63,6 @@ public class ElectricItemUtils {
         return drainAmount - drainleft;
     }
 
-    @Deprecated
-    public static double givePlayerEnergy(LivingEntity entity, int rfToGive) {
-        return givePlayerEnergy(entity, rfToGive, false);
-    }
-
     /**
      * returns the total amount of energy given to a entity's equipped items
      *

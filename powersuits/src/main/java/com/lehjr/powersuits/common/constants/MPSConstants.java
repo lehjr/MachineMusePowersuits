@@ -31,6 +31,8 @@ public class MPSConstants {
     public static final String ENERGY_CONSUMPTION_MULTIPLIER = ENERGY_CONSUMPTION + MULTIPLIER;
 
     public static final String POWER = "power";
+    public static final String DIAMETER ="diameter";
+
     public static final String HARVEST_SPEED_BASE = NuminaConstants.HARVEST_SPEED + BASE;
     public static final String HARVEST_SPEED_OVERCLOCK_MULTIPLIER = NuminaConstants.HARVEST_SPEED + OVERCLOCK_MULTIPLIER;
 
@@ -38,8 +40,9 @@ public class MPSConstants {
     public static final String ENERGY_CONSUMPTION_POWER_MULTIPLIER = ENERGY_CONSUMPTION + StringUtils.capitalize(POWER) + MULTIPLIER;
     public static final String ENERGY_CONSUMPTION_COMPENSATION_BASE = ENERGY_CONSUMPTION + StringUtils.capitalize(COMPENSATION) + BASE;
     public static final String ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER = ENERGY_CONSUMPTION + StringUtils.capitalize(COMPENSATION) + MULTIPLIER;
+    public static final String ENERGY_CONSUMPTION__DIAMETER_MULTIPLIER = ENERGY_CONSUMPTION + StringUtils.capitalize(DIAMETER) + MULTIPLIER;
 
-    public static final String DIAMETER ="diameter";
+
 
 
     // Environmental --------------------------------------------------------------------------------------------------
@@ -84,7 +87,7 @@ public class MPSConstants {
 
     // Mining Enhancements --------------------------------------------------------------------------------------------
     // Selective Miner
-    public static final String MINING_RADIUS = "miningRadius";
+    public static final String MINING_DIAMETER = "miningDiameter";
     public static final String SELECTIVE_MINER_LIMIT = "selMinerLimit";
 
     // Movement -------------------------------------------------------------------------------------------------------

@@ -59,6 +59,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 @EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEventBusSubscriber {
@@ -166,7 +167,7 @@ public class ClientEventBusSubscriber {
                     }
                 }
 
-                NonNullList<IHighlight.BlockPostions> blockPositions = highlight
+                HashMap<IHighlight.BlockPostionData, Integer> blockPositions = highlight
                     .getBlockPositions(
                         heldItem,
                         result,
@@ -191,8 +192,8 @@ public class ClientEventBusSubscriber {
                 double z = player.zOld + (player.getZ() - player.zOld) * partialTicks;
                 matrixStack.pushPose();
 
-                blockPositions.forEach(blockPostion -> {
-                    BlockPos blockPos = blockPostion.pos();
+                blockPositions.forEach((blockPostionData, miningLevel) -> {
+                    BlockPos blockPos = blockPostionData.pos();
                     AABB aabb = new AABB(blockPos).move(-x, -y, -z);
 
                     float r=0F;
@@ -205,8 +206,12 @@ public class ClientEventBusSubscriber {
                         a=1;
                     }
 
-                    if (blockPostion.canHarvest()) {
-                        g = 1;
+                    if (blockPostionData.canHarvest()) {
+                        if(miningLevel == 1) {
+                            g = 0.8F;
+                        } else {
+                            g = 1F;
+                        }
                     } else {
                         r = 1;
                     }

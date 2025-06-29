@@ -34,9 +34,6 @@ public class LeafBlowerModule extends AbstractPowerModule {
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionBase, "FE");
             addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionRadiusMultipler);
 
-
-
-
             addBaseProperty(MPSConstants.RADIUS, 1, "m");
             addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, ToolModuleConfig.leafBlowerModuleRadiusMax);
         }

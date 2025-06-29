@@ -12,6 +12,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public class MiningEnhancement extends ToggleableModule implements IRightClickModule, IMiningEnhancementModule {
     public MiningEnhancement(ItemStack module, ModuleCategory category, ModuleTarget target) {
         super(module, category, target);
@@ -29,7 +31,7 @@ public class MiningEnhancement extends ToggleableModule implements IRightClickMo
 
 
     @Override
-    public NonNullList<BlockPostions> getBlockPositions(@NotNull ItemStack tool, @NotNull BlockHitResult result, @NotNull Player player, @NotNull Level level, NonNullList<IBlockBreakingModule> modules, double playerEnergy) {
-        return NonNullList.create();
+    public HashMap<BlockPostionData, Integer> getBlockPositions(@NotNull ItemStack tool, @NotNull BlockHitResult result, @NotNull Player player, @NotNull Level level, NonNullList<IBlockBreakingModule> modules, double playerEnergy) {
+        return new HashMap<>();
     }
 }

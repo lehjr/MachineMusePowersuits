@@ -18,10 +18,10 @@ import com.lehjr.powersuits.common.config.PowerFistConfig;
 import com.lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
+import com.lehjr.powersuits.common.item.module.energy.generation.heat.ThermalGeneratorModule;
 import com.lehjr.powersuits.common.item.module.energy.generation.solar.SolarGeneratorModule;
 import com.lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
-import com.lehjr.powersuits.common.item.module.environmental.CoolingSystemModule;
 import com.lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import com.lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import com.lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
@@ -61,7 +61,6 @@ import com.lehjr.powersuits.common.item.module.weapon.RailgunModule;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 
 public class MPSCapabilities {
 
@@ -239,6 +238,15 @@ public class MPSCapabilities {
 
 
         // Energy Generation ------------------------------------------------------------------------------------------
+
+        // Thermal
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new ThermalGeneratorModule.FluidHandlerItemStackMPS(stack, 1), MPSItems.THERMAL_GENERATOR_MODULE_1.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new ThermalGeneratorModule.FluidHandlerItemStackMPS(stack, 2), MPSItems.THERMAL_GENERATOR_MODULE_2.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new ThermalGeneratorModule.FluidHandlerItemStackMPS(stack, 3), MPSItems.THERMAL_GENERATOR_MODULE_3.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new ThermalGeneratorModule.FluidHandlerItemStackMPS(stack, 4), MPSItems.THERMAL_GENERATOR_MODULE_4.get());
+
+
+
         // Solar
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 1), MPSItems.SOLAR_GENERATOR_MODULE_1.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 2), MPSItems.SOLAR_GENERATOR_MODULE_2.get());
@@ -250,14 +258,13 @@ public class MPSCapabilities {
         // TODO: COOLING
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AutoFeederModule.Ticker(stack), MPSItems.AUTO_FEEDER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ActiveCamouflageModule.Ticker(stack), MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new CoolingSystemModule.FluidHandlerItemStackMPS(stack, 1), MPSItems.COOLING_MODULE_1.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new CoolingSystemModule.FluidHandlerItemStackMPS(stack, 2), MPSItems.COOLING_MODULE_2.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new CoolingSystemModule.FluidHandlerItemStackMPS(stack, 3), MPSItems.COOLING_MODULE_3.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new CoolingSystemModule.FluidHandlerItemStackMPS(stack, 4), MPSItems.COOLING_MODULE_4.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 1), MPSItems.COOLING_MODULE_1.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 2), MPSItems.COOLING_MODULE_2.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 3), MPSItems.COOLING_MODULE_2.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 4), MPSItems.COOLING_MODULE_4.get());
+
+
+//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 1), MPSItems.COOLING_MODULE_1.get());
+//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 2), MPSItems.COOLING_MODULE_2.get());
+//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 3), MPSItems.COOLING_MODULE_2.get());
+//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 4), MPSItems.COOLING_MODULE_4.get());
+
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MagnetModule.Ticker(stack), MPSItems.MAGNET_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new PiglinPacificationModule.PiglinPacificationCap(stack), MPSItems.PIGLIN_PACIFICATION_MODULE.get());

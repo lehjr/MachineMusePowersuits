@@ -1,5 +1,6 @@
 package com.lehjr.numina.common.event;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.enhancement.IMiningEnhancementModule;
@@ -46,7 +47,7 @@ public class HarvestEventHandler {
                 return;
             }
             HitResult rayTraceResult = pick(player, 1F);
-//            HitResult rayTraceResult = rayTrace(player.level(), player, ClipContext.Fluid.SOURCE_ONLY);
+            //            HitResult rayTraceResult = rayTrace(player.level(), player, ClipContext.Fluid.SOURCE_ONLY);
             if (!(rayTraceResult instanceof BlockHitResult)) {
                 return;
             }
@@ -111,11 +112,11 @@ public class HarvestEventHandler {
         float f = 1.0F;
         AABB aabb = player.getBoundingBox().expandTowards(vec31.scale(max)).inflate(1.0, 1.0, 1.0);
         EntityHitResult entityhitresult = ProjectileUtil.getEntityHitResult(
-                player, eyePosition, vec32, aabb, p_234237_ -> !p_234237_.isSpectator() && p_234237_.isPickable(), maxSquared
+            player, eyePosition, vec32, aabb, p_234237_ -> !p_234237_.isSpectator() && p_234237_.isPickable(), maxSquared
         );
         return entityhitresult != null && entityhitresult.getLocation().distanceToSqr(eyePosition) < distanceToEyeSqr
-                ? filterHitResult(entityhitresult, eyePosition, entityInteractionRange)
-                : filterHitResult(hitresult, eyePosition, blockInteractionRange);
+            ? filterHitResult(entityhitresult, eyePosition, entityInteractionRange)
+            : filterHitResult(hitresult, eyePosition, blockInteractionRange);
     }
 
     private static HitResult filterHitResult(HitResult pHitResult, Vec3 pPos, double blockInteractionRange) {
@@ -167,46 +168,44 @@ public class HarvestEventHandler {
 
                 IPowerModule moduleCap = mci.getModuleCapability(module);
                 if (moduleCap instanceof IMiningEnhancementModule me && me.isModuleOnline()) {
-                    playerEnergy -= me.getEnergyUsage();
-                    if (playerEnergy > 0) {
+                    HashMap<IHighlight.BlockPostionData, Integer> blockPositionsMap = me.getBlockPositions(tool,
+                        blockHitResult,
+                        player,
+                        player.level(),
+                        modules,
+                        playerEnergy
+                    );
 
-                        NonNullList<IHighlight.BlockPostions> blockPositionsList = me.getBlockPositions(tool,
-                                blockHitResult,
-                                player,
-                                player.level(),
-                                modules,
-                                playerEnergy
-                        );
-                        Map<IBlockBreakingModule, List<BlockPos>> speedMap = new HashMap<>();
+                    double overclock = me.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED);
+                    Map<IBlockBreakingModule, List<BlockPos>> speedMap = new HashMap<>();
+                    List<Double> correctedSpeeds = new ArrayList<>();
 
-                        for (IHighlight.BlockPostions blockPostions : blockPositionsList) {
-                            if (blockPostions.bbm() != null) {
-                                if (blockPostions.canHarvest()) {
-                                    List<BlockPos> tmpList = speedMap.getOrDefault(blockPostions.bbm(), new ArrayList<>());
-                                    tmpList.add(blockPostions.pos());
-                                    speedMap.put(blockPostions.bbm(), tmpList);
+                    for (Map.Entry<IHighlight.BlockPostionData, Integer> entry : blockPositionsMap.entrySet()) {
+                        IHighlight.BlockPostionData blockPostionData = entry.getKey();
+                        int harvestLevel = entry.getValue();
+                        if (blockPostionData.bbm() != null) {
+                            if (blockPostionData.canHarvest()) {
+                                double harvestSpeed = blockPostionData.bbm().applyPropertyModifiers(NuminaConstants.HARVEST_SPEED);
+                                if(harvestLevel == 2) {
+                                    harvestSpeed = harvestLevel * overclock;
                                 }
+                                correctedSpeeds.add(harvestSpeed);
+                                List<BlockPos> tmpList = speedMap.getOrDefault(blockPostionData.bbm(), new ArrayList<>());
+                                tmpList.add(blockPostionData.pos());
+                                speedMap.put(blockPostionData.bbm(), tmpList);
                             }
                         }
-
-                        List<Double> correctedSpeeds = new ArrayList<>();
-
-                        for (Map.Entry<IBlockBreakingModule, List<BlockPos>> entry : speedMap.entrySet()) {
-                            IBlockBreakingModule bbm = entry.getKey();
-                            List<BlockPos> posList = entry.getValue();
-                            // FIXME: move tag key to Numina Constants
-                            double speed = newSpeed * bbm.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED);
-//                            NuminaLogger.logDebug("speed here: " + speed);
-                            speed = speed / posList.size();
-                            correctedSpeeds.add(speed);
-                        }
-
-                        double finalSpeed = (correctedSpeeds.stream().mapToDouble(Double::doubleValue).average().orElse(1.0) * 1.2); // slight boost
-//                        NuminaLogger.logDebug("event old speed: " + event.getOriginalSpeed() +", newSpeed: " + event.getNewSpeed() +", speed to set: " + finalSpeed +", finalSpeeds: " + correctedSpeeds);
-
-                        event.setNewSpeed((float) finalSpeed);
-                        return;
                     }
+
+                    double finalSpeed = (correctedSpeeds.stream().mapToDouble(Double::doubleValue).average().orElse(1.0) * 1.2); // slight boost
+
+                    // Speed not changed yet, just debugging to see what new values look like
+                    NuminaLogger.logDebug("event old speed: " + event.getOriginalSpeed() +", newSpeed: " + event.getNewSpeed() +", speed to set: " + finalSpeed +", finalSpeeds: " + correctedSpeeds);
+                    NuminaLogger.logDebug("mining enhancement speed adjustment: " + moduleCap.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED));
+                    //                        event.setNewSpeed((float) finalSpeed);
+                    // Fixme testing
+                    event.setNewSpeed((float) (finalSpeed * moduleCap.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED)));
+                    return;
                 }
 
                 boolean handled = false;

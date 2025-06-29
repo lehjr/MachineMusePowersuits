@@ -33,7 +33,7 @@ public class ArmorModuleConfig {
     private static final ModConfigSpec.DoubleValue NETHERITE_PLATING_MODULE__ARMOR_TOUGHNESS = NETHERITE_ARMOR_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ARMOR_TOUGHNESS, 3.5, 0, 100.0D);
 
     // Energy Shield
-    private static final ModConfigSpec.Builder ENERGY_SHIELD_MODULE__SETTINGS_BUILDER = NETHERITE_ARMOR_MODULE__SETTINGS_BUILDER.pop().push("Energy_Shield_(Armor_Plating)");
+    private static final ModConfigSpec.Builder ENERGY_SHIELD_MODULE__SETTINGS_BUILDER = NETHERITE_ARMOR_MODULE__SETTINGS_BUILDER.pop().push("Energy_Shield_Armor_Plating");
     private static final ModConfigSpec.BooleanValue ENERGY_SHIELD_MODULE__IS_ALLOWED = ENERGY_SHIELD_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.DoubleValue ENERGY_SHIELD__FIELD_STRENGTH_MULTIPLIER = ENERGY_SHIELD_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.MODULE_FIELD_STRENGTH + "Multiplier", 6.0, 0, 1000);
     private static final ModConfigSpec.DoubleValue ENERGY_SHIELD__ENERGY_PER_DAMAGE = ENERGY_SHIELD_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ARMOR_ENERGY_CONSUMPTION + "Multiplier", 5000, 0, Double.MAX_VALUE);

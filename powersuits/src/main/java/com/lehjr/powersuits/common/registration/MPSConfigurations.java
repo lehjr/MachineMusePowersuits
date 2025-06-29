@@ -11,6 +11,7 @@ import com.lehjr.powersuits.common.config.module.CosmeticModuleConfig;
 import com.lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import com.lehjr.powersuits.common.config.module.HoeModuleConfig;
 import com.lehjr.powersuits.common.config.module.MiningEnchantmentModuleConfig;
+import com.lehjr.powersuits.common.config.module.MiningEnhancementModuleConfig;
 import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
 import com.lehjr.powersuits.common.config.module.PickaxeModuleConfig;
 import com.lehjr.powersuits.common.config.module.ShovelModuleConfig;
@@ -65,7 +66,7 @@ public class MPSConfigurations {
         registerCommon(modContainer, MiningEnchantmentModuleConfig.MINING_ENCHANTMENT_MODULE_CONFIG_SPEC, "common/items/modules/mining_enchantment.toml");
 
         // Mining Enhancement
-        // TODO
+        registerCommon(modContainer, MiningEnhancementModuleConfig.MINING_ENHANCEMENT_MODULE_SPEC, "common/items/modules/mining_enhancement.toml");
 
         // Movement
         registerCommon(modContainer, MovementModuleConfig.MPS_MOVEMENGT_MODULE_SPEC, "common/items/modules/movement.toml");
@@ -98,27 +99,23 @@ public class MPSConfigurations {
 
         // Modules
         ArmorModuleConfig.onLoad(event);
-        AxeModuleConfig.onLoad(event);
+
         CosmeticModuleConfig.onLoad(event);
         // TODO: EnergyGeneration
         EnvironmentalModuleConfig.onLoad(event);
-        HoeModuleConfig.onLoad(event);
+
         MiningEnchantmentModuleConfig.onLoad(event);
 
+        MiningEnhancementModuleConfig.onLoad(event);
 
         MovementModuleConfig.onLoad(event);
 
-
-
-
-
-
-
-
-
+        AxeModuleConfig.onLoad(event);
+        HoeModuleConfig.onLoad(event);
         PickaxeModuleConfig.onLoad(event);
         ShovelModuleConfig.onLoad(event);
         ToolModuleConfig.onLoad(event);
+
         VisionModuleConfig.onLoad(event);
         WeaponModuleConfig.onLoad(event);
     }

@@ -79,11 +79,18 @@ public interface IPowerModule {
     void addPropertyModifier(String propertyName, IPropertyModifier modifier);
 
     default double applyPropertyModifiers(String propertyName) {
-        return applyPropertyModifiers(propertyName, TagUtils.getModuleTag(getModule()));
+        return applyPropertyModifiers(propertyName, TagUtils.getModuleTag(getModule()), 0);
     }
 
     default double applyPropertyModifiers(String propertyName, CompoundTag moduleTag) {
-        double propertyValue = 0;
+        return applyPropertyModifiers(propertyName, moduleTag, 0);
+    }
+
+    default double applyPropertyModifiers(String propertyName, double propertyValue) {
+        return applyPropertyModifiers(propertyName, TagUtils.getModuleTag(getModule()), propertyValue);
+    }
+
+    default double applyPropertyModifiers(String propertyName, CompoundTag moduleTag, double propertyValue) {
         if (getPropertyModifiers().containsKey(propertyName)) {
             Iterable<IPropertyModifier> propertyModifiersIterable = getPropertyModifiers().get(propertyName);
             for (IPropertyModifier modifier : propertyModifiersIterable) {

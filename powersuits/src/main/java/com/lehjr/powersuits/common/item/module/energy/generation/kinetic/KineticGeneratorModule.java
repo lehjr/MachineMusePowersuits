@@ -42,7 +42,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
                     // player not jumping, flying, or riding
                     player.onGround()) {
                     double distance = player.walkDist - player.walkDistO;
-                    ElectricItemUtils.givePlayerEnergy(player, (int) (distance * 20 * applyPropertyModifiers(MPSConstants.ENERGY_GENERATION)));
+                    ElectricItemUtils.givePlayerEnergy(player, (int) (distance * 20 * applyPropertyModifiers(MPSConstants.ENERGY_GENERATION)), false);
                 }
             }
         }

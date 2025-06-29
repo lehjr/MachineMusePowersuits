@@ -40,7 +40,7 @@ import java.util.UUID;
 public enum MovementManager {
     INSTANCE;
     static final double root2 = 1 / Math.sqrt(2);
-    public static final Map<UUID, Double> playerJumpMultipliers = new HashMap();
+    public static final Map<UUID, Double> playerJumpMultipliers = new HashMap<>();
     /**
      * Gravity, in meters per tick per tick.
      */

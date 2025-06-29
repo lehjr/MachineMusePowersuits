@@ -10,13 +10,14 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
 
 /**
  * used on the client side only
  */
 public interface IHighlight {
-   NonNullList<BlockPostions> getBlockPositions(@Nonnull ItemStack tool, @Nonnull BlockHitResult result, @Nonnull Player player, @Nonnull Level level, NonNullList<IBlockBreakingModule> modules, double playerEnergy);
+   HashMap<BlockPostionData, Integer> getBlockPositions(@Nonnull ItemStack tool, @Nonnull BlockHitResult result, @Nonnull Player player, @Nonnull Level level, NonNullList<IBlockBreakingModule> modules, double playerEnergy);
 
-   record BlockPostions(BlockPos pos, boolean canHarvest, @Nullable IBlockBreakingModule bbm){
+   record BlockPostionData(BlockPos pos, boolean canHarvest, @Nullable IBlockBreakingModule bbm){
    }
 }

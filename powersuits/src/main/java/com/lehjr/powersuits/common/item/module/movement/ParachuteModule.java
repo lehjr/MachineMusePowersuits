@@ -22,7 +22,7 @@ public class ParachuteModule extends AbstractPowerModule {
         @Override
         public void onPlayerTickActive (Player player, Level level, ItemStack itemStack){
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-            boolean hasGlider = false;
+            boolean hasGlider = false; // fixme!!!
             PlayerUtils.resetFloatKickTicks(player);
             if (player.isCrouching() && player.getDeltaMovement().y < -0.1 && (!hasGlider || !playerInput.forwardKey)) {
                 double totalVelocity = Math.sqrt(player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z + player.getDeltaMovement().y * player.getDeltaMovement().y);

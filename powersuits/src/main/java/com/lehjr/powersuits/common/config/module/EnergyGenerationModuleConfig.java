@@ -14,22 +14,60 @@ public class EnergyGenerationModuleConfig {
     private static final ModConfigSpec.BooleanValue COMBUSTION_ENERGY_GENERATOR_MODULE_2__IS_ALLOWED = COMBUSTION_ENERGY_GENERATOR_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
 
-    // Heat Generators ----------------------------------------------------------------------------
-    private static final ModConfigSpec.Builder HEAT_ENERGY_GENERATOR_MODULE_1__BUILDER = COMBUSTION_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().pop().push("Heat_Generators").push("Heat_Energy_Generator_Module_1");
-    private static final ModConfigSpec.BooleanValue HEAT_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED = HEAT_ENERGY_GENERATOR_MODULE_1__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    // Thermal Generators ----------------------------------------------------------------------------
+    private static final ModConfigSpec.Builder THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER = COMBUSTION_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Heat_Generators").push("Heat_Energy_Generator_Module_1");
+    private static final ModConfigSpec.BooleanValue THERMAL_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.IntValue THERMAL_ENERGY_GENERATOR_MODULE_1__FLUID_TANK_SIZE = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.FLUID_TANK_SIZE, 1000, 0, 100000);
+    private static final ModConfigSpec.IntValue THERMAL_ENERGY_GENERATOR_MODULE_1__HEAT_ACTIVATION_PERCENT = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.HEAT_ACTIVATION_PERCENT , 80, 0, 100);
 
-    private static final ModConfigSpec.Builder HEAT_ENERGY_GENERATOR_MODULE_2__BUILDER = HEAT_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Heat_Energy_Generator_Module_2");
+
+    // Activation percent
+// water per energy
+// heat per water
+
+    public static boolean thermalEnergyGenerator_1_isAllowed;
+    public static int thermalEnergyGenerator_1_fluidTankSize;
+    public static int thermalEnergyGenerator_1_heatActivationPercent;
+
+    public static int thermalEnergyGenerator_1_passiveEnergyPerHeatPerTick;
+    public static int thermalEnergyGenerator_1_activeEnergyPerHeatPerTick;
+    public static int thermalEnergyGenerator_1_activeWaterPerHeatPerTick;
+
+
+
+
+
+    private static final ModConfigSpec.Builder HEAT_ENERGY_GENERATOR_MODULE_2__BUILDER = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Heat_Energy_Generator_Module_2");
     private static final ModConfigSpec.BooleanValue HEAT_ENERGY_GENERATOR_MODULE_2__IS_ALLOWED = HEAT_ENERGY_GENERATOR_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Kinetic Generators -------------------------------------------------------------------------
-    private static final ModConfigSpec.Builder KINETIC_ENERGY_GENERATOR_MODULE_1__BUILDER = HEAT_ENERGY_GENERATOR_MODULE_2__BUILDER.pop().pop().push("Kinetic_Generators").push("Kinetic_Energy_Generator_Module_1");
+    private static final ModConfigSpec.Builder KINETIC_ENERGY_GENERATOR_MODULE_1__BUILDER = HEAT_ENERGY_GENERATOR_MODULE_2__BUILDER.pop().push("Kinetic_Generators").push("Kinetic_Energy_Generator_Module_1");
     private static final ModConfigSpec.BooleanValue KINETIC_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED = KINETIC_ENERGY_GENERATOR_MODULE_1__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
     private static final ModConfigSpec.Builder KINETIC_ENERGY_GENERATOR_MODULE_2__BUILDER = KINETIC_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Kinetic_Energy_Generator_Module_2");
     private static final ModConfigSpec.BooleanValue KINETIC_ENERGY_GENERATOR_MODULE_2__IS_ALLOWED = KINETIC_ENERGY_GENERATOR_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
     // Solar Generators ---------------------------------------------------------------------------
-    private static final ModConfigSpec.Builder SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER = KINETIC_ENERGY_GENERATOR_MODULE_2__BUILDER.pop().pop().push("Solar_Generators").push("Solar_Energy_Generator_Module_1");
+    private static final ModConfigSpec.Builder SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER = KINETIC_ENERGY_GENERATOR_MODULE_2__BUILDER.pop().push("Solar_Generators").push("Solar_Energy_Generator_Module_1");
     private static final ModConfigSpec.BooleanValue SOLAR_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED = SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_1__ENERGY_GENERATION_DAY_BASE = SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_DAY_BASE, 15000, 0, 100000.0D);
     private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_1__ENERGY_GENERATION_NIGHT_BASE = SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_NIGHT_BASE, 1500, 0, 100000.0D);

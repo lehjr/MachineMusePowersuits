@@ -9,10 +9,10 @@ import com.lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import com.lehjr.powersuits.common.item.module.debug.DebugModule;
+import com.lehjr.powersuits.common.item.module.energy.generation.heat.ThermalGeneratorModule;
 import com.lehjr.powersuits.common.item.module.energy.generation.solar.SolarGeneratorModule;
 import com.lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
-import com.lehjr.powersuits.common.item.module.environmental.CoolingSystemModule;
 import com.lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import com.lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import com.lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
@@ -157,6 +157,12 @@ public class MPSItems {
 
     // Energy Generation --------------------------------------------------------------------------
 
+    // Heat Generators
+    public static DeferredHolder<Item, ThermalGeneratorModule> THERMAL_GENERATOR_MODULE_1 = MPS_ITEMS.register(MPSConstants.THERMAL_GENERATOR_MODULE_1.getPath(), ThermalGeneratorModule::new);
+    public static DeferredHolder<Item, ThermalGeneratorModule> THERMAL_GENERATOR_MODULE_2 = MPS_ITEMS.register(MPSConstants.THERMAL_GENERATOR_MODULE_2.getPath(), ThermalGeneratorModule::new);
+    public static DeferredHolder<Item, ThermalGeneratorModule> THERMAL_GENERATOR_MODULE_3 = MPS_ITEMS.register(MPSConstants.THERMAL_GENERATOR_MODULE_3.getPath(), ThermalGeneratorModule::new);
+    public static DeferredHolder<Item, ThermalGeneratorModule> THERMAL_GENERATOR_MODULE_4 = MPS_ITEMS.register(MPSConstants.THERMAL_GENERATOR_MODULE_4.getPath(), ThermalGeneratorModule::new);
+
     // Solar
     public static DeferredHolder<Item, SolarGeneratorModule> SOLAR_GENERATOR_MODULE_1 = MPS_ITEMS.register(MPSConstants.SOLAR_GENERATOR_MODULE_1.getPath(), SolarGeneratorModule::new);
     public static DeferredHolder<Item, SolarGeneratorModule> SOLAR_GENERATOR_MODULE_2 = MPS_ITEMS.register(MPSConstants.SOLAR_GENERATOR_MODULE_2.getPath(), SolarGeneratorModule::new);
@@ -173,10 +179,10 @@ public class MPSItems {
     // Environmental ------------------------------------------------------------------------------
     public static DeferredHolder<Item, ActiveCamouflageModule> ACTIVE_CAMOUFLAGE_MODULE = MPS_ITEMS.register(MPSConstants.ACTIVE_CAMOUFLAGE_MODULE.getPath(), ActiveCamouflageModule::new);
     public static DeferredHolder<Item, AutoFeederModule> AUTO_FEEDER_MODULE = MPS_ITEMS.register(MPSConstants.AUTO_FEEDER_MODULE.getPath(), AutoFeederModule::new);
-    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_1 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_1.getPath(), CoolingSystemModule::new);
-    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_2 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_2.getPath(), CoolingSystemModule::new);
-    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_3 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_3.getPath(), CoolingSystemModule::new);
-    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_4 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_4.getPath(), CoolingSystemModule::new);
+//    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_1 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_1.getPath(), CoolingSystemModule::new);
+//    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_2 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_2.getPath(), CoolingSystemModule::new);
+//    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_3 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_3.getPath(), CoolingSystemModule::new);
+//    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_4 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_4.getPath(), CoolingSystemModule::new);
     public static DeferredHolder<Item, MagnetModule> MAGNET_MODULE = MPS_ITEMS.register(MPSConstants.MAGNET_MODULE.getPath(), MagnetModule::new);
     public static DeferredHolder<Item, MobRepulsorModule> MOB_REPULSOR_MODULE = MPS_ITEMS.register(MPSConstants.MOB_REPULSOR_MODULE.getPath(), MobRepulsorModule::new);
     public static DeferredHolder<Item, PiglinPacificationModule> PIGLIN_PACIFICATION_MODULE = MPS_ITEMS.register(MPSConstants.PIGLIN_PACIFICATION_MODULE.getPath(), PiglinPacificationModule::new);
@@ -355,10 +361,10 @@ public class MPSItems {
                         // Environmental --------------------------------------
                         output.accept(ACTIVE_CAMOUFLAGE_MODULE.get());
                         output.accept(AUTO_FEEDER_MODULE.get());
-                        output.accept(COOLING_MODULE_1.get());
-                        output.accept(COOLING_MODULE_2.get());
-                        output.accept(COOLING_MODULE_3.get());
-                        output.accept(COOLING_MODULE_4.get());
+//                        output.accept(COOLING_MODULE_1.get());
+//                        output.accept(COOLING_MODULE_2.get());
+//                        output.accept(COOLING_MODULE_3.get());
+//                        output.accept(COOLING_MODULE_4.get());
                         output.accept(MAGNET_MODULE.get());
                         output.accept(MOB_REPULSOR_MODULE.get());
                         output.accept(PIGLIN_PACIFICATION_MODULE.get());
