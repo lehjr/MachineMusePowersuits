@@ -1,18 +1,5 @@
 package com.lehjr.powersuits.common.config;
 
-import com.lehjr.powersuits.common.config.module.ArmorModuleConfig;
-import com.lehjr.powersuits.common.config.module.AxeModuleConfig;
-import com.lehjr.powersuits.common.config.module.CosmeticModuleConfig;
-import com.lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
-import com.lehjr.powersuits.common.config.module.HoeModuleConfig;
-import com.lehjr.powersuits.common.config.module.MiningEnchantmentModuleConfig;
-import com.lehjr.powersuits.common.config.module.MiningEnhancementModuleConfig;
-import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
-import com.lehjr.powersuits.common.config.module.PickaxeModuleConfig;
-import com.lehjr.powersuits.common.config.module.ShovelModuleConfig;
-import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
-import com.lehjr.powersuits.common.config.module.VisionModuleConfig;
-import com.lehjr.powersuits.common.config.module.WeaponModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

@@ -13,7 +13,7 @@ import net.minecraft.world.phys.BlockHitResult;
  * No right click functionality is actually being used.
  */
 public interface IMiningEnhancementModule extends IRightClickModule, IToggleableModule, IHighlight {
-    boolean onBlockStartBreak(ItemStack itemstack, BlockHitResult hitResult, Player player, Level level);
+    boolean onBlockStartBreak(ItemStack itemStack, BlockHitResult hitResult, Player player, Level level);
 
     int getEnergyUsage();
 }

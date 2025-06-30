@@ -31,6 +31,7 @@ import com.lehjr.powersuits.common.item.module.miningenchantment.FortuneModule;
 import com.lehjr.powersuits.common.item.module.miningenchantment.SilkTouchModule;
 import com.lehjr.powersuits.common.item.module.miningenhancement.SelectiveMiner;
 import com.lehjr.powersuits.common.item.module.miningenhancement.TunnelBoreModule;
+import com.lehjr.powersuits.common.item.module.miningenhancement.VeinMinerModule;
 import com.lehjr.powersuits.common.item.module.movement.BlinkDriveModule;
 import com.lehjr.powersuits.common.item.module.movement.ClimbAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.DimensionalRiftModule;
@@ -279,9 +280,9 @@ public class MPSCapabilities {
         // Mining Enhancement -----------------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SelectiveMiner.Enhancement(stack), MPSItems.SELECTIVE_MINER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TunnelBoreModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
-        //        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.VEIN_MINER_MODULE.get());
 
-        // Vein Miner
+
 
 
         // Special

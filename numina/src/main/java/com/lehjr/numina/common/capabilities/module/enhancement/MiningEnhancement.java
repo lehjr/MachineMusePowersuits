@@ -20,7 +20,7 @@ public class MiningEnhancement extends ToggleableModule implements IRightClickMo
     }
 
     @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockHitResult hitResult, Player player, Level level) {
+    public boolean onBlockStartBreak(ItemStack itemStack, BlockHitResult hitResult, Player player, Level level) {
         return false;
     }
 

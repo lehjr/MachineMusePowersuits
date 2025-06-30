@@ -10,10 +10,12 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import com.lehjr.numina.common.capabilities.render.chameleon.IChameleon;
 import com.lehjr.numina.common.capabilities.render.highlight.IHighlight;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.TagUtils;
 import com.lehjr.powersuits.client.control.KeymappingKeyHandler;
+import com.lehjr.powersuits.common.config.module.MiningEnhancementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -42,16 +44,12 @@ public class SelectiveMiner extends AbstractPowerModule {
     public static class Enhancement extends MiningEnhancement implements IRightClickModule, IHighlight, IChameleon {
         public Enhancement(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY);
-            // TODO: finish this: overclock overrides for block breaking modules or recheck breaking speed?
-            //            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, PickaxeModuleConfig.stonePickAxeModuleEnergyConsumptionBase, "FE");
-            //            addBaseProperty(NuminaConstants.HARVEST_SPEED, PickaxeModuleConfig.stonePickAxeModuleHarvestSpeedBase, "x");
-            //            addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, PickaxeModuleConfig.stonePickAxeModuleEnergyConsumptionOverclockMultiplier);
-            //            addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, PickaxeModuleConfig.stonePickAxeModuleHarvestSpeedOverclockMultiplier);
-
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MiningEnhancementModuleConfig.selectiveMinerModuleEnergyConsumptionBase, "FE");
+            addBaseProperty(NuminaConstants.HARVEST_SPEED, MiningEnhancementModuleConfig.selectiveMinerModuleHarvestSpeedBase, "x");
+            addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MiningEnhancementModuleConfig.selectiveMinerModuleEnergyConsumptionOverclockMultiplier);
+            addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, MiningEnhancementModuleConfig.selectiveMinerModuleHarvestSpeedOverclockMultiplier);
             addBaseProperty(MPSConstants.SELECTIVE_MINER_LIMIT, 1);
-            // FIXME: add overclock
-            addIntTradeoffProperty(MPSConstants.SELECTIVE_MINER_LIMIT, MPSConstants.SELECTIVE_MINER_LIMIT, 59, "Blocks", 1, 0);
+            addIntTradeoffProperty(MPSConstants.SELECTIVE_MINER_LIMIT, MPSConstants.SELECTIVE_MINER_LIMIT, MiningEnhancementModuleConfig.selectiveMinerModuleBlockLimit, "Blocks", 1, 0);
         }
 
         @Override
@@ -94,7 +92,7 @@ public class SelectiveMiner extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return true;
+            return MiningEnhancementModuleConfig.selectiveMinerModuleIsAllowed;
         }
 
         // this only harvesting 1 type of block
@@ -157,115 +155,6 @@ public class SelectiveMiner extends AbstractPowerModule {
                 });
                 ElectricItemUtils.drainPlayerEnergy(player, energyUsage.get(), false);
             }
-
-
-
-
-
-
-//
-//            // Basically a single module wrapped in a list because all of the target blocks should be the same
-//            NonNullList<IBlockBreakingModule> modules = NonNullList.create();
-//
-//            AtomicInteger bbModuleEnergyUsage = new AtomicInteger(0);
-//            IModeChangingItem mci = itemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
-//            boolean canHarvest = false;
-//            if(mci != null) {
-//                for (int i = 0; i< mci.getSlots(); i++) {
-//                    ItemStack module = mci.getStackInSlot(i);
-//                    IPowerModule pm = mci.getModuleCapability(module);
-//                    if (pm instanceof IBlockBreakingModule bbm) {
-//                        if(bbm.canHarvestBlock(itemStack, state, player, pos, playerEnergy - energyUsage)) {
-//                            canHarvest = true;
-//                            bbModuleEnergyUsage.addAndGet(bbm.getEnergyUsage());
-//                            modules.add(bbm);
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if (!canHarvest) {
-//                return false;
-//            }
-//
-//            int energyRequired = this.getEnergyUsage() + bbModuleEnergyUsage.get();
-//
-//            // does player have enough energy to break first block?
-//            if (playerEnergy < energyRequired) {
-//                return false;
-//            }
-
-
-
-
-
-
-
-//            NonNullList<BlockPos> posMap = getPosList(block, posIn, player.level());
-//            NonNullList<BlockPos> posListCopy = NonNullList.create();
-//            for (BlockPos pos : posMap) {
-//                posListCopy.add(pos);
-//            }
-//
-//            int size = 0;
-//            int newSize = posListCopy.size();
-//
-//            // is there more than one block?
-//            if (newSize == 1) {
-//                return false;
-//            }
-//
-//            // does player have enough energy to break initial list?
-//            if (newSize * energyRequired > playerEnergy) {
-//                posMap = NonNullList.create();
-//                posMap.add(posIn);
-//                posListCopy.remove(posIn);
-//
-//                // repopulate list so the player has just enough energy
-//                for (BlockPos pos : posListCopy) {
-//                    if ((posMap.size() + 1) * energyRequired > playerEnergy) {
-//                        break;
-//                    } else {
-//                        posMap.add(pos);
-//                    }
-//                }
-//                // create larger list
-//            } else {
-//                int i = 0;
-//                while (i < 100 && size != newSize && posMap.size() <= applyPropertyModifiers(MPSConstants.SELECTIVE_MINER_LIMIT)) {
-//                    size = posListCopy.size();
-//
-//                    outerLoop:
-//                    for (BlockPos pos : posListCopy) {
-//                        NonNullList<BlockPos> posList2 = getPosList(block, pos, player.level());
-//                        for (BlockPos pos2 : posList2) {
-//                            if (!posMap.contains(pos2)) {
-//                                // does player have enough energy to break initial list?
-//                                if ((posMap.size() + 1) * energyRequired > playerEnergy) {
-//                                    i = 1000;
-//                                    break outerLoop;
-//                                } else {
-//                                    posMap.add(pos2);
-//                                }
-//                            }
-//                        }
-//                    }
-//                    newSize = posMap.size();
-//                    posListCopy = NonNullList.create();
-//                    for (BlockPos pos : posMap) {
-//                        posListCopy.add(pos);
-//                    }
-//                    i++;
-//                }
-//            }
-//
-//            // All blocks are the same, otherwise this would have to be calculated on the fly
-//
-//            if (!player.level().isClientSide()) {
-//                ElectricItemUtils.drainPlayerEnergy(player, energyRequired * posMap.size(), false);
-//            }
-//            harvestBlocks(posMap, player.level(), player, itemStack);
             return false;
         }
 
@@ -279,60 +168,86 @@ public class SelectiveMiner extends AbstractPowerModule {
             HashMap<BlockPostionData, Integer> retMap = new HashMap<>();
             // FIXME
 
-//            if (modules.isEmpty()) {
-//                return retMap;
-//            }
-//
-//            double playerEnergyRemaining = playerEnergy;
-//
-//            BlockPos pos = result.getBlockPos();
-//            BlockState state = level.getBlockState(pos);
-//            if (getTargetBlockState().isAir() || state != getTargetBlockState()) {
-//                return retMap;
-//            }
-//
-//            IBlockBreakingModule bbm = null;
-//
-//            int i = 1;
-//            // this is really, really stupid and if you have a better way, use it.
-//            outerLoop:
-//            while (retMap.size() <= applyPropertyModifiers(MPSConstants.SELECTIVE_MINER_LIMIT) && i < 2 /* set at 2 for performance reassons */) {
-//                for (BlockPos.MutableBlockPos mutable : BlockPos.spiralAround(pos, i, Direction.EAST, Direction.SOUTH)) {
-//                    for (BlockPos.MutableBlockPos mutable2 : BlockPos.spiralAround(mutable, i, Direction.UP, Direction.NORTH)) {
-//                        for (BlockPos.MutableBlockPos mutable3 : BlockPos.spiralAround(mutable2, i, Direction.WEST, Direction.DOWN)) {
-//                            BlockPos posFinal = mutable3.immutable();
-//
-//                            if (level.getBlockState(posFinal) == state && retMap.stream().noneMatch(p->p.pos()==posFinal)) {
-//                                if (player.isCreative()) {
-//                                    if(retMap.isEmpty() || retMap.stream().noneMatch(p->p.pos()==posFinal)) {
-//                                        retMap.add(new BlockPostionData(posFinal, true, null));
-//                                        break;
-//                                    }
-//                                } else {
-//                                    if (bbm == null) {
-//                                        for (IBlockBreakingModule module : modules) {
-//                                            if (module.canHarvestBlock(ItemStack.EMPTY, state, player, posFinal, playerEnergyRemaining)) {
-//                                                retMap.add(new BlockPostionData(posFinal, true, bbm));
-//                                                playerEnergyRemaining -= module.getEnergyUsage();
-//                                                bbm = module;
-//                                            }
-//                                        }
-//                                    } else if (bbm.canHarvestBlock(ItemStack.EMPTY, state, player, mutable, playerEnergyRemaining)) {
-//                                        retMap.add(new BlockPostionData(posFinal, true, bbm));
-//                                        playerEnergyRemaining -= bbm.getEnergyUsage();
-//
-//                                        // ran out of energy?
-//                                    } else {
-//                                        return retMap;
-//                                    }
-//
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                i++;
-//            }
+            if (modules.isEmpty()) {
+                return retMap;
+            }
+
+            double playerEnergyRemaining = playerEnergy;
+
+            BlockPos pos = result.getBlockPos();
+            BlockState state = level.getBlockState(pos);
+            Block block = state.getBlock();
+
+            if (getTargetBlockState().isAir() || state != getTargetBlockState()) {
+                return retMap;
+            }
+
+            IBlockBreakingModule bbm = null;
+
+            int i = 1;
+            // this is really, really stupid and if you have a better way, use it.
+            outerLoop:
+            while (retMap.size() <= applyPropertyModifiers(MPSConstants.SELECTIVE_MINER_LIMIT) && i < 2 /* set at 2 for performance reasons */) {
+                for (BlockPos.MutableBlockPos mutable : BlockPos.spiralAround(pos, i, Direction.EAST, Direction.SOUTH)) {
+                    for (BlockPos.MutableBlockPos mutable2 : BlockPos.spiralAround(mutable, i, Direction.UP, Direction.NORTH)) {
+                        for (BlockPos.MutableBlockPos mutable3 : BlockPos.spiralAround(mutable2, i, Direction.WEST, Direction.DOWN)) {
+                            BlockState temp = level.getBlockState(mutable3);
+                            if(temp.isAir() || temp.getBlock() != block) {
+                                continue;
+                            }
+
+                            BlockPos posFinal = mutable3.immutable();
+                            if (player.isCreative()) {
+                                retMap.put(new BlockPostionData(posFinal.mutable(), true, null), 2);
+                                break;
+                            } else {
+                                if (bbm == null) {
+                                    for (IBlockBreakingModule module : modules) {
+                                        if (module.canHarvestBlock(ItemStack.EMPTY, state, player, posFinal, playerEnergyRemaining)) {
+                                            retMap.put(new BlockPostionData(posFinal.immutable(), true, bbm), 1);
+                                            playerEnergyRemaining -= module.getEnergyUsage();
+                                            bbm = module;
+                                        }
+                                    }
+                                } else if (bbm.canHarvestBlock(ItemStack.EMPTY, state, player, mutable, playerEnergyRemaining)) {
+                                    retMap.put(new BlockPostionData(posFinal, true, bbm), 1);
+                                    playerEnergyRemaining -= bbm.getEnergyUsage();
+                                    // ran out of energy?
+                                } else {
+                                    break outerLoop;
+                                }
+                            }
+                        }
+                    }
+                }
+                i++;
+            }
+
+            if(player.isCreative()) {
+                return retMap;
+            }
+
+            final int energyUsage = getEnergyUsage();
+            if (energyUsage <= playerEnergyRemaining) {
+                HashMap<BlockPostionData, Integer> retMap2 = new HashMap<>();
+                AtomicDouble playerEnergyRemainingAI = new AtomicDouble(playerEnergyRemaining);
+
+                retMap.forEach((key, value) -> {
+                    int val = value;
+                    if (val == 0) {
+                        retMap2.put(key, 0);
+                    } else {
+                        // Energy usage of the block breaking module was already removed in the while loop
+                        if (playerEnergyRemainingAI.get() >= energyUsage) {
+                            playerEnergyRemainingAI.getAndAdd(-energyUsage);
+                            retMap2.put(key, 2);
+                        } else {
+                            retMap2.put(key, value);
+                        }
+                    }
+                });
+                return retMap2;
+            }
             return retMap;
         }
     }

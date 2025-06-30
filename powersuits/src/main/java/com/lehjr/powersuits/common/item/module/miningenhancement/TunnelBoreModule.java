@@ -1,8 +1,6 @@
 package com.lehjr.powersuits.common.item.module.miningenhancement;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.lehjr.numina.common.base.Numina;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.enhancement.MiningEnhancement;
@@ -30,8 +28,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 public class TunnelBoreModule extends AbstractPowerModule {
@@ -52,7 +48,6 @@ public class TunnelBoreModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            // FIXME
             return MiningEnhancementModuleConfig.tunnelBoreModuleIsAllowed;
         }
 
@@ -175,6 +170,10 @@ public class TunnelBoreModule extends AbstractPowerModule {
                     }
                 }
             });
+
+            if(player.isCreative()) {
+                return retMap;
+            }
 
             final int energyUsage = getEnergyUsage();
             if (energyUsage <= energyRemaining.get()) {
