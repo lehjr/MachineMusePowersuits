@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.data.client.lang;
 
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.registration.MPSBlocks;
 import com.lehjr.powersuits.common.registration.MPSItems;
@@ -9,18 +10,6 @@ import net.minecraft.world.item.Item;
 public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
     public MPSLanguageProvider_EN_US(PackOutput output) {
         super(output, MPSConstants.MOD_ID, "en_us");
-    }
-
-    @Override
-    protected void addTranslations() {
-        addItemGroup();
-        addModularItems();
-        addModules();
-        addBlocks();
-        addGui();
-        addKeybinds();
-        addModuleTradeoff();
-        addModels();
     }
 
     @Override
@@ -424,7 +413,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
     }
 
     @Override
-    public void addModuleTradeoff() {
+    public void addModuleTradeoffs() {
         // Activation Percent --------------------------------------------------------------------------
 //        addTradeoff(MPSConstants.ACTIVATION_PERCENT, "Activation Percent");
 
@@ -446,6 +435,9 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         // Armor (Energy) ------------------------------------------------------------------------------
         addTradeoff(MPSConstants.ARMOR_VALUE_ENERGY, "Armor (Energy)");
 
+        // Armor Toughness -----------------------------------------------------------------------------
+        addTradeoff(MPSConstants.ARMOR_TOUGHNESS, "Toughness");
+
         // Energy Per Damage ---------------------------------------------------------------------------
         addTradeoff(MPSConstants.ARMOR_ENERGY_CONSUMPTION, "Energy Per Damage");
 
@@ -456,7 +448,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addTradeoff(MPSConstants.ARMOR_POINTS, "pts");
 
         // Auto-Feeder Efficiency ----------------------------------------------------------------------
-//        addTradeoff(MPSConstants.EATING_EFFICIENCY, "Auto-Feeder Efficiency");
+        addTradeoff(MPSConstants.AUTO_FEEDER_EFFICIENCY, "Auto-Feeder Efficiency");
 
         // Range ---------------------------------------------------------------------------------------
 //        addTradeoff(MPSConstants.BLINK_DRIVE_RANGE, "Range");
@@ -486,7 +478,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addTradeoff(MPSConstants.DIAMETER, "Diameter");
 
         // Efficiency ----------------------------------------------------------------------------------
-//        addTradeoff(MPSConstants.EFFICIENCY, "Efficiency");
+        addTradeoff(MPSConstants.EFFICIENCY, "Efficiency");
 
         // Enchantment Level ---------------------------------------------------------------------------
         addTradeoff(MPSConstants.ENCHANTMENT_LEVEL, "Enchantment Level");
@@ -524,6 +516,9 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         // Lux Capacitor Green Hue ---------------------------------------------------------------------
         addTradeoff(MPSConstants.GREEN_HUE, "Lux Capacitor Green Hue");
 
+        // Max Heat ------------------------------------------------------------------------------------
+        addTradeoff(NuminaConstants.MAXIMUM_HEAT, "Max Heat");
+
         // Heat Activation Percent ---------------------------------------------------------------------
 //        addTradeoff(MPSConstants.HEAT_ACTIVATION_PERCENT, "Heat Activation Percent");
 
@@ -538,6 +533,9 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
         // Impact --------------------------------------------------------------------------------------
         addTradeoff(MPSConstants.IMPACT, "Impact");
+
+        // Jump Boost ----------------------------------------------------------------------------------
+        addTradeoff(MPSConstants.JUMP_BOOST, "Jump Boost");
 
         // Jetboots Thrust -----------------------------------------------------------------------------
         addTradeoff(MPSConstants.JETBOOTS_THRUST, "Jetboots Thrust");
@@ -618,13 +616,16 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addTradeoff(MPSConstants.SPRINT_ASSIST, "Sprint Assist");
 
         // Sprint Energy Consumption -------------------------------------------------------------------
-        addTradeoff(MPSConstants.SPRINT_ENERGY_CONSUMPTION, "Sprint Energy Consumption");
+        addTradeoff(MPSConstants.SPRINT_ENERGY_CONSUMPTION, "Sprint Energy Usage");
 
         // Sprint Exhaustion Compensation --------------------------------------------------------------
         addTradeoff(MPSConstants.EXHAUSTION_COMPENSATION, "Exhaustion Compensation");
 
         // Sprint Speed Multiplier ---------------------------------------------------------------------
         addTradeoff(MPSConstants.SPRINT_SPEED_MULTIPLIER, "Sprint Speed Multiplier");
+
+
+
 
 //        // Energy Generation ---------------------------------------------------------------------------
 //        addTradeoff(thermalEnergyGen", "Energy Generation");
@@ -633,7 +634,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addTradeoff(MPSConstants.THRUST, "Thrust");
 
         // Underwater Movement Boost -------------------------------------------------------------------
-        addTradeoff(MPSConstants.SWIM_BOOST_AMOUNT, "Underwater Movement Boost");
+        addTradeoff(MPSConstants.SWIM_BOOST_AMOUNT, "Swim Boost");
 
         // Verticality ---------------------------------------------------------------------------------
         addTradeoff(MPSConstants.VERTICALITY, "Verticality");
@@ -645,7 +646,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addTradeoff(MPSConstants.WALKING_ASSISTANCE, "Walking Assist");
 
         // Walking Energy Consumption ------------------------------------------------------------------
-        addTradeoff(MPSConstants.WALKING_ENERGY_CONSUMPTION, "Walking Energy Consumption");
+        addTradeoff(MPSConstants.WALKING_ENERGY_CONSUMPTION, "Walking Energy Usage");
 
         // Walking Speed Multiplier --------------------------------------------------------------------
         addTradeoff(MPSConstants.WALKING_SPEED_MULTIPLIER, "Walking Speed Multiplier");
@@ -974,24 +975,5 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addModel2Part("legglow1", "Right Leg Light");
     }
 
-    @Override
-    public void addPowerfistPart(String part, String translation) {
-        add("javaModel.powerfist." + part + ".partName", translation);
-    }
-
-    @Override
-    public void addTradeoff(String tradeoff, String translation) {
-        add("module.tradeoff." + tradeoff, translation);
-    }
-
-    @Override
-    public void addModel2Part(String part, String translation) {
-        add("model.armor2." + part + ".partName", translation);
-    }
-
-    @Override
-    public void addItemDescriptions(Item key, String description) {
-        add(key.getDescriptionId() + ".desc", description);
-    }
 }
 

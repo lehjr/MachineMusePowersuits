@@ -1,6 +1,5 @@
 package com.lehjr.powersuits.common.item.electric.tool;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -47,7 +46,7 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        NuminaLogger.logDebug("use()... ");
+//        NuminaLogger.logDebug("use()... ");
         ItemStack fist = ItemUtils.getItemFromEntityHand(player, hand);
         final InteractionResultHolder<ItemStack> fallback = new InteractionResultHolder<>(InteractionResult.PASS, fist);
 //        if (hand != InteractionHand.MAIN_HAND) {
@@ -148,7 +147,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        NuminaLogger.logDebug("useOn");
+//        NuminaLogger.logDebug("useOn");
 
         final InteractionResult fallback = InteractionResult.PASS;
 

@@ -32,7 +32,7 @@ import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class RototillerModule extends AbstractPowerModule {
+public class HoeModule extends AbstractPowerModule {
     //    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.field_196658_i, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_185774_da, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_150346_d, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_196660_k, Blocks.field_150346_d.defaultBlockState()));
     public static class RightClickie extends RightClickModule implements IBlockBreakingModule {
         int tier;
@@ -155,6 +155,11 @@ public class RototillerModule extends AbstractPowerModule {
         @Override
         public int getEnergyUsage() {
             return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        }
+
+        @Override
+        public int getTier() {
+            return tier;
         }
 
         @Override

@@ -26,7 +26,7 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
     }
 
     public static final StreamCodec<RegistryFriendlyByteBuf, CreativeInstallPacketServerBound> STREAM_CODEC =
-            StreamCodec.ofMember(CreativeInstallPacketServerBound::write, CreativeInstallPacketServerBound::new);
+        StreamCodec.ofMember(CreativeInstallPacketServerBound::write, CreativeInstallPacketServerBound::new);
 
     public void write(RegistryFriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(slotType);
@@ -37,9 +37,9 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
         this(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readResourceLocation());
     }
 
-//    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, ResourceLocation regName) {
-//        MPSPackets.sendToPlayer(new CreativeInstallPacketClientBound(slotType, regName), entity);
-//    }
+    //    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, ResourceLocation regName) {
+    //        MPSPackets.sendToPlayer(new CreativeInstallPacketClientBound(slotType, regName), entity);
+    //    }
 
     public static void handle(CreativeInstallPacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
@@ -60,14 +60,21 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
             IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, slotType));
             if(iModularItem != null) {
                 int index = iModularItem.findInstalledModule(module);
+                // Todo: upgrade modules
                 if(index < 0) {
                     for (index = 0; index < iModularItem.getSlots(); index++) {
-                        if (iModularItem.insertItem(index, module, false).isEmpty()) {
+                        if(iModularItem.isModuleValidForPlacement(index, module) && iModularItem.insertItem(index, module, false).isEmpty())  {
                             break;
                         }
                     }
                 } else {
-                    iModularItem.setStackInSlot(index, module);
+                    ItemStack tmp = iModularItem.getStackInSlot(index);
+                    iModularItem.setStackInSlot(index, ItemStack.EMPTY);
+                    if(iModularItem.isModuleValidForPlacement(index, module)) {
+                        iModularItem.setStackInSlot(index, module);
+                    } else {
+                        iModularItem.setStackInSlot(index, tmp);
+                    }
                 }
             }
         });

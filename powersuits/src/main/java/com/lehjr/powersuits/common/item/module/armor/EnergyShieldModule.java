@@ -21,9 +21,9 @@ public class EnergyShieldModule extends AbstractPowerModule {
         public EnergyShieldCapabilityWrapper(ItemStack module) {
             super(module, ModuleCategory.ARMOR, ModuleTarget.ARMORONLY);
             addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_VALUE_ENERGY, ArmorModuleConfig.energyShieldFieldStrengthMultiplier, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
-            addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_ENERGY_CONSUMPTION, ArmorModuleConfig.energyShieldEnergyConsumptionMultiplier, "FE");
+            addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ENERGY_CONSUMPTION, ArmorModuleConfig.energyShieldEnergyConsumptionMultiplier, "FE");
             addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, NuminaConstants.MAXIMUM_HEAT, ArmorModuleConfig.energyShieldMaxHeatMultiplier);
-            addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_TOUGHNESS, ArmorModuleConfig.energyShieldMaxHeatMultiplier);
+            addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_TOUGHNESS, ArmorModuleConfig.energyShieldToughnessMultiplier);
             addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.KNOCKBACK_RESISTANCE, ArmorModuleConfig.energyShieldKnockBackResistanceMultiplier);
         }
 
@@ -45,14 +45,15 @@ public class EnergyShieldModule extends AbstractPowerModule {
         @Override
         public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item) {
             double energy = ElectricItemUtils.getPlayerEnergy(player);
-            double energyUsage = applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION);
-
+            double energyUsage = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             if (energy < energyUsage) {
                 // turn off module if energy is too low. This will fire on both sides so no need to sync
                 IModularItem mi = item.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
                 if (mi !=null) {
                     mi.toggleModule(MPSConstants.ENERGY_SHIELD_MODULE, false);
                 }
+            } else {
+                ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
             }
         }
     }

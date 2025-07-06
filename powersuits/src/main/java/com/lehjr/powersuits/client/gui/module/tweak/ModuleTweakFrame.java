@@ -8,6 +8,7 @@ import com.lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import com.lehjr.numina.client.gui.frame.ScrollableFrame;
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
 import com.lehjr.numina.client.gui.geometry.Rect;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.UnitMap;
 import com.lehjr.numina.common.constants.NuminaConstants;
@@ -19,6 +20,7 @@ import com.lehjr.numina.common.utils.TagUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -117,12 +119,21 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
             double valueWidth = StringUtils.getStringWidth(formattedValue);
             double allowedNameWidth = width() - valueWidth - margin * 2;
-            List<Component> namesList = StringUtils.wrapComponentToLength(Component.translatable(NuminaConstants.MODULE_TRADEOFF_PREFIX + name), (int)allowedNameWidth);
+
+            String translationString = NuminaConstants.MODULE_TRADEOFF_PREFIX + name;
+            Component translation = Component.translatable(translationString);
+
+            if(translationString.equals(translation.getString())) {
+                NuminaLogger.logDebug("missing translation: " + translationString);
+            }
+
+            List<Component> namesList = StringUtils.wrapComponentToLength(translation, (int)allowedNameWidth);
 
             for (int i = 0; i < namesList.size(); i++) {
                 StringUtils.drawLeftAlignedShadowedString(gfx, namesList.get(i), left() + margin, nexty + 9 * i);
             }
-            StringUtils.drawRightAlignedShadowedString(gfx, formattedValue, right() - margin, -5 + nexty + (double) (9 * (namesList.size() - 1)) / 2);            nexty += 9 * namesList.size() + 1;
+            StringUtils.drawRightAlignedShadowedString(gfx, formattedValue, right() - margin, -5 + nexty + (double) (9 * (namesList.size() - 1)) / 2);
+            nexty += 9 * namesList.size() + 1;
         }
 
         gfx.pose().popPose();
@@ -197,13 +208,20 @@ public class ModuleTweakFrame extends ScrollableFrame {
                 MusePoint2D ul = new MusePoint2D(left, top() + y);
 
                 IPowerModule.PropertyModifierLinearAdditive tweakObj = tweaks.get(tweak);
+
+                String translationString = NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak;
+                Component translation = Component.translatable(translationString);
+                if(translationString.equals(translation.getString())) {
+                    NuminaLogger.logDebug("missing translation: " + translationString);
+                }
+
                 if (tweakObj instanceof IPowerModule.PropertyModifierIntLinearAdditive) {
                     TinkerIntSlider slider = new TinkerIntSlider(
                         ul,
                         width() - 16,
                         moduleTag,
                         tweak,
-                        Component.translatable(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
+                        translation,
                         (IPowerModule.PropertyModifierIntLinearAdditive) tweaks.get(tweak));
                     sliders.add(slider);
                     totalSize += (int) slider.height();
@@ -212,7 +230,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                         ul,
                         width() - 16,
                         tweak,
-                        Component.translatable(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak));
+                        translation);
                     sliders.add(slider);
                     totalSize += (int) slider.height();
                 }

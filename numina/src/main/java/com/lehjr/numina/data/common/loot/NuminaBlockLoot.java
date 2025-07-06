@@ -28,14 +28,15 @@ public class NuminaBlockLoot extends VanillaBlockLoot {
     }
 
     protected LootTable.Builder createChargedInventoryLoot(Block block) {
-        return LootTable.lootTable().withPool(
-                applyExplosionCondition(block, LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1.0F))
-                        .add(LootItem.lootTableItem(block)
-                                .apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
-                                .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                                        .include(DataComponents.CONTAINER)
-                                        .include(NuminaCodecs.ENERGY)))));
+        return LootTable.lootTable().withPool(this.
+            applyExplosionCondition(block, LootPool.lootPool()
+            .setRolls(ConstantValue.exactly(1.0F))
+            .add(LootItem.lootTableItem(block)
+            .apply(CopyComponentsFunction.copyComponents(
+            CopyComponentsFunction.Source.BLOCK_ENTITY)
+                .include(DataComponents.CONTAINER)
+                .include(NuminaCodecs.ENERGY)
+            ))));
     }
 
     @Override

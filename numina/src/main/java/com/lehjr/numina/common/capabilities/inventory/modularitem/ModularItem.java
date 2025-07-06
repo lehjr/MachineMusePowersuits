@@ -283,7 +283,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
 
     @Override
     public boolean setModuleDouble(int index, String key, double value) {
-        if(index > 0 && index < getSlots()) {
+        if(index > -1 && index < getSlots()) {
             ItemStack module = getStackInSlot(index);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
@@ -342,18 +342,13 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public void setModuleBlockState(ResourceLocation moduleName, BlockState state) {
         int i = findInstalledModule(moduleName);
-        NuminaLogger.logDebug("installedModule: " + i +", is i <= -1: " + (i <= -1));
-
         if(i > -1) {
             ItemStack module = getStackInSlot(i);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
                 ItemStack newModule = TagUtils.setModuleBlockState(module,state);
                 updateModuleInSlot(i, newModule);
-                NuminaLogger.logDebug("updated stack in slot to state: " + state);
             }
-        } else {
-            NuminaLogger.logDebug("failed to update Module: " + moduleName +", index: " + i);
         }
     }
 

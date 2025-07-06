@@ -26,9 +26,9 @@ public class AutoFeederModule extends AbstractPowerModule {
         public Ticker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.autoFeederModuleEnergyConsumptionBase);
-            addBaseProperty(MPSConstants.EATING_EFFICIENCY, EnvironmentalModuleConfig.autoFeederModuleEatingEfficiencyBase);
+            addBaseProperty(MPSConstants.AUTO_FEEDER_EFFICIENCY, EnvironmentalModuleConfig.autoFeederModuleEatingEfficiencyBase);
             addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.magnetModuleEnergyConsumptionRadiusMultiplier, "FE");
-            addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.EATING_EFFICIENCY, EnvironmentalModuleConfig.autoFeederModuleEfficiencyEatingEfficiencyMultiplier);
+            addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.AUTO_FEEDER_EFFICIENCY, EnvironmentalModuleConfig.autoFeederModuleEfficiencyEatingEfficiencyMultiplier);
         }
 
         @Override
@@ -42,7 +42,7 @@ public class AutoFeederModule extends AbstractPowerModule {
             float saturationLevel = getSaturationLevel(getModule());
             Inventory inv = player.getInventory();
             double eatingEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-            double efficiency = applyPropertyModifiers(MPSConstants.EATING_EFFICIENCY);
+            double efficiency = applyPropertyModifiers(MPSConstants.AUTO_FEEDER_EFFICIENCY);
 
             FoodData foodStats = player.getFoodData();
             int foodNeeded = 20 - foodStats.getFoodLevel();

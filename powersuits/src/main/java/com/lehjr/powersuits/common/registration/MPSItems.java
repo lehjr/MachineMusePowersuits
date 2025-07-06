@@ -37,7 +37,7 @@ import com.lehjr.powersuits.common.item.module.movement.SprintAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.SwimAssistModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.AxeModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.PickaxeModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.RototillerModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.HoeModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.ShovelModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.FlintAndSteelModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LeafBlowerModule;
@@ -253,10 +253,10 @@ public class MPSItems {
             ShovelModule::new);
 
     // Farming
-    public static final DeferredHolder<Item, RototillerModule> STONE_ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_1.getPath(), RototillerModule::new);
-    public static final DeferredHolder<Item, RototillerModule> IRON_ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_2.getPath(), RototillerModule::new);
-    public static final DeferredHolder<Item, RototillerModule> DIAMOND_ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_3.getPath(), RototillerModule::new);
-    public static final DeferredHolder<Item, RototillerModule> NETHERITE_ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_4.getPath(), RototillerModule::new);
+    public static final DeferredHolder<Item, HoeModule> STONE_ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_1.getPath(), HoeModule::new);
+    public static final DeferredHolder<Item, HoeModule> IRON_ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_2.getPath(), HoeModule::new);
+    public static final DeferredHolder<Item, HoeModule> DIAMOND_ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_3.getPath(), HoeModule::new);
+    public static final DeferredHolder<Item, HoeModule> NETHERITE_ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_4.getPath(), HoeModule::new);
 
     public static final DeferredHolder<Item, ShearsModule> SHEARS_MODULE = MPS_ITEMS.register(MPSConstants.SHEARS_MODULE.getPath(), ShearsModule::new);
 

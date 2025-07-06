@@ -61,7 +61,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import java.util.Arrays;
 import java.util.HashMap;
 
-@EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = MPSConstants.MOD_ID, /* bus = EventBusSubscriber.Bus.MOD, */value = Dist.CLIENT)
 public class ClientEventBusSubscriber {
 
     @SubscribeEvent
@@ -74,7 +74,7 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void registerKeyBinding(RegisterKeyMappingsEvent event) {
-        //        NuminaLogger.logDebug("keymappingevent loaded");
+        //        NuminaLogger.logDebug("keymappingevent loaded");s
         KeyMappingReaderWriter.INSTANCE.readInKeybinds(); // read existing keybindings
 
 

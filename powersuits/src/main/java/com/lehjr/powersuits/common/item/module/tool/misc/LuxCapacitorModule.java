@@ -28,10 +28,13 @@ package com.lehjr.powersuits.common.item.module.tool.misc;
 
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.HeatUtils;
+import com.lehjr.numina.common.utils.TagUtils;
 import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.entity.LuxCapacitorEntity;
@@ -41,11 +44,12 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
 public class LuxCapacitorModule extends AbstractPowerModule {
-    public static class RightClickie extends RightClickModule {
+    public static class RightClickie extends PlayerTickModule implements IRightClickModule {
         public RightClickie(@Nonnull ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.luxCapacitorEnergyConsumptionBase, "FE");
@@ -56,10 +60,36 @@ public class LuxCapacitorModule extends AbstractPowerModule {
         }
 
         @Override
+        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn) {
+            onPlayerTickInactive(player, level, itemStackIn);
+        }
+
+        @Override
+        public void onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn) {
+            double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
+            if (timer > 0) {
+                TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, timer - 1 > 0 ? timer - 1 : 0);
+            }
+        }
+
+        @Override
+        public ItemStack toggleModule(boolean online) {
+            return getModule();
+        }
+
+        @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
+
+        @Override
         public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
             float energyConsumption = getEnergyUsage();
-            if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption) {
+            double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
+
+            if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption && timer == 0) {
                 if (!level.isClientSide) {
+                    TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, 15);
                     HeatUtils.heatPlayer(playerIn, energyConsumption / 500);
                     ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption, false);
                     float red = (float) applyPropertyModifiers(MPSConstants.RED_HUE);
@@ -70,7 +100,8 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                     LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(level, playerIn, new Color(red, green, blue, alpha));
                     level.addFreshEntity(luxCapacitor);
                 }
-                return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
+//                return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
+                return InteractionResultHolder.success(itemStackIn);
             }
             return InteractionResultHolder.pass(itemStackIn);
         }

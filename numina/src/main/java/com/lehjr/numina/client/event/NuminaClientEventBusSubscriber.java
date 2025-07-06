@@ -43,7 +43,7 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-@EventBusSubscriber(modid = NuminaConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = NuminaConstants.MOD_ID, /*bus = EventBusSubscriber.Bus.MOD,*/ value = Dist.CLIENT)
 public class NuminaClientEventBusSubscriber {
     @SubscribeEvent
     public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {

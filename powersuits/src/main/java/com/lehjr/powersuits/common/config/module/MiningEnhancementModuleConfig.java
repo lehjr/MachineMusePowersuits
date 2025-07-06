@@ -22,6 +22,7 @@ public class MiningEnhancementModuleConfig {
     private static final ModConfigSpec.DoubleValue TUNNEL_BORE_MODULE__ENERGY_CONSUMPTION_OVERCLOCK_MULTIPLIER = TUNNEL_BORE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION__OVERCLOCK_MULTIPLIER, 1000, 0, 100000.0D);
     private static final ModConfigSpec.DoubleValue TUNNEL_BORE_MODULE__HARVEST_SPEED_BASE = TUNNEL_BORE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_BASE, 1, 0, 100.0D);
     private static final ModConfigSpec.DoubleValue TUNNEL_BORE_MODULE__HARVEST_SPEED_OVERCLOCK_MULTIPLIER = TUNNEL_BORE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_OVERCLOCK_MULTIPLIER, 3, 0, 100.0D);
+    private static final ModConfigSpec.IntValue TUNNEL_BORE_MODULE__MAX_DIAMETER = TUNNEL_BORE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.MINING_DIAMETER_MAX, 7, 3, 21);
 
     // Vein Miner
     private static final ModConfigSpec.Builder VEIN_MINER_MODULE__SETTINGS_BUILDER = TUNNEL_BORE_MODULE__SETTINGS_BUILDER.pop().push("Vein_Miner");
@@ -47,6 +48,7 @@ public class MiningEnhancementModuleConfig {
     public static double tunnelBoreModuleEnergyConsumptionOverclockMultiplier;
     public static double tunnelBoreModuleHarvestSpeedBase;
     public static double tunnelBoreModuleHarvestSpeedOverclockMultiplier;
+    public static int tunnelBoreModuleMaxDiameter;
 
     // Vein Miner Module
     public static boolean veinMinerModuleIsAllowed;
@@ -74,6 +76,13 @@ public class MiningEnhancementModuleConfig {
             tunnelBoreModuleEnergyConsumptionOverclockMultiplier = TUNNEL_BORE_MODULE__ENERGY_CONSUMPTION_OVERCLOCK_MULTIPLIER.get();
             tunnelBoreModuleHarvestSpeedBase = TUNNEL_BORE_MODULE__HARVEST_SPEED_BASE.get();
             tunnelBoreModuleHarvestSpeedOverclockMultiplier = TUNNEL_BORE_MODULE__HARVEST_SPEED_OVERCLOCK_MULTIPLIER.get();
+
+            int maxDiameter = TUNNEL_BORE_MODULE__MAX_DIAMETER.get() - 2;
+            if ((maxDiameter % 2) == 0) {
+                tunnelBoreModuleMaxDiameter = maxDiameter;
+            } else {
+                tunnelBoreModuleMaxDiameter = maxDiameter + 1;
+            }
 
             // Vein Miner
             veinMinerModuleIsAllowed = VEIN_MINER_MODULE__IS_ALLOWED.get();

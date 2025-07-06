@@ -1,6 +1,7 @@
 package com.lehjr.numina.client.gui.clickable.slider;
 
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -31,8 +32,4 @@ public class TinkerIntSlider extends AbstractTinkerSlider {
         setValue(scaledValue);
         checkIfUpdated();
     }
-
-
-
-
 }

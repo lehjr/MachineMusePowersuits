@@ -18,9 +18,9 @@ public class EnvironmentalModuleConfig {
     private static final ModConfigSpec.BooleanValue AUTO_FEEDER_MODULE__IS_ALLOWED = AUTO_FEEDER_MODULE_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.BooleanValue AUTO_FEEDER_MODULE__USE_OLD_AUTO_FEEDER = AUTO_FEEDER_MODULE_BUILDER.define(MPSConstants.USE_OLD_AUTO_FEEDER, false);
     private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__ENERGY_CONSUMPTION_BASE = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 100, 0, 1000000D);
-    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EATING_EFFICIENCY_BASE = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EATING_EFFICIENCY + MPSConstants.BASE, 50, 0, 1000000D);
+    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EATING_EFFICIENCY_BASE = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.AUTO_FEEDER_EFFICIENCY + MPSConstants.BASE, 50, 0, 1000000D);
     private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EFFICIENCY_ENERGY__CONSUMPTION_MULTIPLIER = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EFFICIENCY + MPSConstants.ENERGY_CONSUMPTION + MPSConstants.MULTIPLIER, 1000, 0, 1000000D);
-    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EFFICIENCY_EATING_EFFICIENCY_MULTIPLIER = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EFFICIENCY + MPSConstants.EATING_EFFICIENCY + MPSConstants.MULTIPLIER, 50, 0, 1000000D);
+    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EFFICIENCY_EATING_EFFICIENCY_MULTIPLIER = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EFFICIENCY + MPSConstants.AUTO_FEEDER_EFFICIENCY + MPSConstants.MULTIPLIER, 50, 0, 1000000D);
 
     // Magnet
     private static final ModConfigSpec.Builder MAGNET_MODULE_BUILDER = AUTO_FEEDER_MODULE_BUILDER.pop().push("Magnet");

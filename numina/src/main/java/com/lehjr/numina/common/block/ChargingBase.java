@@ -3,18 +3,19 @@ package com.lehjr.numina.common.block;
 import com.lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.container.ChargingBaseMenu;
+import com.lehjr.numina.common.registration.NuminaBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -34,6 +35,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -120,9 +123,17 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHitResult) {
-        // FIXME!!!
-        return super.useItemOn(stack, state, level, pos, player, hand, pHitResult);
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        BlockEntity blockentity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockentity instanceof ChargingBaseBlockEntity chargingBaseBlockEntity) {
+            Level level = params.getLevel();
+            BlockItem blockItem = (BlockItem) NuminaBlocks.CHARGING_BASE_BLOCK.get().asItem();
+            ItemStack itemStack = new ItemStack(blockItem);
+            chargingBaseBlockEntity.saveToItem(itemStack, level.registryAccess());
+            return NonNullList.of(ItemStack.EMPTY, itemStack);
+        }
+
+        return super.getDrops(state, params);
     }
 
     @Nullable
@@ -158,7 +169,5 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
                 }
             };
         }
-
-
     }
 }

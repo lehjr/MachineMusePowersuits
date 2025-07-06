@@ -38,7 +38,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
             addBaseProperty(NuminaConstants.HARVEST_SPEED, MiningEnhancementModuleConfig.tunnelBoreModuleHarvestSpeedBase, "x");
             addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MiningEnhancementModuleConfig.tunnelBoreModuleEnergyConsumptionOverclockMultiplier);
             addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, MiningEnhancementModuleConfig.tunnelBoreModuleHarvestSpeedOverclockMultiplier);
-            addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.MINING_DIAMETER, 5, "m", 2, 1);
+            addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.MINING_DIAMETER, MiningEnhancementModuleConfig.tunnelBoreModuleMaxDiameter, "m", 2, 1);
         }
 
         @Override
@@ -50,7 +50,6 @@ public class TunnelBoreModule extends AbstractPowerModule {
         public boolean isAllowed() {
             return MiningEnhancementModuleConfig.tunnelBoreModuleIsAllowed;
         }
-
 
         /**
          * @param itemStack

@@ -44,6 +44,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.TransformationHelper;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
@@ -68,14 +69,14 @@ public class LuxCapacitorEntityRenderer extends EntityRenderer<LuxCapacitorEntit
     }
 
     @Override
-    public void render(LuxCapacitorEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(LuxCapacitorEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
-        ItemStack itemstack = getStack(entityIn.color);
+        ItemStack itemstack = getStack(entityIn.getColor());
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
         this.random.setSeed((long) i);
         BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level(), (LivingEntity) null, entityIn.getId());
         int time = (int) System.currentTimeMillis() % 360;
-        matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(0, time / 2, 0), true));
+        matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(0, time * 0.5F, 0), true));
         matrixStackIn.scale(1.8F, 1.8F, 1.8F);
 
         boolean flag = ibakedmodel.isGui3d();

@@ -19,9 +19,9 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
         addGui();
         addArmorStand();
         addModuleTradeoffs();
-        addChargingBase();
+        addBlocks();
         addToolTips();
-        addBatteries();
+        addModules();
         addComponents();
         addModuleCategories();
     }
@@ -61,7 +61,7 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
         add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Installs all top tier compatible modules into selected modular item while player is in creative mode");
     }
 
-    @Override
+
     public void addArmorStand() {
         add(NuminaItems.ARMOR_STAND_ITEM.get(), "Armor Stand");
         add(NuminaEntities.ARMOR_STAND__ENTITY_TYPE.get(),  "Armor Stand");
@@ -69,16 +69,16 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
 
     @Override
     public void addModuleTradeoffs() {
-        add("module.tradeoff.maxEnergy",  "Maximum Energy");
+        add(NuminaConstants.MAX_ENERGY,  "Maximum Energy");
 
-        add("module.tradeoff.maxTransfer", "Maximum Transfer per Tick");
+        add(NuminaConstants.MAX_TRAMSFER, "Maximum Transfer per Tick");
 
         // Harvest Speed -------------------------------------------------------------------------------
         add(NuminaConstants.HARVEST_SPEED, "Harvest Speed");
     }
 
     @Override
-    public void addChargingBase() {
+    public void addBlocks() {
         add(NuminaBlocks.CHARGING_BASE_BLOCK.get(), "Charging Base");
     }
 
@@ -106,7 +106,7 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
     }
 
     @Override
-    public void addBatteries() {
+    public void addModules() {
         // Basic Battery -------------------------------------------------------------------------------
         add(NuminaItems.BATTERY_1.get(), "Basic Battery");
 
@@ -249,6 +249,14 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
         // Tool ----------------------------------------------------------------------------------------
         add(ModuleCategory.TOOL.getTranslationKey(), "Tool");
 
+        add(ModuleCategory.AXE.getTranslationKey(), "Axe");
+
+        add(ModuleCategory.HOE.getTranslationKey(), "Hoe");
+
+        add(ModuleCategory.PICKAXE.getTranslationKey(), "Pickaxe");
+
+        add(ModuleCategory.SHOVEL.getTranslationKey(), "Shovel");
+
         // Weapon --------------------------------------------------------------------------------------
         add(ModuleCategory.WEAPON.getTranslationKey(), "Weapon");
 
@@ -272,10 +280,5 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
 
         // Mining Enchantment --------------------------------------------------------------------------
         add(ModuleCategory.MINING_ENCHANTMENT.getTranslationKey(), "Mining Enchantment");
-    }
-
-    @Override
-    public void addItemDescriptions(Item key, String description) {
-        add(key.getDescriptionId() + ".desc", description);
     }
 }

@@ -12,6 +12,7 @@ import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -54,7 +55,7 @@ public class NightVisionModule extends AbstractPowerModule {
             if (totalEnergy > powerDrain) {
                 if (nightVisionEffect == null || nightVisionEffect.getDuration() < 500) {
                     MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0, false, false);
-                    if (CommonHooks.canMobEffectBeApplied(player, mobEffectInstance)) { // is this check needed?
+                    if (CommonHooks.canMobEffectBeApplied(player, mobEffectInstance, (Entity)null)) { // is this check needed?
                         if (player.addEffect(mobEffectInstance)) {
                             IModularItem modularItem = NuminaCapabilities.getModularItem(item);
                             if (modularItem != null) {

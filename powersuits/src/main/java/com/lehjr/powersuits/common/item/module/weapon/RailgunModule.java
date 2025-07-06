@@ -73,15 +73,15 @@ public class RailgunModule extends AbstractPowerModule {
 
         @Override
         public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn) {
+            onPlayerTickInactive(player, level, itemStackIn);
+        }
+
+        @Override
+        public void onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn) {
             double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
             if (timer > 0) {
                 TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, timer - 1 > 0 ? timer - 1 : 0);
             }
-        }
-
-        @Override
-        public void onPlayerTickInactive(Player player, Level level, @NotNull ItemStack item) {
-            super.onPlayerTickInactive(player, level, item);
         }
 
         @Override

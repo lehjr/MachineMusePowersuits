@@ -56,7 +56,7 @@ public class MPSConstants {
     // AutoFeeder
     public static final String TAG_FOOD = "food";
     public static final String TAG_SATURATION = "saturation";
-    public static final String EATING_EFFICIENCY = "autoFeederEfficiency";
+    public static final String AUTO_FEEDER_EFFICIENCY = "autoFeederEfficiency";
     public static final String EFFICIENCY = "efficiency";
 
     // Energy Gemeration ----------------------------------------------------------------------------------------------
@@ -89,6 +89,7 @@ public class MPSConstants {
     // Selective Miner
     public static final String MINING_DIAMETER = "miningDiameter";
     public static final String SELECTIVE_MINER_LIMIT = "selMinerLimit";
+    public static final String MINING_DIAMETER_MAX = MINING_DIAMETER + "Max";
 
     // Movement -------------------------------------------------------------------------------------------------------
     // Generic

@@ -11,6 +11,8 @@ import com.lehjr.powersuits.common.registration.MPSEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,31 +32,41 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import org.jetbrains.annotations.Nullable;
 
 public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWithComplexSpawn {
-    public Color color = LuxCapacitorBlock.defaultColor;
+    private static final EntityDataAccessor<Float> RED = SynchedEntityData.defineId(LuxCapacitorEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> GREEN = SynchedEntityData.defineId(LuxCapacitorEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> BLUE = SynchedEntityData.defineId(LuxCapacitorEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> ALPHA = SynchedEntityData.defineId(LuxCapacitorEntity.class, EntityDataSerializers.FLOAT);
 
     public LuxCapacitorEntity(EntityType<? extends LuxCapacitorEntity> entityType, Level world) {
         super(entityType, world);
         this.setNoGravity(true);
-        if (color == null) {
-            color = LuxCapacitorBlock.defaultColor;
-        }
         setNoGravity(true);
     }
 
     public void setColor(Color color) {
-        this.color = color;
+        if(color == null) {
+            color = LuxCapacitorBlock.defaultColor;
+        }
+        this.entityData.set(RED, color.r);
+        this.entityData.set(GREEN, color.g);
+        this.entityData.set(BLUE, color.b);
+        this.entityData.set(ALPHA, color.a);
+    }
+
+    public Color getColor() {
+        return new Color(this.entityData.get(RED), this.entityData.get(GREEN), this.entityData.get(BLUE), this.entityData.get(ALPHA));
     }
 
     public LuxCapacitorEntity(Level world, LivingEntity shootingEntity, Color color) {
         super(MPSEntities.LUX_CAPACITOR_ENTITY_TYPE.get(), shootingEntity, world);
         this.setNoGravity(true);
-        this.color = color != null ? color : LuxCapacitorBlock.defaultColor;
+        setColor(color);
         Vec3 direction = shootingEntity.getLookAngle().normalize();
         double speed = 1.0;
         this.setDeltaMovement(
-                direction.x * speed,
-                direction.y * speed,
-                direction.z * speed
+            direction.x * speed,
+            direction.y * speed,
+            direction.z * speed
         );
 
         double r = 0.4375;
@@ -65,23 +77,23 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
         double horzx = direction.x / horzScale;
         double horzz = direction.z / horzScale;
         this.setPos(
-                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
-                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
-                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset));
+            (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
+            (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
+            (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset));
         this.setBoundingBox(new AABB(getX() - r, getY() - 0.0625, getZ() - r, getX() + r, getY() + 0.0625, getZ() + r));
     }
 
     BlockPlaceContext getUseContext(BlockPos pos, Direction facing, BlockHitResult hitResult) {
         return new BlockPlaceContext(
-                new UseOnContext(
-                        (Player)this.getOwner(),
-                        ((Player) this.getOwner()).getUsedItemHand(),
-                        hitResult));
+            new UseOnContext(
+                (Player)this.getOwner(),
+                ((Player) this.getOwner()).getUsedItemHand(),
+                hitResult));
     }
 
     @Override
     protected void onHit(HitResult hitResult) {
-        if (level().isClientSide()) {
+        if (this.level().isClientSide()) {
             return;
         }
 
@@ -89,9 +101,6 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
             this.kill();
         }
 
-        if (color == null) {
-            color = LuxCapacitorBlock.defaultColor;
-        }
         if (this.isAlive() && hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockRayTrace = (BlockHitResult)hitResult;
             Direction dir = blockRayTrace.getDirection().getOpposite();
@@ -115,6 +124,7 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
             }
             this.remove(RemovalReason.DISCARDED);
         }
+        this.remove(RemovalReason.DISCARDED);
     }
 
     /**
@@ -131,11 +141,11 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
                     level().setBlockAndUpdate(pos, state);
                     level().setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
                     BlockEntity blockEntity = level().getBlockEntity(pos);
-//
+                    //
                     if (blockEntity instanceof LuxCapacitorBlockEntity) {
                         @Nullable IColorTag cap = level().getCapability(NuminaCapabilities.ColorCap.COLOR_BLOCK, pos, null);
                         if (cap != null) {
-                            cap.setColor(color);
+                            cap.setColor(getColor());
                         }
                         level().sendBlockUpdated(pos, level().getBlockState(pos), level().getBlockState(pos), LuxCapacitorBlock.UPDATE_CLIENTS);
                         return true;
@@ -149,7 +159,11 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-
+        builder.define(RED, 0F);
+        builder.define(GREEN, 0F);
+        builder.define(BLUE, 0F);
+        builder.define(ALPHA, 0F);
+        builder.build();
     }
 
     @Override
@@ -168,7 +182,10 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
      */
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-        buffer.writeInt(this.color.getARGBInt());
+        buffer.writeFloat(this.entityData.get(RED));
+        buffer.writeFloat(this.entityData.get(GREEN));
+        buffer.writeFloat(this.entityData.get(BLUE));
+        buffer.writeFloat(this.entityData.get(ALPHA));
     }
 
     /**
@@ -179,6 +196,9 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
      */
     @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
-        this.color = new Color(additionalData.readInt());
+        this.entityData.set(RED, additionalData.readFloat());
+        this.entityData.set(GREEN, additionalData.readFloat());
+        this.entityData.set(BLUE, additionalData.readFloat());
+        this.entityData.set(ALPHA, additionalData.readFloat());
     }
 }

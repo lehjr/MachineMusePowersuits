@@ -12,16 +12,20 @@ import com.lehjr.numina.common.config.NuminaCommonConfig;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.item.Battery;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.MutableDataComponentHolder;
 import net.neoforged.neoforge.energy.ComponentEnergyStorage;
+import net.neoforged.neoforge.items.ComponentItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -91,6 +95,8 @@ public class NuminaCapabilities {
         event.registerItem(Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 2), NuminaItems.BATTERY_2.get());
         event.registerItem(Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 3), NuminaItems.BATTERY_3.get());
         event.registerItem(Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 4), NuminaItems.BATTERY_4.get());
+
+        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx)-> new ComponentItemHandler(stack, DataComponents.CONTAINER, 1), NuminaBlocks.CHARGING_BASE_BLOCK.get().asItem());
 
         // Blocks -----------------------------------------------------------------------------------------------------
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getItemHandler());
