@@ -1,6 +1,5 @@
 package com.lehjr.powersuits.common.network.packets.serverbound;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.container.InstallSalvageMenu;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -36,14 +35,13 @@ public record ContainerGuiOpenPacket(EquipmentSlot slotType) implements CustomPa
 
     public static void handle(ContainerGuiOpenPacket data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
-            SimpleMenuProvider container;
+//            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) ->
+//                        new InstallSalvageMenu(id, inventory, data.slotType),
+//                        Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE));
 
-                NuminaLogger.logDebug("not preserving mouse");
-                container = new SimpleMenuProvider((id, inventory, player) ->
-                        new InstallSalvageMenu(id, inventory, data.slotType),
-                        Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE));
-
-            ctx.player().openMenu(container, buf -> buf.writeEnum(data.slotType));
+            ctx.player().openMenu(new SimpleMenuProvider((id, inventory, player) ->
+                new InstallSalvageMenu(id, inventory, data.slotType),
+                Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE)), buf -> buf.writeEnum(data.slotType));
         });
     }
 }

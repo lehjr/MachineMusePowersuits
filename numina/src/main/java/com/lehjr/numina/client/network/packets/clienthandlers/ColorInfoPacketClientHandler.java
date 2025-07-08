@@ -1,4 +1,4 @@
-package com.lehjr.numina.common.network.packets.clienthandlers;
+package com.lehjr.numina.client.network.packets.clienthandlers;
 
 import com.lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import com.lehjr.numina.common.registration.NuminaCapabilities;

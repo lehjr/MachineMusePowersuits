@@ -180,4 +180,6 @@ public class NuminaConstants {
         return new StringBuilder("gui.").append(MOD_ID).append(".").append(guiString).toString();
     }
 
+    public static final ResourceLocation ENERGY_STORAGE_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energystorage");
+    public static final ResourceLocation ENERGY_GENERATION_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energygeneration");
 }

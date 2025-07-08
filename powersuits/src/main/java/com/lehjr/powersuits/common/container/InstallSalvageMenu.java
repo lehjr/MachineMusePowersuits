@@ -1,14 +1,18 @@
 package com.lehjr.powersuits.common.container;
 
 import com.lehjr.numina.client.gui.NuminaIcons;
-import com.lehjr.numina.client.gui.slot.HideableSlot;
-import com.lehjr.numina.client.gui.slot.HideableSlotItemHandler;
-import com.lehjr.numina.client.gui.slot.IHideableSlot;
-import com.lehjr.numina.client.gui.slot.IIConProvider;
+import com.lehjr.numina.common.container.slot.CategoryIconSlotItemHandler;
+import com.lehjr.numina.common.container.slot.EquipmentIconSlotItemHandler;
+import com.lehjr.numina.common.container.slot.HideableSlot;
+import com.lehjr.numina.common.container.slot.HideableSlotItemHandler;
+import com.lehjr.numina.common.container.slot.IHideableSlot;
+import com.lehjr.numina.common.container.slot.IIConProvider;
 import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.container.slot.IconSlotItemHandler;
+import com.lehjr.numina.common.container.slot.SlotBackgrounds;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.IconUtils;
@@ -26,7 +30,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class InstallSalvageMenu extends AbstractContainerMenu {
@@ -101,14 +104,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
             if (MathUtils.isIntInRange(cap.getRangeForCategory(ModuleCategory.ARMOR), modularItemInvIndex)) {
                 // OFFHAND
-                addSlot(new IconSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
-
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                        return IconUtils.getSlotBackground(EquipmentSlot.OFFHAND);
-                    }
-
+                addSlot(new EquipmentIconSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18, EquipmentSlot.OFFHAND) {
                     @OnlyIn(Dist.CLIENT)
                     @Override
                     public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
@@ -127,21 +123,9 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
                 for (ModuleCategory category: ModuleCategory.values()) {
                     if((MathUtils.isIntInRange(cap.getRangeForCategory(category), modularItemInvIndex))) {
                         NuminaLogger.logDebug("category " + category +" is in range for slot: " + modularItemInvIndex);
-
-                        Pair<ResourceLocation, ResourceLocation> iconPair = IconUtils.getIconLocationPairForCategory(category);
-                        if(iconPair != null){
-                            // FIXME: is "drawIconAt" really necessary??
-                            if(iconPair.getFirst().getPath().equals(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS.getPath())) {
-                                addSlot(new IconSlotItemHandler(cap, parentSlot, finalModularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
-                                    @OnlyIn(Dist.CLIENT)
-                                    @Override
-                                    public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                                        NuminaIcons.DrawableIcon icon = NuminaIcons.getIcon(iconPair.getSecond());
-                                        if(icon != null) {
-                                            icon.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
-                                        }
-                                    }
-
+                        if(category.hasContainerIcon()){
+                            if(category.usesNuminaGuiIcons()) {
+                                addSlot(new CategoryIconSlotItemHandler(cap, parentSlot, finalModularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18, category) {
                                     @Override
                                     public boolean mayPlace(ItemStack stack) {
                                         NuminaLogger.logDebug("may place <" + stack + "> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
@@ -149,13 +133,12 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
                                         return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                                     }
                                 });
-                            }
-                            else {
+                            } else {
                                 addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
                                     @Override
                                     @Nullable
                                     public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                                        return iconPair;
+                                        return SlotBackgrounds.getIconLocationPairForCategory(category);
                                     }
 
                                     @Override
@@ -271,15 +254,6 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
         return itemStack;
     }
 
-    abstract static class IconSlotItemHandler extends HideableSlotItemHandler implements IIConProvider {
-        public IconSlotItemHandler(IItemHandler itemHandler, int parent, int index, int xPosition, int yPosition) {
-            super(itemHandler, parent, index, xPosition, yPosition);
-        }
-
-        public IconSlotItemHandler(IItemHandler itemHandler, int parent, int index, int xPosition, int yPosition, boolean isEnabled) {
-            super(itemHandler, parent, index, xPosition, yPosition, isEnabled);
-        }
-    }
 
     abstract static class IconSlot extends HideableSlot implements IIConProvider {
         public IconSlot(Container container, int parent, int index, int xPosition, int yPosition) {

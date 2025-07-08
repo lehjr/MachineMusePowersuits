@@ -38,9 +38,9 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
     public static final Color DARKBLUE = new Color(0.0F, 0.0F, 0.5F, 1F);
     public static final Color PURPLE = new Color(0.6F, 0.1F, 0.9F, 1F);
 
-//    Color parseColor(String colorString) {
-//        java.awt.Color.getColor(colorString);
-//    }
+    //    Color parseColor(String colorString) {
+    //        java.awt.Color.getColor(colorString);
+    //    }
 
 
     /**
@@ -94,10 +94,6 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
         gfx.setColor(r, g, b, a);
     }
 
-//    public Color fromRGBAHex() {
-//
-//    }
-
 
 
     // TODO?
@@ -112,11 +108,28 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
     /**
      * Takes colors in the integer format that Minecraft uses, and converts.
      */
+    @Deprecated
     public Color(int c) {
         this.a = (c >> 24 & 0xFF) * div255;
         this.r = (c >> 16 & 0xFF) * div255;
         this.g = (c >> 8 & 0xFF) * div255;
         this.b = (c & 0xFF) * div255;
+    }
+
+    public static Color fromARGB(int argb) {
+        float a = (argb >> 24 & 0xFF) * div255;
+        float r = (argb >> 16 & 0xFF) * div255;
+        float g = (argb >> 8 & 0xFF) * div255;
+        float b = (argb & 0xFF) * div255;
+        return new Color(r, g, b, a);
+    }
+
+    public static Color fromAGBR(int agbr) {
+        float a = (agbr >> 24 & 0xFF) * div255;
+        float g = (agbr >> 16 & 0xFF) * div255;
+        float b = (agbr >> 8 & 0xFF) * div255;
+        float r = (agbr & 0xFF) * div255;
+        return new Color(r, g, b, a);
     }
 
     public Color lighten(float amount) {
@@ -151,8 +164,8 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
         val = val | ((int) (r * 255));
         return val;
     }
-    
-    
+
+
     public void setShaderColor() {
         RenderSystem.setShaderColor(r, g, b, a);
     }
@@ -212,7 +225,7 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
     public Color interpolate(Color target, float d) {
         float complement = 1 - d;
         return new Color(this.r * complement + target.r * d, this.g * complement + target.g * d, this.b * complement + target.b * d, this.a
-                * complement + target.a * d);
+            * complement + target.a * d);
     }
 
     public Color withAlpha(float newalpha) {
@@ -241,11 +254,11 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
     @Override
     public String toString() {
         return "Color{" +
-                "r=" + r +
-                ", g=" + g +
-                ", b=" + b +
-                ", a=" + a +
-                '}';
+            "r=" + r +
+            ", g=" + g +
+            ", b=" + b +
+            ", a=" + a +
+            '}';
     }
 
     @Override
@@ -254,9 +267,9 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
         if (o == null || getClass() != o.getClass()) return false;
         Color color = (Color) o;
         return Double.compare(color.r, r) == 0 &&
-                Double.compare(color.g, g) == 0 &&
-                Double.compare(color.b, b) == 0 &&
-                Double.compare(color.a, a) == 0;
+            Double.compare(color.g, g) == 0 &&
+            Double.compare(color.b, b) == 0 &&
+            Double.compare(color.a, a) == 0;
     }
 
     @Override
@@ -268,19 +281,19 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
         return new Color(this.r, this.g, this.b, this.a);
     }
 
-//    @Override
-//    public IntTag serializeNBT() {
-//        return IntTag.valueOf(getARGBInt());
-//    }
-//
-//    @Override
-//    public void deserializeNBT(IntTag nbt) {
-//        if (nbt != null && nbt instanceof IntTag) {
-//            int c = nbt.getAsInt();
-//            this.a = (c >> 24 & 0xFF) * div255;
-//            this.r = (c >> 16 & 0xFF) * div255;
-//            this.g = (c >> 8 & 0xFF) * div255;
-//            this.b = (c & 0xFF) * div255;
-//        }
-//    }
+    //    @Override
+    //    public IntTag serializeNBT() {
+    //        return IntTag.valueOf(getARGBInt());
+    //    }
+    //
+    //    @Override
+    //    public void deserializeNBT(IntTag nbt) {
+    //        if (nbt != null && nbt instanceof IntTag) {
+    //            int c = nbt.getAsInt();
+    //            this.a = (c >> 24 & 0xFF) * div255;
+    //            this.r = (c >> 16 & 0xFF) * div255;
+    //            this.g = (c >> 8 & 0xFF) * div255;
+    //            this.b = (c & 0xFF) * div255;
+    //        }
+    //    }
 }

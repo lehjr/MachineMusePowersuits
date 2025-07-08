@@ -65,7 +65,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MPSConstants.MOD_ID/*, bus = EventBusSubscriber.Bus.MOD*/)
 public class MPSItems {
     public static final DeferredRegister.Items MPS_ITEMS = DeferredRegister.createItems(MPSConstants.MOD_ID);
 

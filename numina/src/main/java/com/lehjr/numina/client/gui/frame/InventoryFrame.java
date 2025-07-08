@@ -31,7 +31,7 @@ import com.lehjr.numina.client.gui.geometry.IDrawable;
 import com.lehjr.numina.client.gui.geometry.IDrawableRect;
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
 import com.lehjr.numina.client.gui.geometry.Rect;
-import com.lehjr.numina.client.gui.slot.IHideableSlot;
+import com.lehjr.numina.common.container.slot.IHideableSlot;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.utils.IconUtils;
 import com.lehjr.numina.common.utils.MathUtils;

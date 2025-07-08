@@ -1,6 +1,7 @@
 package com.lehjr.numina.client.event;
 
 import com.lehjr.numina.client.gui.NuminaIcons;
+import com.lehjr.numina.client.model.helper.ModelLayerHelper;
 import com.lehjr.numina.client.overlay.ModeChangingIconOverlay;
 import com.lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
 import com.lehjr.numina.client.render.item.NuminaArmorLayer;
@@ -87,55 +88,14 @@ public class NuminaClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void addLayers(EntityRenderersEvent.AddLayers event) {
+        NuminaLogger.logDebug("adding layers");
+
         // Add our own custom armor and elytra (TODO? jetpack maybe?) layer to the various player renderers
         for (PlayerSkin.Model skin : event.getSkins()) {
             //Note: We expect this to always be an instanceof PlayerRenderer, but we just bother checking if it is a LivingEntityRenderer
             // additional note: this should also apply to most humanoid mobs
             if (event.getSkin(skin) instanceof LivingEntityRenderer<?, ?> renderer) {
-                addCustomLayers(EntityType.PLAYER, renderer, event.getContext());
-            }
-        }
-
-        //        //Add our own custom armor and elytra layer to everything that has an armor layer
-        //        //Note: This includes any modded mobs that have vanilla's HumanoidArmorLayer or ElytraLayer added to them
-        //        for (EntityType<?> entityType : event.getEntityTypes()) {
-        //            if (event.getRenderer(entityType) instanceof LivingEntityRenderer<?, ?> renderer) {
-        //                addCustomLayers(entityType, renderer, event.getContext());
-        //            }
-        //        }
-    }
-
-    private static <T extends LivingEntity, M extends EntityModel<T>> void addCustomLayers(@Nonnull EntityType<?> type,
-        @Nonnull LivingEntityRenderer<T, M> renderer,
-        @Nonnull EntityRendererProvider.Context context) {
-        int layerTypes = 2;
-        Map<String, RenderLayer<T, M>> layersToAdd = new HashMap<>(layerTypes);
-        for (RenderLayer<T, M> layerRenderer : renderer.layers) {
-            //Validate against the layer render being null, as it seems like some mods do stupid things and add in null layers
-            if (layerRenderer != null) {
-                //Only allow an exact class match, so we don't add to modded entities that only have a modded extended armor or elytra layer
-                Class<?> layerClass = layerRenderer.getClass();
-                if (layerClass == HumanoidArmorLayer.class) {
-                    //Note: We know that the MODEL is actually an instance of HumanoidModel, or there wouldn't be a
-                    //noinspection unchecked,rawtypes
-                    layersToAdd.put("Armor", new NuminaArmorLayer(renderer, (HumanoidArmorLayer<T, ?, ?>) layerRenderer, context.getModelManager()));
-                    if (layersToAdd.size() == layerTypes) {
-                        break;
-                    }
-                }
-                //                else if (layerClass == ElytraLayer.class) {
-                //                    layersToAdd.put("Elytra", new NuminaElytraLayer<>(renderer, context.getModelSet()));
-                //                    if (layersToAdd.size() == layerTypes) {
-                //                        break;
-                //                    }
-                //                }
-            }
-        }
-        if (!layersToAdd.isEmpty()) {
-            ResourceLocation entityName = BuiltInRegistries.ENTITY_TYPE.getKey(type);
-            for (Map.Entry<String, RenderLayer<T, M>> entry : layersToAdd.entrySet()) {
-                renderer.addLayer(entry.getValue());
-                NuminaLogger.getLogger().debug("Added NuminaArmor {} Layer to entity of type: {}", entry.getKey(), entityName);
+                ModelLayerHelper.addCustomLayers(EntityType.PLAYER, renderer, event.getContext());
             }
         }
     }

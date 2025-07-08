@@ -1,12 +1,15 @@
 package com.lehjr.powersuits.common.block;
 
+import com.lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
@@ -14,6 +17,8 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -58,9 +63,25 @@ public class LuxCapacitorBlock extends DirectionalBlock implements SimpleWaterlo
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite())
+        if(context.canPlace()) {
+            FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
+            BlockState state = this
+                .defaultBlockState()
+                .setValue(FACING, context.getNearestLookingDirection().getOpposite())
                 .setValue(WATERLOGGED, ifluidstate.getType() == Fluids.WATER);
+
+            if (canPlace(context, state)) {
+                return state;
+            }
+
+            for (Direction facing : context.getNearestLookingDirections()) {
+                state = state.setValue(LuxCapacitorBlock.FACING, facing);
+                if (canPlace(context, state)) {
+                    return state;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -108,4 +129,25 @@ public class LuxCapacitorBlock extends DirectionalBlock implements SimpleWaterlo
         Direction direction = state.getValue(FACING);
         return this.canAttachTo(levelReader, pos.relative(direction.getOpposite()), direction);
     }
+
+    protected boolean canPlace(BlockPlaceContext context, BlockState state) {
+        Player player = context.getPlayer();
+        CollisionContext collisioncontext = player == null ? CollisionContext.empty() : CollisionContext.of(player);
+        return (canSurvive(state, context.getLevel(), context.getClickedPos())) && context.getLevel().isUnobstructed(state, context.getClickedPos(), collisioncontext);
+    }
+
+//    @Nullable
+//    @Override
+//    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+//        if (level.isClientSide) {
+//            return null;
+//        } else {
+//            return (lvl, pos, st, be) -> {
+//                if (be instanceof LuxCapacitorBlockEntity luxCap) {
+//                    // pretend to do something?
+//                    luxCap.tickServer();
+//                }
+//            };
+//        }
+//    }
 }

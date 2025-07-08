@@ -1,4 +1,4 @@
-package com.lehjr.numina.common.network.packets.clienthandlers;
+package com.lehjr.numina.client.network.packets.clienthandlers;
 
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.registration.NuminaCapabilities;

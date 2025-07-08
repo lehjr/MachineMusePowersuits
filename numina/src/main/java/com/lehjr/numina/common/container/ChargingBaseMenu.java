@@ -1,6 +1,8 @@
 package com.lehjr.numina.common.container;
 
-import com.lehjr.numina.client.gui.slot.IconSlotItemHandler;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.container.slot.CategoryIconSlotItemHandler;
+import com.lehjr.numina.common.container.slot.IconSlotItemHandler;
 import com.lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaBlocks;
@@ -35,11 +37,11 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
             this.blockEntity = chargingBase;
 
             // slot 0
-            addSlot(new IconSlotItemHandler(chargingBase.getItems(), SLOT, 79, 35) {
-                @Override
-                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                    IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
-                }
+            addSlot(new CategoryIconSlotItemHandler(chargingBase.getItems(), SLOT, -1, 79, 35, ModuleCategory.ENERGY_STORAGE) {
+//                @Override
+//                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
+//                    IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
+//                }
             });
 
             // Setup syncing of power from server to client so that the GUI can show the amount of power in the block

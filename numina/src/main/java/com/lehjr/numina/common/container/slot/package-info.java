@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.lehjr.numina.client.gui.slot;
+package com.lehjr.numina.common.container.slot;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

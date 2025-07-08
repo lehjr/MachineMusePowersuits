@@ -1,4 +1,4 @@
-package com.lehjr.numina.client.gui.slot;
+package com.lehjr.numina.common.container.slot;
 
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.world.Container;

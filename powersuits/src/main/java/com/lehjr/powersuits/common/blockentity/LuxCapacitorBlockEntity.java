@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.common.blockentity;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
 import com.lehjr.numina.common.capabilities.render.color.IColorTag;
 import com.lehjr.numina.common.constants.NuminaConstants;
@@ -13,10 +14,12 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.Lazy;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,8 +28,9 @@ import java.util.Objects;
 public class LuxCapacitorBlockEntity extends BlockEntity {
     private final ColorAttachmentStorage colorStorage = createColorStorage();
 
-    public LuxCapacitorBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(MPSBlocks.LUX_CAP_BLOCK_ENTITY_TYPE.get(), pPos, pBlockState);
+    public LuxCapacitorBlockEntity(BlockPos blockPos, BlockState state) {
+        super(MPSBlocks.LUX_CAP_BLOCK_ENTITY_TYPE.get(), blockPos, state);
+        NuminaLogger.logDebug("placed luxCap at: " + blockPos + " with state " + state);
     }
 
     private final Lazy<IColorTag> colorHandler = Lazy.of(() -> colorStorage);
@@ -55,10 +59,10 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
         return LuxCapHelper.getItemModelData(getStoredColor().getARGBInt());
     }
 
-    @Override
-    public void requestModelDataUpdate() {
-        super.requestModelDataUpdate();
-    }
+//    @Override
+//    public void requestModelDataUpdate() {
+//        super.requestModelDataUpdate();
+//    }
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
@@ -94,7 +98,18 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
         };
     }
 
+    public void setColor(int argbColor) {
+       setColor(Color.fromARGB(argbColor));
+    }
+
+    public void setColor(Color color) {
+        colorHandler.get().setColor(color);
+    }
+
     public IColorTag getColorHandler() {
         return colorHandler.get();
+    }
+
+    public void tickServer() {
     }
 }

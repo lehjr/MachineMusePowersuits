@@ -1,5 +1,6 @@
 package com.lehjr.numina.common.container;
 
+import com.lehjr.numina.common.container.slot.SlotBackgrounds;
 import com.lehjr.numina.common.registration.NuminaMenus;
 import com.lehjr.numina.common.utils.IconUtils;
 import com.mojang.datafixers.util.Pair;
@@ -81,7 +82,7 @@ public class ArmorStandMenu extends AbstractContainerMenu {
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, IconUtils.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, SlotBackgrounds.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
                 }
             });
         }
@@ -91,7 +92,7 @@ public class ArmorStandMenu extends AbstractContainerMenu {
             @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return IconUtils.getSlotBackground(EquipmentSlot.OFFHAND);
+                return SlotBackgrounds.getSlotBackground(EquipmentSlot.OFFHAND);
             }
 
             @Override
@@ -112,7 +113,7 @@ public class ArmorStandMenu extends AbstractContainerMenu {
             @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return IconUtils.getSlotBackground(EquipmentSlot.MAINHAND);
+                return SlotBackgrounds.getSlotBackground(EquipmentSlot.MAINHAND);
             }
 
             @Override
@@ -161,7 +162,7 @@ public class ArmorStandMenu extends AbstractContainerMenu {
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, IconUtils.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, SlotBackgrounds.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
                 }
             });
         }

@@ -1,6 +1,7 @@
 package com.lehjr.numina.client.gui.clickable;
 
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.container.slot.SlotBackgrounds;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.IconUtils;
 import com.lehjr.numina.common.utils.ItemUtils;
@@ -89,7 +90,7 @@ public class ModularItemTabToggleWidget extends Clickable {
         int offset = -2;
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
-            Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
+            Pair<ResourceLocation, ResourceLocation> pair = SlotBackgrounds.getSlotBackground(type);
             TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
             RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
             gfx.blit((int)left() + 10 + offset, (int)top() + 5, 0, 16, 16, textureatlassprite);

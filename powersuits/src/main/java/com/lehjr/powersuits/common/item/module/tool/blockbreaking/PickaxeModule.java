@@ -65,14 +65,14 @@ public class PickaxeModule extends AbstractPowerModule {
 
         @Override
         public boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
-            NuminaLogger.logDebug("energy usage: " + getEnergyUsage() +", player energy: " + playerEnergy);
+//            NuminaLogger.logDebug("energy usage: " + getEnergyUsage() +", player energy: " + playerEnergy);
 
             if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                 ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage(), false);
-                NuminaLogger.logDebug("returning true");
+//                NuminaLogger.logDebug("returning true");
                 return true;
             }
-            NuminaLogger.logDebug("returning false");
+//            NuminaLogger.logDebug("returning false");
             return false;
         }
 

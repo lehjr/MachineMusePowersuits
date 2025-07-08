@@ -41,8 +41,8 @@ public class NuminaIcons {
         this.armordisplayselect = registerIcon("armordisplayselect", 8, 8);
         this.checkmark = registerIcon("checkmark", 16, 16);
         this.colorclicker = registerIcon("colorclicker", 8, 8);
-        this.energygeneration = registerIcon("energygeneration",32, 32);
-        this.energystorage = registerIcon("energystorage",32, 32);
+        this.energygeneration = registerIcon(NuminaConstants.ENERGY_GENERATION_ICON,32, 32);
+        this.energystorage = registerIcon(NuminaConstants.ENERGY_STORAGE_ICON,32, 32);
         this.glowArmor= registerIcon("glowarmor", 8, 8);
         this.lightning = registerIcon("lightning", 800, 62);
         this.lightning2 = registerIcon("lightning2", 800, 62);
@@ -55,10 +55,15 @@ public class NuminaIcons {
 
     private DrawableIcon registerIcon(String name, int width, int height) {
         ResourceLocation location = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, name);
+        return registerIcon(location, width, height);
+    }
+
+    private DrawableIcon registerIcon(ResourceLocation location, int width, int height) {
         DrawableIcon icon = new DrawableIcon(location, width, height);
         iconMap.put(location, icon);
         return icon;
     }
+
 
     public static DrawableIcon getIcon(ResourceLocation location) {
         return iconMap.get(location);

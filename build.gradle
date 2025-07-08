@@ -33,5 +33,12 @@ allprojects {
         localRuntime "blank:journeymap-neoforge-1.21.1-6.0.0-beta.52"
 
         localRuntime "blank:energizedpower-1.21.1-2.12.2-neoforge"
+
+        localRuntime "blank:kotlinforforge-5.9.0-all"
+
+        localRuntime "blank:architectury-13.0.8-neoforge"
+
+        localRuntime "blank:observable-5.4.4"
+
     }
 }
