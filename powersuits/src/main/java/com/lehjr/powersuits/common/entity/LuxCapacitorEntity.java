@@ -24,6 +24,7 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -103,7 +104,8 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
 
         if (this.isAlive() && hitResultType == HitResult.Type.BLOCK) {
             BlockHitResult blockRayTrace = (BlockHitResult)hitResult;
-            place(blockRayTrace);
+            boolean placed = place(blockRayTrace);
+            NuminaLogger.logDebug("luxCap placed: " + placed);
         }
         this.remove(RemovalReason.DISCARDED);
     }
@@ -131,7 +133,8 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
             if (blockstateToSet == null) {
                 NuminaLogger.logDebug("place returning false1");
                 return false;
-            } else if (!level().setBlock(blockPos, blockstateToSet, 11)) {
+            } else if (!level().setBlock(blockPos, blockstateToSet, Block.UPDATE_ALL)) {
+
                 NuminaLogger.logDebug("place returning false2");
                 return false;
             } else {
@@ -168,26 +171,24 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
                     NuminaLogger.logDebug("updateCustomBlockEntityTag returning false2");
                     return false;
                 }
+
                 NuminaLogger.logDebug("updateCustomBlockEntityTag returning true");
-                ((LuxCapacitorBlockEntity) blockEntity).setColor(this.entityData.get(COLOR));
-                blockEntity.setChanged();
+                //                ((LuxCapacitorBlockEntity) blockEntity).setColor(this.entityData.get(COLOR));
+                //                blockEntity.setChanged();
 
+                CompoundTag tag = blockEntity.saveCustomOnly(level.registryAccess());
+                CompoundTag tag1 = tag.copy();
+                tag1.putInt(NuminaConstants.COLOR, this.entityData.get(COLOR));
+                if (!tag1.equals(tag)) {
+                    try {
+                        blockEntity.loadCustomOnly(tag1, level().registryAccess());
+                        blockEntity.setChanged();
+                    } catch (Exception exception1) {
+                        NuminaLogger.logException("Failed to apply custom data to block entity at {} " + blockEntity.getBlockPos(), exception1);
 
-//                CompoundTag tag = blockEntity.saveCustomOnly(level().registryAccess());
-//                tag.putInt(NuminaConstants.COLOR, this.entityData.get(COLOR));
-//                   try {
-//                        blockEntity.loadCustomOnly(tag, (level().registryAccess()));
-//                        blockEntity.setChanged();
-//                        return true;
-//                    } catch (Exception exception1) {
-//                        NuminaLogger.logException("Failed to apply custom data to block entity at {} "+ blockEntity.getBlockPos(), exception1);
-//
-////                        try {
-////                            blockEntity.loadCustomOnly(compoundtag1, levelRegistry);
-////                        } catch (Exception exception) {
-////                            LOGGER.warn("Failed to rollback block entity at {} after failure", blockEntity.getBlockPos(), exception);
-////                        }
-//                    }
+                        blockEntity.loadCustomOnly(tag1, level().registryAccess());
+                    }
+                }
             }
             NuminaLogger.logDebug("updateCustomBlockEntityTag returning false");
             return false;

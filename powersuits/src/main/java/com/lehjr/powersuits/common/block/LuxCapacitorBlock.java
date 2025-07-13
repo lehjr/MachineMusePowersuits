@@ -1,6 +1,5 @@
 package com.lehjr.powersuits.common.block;
 
-import com.lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
 import com.mojang.serialization.MapCodec;
@@ -9,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
@@ -17,8 +15,6 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;

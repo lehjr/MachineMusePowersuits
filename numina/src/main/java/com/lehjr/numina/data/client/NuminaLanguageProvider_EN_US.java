@@ -69,12 +69,12 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
 
     @Override
     public void addModuleTradeoffs() {
-        add(NuminaConstants.MAX_ENERGY,  "Maximum Energy");
+        add(NuminaConstants.MAX_ENERGY, "Maximum Energy");
 
         add(NuminaConstants.MAX_TRAMSFER, "Maximum Transfer per Tick");
 
         // Harvest Speed -------------------------------------------------------------------------------
-        add(NuminaConstants.HARVEST_SPEED, "Harvest Speed");
+        addTradeoff(NuminaConstants.HARVEST_SPEED, "Harvest Speed");
     }
 
     @Override

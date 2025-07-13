@@ -26,6 +26,7 @@
 
 package com.lehjr.powersuits.common.item.module.tool.misc;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -47,6 +48,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class LuxCapacitorModule extends AbstractPowerModule {
     public static class RightClickie extends PlayerTickModule implements IRightClickModule {
@@ -90,20 +92,29 @@ public class LuxCapacitorModule extends AbstractPowerModule {
             if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption && timer == 0) {
                 if (!level.isClientSide) {
                     TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, 15);
-                    HeatUtils.heatPlayer(playerIn, energyConsumption / 500);
-                    ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption, false);
                     float red = (float) applyPropertyModifiers(MPSConstants.RED_HUE);
                     float green = (float) applyPropertyModifiers(MPSConstants.GREEN_HUE);
                     float blue = (float) applyPropertyModifiers(MPSConstants.BLUE_HUE);
                     float alpha = (float) applyPropertyModifiers(MPSConstants.OPACITY);
 
                     LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(level, playerIn, new Color(red, green, blue, alpha));
-                    level.addFreshEntity(luxCapacitor);
+                    NuminaLogger.logDebug("Lux Capacitor Entity is Null?: " + (Objects.isNull(luxCapacitor)));
+
+                    if(level.addFreshEntity(luxCapacitor)) {
+                        HeatUtils.heatPlayer(playerIn, energyConsumption / 500);
+                        ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption, false);
+                    } else {
+                        NuminaLogger.logDebug("Lux Capacitor Entity failed to launch?: " + (Objects.isNull(luxCapacitor)));
+                    }
                 }
-//                return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
-                return InteractionResultHolder.success(itemStackIn);
+
+                InteractionResultHolder test = InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
+                NuminaLogger.logDebug("sided success: " + test.getResult().name());
+
+                return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
+//                return InteractionResultHolder.consume(itemStackIn);
             }
-            return InteractionResultHolder.pass(itemStackIn);
+            return InteractionResultHolder.fail(itemStackIn);
         }
 
         @Override
