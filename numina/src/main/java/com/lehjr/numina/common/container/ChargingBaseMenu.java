@@ -37,7 +37,7 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
             this.blockEntity = chargingBase;
 
             // slot 0
-            addSlot(new CategoryIconSlotItemHandler(chargingBase.getItems(), SLOT, -1, 79, 35, ModuleCategory.ENERGY_STORAGE) {
+            addSlot(new CategoryIconSlotItemHandler(chargingBase.getItems(), -1, SLOT, 79, 35, ModuleCategory.ENERGY_STORAGE) {
 //                @Override
 //                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
 //                    IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);

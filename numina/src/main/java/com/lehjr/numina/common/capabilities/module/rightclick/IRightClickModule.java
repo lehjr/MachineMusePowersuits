@@ -45,7 +45,7 @@ public interface IRightClickModule extends IPowerModule {
         return InteractionResult.PASS;
     }
 
-    default void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+    default void releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
     }
 
     /**

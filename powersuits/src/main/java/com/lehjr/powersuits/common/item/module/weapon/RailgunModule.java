@@ -140,8 +140,8 @@ public class RailgunModule extends AbstractPowerModule {
         }
 
         @Override
-        public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-            IRightClickModule.super.releaseUsing(stack, worldIn, entityLiving, timeLeft);
+        public void releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
+            IRightClickModule.super.releaseUsing(stack, levelIn, entityLiving, timeLeft);
         }
 
         @Override

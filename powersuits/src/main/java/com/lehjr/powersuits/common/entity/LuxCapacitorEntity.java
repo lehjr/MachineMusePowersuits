@@ -20,7 +20,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -56,8 +55,12 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
         return new Color(this.entityData.get(COLOR));
     }
 
-    public LuxCapacitorEntity(Level world, LivingEntity shootingEntity, Color color) {
-        super(MPSEntities.LUX_CAPACITOR_ENTITY_TYPE.get(), shootingEntity, world);
+    public LuxCapacitorEntity(Level level, LivingEntity shootingEntity, Color color) {
+        super(MPSEntities.LUX_CAPACITOR_ENTITY_TYPE.get(), shootingEntity, level);
+        this.setUpEntity(shootingEntity, color);
+    }
+
+    public void setUpEntity(LivingEntity shootingEntity, Color color) {
         this.setNoGravity(true);
         setColor(color);
         Vec3 direction = shootingEntity.getLookAngle().normalize();
@@ -68,18 +71,52 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
             direction.z * speed
         );
 
-        double r = 0.4375;
-        double xoffset = 0.1;
-        double yoffset = 0;
-        double zoffset = 0;
-        double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
-        double horzx = direction.x / horzScale;
-        double horzz = direction.z / horzScale;
-        this.setPos(
-            (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
-            (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
-            (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset));
-        this.setBoundingBox(new AABB(getX() - r, getY() - 0.0625, getZ() - r, getX() + r, getY() + 0.0625, getZ() + r));
+        double radius = 0.4375;
+
+
+//        double xoffset = 1.3f + radius - direction.y * shootingEntity.getEyeHeight();
+//        double yoffset = -.2;
+//        double zoffset = 0.3f;
+//        double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
+//        double horzx = direction.x / horzScale;
+//        double horzz = direction.z / horzScale;
+
+        double xPos = //(shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset);
+//        if(Double.isNaN(xPos)) {
+            xPos = shootingEntity.getX();
+//        }
+
+        double yPos = // (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset);
+//        if(Double.isNaN(yPos)) {
+            yPos = shootingEntity.getEyeY() - (double)0.1F;
+//        }
+
+        double zPos = // (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset);
+//        if(Double.isNaN(zPos)) {
+            zPos = shootingEntity.getZ();
+//        }
+
+        this.setPos(xPos, yPos, zPos);
+        this.setDeltaMovement(direction);
+        this.setBoundingBox(new AABB(getX() - radius, getY() - 0.0625, getZ() - radius, getX() + radius, getY() + 0.0625, getZ() + radius));
+    }
+
+    @Override
+    public void setPos(double x, double y, double z) {
+        super.setPos(x, y, z);
+//        NuminaLogger.logDebug("setting initial position to: " + x + ", " + y + ", " + z);
+    }
+
+    @Override
+    public void baseTick() {
+        super.baseTick();
+//        NuminaLogger.logDebug("ticking at " + position() + ", is level null? " + level());
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+//        NuminaLogger.logDebug("removed: " + reason);
     }
 
     BlockPlaceContext getUseContext(BlockHitResult hitResult) {
@@ -105,7 +142,7 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
         if (this.isAlive() && hitResultType == HitResult.Type.BLOCK) {
             BlockHitResult blockRayTrace = (BlockHitResult)hitResult;
             boolean placed = place(blockRayTrace);
-            NuminaLogger.logDebug("luxCap placed: " + placed);
+//            NuminaLogger.logDebug("luxCap placed: " + placed);
         }
         this.remove(RemovalReason.DISCARDED);
     }
@@ -124,36 +161,36 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
         } else {
             BlockState blockstateToSet = MPSBlocks.LUX_CAPACITOR_BLOCK.get().getStateForPlacement(context);
 
-            NuminaLogger.logDebug("context: " + context);
-            NuminaLogger.logDebug("context POS: " + context.getClickedPos());
-            NuminaLogger.logDebug("context can place: " + context.canPlace());
-            NuminaLogger.logDebug("context face: " + context.getClickedFace());
-            NuminaLogger.logDebug("context server: " + context.getLevel().getServer());
+//            NuminaLogger.logDebug("context: " + context);
+//            NuminaLogger.logDebug("context POS: " + context.getClickedPos());
+//            NuminaLogger.logDebug("context can place: " + context.canPlace());
+//            NuminaLogger.logDebug("context face: " + context.getClickedFace());
+//            NuminaLogger.logDebug("context server: " + context.getLevel().getServer());
 
             if (blockstateToSet == null) {
-                NuminaLogger.logDebug("place returning false1");
+//                NuminaLogger.logDebug("place returning false1");
                 return false;
             } else if (!level().setBlock(blockPos, blockstateToSet, Block.UPDATE_ALL)) {
 
-                NuminaLogger.logDebug("place returning false2");
+//                NuminaLogger.logDebug("place returning false2");
                 return false;
             } else {
-                NuminaLogger.logDebug("place made it here 1");
+//                NuminaLogger.logDebug("place made it here 1");
                 Level level = level();
                 Player player = (Player)this.getOwner();
                 BlockState blockstateCurrent = level.getBlockState(blockPos);
 
-                NuminaLogger.logDebug("place made it here 2");
+//                NuminaLogger.logDebug("place made it here 2");
 
                 if (blockstateCurrent.is(blockstateToSet.getBlock())) {
                     this.updateCustomBlockEntityTag(level, player, blockPos);
                 }
-                NuminaLogger.logDebug("place made it here 3");
+//                NuminaLogger.logDebug("place made it here 3");
                 SoundType soundtype = blockstateCurrent.getSoundType(level, blockPos, player);
                 level.playSound(player, blockPos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) * 0.5F, soundtype.getPitch() * 0.8F);
-                NuminaLogger.logDebug("place made it here 4");
+//                NuminaLogger.logDebug("place made it here 4");
                 level.gameEvent(GameEvent.BLOCK_PLACE, blockPos, GameEvent.Context.of(player, blockstateCurrent));
-                NuminaLogger.logDebug("place returning true");
+//                NuminaLogger.logDebug("place returning true");
                 return true;
             }
         }
@@ -162,17 +199,17 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
     public boolean updateCustomBlockEntityTag(Level level, @Nullable Player player, BlockPos pos) {
         MinecraftServer minecraftserver = level.getServer();
         if (minecraftserver == null) {
-            NuminaLogger.logDebug("updateCustomBlockEntityTag returning false1");
+//            NuminaLogger.logDebug("updateCustomBlockEntityTag returning false1");
             return false;
         } else {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof LuxCapacitorBlockEntity) {
                 if (!level.isClientSide && blockEntity.onlyOpCanSetNbt() && (player == null || !player.canUseGameMasterBlocks())) {
-                    NuminaLogger.logDebug("updateCustomBlockEntityTag returning false2");
+//                    NuminaLogger.logDebug("updateCustomBlockEntityTag returning false2");
                     return false;
                 }
 
-                NuminaLogger.logDebug("updateCustomBlockEntityTag returning true");
+//                NuminaLogger.logDebug("updateCustomBlockEntityTag returning true");
                 //                ((LuxCapacitorBlockEntity) blockEntity).setColor(this.entityData.get(COLOR));
                 //                blockEntity.setChanged();
 
@@ -185,12 +222,12 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
                         blockEntity.setChanged();
                     } catch (Exception exception1) {
                         NuminaLogger.logException("Failed to apply custom data to block entity at {} " + blockEntity.getBlockPos(), exception1);
-
+                        // LOL!! trying to load it anyway?
                         blockEntity.loadCustomOnly(tag1, level().registryAccess());
                     }
                 }
             }
-            NuminaLogger.logDebug("updateCustomBlockEntityTag returning false");
+//            NuminaLogger.logDebug("updateCustomBlockEntityTag returning false");
             return false;
         }
     }

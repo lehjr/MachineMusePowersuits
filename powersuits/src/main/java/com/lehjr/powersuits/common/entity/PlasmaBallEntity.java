@@ -51,15 +51,23 @@ public class PlasmaBallEntity extends ThrowableProjectile implements IEntityWith
         double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
         double horzx = direction.x / horzScale;
         double horzz = direction.z / horzScale;
-        this.setPos(
-                // x
-                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
-                // y
-                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
-                //z
-                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset)
-        );
 
+        double xPos = (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset);
+        if(Double.isNaN(xPos)) {
+           xPos = shootingEntity.getX();
+        }
+
+        double yPos = (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset);
+        if(Double.isNaN(yPos)) {
+            yPos = shootingEntity.getEyeY() - (double)0.1F;
+        }
+
+        double zPos = (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset);
+        if(Double.isNaN(zPos)) {
+            zPos = shootingEntity.getZ();
+        }
+
+        this.setPos(xPos, yPos, zPos);
         this.setDeltaMovement(direction);
         this.setBoundingBox(new AABB(getX() - radius, getY() - radius, getZ()- radius, getX() + radius, getY() + radius, getZ() + radius));
     }

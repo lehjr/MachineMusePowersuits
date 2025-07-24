@@ -56,7 +56,9 @@ public class ChargingBaseBlockEntity extends BlockEntity {
     }
 
     private void distributeEnergy(LivingEntity entity) {
-        int received = (int) ElectricItemUtils.givePlayerEnergy(entity, getEnergyHandler().getEnergyStored(), false);
+        int energyStored = getStoredPower();
+
+        int received = (int) ElectricItemUtils.givePlayerEnergy(entity, energyStored, false);
         if (received > 0) {
             getEnergyHandler().extractEnergy(received, false);
             setChanged();

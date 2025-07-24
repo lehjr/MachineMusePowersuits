@@ -61,8 +61,8 @@ public interface IOtherModItemsAsModules extends IRightClickModule {
     }
 
     @Override
-    default void releaseUsing(@Nonnull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        getModule().releaseUsing(worldIn, entityLiving, timeLeft);
+    default void releaseUsing(@Nonnull ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
+        getModule().releaseUsing(levelIn, entityLiving, timeLeft);
     }
 
     @Override

@@ -39,14 +39,14 @@ public class BladeLauncherModule extends AbstractPowerModule {
         }
 
         @Override
-        public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-            if (!worldIn.isClientSide) {
+        public void releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
+            if (!levelIn.isClientSide) {
                 int energyConsumption = getEnergyUsage();
 
                 if (ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption) {
                     ElectricItemUtils.drainPlayerEnergy(entityLiving, energyConsumption, false);
-                    SpinningBladeEntity blade = new SpinningBladeEntity(worldIn, entityLiving);
-                    worldIn.addFreshEntity(blade);
+                    SpinningBladeEntity blade = new SpinningBladeEntity(levelIn, entityLiving);
+                    levelIn.addFreshEntity(blade);
                 }
             }
         }

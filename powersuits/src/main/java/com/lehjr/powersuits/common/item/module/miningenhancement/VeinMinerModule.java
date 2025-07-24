@@ -59,6 +59,11 @@ public class VeinMinerModule extends AbstractPowerModule {
 
         @Override
         public boolean onBlockStartBreak(ItemStack itemStack, BlockHitResult hitResult, Player player, Level level) {
+            // Don't cancel if this isn't online...
+            if (!isModuleOnline()) {
+                return false;
+            }
+
             BlockPos pos = hitResult.getBlockPos();
 
             BlockState state = level.getBlockState(pos);

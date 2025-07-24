@@ -24,21 +24,23 @@ allprojects {
     dependencies {
         // these are setup using libs dir at the root of the project rather than through maven. This will probably get fixed later
 
-        localRuntime "blank:appliedenergistics2-19.0.20-beta"
-        localRuntime "blank:FallingTree-1.21.1-1.21.1.1"
+        localRuntime "blank:appliedenergistics2-19.2.13"
+        localRuntime "blank:guideme-21.1.13"
+        localRuntime "blank:ae2jeiintegration-1.2.0"
 
-        localRuntime "blank:jei-${minecraft_version}-neoforge-19.14.1.143"
-        localRuntime "blank:theoneprobe-1.21_neo-12.0.3" // try it?
+        localRuntime "blank:FallingTree-1.21.1-1.21.1.10"
+
+        localRuntime "blank:jei-1.21.1-neoforge-19.22.0.315"
+        localRuntime "blank:theoneprobe-1.21_neo-12.0.6" // try it?
 
         localRuntime "blank:journeymap-neoforge-1.21.1-6.0.0-beta.52"
 
-        localRuntime "blank:energizedpower-1.21.1-2.12.2-neoforge"
+        localRuntime "blank:energizedpower-1.21.1-2.14.0-neoforge"
 
         localRuntime "blank:kotlinforforge-5.9.0-all"
 
         localRuntime "blank:architectury-13.0.8-neoforge"
 
         localRuntime "blank:observable-5.4.4"
-
     }
 }

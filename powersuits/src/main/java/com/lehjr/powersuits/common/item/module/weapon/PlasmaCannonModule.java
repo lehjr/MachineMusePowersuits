@@ -45,23 +45,25 @@ public class PlasmaCannonModule extends AbstractPowerModule {
         }
 
         @Override
-        public void releaseUsing(@Nonnull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+        public void releaseUsing(@Nonnull ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
             int chargeTicks = (int) MathUtils.clampDouble(stack.getUseDuration(entityLiving) - timeLeft, 10, 50);
 
-            NuminaLogger.logDebug("release using with charge ticks " + chargeTicks);
+//            NuminaLogger.logDebug("release using with charge ticks " + chargeTicks);
 
-            if (!worldIn.isClientSide && entityLiving instanceof Player) {
+            if (!levelIn.isClientSide && entityLiving instanceof Player) {
                 double chargePercent = chargeTicks * 0.02; // chargeticks/50
                 double energyConsumption = getEnergyUsage() * chargePercent;
                 Player player = (Player) entityLiving;
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
                     float explosiveness = (float) (applyPropertyModifiers(MPSConstants.PLASMA_CANNON_EXPLOSIVENESS) * chargePercent);
                     float damagingness = (float) (applyPropertyModifiers(MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE) * chargePercent);
-                    PlasmaBallEntity plasmaBolt = new PlasmaBallEntity(worldIn, player, explosiveness, damagingness, (float) chargePercent);
-                    if (worldIn.addFreshEntity(plasmaBolt)) {
-                        HeatUtils.heatPlayer(player, energyConsumption / 5000F * chargePercent);
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) energyConsumption, false);
-                    }
+                    levelIn.getServer().execute(()-> {
+                        PlasmaBallEntity plasmaBolt = new PlasmaBallEntity(levelIn, player, explosiveness, damagingness, (float) chargePercent);
+                        if (levelIn.addFreshEntity(plasmaBolt)) {
+                            HeatUtils.heatPlayer(player, energyConsumption / 5000F * chargePercent);
+                            ElectricItemUtils.drainPlayerEnergy(player, (int) energyConsumption, false);
+                        }
+                    });
                 }
             }
         }
