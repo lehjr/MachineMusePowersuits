@@ -168,6 +168,21 @@ public class SelectiveMiner extends AbstractPowerModule {
             return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
+        boolean isStateSame(BlockState state, Level level, BlockPos posStart, Direction direction) {
+            BlockPos tempPos = posStart.relative(direction);
+            BlockState tempState = level.getBlockState(tempPos);
+            return tempState == state;
+        }
+
+        NonNullList<BlockPos> getPosistions(Level level, BlockPos posStart) {
+            NonNullList<BlockPos> retList = NonNullList.create();
+
+            return retList;
+        }
+
+
+
+
         @Override
         public HashMap<BlockPostionData, Integer> getBlockPositions(@Nonnull ItemStack tool, @Nonnull BlockHitResult result, @Nonnull Player player, @Nonnull Level level, NonNullList<IBlockBreakingModule> modules, double playerEnergy) {
             HashMap<BlockPostionData, Integer> retMap = new HashMap<>();
@@ -192,7 +207,7 @@ public class SelectiveMiner extends AbstractPowerModule {
             int i = 1;
             // this is really, really stupid and if you have a better way, use it.
             outerLoop:
-            while (retMap.size() <= applyPropertyModifiers(MPSConstants.SELECTIVE_MINER_LIMIT) && i < 2 /* set at 2 for performance reasons */) {
+            while (retMap.size() <= applyPropertyModifiers(MPSConstants.SELECTIVE_MINER_LIMIT) && i < 5 /* limit for performance reasons */) {
                 for (BlockPos.MutableBlockPos mutable : BlockPos.spiralAround(pos, i, Direction.EAST, Direction.SOUTH)) {
                     for (BlockPos.MutableBlockPos mutable2 : BlockPos.spiralAround(mutable, i, Direction.UP, Direction.NORTH)) {
                         for (BlockPos.MutableBlockPos mutable3 : BlockPos.spiralAround(mutable2, i, Direction.WEST, Direction.DOWN)) {

@@ -30,7 +30,7 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
 
     public LuxCapacitorBlockEntity(BlockPos blockPos, BlockState state) {
         super(MPSBlocks.LUX_CAP_BLOCK_ENTITY_TYPE.get(), blockPos, state);
-        NuminaLogger.logDebug("placed luxCap at: " + blockPos + " with state " + state);
+//        NuminaLogger.logDebug("placed luxCap at: " + blockPos + " with state " + state);
     }
 
     private final Lazy<IColorTag> colorHandler = Lazy.of(() -> colorStorage);
