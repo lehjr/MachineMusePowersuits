@@ -42,8 +42,6 @@ public interface IBlockBreakingModule extends IPowerModule {
         }
 
         if(getEmulatedTool().isCorrectToolForDrops(state)) {
-            NuminaLogger.logDebug("emulated tool is correct for drops");
-
             return true;
         }
         return false;
