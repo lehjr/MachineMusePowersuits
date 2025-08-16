@@ -2,8 +2,6 @@ package com.lehjr.powersuits.data.client.lang;
 
 import com.lehjr.numina.data.client.AbstractLanguageProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public abstract class AbstractLangageProviderMPS extends AbstractLanguageProvider {
     public AbstractLangageProviderMPS(PackOutput output, String modid, String locale) {

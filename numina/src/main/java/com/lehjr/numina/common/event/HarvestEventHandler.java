@@ -46,6 +46,7 @@ public class HarvestEventHandler {
                 event.setCanHarvest(true);
                 return;
             }
+
             HitResult rayTraceResult = pick(player, 1F);
             //            HitResult rayTraceResult = rayTrace(player.level(), player, ClipContext.Fluid.SOURCE_ONLY);
             if (!(rayTraceResult instanceof BlockHitResult)) {
@@ -176,39 +177,44 @@ public class HarvestEventHandler {
                         playerEnergy
                     );
 
-                    double overclock = me.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED);
-                    Map<IBlockBreakingModule, List<BlockPos>> speedMap = new HashMap<>();
-                    List<Double> correctedSpeeds = new ArrayList<>();
+                    if(!blockPositionsMap.isEmpty()) {
+                        double overclock = me.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED);
+                        Map<IBlockBreakingModule, List<BlockPos>> speedMap = new HashMap<>();
+                        List<Double> correctedSpeeds = new ArrayList<>();
 
-                    for (Map.Entry<IHighlight.BlockPostionData, Integer> entry : blockPositionsMap.entrySet()) {
-                        IHighlight.BlockPostionData blockPostionData = entry.getKey();
-                        int harvestLevel = entry.getValue();
-                        if (blockPostionData.bbm() != null) {
-                            if (blockPostionData.canHarvest()) {
-                                double harvestSpeed = blockPostionData.bbm().applyPropertyModifiers(NuminaConstants.HARVEST_SPEED);
-                                if(harvestLevel == 2) {
-                                    harvestSpeed = harvestLevel * overclock;
+                        for (Map.Entry<IHighlight.BlockPostionData, Integer> entry : blockPositionsMap.entrySet()) {
+                            IHighlight.BlockPostionData blockPostionData = entry.getKey();
+                            int harvestLevel = entry.getValue();
+                            if (blockPostionData.bbm() != null) {
+                                if (blockPostionData.canHarvest()) {
+                                    double harvestSpeed = blockPostionData.bbm().applyPropertyModifiers(NuminaConstants.HARVEST_SPEED);
+                                    if (harvestLevel == 2) {
+                                        harvestSpeed = harvestLevel * overclock;
+                                    }
+                                    correctedSpeeds.add(harvestSpeed);
+                                    List<BlockPos> tmpList = speedMap.getOrDefault(blockPostionData.bbm(), new ArrayList<>());
+                                    tmpList.add(blockPostionData.pos());
+                                    speedMap.put(blockPostionData.bbm(), tmpList);
                                 }
-                                correctedSpeeds.add(harvestSpeed);
-                                List<BlockPos> tmpList = speedMap.getOrDefault(blockPostionData.bbm(), new ArrayList<>());
-                                tmpList.add(blockPostionData.pos());
-                                speedMap.put(blockPostionData.bbm(), tmpList);
                             }
                         }
+
+                        double finalSpeed = (correctedSpeeds.stream().mapToDouble(Double::doubleValue).average().orElse(1.0) * 1.2); // slight boost
+
+                        // Speed not changed yet, just debugging to see what new values look like
+                        NuminaLogger.logDebug(
+                            "event old speed: " + event.getOriginalSpeed() + ", newSpeed: " + event.getNewSpeed() + ", speed to set: " + finalSpeed
+                                + ", finalSpeeds: " + correctedSpeeds);
+                        NuminaLogger.logDebug("mining enhancement speed adjustment: " + moduleCap.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED));
+                        //                        event.setNewSpeed((float) finalSpeed);
+                        // Fixme testing
+                        event.setNewSpeed((float) (finalSpeed * moduleCap.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED)));
+                        return;
                     }
-
-                    double finalSpeed = (correctedSpeeds.stream().mapToDouble(Double::doubleValue).average().orElse(1.0) * 1.2); // slight boost
-
-                    // Speed not changed yet, just debugging to see what new values look like
-                    NuminaLogger.logDebug("event old speed: " + event.getOriginalSpeed() +", newSpeed: " + event.getNewSpeed() +", speed to set: " + finalSpeed +", finalSpeeds: " + correctedSpeeds);
-                    NuminaLogger.logDebug("mining enhancement speed adjustment: " + moduleCap.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED));
-                    //                        event.setNewSpeed((float) finalSpeed);
-                    // Fixme testing
-                    event.setNewSpeed((float) (finalSpeed * moduleCap.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED)));
-                    return;
                 }
 
                 boolean handled = false;
+
                 // FIME: Pickaxe setting speed way too high
                 for (IBlockBreakingModule bbm : modules) {
                     // should require this check?

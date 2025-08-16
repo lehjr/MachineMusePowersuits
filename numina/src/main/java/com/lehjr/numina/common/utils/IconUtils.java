@@ -3,8 +3,6 @@ package com.lehjr.numina.common.utils;
 import com.lehjr.numina.client.gui.NuminaIcons;
 import com.lehjr.numina.client.gui.NuminaSpriteUploader;
 import com.lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
-import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
@@ -16,7 +14,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.math.MatrixUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -35,7 +32,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -49,10 +45,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.joml.Matrix4f;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 // FIXME: sort this mess out and merge redundant code with NuminaIcons
 public enum IconUtils {

@@ -1,7 +1,7 @@
 package com.lehjr.numina.common.network.packets.clientbound;
 
-import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.client.network.packets.clienthandlers.TweakRequestDoublePacketClientHander;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

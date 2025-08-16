@@ -1,5 +1,6 @@
 package com.lehjr.numina.common.capabilities.module.blockbreaking;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +22,7 @@ import javax.annotation.Nonnull;
 
 public interface IBlockBreakingModule extends IPowerModule {
     default boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, Player player, BlockPos pos, double playerEnergy) {
-        return (playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level(), pos, getEmulatedTool()));
+        return (playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level(), pos));
     }
 
     boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy);
@@ -33,22 +34,18 @@ public interface IBlockBreakingModule extends IPowerModule {
     @Nonnull
     ItemStack getEmulatedTool();
 
-
-    default boolean isToolEffective(BlockGetter world, BlockPos pos, @Nonnull ItemStack emulatedTool) {
+    default boolean isToolEffective(BlockGetter world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-
-        if(emulatedTool.isCorrectToolForDrops(state)) {
-            return true;
-        }
 
         if (Float.compare(state.getDestroySpeed(world, pos), -1.0F) <= 0 ) {// unbreakable
             return false;
         }
 
-        if (emulatedTool.getItem().isCorrectToolForDrops(getEmulatedTool(), state)) {
+        if(getEmulatedTool().isCorrectToolForDrops(state)) {
+            NuminaLogger.logDebug("emulated tool is correct for drops");
+
             return true;
         }
-
         return false;
     }
 

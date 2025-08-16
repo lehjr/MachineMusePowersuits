@@ -4,7 +4,6 @@ import com.lehjr.numina.client.gui.NuminaIcons;
 import com.lehjr.numina.client.model.helper.ModelLayerHelper;
 import com.lehjr.numina.client.overlay.ModeChangingIconOverlay;
 import com.lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
-import com.lehjr.numina.client.render.item.NuminaArmorLayer;
 import com.lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import com.lehjr.numina.client.screen.ArmorStandScreen;
 import com.lehjr.numina.client.screen.ChargingBaseScreen;
@@ -15,17 +14,11 @@ import com.lehjr.numina.common.registration.NuminaItems;
 import com.lehjr.numina.common.registration.NuminaMenus;
 import com.lehjr.numina.common.utils.IconUtils;
 import net.forge.client.NuminaObjLoader;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.resources.PlayerSkin;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -39,10 +32,6 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
-
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 
 @EventBusSubscriber(modid = NuminaConstants.MOD_ID, /*bus = EventBusSubscriber.Bus.MOD,*/ value = Dist.CLIENT)
 public class NuminaClientEventBusSubscriber {

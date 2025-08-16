@@ -6,7 +6,6 @@ import com.lehjr.numina.common.registration.NuminaBlocks;
 import com.lehjr.numina.common.registration.NuminaEntities;
 import com.lehjr.numina.common.registration.NuminaItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.Item;
 
 public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina {
     public NuminaLanguageProvider_EN_US(PackOutput output) {

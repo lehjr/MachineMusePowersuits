@@ -14,12 +14,12 @@ import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.TagUtils;
+import com.lehjr.numina.common.utils.block.CheckBlocksFrom;
 import com.lehjr.powersuits.client.control.KeymappingKeyHandler;
 import com.lehjr.powersuits.common.config.module.MiningEnhancementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -111,7 +111,6 @@ public class SelectiveMiner extends AbstractPowerModule {
                 return false;
             }
 
-
             // abort if block is not set
             if (block == Blocks.AIR || (!player.isCreative() && block == Blocks.BEDROCK) || getTargetBlockState() != state) {
                 return false;
@@ -147,7 +146,9 @@ public class SelectiveMiner extends AbstractPowerModule {
                         level.destroyBlock(blockPos, false, player, 512);
 
                         // if creative then bbm will be null
-                        if (!player.isCreative() && state.requiresCorrectToolForDrops() && blockPostionData.bbm() != null) {
+                        if (!player.isCreative()
+                            /*&& state.requiresCorrectToolForDrops()*/ // removing this since some states don't require a tool but will drain durability
+                            && blockPostionData.bbm() != null) {
                             IBlockBreakingModule bbm = blockPostionData.bbm();
                             if(miningLevel > 0) {
                                 energyUsage.getAndAdd(bbm.getEnergyUsage());
@@ -168,106 +169,75 @@ public class SelectiveMiner extends AbstractPowerModule {
             return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
-        boolean isStateSame(BlockState state, Level level, BlockPos posStart, Direction direction) {
-            BlockPos tempPos = posStart.relative(direction);
-            BlockState tempState = level.getBlockState(tempPos);
-            return tempState == state;
-        }
-
-        NonNullList<BlockPos> getPosistions(Level level, BlockPos posStart) {
-            NonNullList<BlockPos> retList = NonNullList.create();
-
-            return retList;
-        }
-
-
-
-
         @Override
         public HashMap<BlockPostionData, Integer> getBlockPositions(@Nonnull ItemStack tool, @Nonnull BlockHitResult result, @Nonnull Player player, @Nonnull Level level, NonNullList<IBlockBreakingModule> modules, double playerEnergy) {
             HashMap<BlockPostionData, Integer> retMap = new HashMap<>();
-            // FIXME
-
             if (modules.isEmpty()) {
                 return retMap;
             }
+
+            int blockLimit = (int) applyPropertyModifiers(MPSConstants.SELECTIVE_MINER_LIMIT);
 
             double playerEnergyRemaining = playerEnergy;
 
             BlockPos pos = result.getBlockPos();
             BlockState state = level.getBlockState(pos);
-            Block block = state.getBlock();
 
             if (getTargetBlockState().isAir() || state != getTargetBlockState()) {
                 return retMap;
             }
 
+            // Only one BBM is needed since the state is the same for each block
             IBlockBreakingModule bbm = null;
 
-            int i = 1;
-            // this is really, really stupid and if you have a better way, use it.
-            outerLoop:
-            while (retMap.size() <= applyPropertyModifiers(MPSConstants.SELECTIVE_MINER_LIMIT) && i < 5 /* limit for performance reasons */) {
-                for (BlockPos.MutableBlockPos mutable : BlockPos.spiralAround(pos, i, Direction.EAST, Direction.SOUTH)) {
-                    for (BlockPos.MutableBlockPos mutable2 : BlockPos.spiralAround(mutable, i, Direction.UP, Direction.NORTH)) {
-                        for (BlockPos.MutableBlockPos mutable3 : BlockPos.spiralAround(mutable2, i, Direction.WEST, Direction.DOWN)) {
-                            BlockState temp = level.getBlockState(mutable3);
-                            if(temp.isAir() || temp.getBlock() != block) {
-                                continue;
-                            }
-
-                            BlockPos posFinal = mutable3.immutable();
-                            if (player.isCreative()) {
-                                retMap.put(new BlockPostionData(posFinal.mutable(), true, null), 2);
-                                break;
-                            } else {
-                                if (bbm == null) {
-                                    for (IBlockBreakingModule module : modules) {
-                                        if (module.canHarvestBlock(ItemStack.EMPTY, state, player, posFinal, playerEnergyRemaining)) {
-                                            retMap.put(new BlockPostionData(posFinal.immutable(), true, bbm), 1);
-                                            playerEnergyRemaining -= module.getEnergyUsage();
-                                            bbm = module;
-                                        }
-                                    }
-                                } else if (bbm.canHarvestBlock(ItemStack.EMPTY, state, player, mutable, playerEnergyRemaining)) {
-                                    retMap.put(new BlockPostionData(posFinal, true, bbm), 1);
-                                    playerEnergyRemaining -= bbm.getEnergyUsage();
-                                    // ran out of energy?
-                                } else {
-                                    break outerLoop;
-                                }
-                            }
-                        }
-                    }
+            // check for effective tool first
+            for (IBlockBreakingModule module : modules) {
+                if (module.canHarvestBlock(ItemStack.EMPTY, state, player, pos, playerEnergyRemaining)) {
+                    bbm = module;
                 }
-                i++;
             }
 
-            if(player.isCreative()) {
+            double energyUsage = 0;
+
+            // simulate the vanilla block breaking mechanic, draining power instead of draining durability
+            // this would be for things like glass.
+            if(bbm == null && !state.requiresCorrectToolForDrops()) {
+                // Just go with the module that uses the least amount of energy
+                double toolEnergyTest = playerEnergyRemaining;
+                for (IBlockBreakingModule module : modules) {
+//                    if(module.isToolEffective(level, pos)) {
+                        energyUsage = module.getEnergyUsage();
+                        if (module.getEnergyUsage() < toolEnergyTest) {
+                            toolEnergyTest = energyUsage;
+                            bbm = module;
+                        }
+                }
+            }
+
+            if(bbm == null) {
                 return retMap;
             }
 
-            final int energyUsage = getEnergyUsage();
-            if (energyUsage <= playerEnergyRemaining) {
-                HashMap<BlockPostionData, Integer> retMap2 = new HashMap<>();
-                AtomicDouble playerEnergyRemainingAI = new AtomicDouble(playerEnergyRemaining);
+            energyUsage = bbm.getEnergyUsage() + getEnergyUsage();
 
-                retMap.forEach((key, value) -> {
-                    int val = value;
-                    if (val == 0) {
-                        retMap2.put(key, 0);
+            CheckBlocksFrom bcf = new CheckBlocksFrom(pos, blockLimit);
+            NonNullList<BlockPos> matches = bcf.startCheck(level);
+
+            for(BlockPos posCheck : matches) {
+                if (player.isCreative()) {
+                    retMap.put(new BlockPostionData(posCheck, true, null), 2);
+                    break;
+                } else {
+                    if(playerEnergyRemaining >= energyUsage) { // just need to know if there is enough energy left to break the block
+                        retMap.put(new BlockPostionData(posCheck, true, bbm), 1);
+                        playerEnergyRemaining -= energyUsage;
+                        // ran out of energy?
                     } else {
-                        // Energy usage of the block breaking module was already removed in the while loop
-                        if (playerEnergyRemainingAI.get() >= energyUsage) {
-                            playerEnergyRemainingAI.getAndAdd(-energyUsage);
-                            retMap2.put(key, 2);
-                        } else {
-                            retMap2.put(key, value);
-                        }
+                        break;
                     }
-                });
-                return retMap2;
+                }
             }
+
             return retMap;
         }
     }

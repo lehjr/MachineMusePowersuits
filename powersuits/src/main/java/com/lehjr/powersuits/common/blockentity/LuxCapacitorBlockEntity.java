@@ -1,6 +1,5 @@
 package com.lehjr.powersuits.common.blockentity;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
 import com.lehjr.numina.common.capabilities.render.color.IColorTag;
 import com.lehjr.numina.common.constants.NuminaConstants;
@@ -14,12 +13,10 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.Lazy;
-import org.checkerframework.checker.units.qual.C;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

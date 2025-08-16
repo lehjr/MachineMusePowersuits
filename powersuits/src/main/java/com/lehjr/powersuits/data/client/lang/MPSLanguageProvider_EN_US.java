@@ -5,7 +5,6 @@ import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.registration.MPSBlocks;
 import com.lehjr.powersuits.common.registration.MPSItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.Item;
 
 public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
     public MPSLanguageProvider_EN_US(PackOutput output) {

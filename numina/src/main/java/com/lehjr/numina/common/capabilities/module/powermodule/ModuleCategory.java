@@ -26,11 +26,7 @@
 
 package com.lehjr.numina.common.capabilities.module.powermodule;
 
-
-import com.lehjr.numina.common.constants.NuminaConstants;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.inventory.InventoryMenu;
 
 /**
  * The module categories

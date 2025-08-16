@@ -1,6 +1,5 @@
 package com.lehjr.numina.common.capabilities.inventory.modechanging;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;

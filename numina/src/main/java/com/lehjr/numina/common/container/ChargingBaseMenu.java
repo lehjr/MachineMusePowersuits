@@ -1,14 +1,10 @@
 package com.lehjr.numina.common.container;
 
+import com.lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.container.slot.CategoryIconSlotItemHandler;
-import com.lehjr.numina.common.container.slot.IconSlotItemHandler;
-import com.lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
-import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaBlocks;
 import com.lehjr.numina.common.registration.NuminaMenus;
-import com.lehjr.numina.common.utils.IconUtils;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;

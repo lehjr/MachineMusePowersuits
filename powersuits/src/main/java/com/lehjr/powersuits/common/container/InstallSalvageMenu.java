@@ -1,21 +1,17 @@
 package com.lehjr.powersuits.common.container;
 
-import com.lehjr.numina.client.gui.NuminaIcons;
+import com.lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.container.slot.CategoryIconSlotItemHandler;
 import com.lehjr.numina.common.container.slot.EquipmentIconSlotItemHandler;
 import com.lehjr.numina.common.container.slot.HideableSlot;
 import com.lehjr.numina.common.container.slot.HideableSlotItemHandler;
 import com.lehjr.numina.common.container.slot.IHideableSlot;
 import com.lehjr.numina.common.container.slot.IIConProvider;
-import com.lehjr.numina.common.base.NuminaLogger;
-import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import com.lehjr.numina.common.constants.NuminaConstants;
-import com.lehjr.numina.common.container.slot.IconSlotItemHandler;
 import com.lehjr.numina.common.container.slot.SlotBackgrounds;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
-import com.lehjr.numina.common.utils.IconUtils;
 import com.lehjr.numina.common.utils.MathUtils;
 import com.lehjr.powersuits.common.registration.MPSMenuTypes;
 import com.mojang.blaze3d.vertex.PoseStack;

@@ -1,6 +1,5 @@
 package com.lehjr.powersuits.common.item.module.tool.blockbreaking;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;

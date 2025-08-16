@@ -1,8 +1,8 @@
 package com.lehjr.numina.client.gui.frame;
 
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
-import com.lehjr.numina.common.container.slot.IHideableSlot;
 import com.lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.common.container.slot.IHideableSlot;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
