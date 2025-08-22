@@ -1,6 +1,5 @@
 package com.lehjr.numina.common.capabilities.module.blockbreaking;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;

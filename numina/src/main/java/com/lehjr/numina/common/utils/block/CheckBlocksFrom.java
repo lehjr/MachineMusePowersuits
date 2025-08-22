@@ -16,6 +16,10 @@ public class CheckBlocksFrom {
         this.blockLimit = blockLimit;
     }
 
+    boolean isMatch(BlockPos pos, Level level) {
+        return pos == startPos || level.getBlockState(startPos) == level.getBlockState(pos);
+    }
+
     public boolean checkPositionMatch(Level level, BlockPos pos) {
         // check if within radius and limit not reached
         double distanceSq = getDistance(pos);
@@ -24,53 +28,30 @@ public class CheckBlocksFrom {
             return false;
         }
 
-        boolean match = pos == startPos || level.getBlockState(startPos) == level.getBlockState(pos);
+        boolean match = isMatch(pos, level );
         blockCheckedMap.setMatch(pos, match);
         return match;
     }
 
-
     public NonNullList<BlockPos> startCheck(Level level) {
-//        NuminaLogger.logDebug("starting check");
-
-        long timeStart = System.currentTimeMillis();
-
         checkPosition(level, startPos);
         int i = 0;
         while(blockCheckedMap.hasUnchecked() && blockCheckedMap.getMatches().size() < blockLimit && i < 1000) {
             BlockPos pos2 = blockCheckedMap.getFirstUnchecked();
-
-//            NuminaLogger.logDebug("unchecked size: " + blockCheckedMap.getAllUnchecked().size());
             checkPosition(level, pos2);
             i++;
 
         }
-//        long timeEnd = System.currentTimeMillis() - timeStart;
-
-//        NuminaLogger.logDebug("process took " + timeEnd + " milliSeconds");
-
-
-//        NuminaLogger.logDebug("i: " + i);
-//        NuminaLogger.logDebug("blocks checked: " + blockCheckedMap.getMatches().size());
         return blockCheckedMap.getMatches();
     }
 
-
-
     public boolean checkPosition(Level level, BlockPos pos) {
-//        NuminaLogger.logDebug("checking " + pos +", size: " + blockCheckedMap.getSize());
-
         BlockChecked checked = blockCheckedMap.getChecked(pos);
 
         // no need to check something already checked
         if(checked.isChecked()) {
-//            NuminaLogger.logDebug("already checked");
             return checked.isMatch() == Checked.CHECKED_MATCH;
         }
-//        else {
-//            debugPrintChecked(pos, checked);
-//        }
-
         boolean match = checkPositionMatch(level, pos);
 
         if(match) {
@@ -79,11 +60,7 @@ public class CheckBlocksFrom {
                 boolean match2 = checkPositionMatch(level, pos2);
                 blockCheckedMap.setDirectionMatch(pos, direction, match2);
             }
-//            NuminaLogger.logDebug("isCheckedNow?: " + blockCheckedMap.getChecked(pos).isChecked());
-
         }
-//        NuminaLogger.logDebug("checked: " + pos + ", " + match);
-
         return match;
     }
 
