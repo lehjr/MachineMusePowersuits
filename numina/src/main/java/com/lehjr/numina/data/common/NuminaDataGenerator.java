@@ -3,6 +3,7 @@ package com.lehjr.numina.data.common;
 import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.data.client.NuminaLanguageProvider_EN_US;
+import com.lehjr.numina.data.common.damage.HeatDamageDataGen;
 import com.lehjr.numina.data.common.loot.NuminaBlockLoot;
 import com.lehjr.numina.data.common.loot.NuminaBlockTagProvider;
 import com.lehjr.numina.data.common.recipes.NuminaRecipeGenerator;
@@ -20,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = NuminaConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = NuminaConstants.MOD_ID)
 public class NuminaDataGenerator {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
@@ -55,5 +56,7 @@ public class NuminaDataGenerator {
         NuminaLogger.logError("output: " + output.getOutputFolder().toAbsolutePath());
 
         generator.addProvider(event.includeServer(), new NuminaRecipeGenerator(output, lookupProvider));
+
+        HeatDamageDataGen.onGatherData(event);
     }
 }

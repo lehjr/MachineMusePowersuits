@@ -80,6 +80,11 @@ public class JetBootsModule extends AbstractPowerModule {
         }
 
         @Override
+        public int getEnergyUsage() {
+            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        }
+
+        @Override
         public void onPlayerTickInactive(Player player, Level level, ItemStack item) {
             if (level.isClientSide && NuminaClientConfig.useSounds) {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());

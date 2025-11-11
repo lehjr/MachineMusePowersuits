@@ -137,7 +137,7 @@ public class HeatUtils {
                     event.setCanceled(true);
                 }
                 if (heatLeftToGive > 0) {
-                    entity.hurt(new OverheatDamage(entity.level().registryAccess()).overheat(), (float) heatLeftToGive);
+                    entity.hurt(overheat(entity), (float) heatLeftToGive);
                 }
             }
         }
@@ -175,26 +175,11 @@ public class HeatUtils {
         return 0;
     }
 
-    static final ResourceKey<DamageType> OVERHEAT_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE,
+    public static final ResourceKey<DamageType> OVERHEAT_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE,
             NuminaConstants.OVERHEAT_DAMAGE_REGANAME
     );
 
-    public static class OverheatDamage {
-        private final DamageSource overheat;
-
-        private final Registry<DamageType> damageTypes;
-
-        public OverheatDamage(RegistryAccess registry) {
-            this.damageTypes = registry.registryOrThrow(Registries.DAMAGE_TYPE);
-            this.overheat = this.source();
-        }
-
-        private DamageSource source() {
-            return new DamageSource(this.damageTypes.getHolderOrThrow(HeatUtils.OVERHEAT_DAMAGE));
-        }
-
-        public DamageSource overheat() {
-            return this.overheat;
-        }
+    public static DamageSource overheat(LivingEntity target) {
+        return new DamageSource(target.level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(OVERHEAT_DAMAGE));
     }
 }
