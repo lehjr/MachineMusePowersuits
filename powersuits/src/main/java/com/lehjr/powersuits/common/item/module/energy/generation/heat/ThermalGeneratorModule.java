@@ -190,8 +190,10 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
 
 
             // Apply cooling
-            double currentHeat = HeatUtils.getPlayerHeat(player);
-            double maxHeat = HeatUtils.getPlayerMaxHeat(player);
+            HeatUtils.PlayerHeat playerHeat = HeatUtils.getPlayerHeat(player);
+
+            double currentHeat = playerHeat.currentHeat();
+            double maxHeat = playerHeat.maxHeat();
             if ((currentHeat / maxHeat) >= applyPropertyModifiers(MPSConstants.HEAT_ACTIVATION_PERCENT)) {
 
                 // cool from electric system first
@@ -199,7 +201,7 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
                 double energyUsage = coolAmount * applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 if (ElectricItemUtils.getPlayerEnergy(player) >= energyUsage) {
                     HeatUtils.coolPlayer(player, /*0.1 * */ applyPropertyModifiers(MPSConstants.COOLING_BONUS));
-                    currentHeat = HeatUtils.getPlayerHeat(player);
+//                    currentHeat = HeatUtils.getPlayerHeat(player); //  fixme
                     ElectricItemUtils.drainPlayerEnergy(player, (int) (energyUsage), false);
 
                     if (coolAmount > 0) {

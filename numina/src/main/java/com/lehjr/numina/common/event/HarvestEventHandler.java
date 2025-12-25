@@ -94,21 +94,21 @@ public class HarvestEventHandler {
     }
 
     // Adapted from Minecraft's level renderer so that the highlighted block display matches what's actually being harvested
-    private static HitResult pick(Player player, float pPartialTick) {
+    private static HitResult pick(Player player, float partialTick) {
         double blockInteractionRange = player.blockInteractionRange();
         double entityInteractionRange = player.entityInteractionRange();
         double max = Math.max(blockInteractionRange, entityInteractionRange);
         double maxSquared = Mth.square(max);
 
-        Vec3 eyePosition = player.getEyePosition(pPartialTick);
-        HitResult hitresult = player.pick(max, pPartialTick, false);
+        Vec3 eyePosition = player.getEyePosition(partialTick);
+        HitResult hitresult = player.pick(max, partialTick, false);
         double distanceToEyeSqr = hitresult.getLocation().distanceToSqr(eyePosition);
         if (hitresult.getType() != HitResult.Type.MISS) {
             maxSquared = distanceToEyeSqr;
             max = Math.sqrt(distanceToEyeSqr);
         }
 
-        Vec3 vec31 = player.getViewVector(pPartialTick);
+        Vec3 vec31 = player.getViewVector(partialTick);
         Vec3 vec32 = eyePosition.add(vec31.x * max, vec31.y * max, vec31.z * max);
         float f = 1.0F;
         AABB aabb = player.getBoundingBox().expandTowards(vec31.scale(max)).inflate(1.0, 1.0, 1.0);

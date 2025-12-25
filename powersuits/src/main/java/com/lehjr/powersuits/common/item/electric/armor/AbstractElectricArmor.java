@@ -80,6 +80,7 @@ public class AbstractElectricArmor extends ArmorItem {
             double armorVal = 0;
             double toughness = 0;
             double knockbackResistance = 0;
+            float fireResistance = 0;
             double speed = 0;
             double movementResistance = 0;
             double swimBoost = 0;
@@ -109,6 +110,10 @@ public class AbstractElectricArmor extends ArmorItem {
                                             /*
                                                 toughness for diamond = 2 per
                                             */
+
+
+
+
                                 }
                             }
                         }
@@ -242,7 +247,6 @@ public class AbstractElectricArmor extends ArmorItem {
         IModularItem iModularItem = NuminaCapabilities.getModularItem(stack);
         if (iModularItem != null) {
             Pair<Integer, Integer> range = iModularItem.getRangeForCategory(ModuleCategory.ARMOR);
-            assert range != null;
             for (int x = range.getFirst(); x < range.getSecond(); x++) {
                 IPowerModule pm = iModularItem.getModuleCapability(iModularItem.getStackInSlot(x));
                 if (pm != null) {
@@ -251,7 +255,7 @@ public class AbstractElectricArmor extends ArmorItem {
             }
 
             // protects as long as there is energy to drain I guess
-            if (enerConsum > 0 && entity instanceof LivingEntity) {
+            if (enerConsum > 0 && entity != null) {
                 ElectricItemUtils.drainPlayerEnergy(entity, enerConsum, false);
             }
         }

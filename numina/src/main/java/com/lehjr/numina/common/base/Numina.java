@@ -19,6 +19,7 @@ import com.lehjr.numina.common.registration.NuminaEntities;
 import com.lehjr.numina.common.registration.NuminaIngredientTypes;
 import com.lehjr.numina.common.registration.NuminaItems;
 import com.lehjr.numina.common.registration.NuminaMenus;
+import com.lehjr.numina.common.utils.HeatUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -42,6 +43,8 @@ public class Numina {
         NuminaIngredientTypes.INGREDIENT_TYPES.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(HarvestEventHandler.class);
+        NeoForge.EVENT_BUS.register(HeatUtils.class);
+
 //        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
 //        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
 //        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::onBlockBreak);

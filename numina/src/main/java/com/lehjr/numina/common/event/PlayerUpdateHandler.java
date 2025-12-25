@@ -40,9 +40,9 @@ public class PlayerUpdateHandler {
         // allowing it to cool off enough to not take damage
         if (!modularItems.isEmpty()) {
             // Heat update
-            double currHeat = HeatUtils.getPlayerHeat(player);
+            HeatUtils.PlayerHeat playerHeat = HeatUtils.getPlayerHeat(player);
 
-            if (currHeat >= 0 && !level.isClientSide) { // only apply serverside so change is not applied twice
+            if (playerHeat.currentHeat() >= 0 && !level.isClientSide) { // only apply serverside so change is not applied twice
 
                 // cooling value adjustment. Too much or too little cooling makes the heat system useless.
                 double coolPlayerAmount = (PlayerUtils.getPlayerCoolingBasedOnMaterial(player) * 0.55);  // cooling value adjustment. Too much or too little cooling makes the heat system useless.
@@ -51,15 +51,10 @@ public class PlayerUpdateHandler {
                     HeatUtils.coolPlayer(player, coolPlayerAmount);
                 }
 
-                double maxHeat = HeatUtils.getPlayerMaxHeat(player);
-
-                if (currHeat < maxHeat * 0.95) {
+                if (playerHeat.currentHeat() < playerHeat.maxHeat() * 0.95) {
                     player.clearFire();
                 }
             }
         }
     }
-
-
-
 }

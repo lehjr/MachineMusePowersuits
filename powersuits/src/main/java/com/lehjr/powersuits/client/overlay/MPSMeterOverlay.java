@@ -44,8 +44,9 @@ public class MPSMeterOverlay {
         String maxEnergyStr = StringUtils.formatNumberShort(maxEnergy)+ "FE";;
 
         // heat
-        float maxHeat = (float) HeatUtils.getPlayerMaxHeat(player);
-        float currHeat = (float) HeatUtils.getPlayerHeat(player);
+        HeatUtils.PlayerHeat playerHeat =HeatUtils.getPlayerHeat(player);
+        float maxHeat = (float) playerHeat.maxHeat();
+        float currHeat = (float) playerHeat.currentHeat();
 
         String currHeatStr = StringUtils.formatNumberShort(currHeat);
         String maxHeatStr = StringUtils.formatNumberShort(maxHeat);

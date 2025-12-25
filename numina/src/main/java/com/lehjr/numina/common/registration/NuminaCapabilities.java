@@ -15,6 +15,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -62,6 +64,18 @@ public class NuminaCapabilities {
     @Nullable
     public static IModularItem getModularItem(ItemStack modularItem) {
         return modularItem.getCapability(Inventory.MODULAR_ITEM);
+    }
+
+    public static boolean modularItemCapIsPresent(@Nonnull ItemStack itemStack) {
+        return getModularItem(itemStack) != null;
+    }
+
+    public static boolean modularItemCapIsPresent(Player player, EquipmentSlot slot) {
+        return modularItemCapIsPresent(player.getItemBySlot(slot));
+    }
+
+    public static boolean modeChangingModularItemCapIsPresent(@Nonnull ItemStack modularItem) {
+        return getModeChangingModularItem(modularItem) != null;
     }
 
     @Nullable
