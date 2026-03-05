@@ -8,7 +8,7 @@
 /libs
 
 # don't track generagted sources
-#/src/datagen/generated
+/src/datagen/generated
 
 # Eclipse
 .classpath
