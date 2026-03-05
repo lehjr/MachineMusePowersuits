@@ -1,0 +1,39 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
+license="${mod_license}"
+
+[[mods]]
+    modId="powersuits"
+    version="${mod_version}"
+    displayName="Modular Powersuits"
+    displayURL="https://github.com/lehjr/MachineMusePowersuits"
+    authors="MachineMuse, lehjr"
+    description='''
+        A mod which adds modular power armor, power tool, and a tinker table to configure them. Uses FE (Foreg Energy), EU (IndustrialCraft 2) or RF (Thermal Expansion 4).
+        '''
+    credits="Icons by WaterCandle, Modeling by SebK, Special thanks to TextureTurtle"
+    logoFile="logo.png"
+
+[[accessTransformers]]
+    file="META-INF/accesstransformer.cfg"
+
+[[dependencies.powersuits]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version}"
+    side="BOTH"
+
+[[dependencies.powersuits]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version}"
+    side="BOTH"
+
+[[dependencies.powersuits]]
+    modId="numina"
+    type="required"
+    versionRange="[${mod_version},)"
+    ordering="AFTER"
+    side="BOTH"
+    modLoader="javafml" #mandatory

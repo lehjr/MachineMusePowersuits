@@ -1,8 +1,13 @@
-plugins {
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name "NeoForge"
+            url "https://maven.neoforged.net/releases/"
+        }
+    }
 }
 
-include(':numina')
-include(':powersuits')
-include(':mpswhatever')
-include(':runenv')
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}

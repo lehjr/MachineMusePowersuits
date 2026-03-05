@@ -6,7 +6,7 @@
 
 Modular Powersuits is a Minecraft mod based around the idea of an inventor who tinkers with high-tech electronics and makes a suit of powered armor chock-full of useful gadgets and features. Inspired by heroes like Iron Man and Megaman as well as by the high-tech armor in mods like IndustrialCraft 2 and EE2.
 
-#BranchStatus (1.20.1): Under Active Development
+#BranchStatus (1.21.1): Under Active Development
 
 #Numina Downloads
 [CurseForge](https://www.curseforge.com/minecraft/mc-mods/numina)
@@ -16,9 +16,3 @@ Modular Powersuits is a Minecraft mod based around the idea of an inventor who t
 [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modular-powersuits)
 [Modrinth](https://modrinth.com/mod/modularpowersuits)
 
-
-
-
-
-Twitter:
-https://twitter.com/Lehjr1

@@ -1,0 +1,60 @@
+package lehjr.numina.common.event;
+
+import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.HeatUtils;
+import lehjr.numina.common.utils.ItemUtils;
+import lehjr.numina.common.utils.PlayerUtils;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+
+public class PlayerUpdateHandler {
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void onPlayerUpdate(PlayerTickEvent.Post event) {
+        Player player = event.getEntity();
+        NonNullList<ItemStack> modularItems = NonNullList.create();
+        Level level = player.level();
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack modularItem = ItemUtils.getItemFromEntitySlot(player, slot);
+            if(modularItem.isEmpty()) {
+                continue;
+            }
+
+            IModularItem iModularItemCap = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItem);
+            if(iModularItemCap != null) {
+                modularItems.add(modularItem);
+                if(slot.isArmor() || iModularItemCap instanceof IModeChangingItem) {
+                    iModularItemCap.tick(player, level, modularItem);
+                }
+            }
+        }
+        //  Done this way so players can let their stuff cool in their inventory without having to equip it,
+        // allowing it to cool off enough to not take damage
+        if (!modularItems.isEmpty()) {
+            // Heat update
+            HeatUtils.PlayerHeat playerHeat = HeatUtils.getPlayerHeat(player);
+
+            if (playerHeat.currentHeat() >= 0 && !level.isClientSide) { // only apply serverside so change is not applied twice
+
+                // cooling value adjustment. Too much or too little cooling makes the heat system useless.
+                double coolPlayerAmount = (PlayerUtils.getPlayerCoolingBasedOnMaterial(player) * 0.55);  // cooling value adjustment. Too much or too little cooling makes the heat system useless.
+
+                if (coolPlayerAmount > 0) {
+                    HeatUtils.coolPlayer(player, coolPlayerAmount);
+                }
+
+                if (playerHeat.currentHeat() < playerHeat.maxHeat() * 0.95) {
+                    player.clearFire();
+                }
+            }
+        }
+    }
+}

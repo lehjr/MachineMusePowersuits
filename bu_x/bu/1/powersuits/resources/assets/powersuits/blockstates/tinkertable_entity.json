@@ -1,6 +1,0 @@
-{
-  "_comment" : "rename this file to tinkertable.json to enable original model",
-  "variants": {
-    "": { "model": "powersuits:block/tinkertable" }
-  }
-}

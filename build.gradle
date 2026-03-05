@@ -1,46 +1,545 @@
+import com.modrinth.minotaur.TaskModrinthUpload
+import com.modrinth.minotaur.dependencies.ModDependency
+import com.modrinth.minotaur.dependencies.VersionDependency
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+import net.darkhax.curseforgegradle.UploadArtifact
+import org.gradle.buildconfiguration.tasks.UpdateDaemonJvm
+
+import java.util.function.Consumer
+
 plugins {
-    id 'idea'
-    id 'net.neoforged.moddev' version "${mdg_version}" apply false
+    id('org.ajoberstar.grgit.service')//Version declared in buildSrc
+    id('net.darkhax.curseforgegradle').version('1.1.28')
+    id('com.modrinth.minotaur').version('2.8.10')
+    id ('groovy-gradle-plugin')
+    id('java')
+    id('eclipse')
+    id('idea')
+    id('maven-publish')
+    id('net.neoforged.moddev').version('2.0.107')//https://projects.neoforged.net/neoforged/moddevgradle
 }
 
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile).configureEach {
-            options.compilerArgs << "-Xmaxerrs" << "1000"
+tasks.named('wrapper', Wrapper).configure {
+    //Define wrapper values here so as to not have to always do so when updating gradlew.properties
+    gradleVersion = '9.0'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+tasks.named('updateDaemonJvm', UpdateDaemonJvm) {
+    languageVersion = JavaLanguageVersion.of("${java_version}")
+}
+
+defaultTasks('build')
+
+idea {
+    module {
+        //Exclude directories from being managed
+        for (String excludeDirName : ['runs', 'out', 'logs', 'gradle']) {
+            excludeDirs.add(file(excludeDirName))
+        }
+        //Tell IDEA to always download sources/javadoc artifacts from maven.
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+sourceSets {
+    main {
+        resources {
+            include '**/**'
+            //Add the generated main module resources
+            srcDirs += ['src/datagen/generated/numina']
+            //But exclude the cache of the generated data from what gets built
+            exclude '.cache'
         }
     }
 
-    repositories {
+
+    // These source-sets only exist for the sake of assembling a dependency graph
+    // for IntelliJ. Each of these will become an IntelliJ module when the project is imported,
+    // and will be set as the "main module" for the IntelliJ runs. A compile dependency
+    // on the other source sets is enough, since runtime classpath is managed by MDG anyway.
+    runMain {
+        runtimeClasspath += main.runtimeClasspath
+        compileClasspath += main.output
+    }
+
+    runData {
+        compileClasspath += runMain.compileClasspath
+        runtimeClasspath += runMain.runtimeClasspath
+    }
+
+    powersuits {
+        resources {
+            include('**/**')
+            // copy everything else, but the cache of the generated data from what gets built
+            exclude('.cache')
+            //Add the generated main module resources
+            srcDirs += ['src/datagen/generated/powersuits']
+        }
+        compileClasspath += main.output
+    }
+}
+
+configurations {
+    datagenNonMod
+}
+
+//Add all extra source sets that the main sourceSet should have
+setupExtraSourceSets(sourceSets.main)
+setupExtraSourceSets(sourceSets.powersuits)
+
+//Setup the UPDATE_SOURCESET property in case we are doing any remappings
+//project.ext."UPDATE_SOURCESETS" = project.sourceSets.collect { it.name }.join(';')
+
+def setupExtraSourceSets(SourceSet base) {
+    //Setup and extend configurations for alternate modules. First by making the implementation, compileOnly, runtimeOnly equivalents
+    // for those modules extend the main ones
+    def baseImplementation = project.configurations.maybeCreate(base.getTaskName(null, 'implementation'))
+    def baseCompileOnly = project.configurations.maybeCreate(base.getTaskName(null, 'compileOnly'))
+    def baseRuntimeOnly = project.configurations.maybeCreate(base.getTaskName(null, 'runtimeOnly'))
+    def baseLocalRuntime = project.configurations.maybeCreate(base.getTaskName(null, 'localRuntime'))
+
+    if (base != project.sourceSets.main) {
+        // If this is a secondary module then make the base tasks extend the builtin ones
+        baseImplementation.extendsFrom(project.configurations.named('implementation').get())
+        baseCompileOnly.extendsFrom(project.configurations.named('compileOnly').get())
+        baseRuntimeOnly.extendsFrom(project.configurations.named('runtimeOnly').get())
+        baseLocalRuntime.extendsFrom(project.configurations.named('localRuntime').get())
+    }
+    base.runtimeClasspath += baseLocalRuntime
+    //And then setup the datagen sourceSets and have their configurations extend the ones for the base module so that
+    // they can properly access the dependency
+    //Setup a source set in datagen/$name
+    def datagebSourceSet = setupDataGenSourceSet(base)
+    //And then setup the configurations for it
+    def implExtends = [baseImplementation]
+    implExtends.add(project.configurations.named('datagenNonMod').get())
+    sourceSets.runData.compileClasspath += datagebSourceSet.output
+    sourceSets.runData.runtimeClasspath += datagebSourceSet.runtimeClasspath
+    project.configurations.maybeCreate(datagebSourceSet.getTaskName(null, 'implementation')).extendsFrom(*implExtends)
+    project.configurations.maybeCreate(datagebSourceSet.getTaskName(null, 'compileOnly')).extendsFrom(baseCompileOnly)
+    project.configurations.maybeCreate(datagebSourceSet.getTaskName(null, 'runtimeOnly')).extendsFrom(baseRuntimeOnly)
+    project.configurations.maybeCreate(datagebSourceSet.getTaskName(null, 'localRuntime')).extendsFrom(baseLocalRuntime)
+
+    sourceSets.runMain.compileClasspath += base.output
+    sourceSets.runMain.runtimeClasspath += base.runtimeClasspath
+}
+
+SourceSet setupDataGenSourceSet(SourceSet baseSourceSet) {
+    def name = baseSourceSet.name
+    def extraSourceSet = sourceSets.create(baseSourceSet.getTaskName('datagen', null))
+    extraSourceSet.java.srcDirs = ["src/datagen/${name}/java"]
+    //Resources folder for if we have anything get created by our annotation processors or in the case of game tests, for any nbt presets
+    extraSourceSet.resources.srcDirs = ["src/datagen/${name}/resources"]
+    extraSourceSet.compileClasspath += project.sourceSets.main.output
+    extraSourceSet.runtimeClasspath += project.sourceSets.main.runtimeClasspath
+    if (baseSourceSet != project.sourceSets.main) {
+        //If the base sourceSet is main it already is the extra source set and has a reference to the base one from before this if statement
+        extraSourceSet.compileClasspath += getExtraSourceSet(project.sourceSets.main, 'datagen').get().output
+        extraSourceSet.compileClasspath += baseSourceSet.output
+        extraSourceSet.runtimeClasspath += baseSourceSet.runtimeClasspath
+    }
+    return extraSourceSet
+}
+
+Provider<SourceSet> getExtraSourceSet(SourceSet base, String name) {
+    return project.sourceSets.named(base.getTaskName(name, null))
+}
+
+setupTasks(sourceSets.main)
+setupTasks(sourceSets.powersuits)
+
+def setupTasks(SourceSet sourceSet) {
+    def compileTask = tasks.named(sourceSet.compileJavaTaskName, JavaCompile) {
+        //Configure specific compile tasks to have the proper annotation processor info
+        setGroup('compile')
+    }
+
+    //Set the various variables/settings for the different process resources tasks
+    tasks.named(sourceSet.processResourcesTaskName, ProcessResources) {
+        setGroup('process resources')
+        duplicatesStrategy = DuplicatesStrategy.FAIL
+        var versionProperties = [
+                //'file' : ['jarVersion': mod_version],
+                'minecraft_version'      : minecraft_version,
+                'minecraft_version_range': minecraft_version_range,
+                'mc_version': minecraft_version_range,
+                'neo_version': neo_version_range,
+                'loader_version_range': loader_version_range,
+                neo_version_range      : neo_version_range,
+                mod_version            : mod_version,
+                mod_license            : mod_license
+        ]
+
+        //Mark the properties as inputs so that when they change things update
+        inputs.properties(versionProperties)
+        filesMatching('META-INF/neoforge.mods.toml') { expand(versionProperties) }
+        from("${projectDir}") { include('logo.png') }
+        //Depend on the compile task so that we can map the computer methods as needed
+        dependsOn(compileTask)
+        def files = fileTree(dir: outputs.files.asPath, includes: ['**/*.json', '**/*.mcmeta'])
+        doLast {
+            for (def file : files) {
+                file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+            }
+        }
+    }
+    tasks.named(sourceSet.compileJavaTaskName, JavaCompile) { setGroup('compile') }
+    def extraSourceSet = getExtraSourceSet(sourceSet, 'datagen').get()
+    tasks.named(extraSourceSet.processResourcesTaskName, ProcessResources) {
+        setGroup('process resources')
+        dependsOn(compileTask)
+    }
+    tasks.named(extraSourceSet.compileJavaTaskName, JavaCompile) { setGroup('compile') }
+}
+
+group = 'lehjr.numina'
+def basicVersion = "${mod_version}"
+version = "${minecraft_version}-${basicVersion}"
+project.base.archivesName = 'Numina'
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of("${java_version}"))
+        vendor.set(JvmVendorSpec.JETBRAINS)
+    }
+    withSourcesJar()
+}
+
+final runsFolder = layout.projectDirectory.dir('runs')
+final clientRunsFolder = runsFolder.dir('client')
+
+neoForge {
+    // This enables modding tasks and configurations
+    enable {
+        version = neo_forge_version
+        enabledSourceSets = sourceSets // All source sets use Minecraft code
+    }
+
+    mods {
+        numina {
+            sourceSet((SourceSet) sourceSets.main)
+        }
+        // contains main mod + its datagen code
+        numinaData {
+            modSourceSets = mods.numina.modSourceSets
+            sourceSet((SourceSet) sourceSets.datagenMain)
+        }
+
+        powersuits {
+            sourceSet((SourceSet) sourceSets.powersuits)
+        }
+
+        powersuitsData{
+            modSourceSets = mods.powersuits.modSourceSets
+            sourceSet((SourceSet) sourceSets.datagenPowersuits)
+        }
+
+    }
+
+    accessTransformers = [
+            'src/main/resources/META-INF/accesstransformer.cfg',
+            'src/powersuits/resources/META-INF/accesstransformer.cfg',
+    ]
+
+    runs {
+        configureEach {
+            if (project.hasProperty('forge_force_ansi')) {
+                //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
+                // or eclipse's plugin that adds support for ansi escape in console
+                systemProperties.put('terminal.ansi', (String) property('forge_force_ansi'))
+            }
+
+            loadedMods = [mods.numina, mods.powersuits]
+
+            //if the selected toolchain is a JBR, enable DCEVM
+            if (javaToolchains.launcherFor(java.toolchain).map { it.metadata.vendor }.getOrElse('').contains('JetBrains')) {
+                jvmArguments.addAll('-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowEnhancedClassRedefinition')
+            }
+
+            // Uncomment this to get verbose debug logging
+            // logLevel = org.slf4j.event.Level.DEBUG
+
+            sourceSet = sourceSets.runMain
+        }
+        //Note: To enable logging into the client account, set the mc_devlogin property to true in your gradle user home
+        // You can also run gradlew runClient -Pmc_devlogin=true
+        client {
+            client()
+            gameDirectory.value(clientRunsFolder)
+            if (findProperty('mc_devlogin') ?: false) {
+                devLogin = true
+            }
+        }
+        clientAlt {
+            client()
+            gameDirectory.value(runsFolder.dir('clientAlt'))
+            // Force dev login to be disabled for this run to allow using a secondary username
+            devLogin = false
+            programArguments.addAll('--username', 'AltDev')
+        }
+        server {
+            server()
+            gameDirectory.value(runsFolder.dir('server'))
+        }
+        data {
+            data()
+            gameDirectory.value(runsFolder.dir('data'))
+            programArguments.addAll('--all', '--output', file('src/datagen/generated/').absolutePath,
+                    '--mod', 'numina', '--existing', file('src/main/resources/').absolutePath)
+
+            sourceSet = sourceSets.runData
+            loadedMods = [mods.numinaData, mods.powersuitsData]
+            programArguments.addAll('--mod', 'powersuits', '--existing', file("src/powersuits/resources/").absolutePath)
+
+        }
+    }
+}
+
+// Ensure any jar without the necessary FML manifest attributes gets picked up via legacy classpath.
+// This configuration only exists after setting the neoForge version above.
+configurations.dataAdditionalRuntimeClasspath.extendsFrom configurations.datagenNonMod
+
+
+static void exclusiveRepo(RepositoryHandler handler, String url, Consumer<InclusiveRepositoryContentDescriptor> filterSetup) {
+    handler.exclusiveContent {
+        it.forRepositories(handler.maven {
+            setUrl(url)
+        })
+        it.filter { f -> filterSetup.accept(f) }
+    }
+}
+
+repositories {
+    RepositoryHandler handler ->
+//        exclusiveRepo(handler, 'https://maven.blamejared.com', filter -> {
+//            filter.includeGroup('org.openzen.zencode')
+//        })
+        gradlePluginPortal()
         mavenLocal()
         flatDir {
             dirs("${project.rootDir}/libs")
         }
+}
+
+dependencies {
+    localRuntime("blank:appliedenergistics2-19.2.17")
+    localRuntime "blank:guideme-21.1.15"
+    localRuntime "blank:ae2jeiintegration-1.2.0"
+
+    localRuntime "blank:FallingTree-1.21.1-1.21.1.11"
+
+    localRuntime "blank:jei-1.21.1-neoforge-19.27.0.340"
+    localRuntime "blank:theoneprobe-1.21_neo-12.0.8" // try it?
+
+    localRuntime "blank:journeymap-neoforge-1.21.1-6.0.0-beta.53"
+
+    localRuntime "blank:energizedpower-1.21.1-2.15.7-neoforge"
+
+    localRuntime "blank:kotlinforforge-5.10.0-all"
+
+    localRuntime "blank:architectury-13.0.8-neoforge"
+
+    localRuntime "blank:observable-5.4.4"
+}
+
+def getManifestAttributes(String title) {
+    return [
+            'Specification-Title'     : title,
+            'Specification-Vendor'    : 'ModularPowersuits',
+            'Specification-Version'   : "${project.mod_version}",
+            'Implementation-Title'    : title,
+            'Implementation-Version'  : "${project.mod_version}",
+            'Implementation-Vendor'   : 'ModularPowersuits',
+            'Implementation-Timestamp': new Date().format('yyyy-MM-dd\'T\'HH:mm:ssZ'),
+            'Automatic-Module-Name'   : title.toLowerCase(Locale.ROOT)
+    ]
+}
+
+tasks.named('jar', Jar) {
+    duplicatesStrategy = DuplicatesStrategy.FAIL
+    from([sourceSets.main.output])
+    manifest.attributes(getManifestAttributes('Numina'))
+}
+
+tasks.named('sourcesJar', Jar) {
+    enabled = false
+}
+
+def secondaryJar(SourceSet sourceSet, String title) {
+    return tasks.register(sourceSet.jarTaskName, Jar) {
+        duplicatesStrategy = DuplicatesStrategy.FAIL
+        archiveClassifier.set(sourceSet.name)
+        from(sourceSet.output)
+        if (!title.isEmpty()) {
+            archiveFileName.set("${title}-${project.version}.jar")
+        }
+        manifest.attributes(getManifestAttributes(title.isEmpty() ? 'ModularPowersuits' : title))
+    }
+}
+
+def powersuitsJar = secondaryJar(sourceSets.powersuits, 'ModularPowersuits')
+
+tasks.withType(JavaCompile).configureEach({
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(['-Xmaxerrs', '100000'])
+})
+
+tasks.withType(Javadoc).configureEach({
+    options.encoding = 'UTF-8'
+})
+
+artifacts {
+    archives jar
+    archives powersuitsJar
+}
+
+tasks.register('optimizePng', OptimizePng) {
+    def pngPatterns = ['**/*.png']
+    //Ensure the logo is minimized (we add this file to each jar)
+    inputFiles.from(file("${projectDir}/logo.png"))
+    //Minimize any PNGs in the source sets
+    def sourceSets = [sourceSets.main, sourceSets.powersuits]
+    for (def sourceSet : sourceSets) {
+        for (def dir : sourceSet.resources.srcDirs) {
+            inputFiles.from(fileTree(dir: dir, includes: pngPatterns))
+        }
+    }
+    //TODO: Make optimize png be fully compatible with the configuration cache?
+    notCompatibleWithConfigurationCache('Up to date check is not currently compatible with the configuration cache')
+    outputs.upToDateWhen {
+        //Validate that none of the files has changed size, as the odds that a file has the exact same size and has changed is very low for an image file
+        //Note: This is from Chat-GPT, I don't understand why the any check isn't just always true (and thus this being different from returning always false)
+        // but it seems to function properly(?), whereas just always returning false does not
+        !inputFiles.files.any { file -> file.length() != file.size() }
+    }
+}
+
+def outputChangelog = tasks.register('outputChangelog', OutputChangelog, grgitService.service)
+outputChangelog.configure { OutputChangelog out ->
+    out.releaseNotes.value(provider {
+        //If we have a file specified that exists for the mod version, then we want to use it
+        // otherwise we want to fall back to not having the value set
+        def file = layout.projectDirectory.file("docs/release_${mod_version}.md")
+        return file.asFile.exists() ? file : null
+    })
+}
+Provider<RegularFile> changelogFile = outputChangelog.<RegularFile>flatMap(c -> c.outputFile)
+
+if (System.getenv('CURSEFORGE_KEY') != null || project.hasProperty('curseforgeKey')) {
+    logger.lifecycle('Enabling Curseforge config')
+    tasks.register('curseforge', TaskPublishCurseForge) { task ->
+        dependsOn(outputChangelog)
+        setGroup('publishing')
+        setDescription('Upload Numina to CurseForge')
+
+        inputs.file(changelogFile)
+        inputs.property('release_type', release_type)
+        inputs.property('java_version', java_version)
+        inputs.property('minecraft_version', minecraft_version)
+
+        disableVersionDetection()
+        apiToken = System.getenv('CURSEFORGE_KEY') ?: project.findProperty('curseforgeKey')
+
+        //Main Numina Project
+        def mainCfUpload = task.upload(235440, jar) { main ->
+            setGenericCurseArtifactData(main, changelogFile)
+            //Add optional deps
+            addOptional(
+                    'scannable',
+                    'applied-energistics-2',
+                    'jei'
+            )
+        }
+
+        //Secondary modules/projects
+        def powersuitsCfUpload = uploadSecondaryCurseProject(task, 345425, changelogFile, powersuitsJar)
+
+        doLast {
+            //Note: Quiet is the level above warning but below error. We want these to show regardless of logging level
+            // see: https://docs.gradle.org/current/userguide/logging.html
+            //Note: We cast to object to be explicit, so that when we have CurseForgeGradle in debug mode and these are null
+            // then it can resolve which overload to use
+            logger.quiet('https://www.curseforge.com/minecraft/mc-mods/numina/files/{}', (Object) mainCfUpload.curseFileId)
+            logger.quiet('https://www.curseforge.com/minecraft/mc-mods/powersuits/files/{}', (Object) powersuitsCfUpload.curseFileId)
+        }
+    }
+}
+
+void setGenericCurseArtifactData(UploadArtifact artifact, Provider<RegularFile> changelog) {
+    artifact.changelog = changelog
+    artifact.changelogType = 'markdown'
+    artifact.releaseType = release_type
+    artifact.addModLoader('NeoForge')
+    artifact.addJavaVersion("Java ${java_version}")
+    artifact.addGameVersion(minecraft_version)
+}
+
+UploadArtifact uploadSecondaryCurseProject(TaskPublishCurseForge task, long projectId, Provider<RegularFile> changelog, TaskProvider<Jar> sourceSetJar) {
+    return task.upload(projectId, sourceSetJar) { artifact ->
+        setGenericCurseArtifactData(artifact, changelog)
+        addRequirement('numina')
+    }
+}
+
+if (System.getenv('MODRINTH_TOKEN') != null || project.hasProperty('modrinthToken')) {
+    logger.lifecycle('Enabling Modrinth config')
+    def powersuitsModrinth = createSecondaryModrinthUpload('powersuits', 'mBO0J08x', powersuitsJar)
+    tasks.named('modrinth') {
+        dependsOn(jar, outputChangelog)
+        finalizedBy(powersuitsModrinth)
+        notCompatibleWithConfigurationCache('Not yet compatible')//TODO: Remove when possible
     }
 
-    configurations {
-        runtimeClasspath.extendsFrom localRuntime
+    modrinth {
+        if (System.getenv('MODRINTH_TOKEN') == null) {
+            //Defaults to MODRINTH_TOKEN so we only have to check for a token via gradle properties if there isn't a system property
+            token.set((String) project.findProperty('modrinthToken'))
+        } else {
+            token = System.getenv('MODRINTH_TOKEN')
+        }
+        projectId = 'Ce6I4WUE'
+        //Use the full "basic" version number rather than just mod version number so that if multiple releases end up happening due to bugs
+        // then we don't run into conflicts in uploading
+        //Note: The versionName is set to the versionNumber automatically
+        versionNumber = "${basicVersion}"
+        versionType = "${release_type}"
+        gameVersions.add("${minecraft_version}")
+        failSilently = true
+        changelog.value(changelogFile.map(file -> file.asFile.text))
+        uploadFile = jar
+
+        //Note: Can't use nested dependency configuration as we have no way to clear it for the secondary uploads
+        dependencies.value([
+                new ModDependency("XxWD5pD3", "optional"),//AE2
+        ])
     }
 
-    dependencies {
-        // these are setup using libs dir at the root of the project rather than through maven. This will probably get fixed later
+}
 
-        localRuntime "blank:appliedenergistics2-19.2.13"
-        localRuntime "blank:guideme-21.1.13"
-        localRuntime "blank:ae2jeiintegration-1.2.0"
-
-        localRuntime "blank:FallingTree-1.21.1-1.21.1.10"
-
-        localRuntime "blank:jei-1.21.1-neoforge-19.22.0.315"
-        localRuntime "blank:theoneprobe-1.21_neo-12.0.6" // try it?
-
-        localRuntime "blank:journeymap-neoforge-1.21.1-6.0.0-beta.52"
-
-        localRuntime "blank:energizedpower-1.21.1-2.14.0-neoforge"
-
-        localRuntime "blank:kotlinforforge-5.9.0-all"
-
-        localRuntime "blank:architectury-13.0.8-neoforge"
-
-        localRuntime "blank:observable-5.4.4"
+def createSecondaryModrinthUpload(String output, String targetProjectId, TaskProvider<Jar> sourceSetJar) {
+    return tasks.register("${output}Modrinth", TaskModrinthUpload) {
+        setGroup('publishing')
+        setDescription("Upload Numina ${output} to Modrinth")
+        dependsOn(tasks.named('modrinth'), sourceSetJar)
+        notCompatibleWithConfigurationCache('Not yet compatible')//TODO: Remove when possible
+        doFirst {
+            //Run in do first to change the configured extension values before it starts applying
+            modrinth {
+                projectId = targetProjectId
+                uploadFile = sourceSetJar.get()
+                //Clear additional upload files as this is a modification of what things are set to from before
+                additionalFiles.empty()
+                //Mark that the addon requires the build of Numina that we just uploaded (and override it to clear all optional dependencies)
+                if (tasks.modrinth.newVersion == null || tasks.modrinth.newVersion.getId() == null) {
+                    //If we failed to find the upload version just set it to Numina in general
+                    getDependencies().value([new ModDependency("MRNzikxs", "required")])
+                } else {
+                    dependencies.value([new VersionDependency((String) tasks.modrinth.newVersion.getId(), 'required')])
+                }
+            }
+            logger.lifecycle('Updated Modrinth extension')
+        }
     }
 }

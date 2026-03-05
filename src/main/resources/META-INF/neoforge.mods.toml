@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
+license="${mod_license}"
+
+[[mods]]
+    modId="numina"
+    version="${mod_version}"
+    displayName="Numina"
+    displayURL="https://github.com/lehjr/MachineMusePowersuits"
+    authors="MachineMuse, lehjr"
+    description="A common library of useful functions and utilities for dealing with Minecraft's source code."
+
+[[accessTransformers]]
+    file="META-INF/accesstransformer.cfg"
+
+[[mixins]]
+    config="numina.mixins.json"
+
+[[dependencies.numina]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.numina]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version_range}"
+    ordering="NONE"
+    side="BOTH"

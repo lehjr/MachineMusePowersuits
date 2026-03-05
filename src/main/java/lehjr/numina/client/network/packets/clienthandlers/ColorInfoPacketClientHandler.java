@@ -1,0 +1,19 @@
+package lehjr.numina.client.network.packets.clienthandlers;
+
+import lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ItemUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+
+public class ColorInfoPacketClientHandler {
+    public static void handlePacket(EquipmentSlot slotType, int[] tagData) {
+        final Player player = Minecraft.getInstance().player;
+        assert player != null;
+        IModelSpec iModelSpec = ItemUtils.getItemFromEntitySlot(player, slotType).getCapability(NuminaCapabilities.RENDER);
+        if(iModelSpec != null) {
+            iModelSpec.setColorArray(tagData);
+        }
+    }
+}
