@@ -633,7 +633,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .pattern(" X ")
             .define('I', Tags.Items.COBBLESTONES)
             .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
-            .define('W', Tags.Items.STRINGS)
+            .define('W', NuminaItems.WIRING_COPPER.get())
             .define('X', NuminaItems.SOLENOID.get())
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
             .save(output);
@@ -681,7 +681,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .pattern(" X ")
             .define('S', Tags.Items.COBBLESTONES)
             .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
-            .define('W', Tags.Items.STRINGS)
+            .define('W', NuminaItems.WIRING_COPPER.get())
             .define('X', NuminaItems.SOLENOID.get())
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
             .save(output);
@@ -731,7 +731,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .pattern(" X ")
             .define('S', Tags.Items.COBBLESTONES)
             .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
-            .define('W', Tags.Items.STRINGS)
+            .define('W', NuminaItems.WIRING_COPPER.get())
             .define('X', NuminaItems.SOLENOID.get())
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
             .save(output);

@@ -202,12 +202,11 @@ public class NuminaRecipeGenerator extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.CONTROL_CIRCUIT_1.get())
             .pattern("WCW")
-            .pattern("RGO")
+            .pattern("R O")
             .pattern("ERW")
             .define('W', NuminaItems.WIRING_COPPER.get())
             .define('C', NuminaItems.CAPACITOR_1.get())
             .define('R', Tags.Items.DUSTS_REDSTONE)
-            .define('G', Items.BLUE_DYE)
             .define('E', Tags.Items.INGOTS_COPPER)
             .define('O', Items.YELLOW_DYE)
             .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
@@ -235,7 +234,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
             .define('E', Tags.Items.INGOTS_GOLD)
             .define('W', NuminaItems.WIRING_GOLD.get())
             .define('G', Tags.Items.DUSTS_GLOWSTONE)
-            .define('O', Items.LIGHT_BLUE_DYE)
+            .define('O', Items.BLUE_DYE)
             .unlockedBy(getHasName(NuminaItems.WIRING_GOLD.get()), has(NuminaItems.WIRING_GOLD.get()))
             .save(recipeOutput);
 
