@@ -42,7 +42,7 @@ import lehjr.powersuits.common.item.module.tool.blockbreaking.ShovelModule;
 import lehjr.powersuits.common.item.module.tool.misc.FlintAndSteelModule;
 import lehjr.powersuits.common.item.module.tool.misc.LeafBlowerModule;
 import lehjr.powersuits.common.item.module.tool.misc.LuxCapacitorModule;
-import lehjr.powersuits.common.item.module.tool.misc.ShearsModule;
+import lehjr.powersuits.common.item.module.tool.blockbreaking.ShearsModule;
 import lehjr.powersuits.common.item.module.vision.BinocularsModule;
 import lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import lehjr.powersuits.common.item.module.weapon.BladeLauncherModule;

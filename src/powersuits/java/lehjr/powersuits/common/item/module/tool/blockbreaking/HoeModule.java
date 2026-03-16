@@ -42,41 +42,49 @@ public class HoeModule extends AbstractPowerModule {
 
             switch (tier) {
             case 1:{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionBase, "FE"); // 500
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
-                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.stoneRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
+                addBaseProperty(MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionBase, "FE"); // 500
+//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.stoneRototillerModuleRadiusMultiplier,  "m", 1, 1); // 4
+
+                addBaseProperty(MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionBase, "FE");
                 addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
                 addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedOverclockMultiplier); // 22
                 break;
             }
 
             case 2: {
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionBase, "FE"); // 500
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
-                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.ironRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
+                addBaseProperty(MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionBase, "FE"); // 500
+//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.ironRototillerModuleRadiusMultiplier,  "m", 1, 1); // 4
+
+                addBaseProperty(MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionBase, "FE");
                 addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
                 addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedOverclockMultiplier); // 22
                 break;
             }
 
             case 3: {
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionBase, "FE"); // 500
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
-                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.diamondRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
+                addBaseProperty(MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionBase, "FE"); // 500
+//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.diamondRototillerModuleRadiusMultiplier,  "m", 1, 1); // 4
+
+                addBaseProperty(MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionBase, "FE");
                 addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
                 addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedOverclockMultiplier); // 22
                 break;
             }
 
             case 4: {
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionBase, "FE"); // 500
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
-                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.netheriteRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
+                addBaseProperty(MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionBase, "FE"); // 500
+//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.netheriteRototillerModuleRadiusMultiplier,  "m", 1, 1); // 4
+
+                addBaseProperty(MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionBase, "FE");
                 addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
                 addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedOverclockMultiplier); // 22
                 break;
             }
@@ -85,26 +93,29 @@ public class HoeModule extends AbstractPowerModule {
 
         @Override
         public InteractionResult useOn(UseOnContext context) {
-            int energyConsumed = this.getEnergyUsage();
+            InteractionResult ret = InteractionResult.PASS;
+
             Player player = context.getPlayer();
+            if(player == null) {
+                return InteractionResult.PASS;
+            }
+            int energyConsumed = (int)applyPropertyModifiers(MPSConstants.ON_USE_ENERGY_CONSUMPTION, 0);
+
             Level level = context.getLevel();
             BlockPos blockPos = context.getClickedPos();
             Direction facing = context.getClickedFace();
             ItemStack itemStack = context.getItemInHand();
             BlockState toolModifiedState1;
-            InteractionResult ret = InteractionResult.PASS;
-            if(player == null) {
-                return ret;
-            }
-            if (!player.mayUseItemAt(blockPos, facing, itemStack) || ElectricItemUtils.getPlayerEnergy(player) < energyConsumed) {
-                return InteractionResult.PASS;
-            } else {
+
+            if (player.mayUseItemAt(blockPos, facing, itemStack)) {
                 int radius = (int)applyPropertyModifiers(MPSConstants.RADIUS);
                 for (int i = -Math.abs(radius); i < radius; i++) {
                     for (int j = -Math.abs(radius); j < radius; j++) {
                         if (i * i + j * j < radius * radius) {
                             BlockPos newPos = blockPos.offset(i, 0, j);
-                            if (level.getBlockState(newPos.above()).isAir() && !level.getBlockState(newPos).isAir()) {
+                            if (level.getBlockState(newPos.above()).isAir()
+                                && !level.getBlockState(newPos).isAir()
+                                && ElectricItemUtils.getPlayerEnergy(player) >= energyConsumed) {
                                 BlockHitResult hitResult = new BlockHitResult(Vec3.atCenterOf(newPos), Direction.DOWN, newPos, true);
                                 UseOnContext ctx1 = new UseOnContext(level, player, context.getHand(), getEmulatedTool(), hitResult);
                                 toolModifiedState1 = level.getBlockState(newPos).getToolModifiedState(ctx1, ItemAbilities.HOE_TILL, false);
@@ -173,7 +184,6 @@ public class HoeModule extends AbstractPowerModule {
             };
         }
 
-        @Nonnull
         @Override
         public ItemStack getEmulatedTool() {
             return switch (tier) {

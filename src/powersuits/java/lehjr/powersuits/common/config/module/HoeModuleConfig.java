@@ -44,7 +44,7 @@ public class HoeModuleConfig {
     private static final ModConfigSpec.DoubleValue NETHERITE_ROTOTILLER_MODULE__HARVEST_SPEED_BASE = NETHERITE_ROTOTILLER_MODULE_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_BASE, 6, 0, 100.0D);
     private static final ModConfigSpec.DoubleValue NETHERITE_ROTOTILLER_MODULE__HARVEST_SPEED_OVERCLOCK_MULTIPLIER = NETHERITE_ROTOTILLER_MODULE_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_OVERCLOCK_MULTIPLIER, 40, 0, 100.0D);
     private static final ModConfigSpec.IntValue NETHERITE_ROTOTILLER_MODULE__RADIUS_MULTIPLIER = NETHERITE_ROTOTILLER_MODULE_BUILDER.defineInRange(MPSConstants.RADIUS_MULTIPLIER, 8, 0, 100);
-    private static final ModConfigSpec.DoubleValue NETHERITE_ROTOTILLER_MODULE__ENERGY_CONSUMPTION_RADIUS_MULTIPLIER = NETHERITE_ROTOTILLER_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_RADIUS_MULTIPLIER, 9500.0D, 0, 100000.0D);
+//    private static final ModConfigSpec.DoubleValue NETHERITE_ROTOTILLER_MODULE__ENERGY_CONSUMPTION_RADIUS_MULTIPLIER = NETHERITE_ROTOTILLER_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_RADIUS_MULTIPLIER, 9500.0D, 0, 100000.0D);
 
     public static final ModConfigSpec MPS_HOE_MODULE_SPEC = NETHERITE_ROTOTILLER_MODULE_BUILDER.build();
 
@@ -82,7 +82,7 @@ public class HoeModuleConfig {
     public static double netheriteRototillerModuleHarvestSpeedBase;
     public static double netheriteRototillerModuleHarvestSpeedOverclockMultiplier;
     public static int netheriteRototillerModuleRadiusMultiplier;
-    public static double netheriteRototillerModuleEnergyConsumptionRadiusMultiplier;
+//    public static double netheriteRototillerModuleEnergyConsumptionRadiusMultiplier;
 
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_HOE_MODULE_SPEC) {
@@ -120,7 +120,7 @@ public class HoeModuleConfig {
             netheriteRototillerModuleHarvestSpeedBase = NETHERITE_ROTOTILLER_MODULE__HARVEST_SPEED_BASE.get();
             netheriteRototillerModuleHarvestSpeedOverclockMultiplier = NETHERITE_ROTOTILLER_MODULE__HARVEST_SPEED_OVERCLOCK_MULTIPLIER.get();
             netheriteRototillerModuleRadiusMultiplier = NETHERITE_ROTOTILLER_MODULE__RADIUS_MULTIPLIER.get();
-            netheriteRototillerModuleEnergyConsumptionRadiusMultiplier = NETHERITE_ROTOTILLER_MODULE__ENERGY_CONSUMPTION_RADIUS_MULTIPLIER.get();
+//            netheriteRototillerModuleEnergyConsumptionRadiusMultiplier = NETHERITE_ROTOTILLER_MODULE__ENERGY_CONSUMPTION_RADIUS_MULTIPLIER.get();
         }
     }
 }

@@ -23,6 +23,9 @@ public class MPSConstants {
     // Generic
     public static final String COMPENSATION = "compensation";
     public static final String ENERGY_CONSUMPTION = "energyCon";
+    public static final String HARVEST_ENERGY_CONSUMPTION = "harvestEnergyCon";
+    public static final String ON_USE_ENERGY_CONSUMPTION = "onUseEnergyCon";
+
     public static final String ENERGY_CONSUMPTION_BASE = ENERGY_CONSUMPTION + BASE;
     public static final String ENERGY_CONSUMPTION__OVERCLOCK_MULTIPLIER = ENERGY_CONSUMPTION + OVERCLOCK_MULTIPLIER;
     public static final String JUMP_BOOST = "jumpBoost";
