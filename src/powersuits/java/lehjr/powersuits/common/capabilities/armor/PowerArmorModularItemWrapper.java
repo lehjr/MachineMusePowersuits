@@ -1,4 +1,4 @@
-package lehjr.powersuits.common.capabilities.item.armor;
+package lehjr.powersuits.common.capabilities.armor;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;

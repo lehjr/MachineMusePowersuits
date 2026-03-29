@@ -158,7 +158,6 @@ public class ShearsModule extends AbstractPowerModule {
                     ElectricItemUtils.drainPlayerEnergy(player, getEnergyUsage(), false);
                     return InteractionResultHolder.consume(itemStackIn);
                 }
-
             }
 
             return InteractionResultHolder.pass(itemStackIn);

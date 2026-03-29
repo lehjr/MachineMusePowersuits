@@ -1,4 +1,4 @@
-package lehjr.powersuits.common.capabilities.item.armor;
+package lehjr.powersuits.common.capabilities.armor;
 
 public class PowerArmorFluidWrapper {
 }

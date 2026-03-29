@@ -1,4 +1,4 @@
-package lehjr.powersuits.common.capabilities.item.armor;
+package lehjr.powersuits.common.capabilities.armor;
 
 import lehjr.numina.common.capabilities.render.modelspec.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.modelspec.JavaModelSpec;
