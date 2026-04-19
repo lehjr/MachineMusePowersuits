@@ -41,6 +41,41 @@ public class NuminaRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(Items.ARMOR_STAND), has(Items.ARMOR_STAND))
             .save(recipeOutput);
 
+        // Upgrades -----------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.IRON_SMITHING_UPGRADE_TEMPLATE.get())
+            .pattern("WIW")
+            .pattern("WCW")
+            .pattern("WWW")
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('I', Items.IRON_INGOT)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
+            .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.DIAMOND_SMITHING_UPGRADE_TEMPLATE.get())
+            .pattern("WIW")
+            .pattern("WCW")
+            .pattern("WWW")
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('I', Items.GOLD_INGOT)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .unlockedBy(getHasName(Items.GOLD_INGOT), has(Items.GOLD_INGOT))
+            .unlockedBy(getHasName(NuminaItems.WIRING_GOLD.get()), has(NuminaItems.WIRING_GOLD.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.NETHERITE_SMITHING_UPGRADE_TEMPLATE.get())
+            .pattern("WIW")
+            .pattern("WCW")
+            .pattern("WWW")
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('I', Items.NETHERITE_INGOT)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+            .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT))
+            .unlockedBy(getHasName(NuminaItems.WIRING_GOLD.get()), has(NuminaItems.WIRING_GOLD.get()))
+            .save(recipeOutput);
+
+
         // Modules ------------------------------------------------------------------------------------
         // Energy Storage
 
