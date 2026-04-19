@@ -1,16 +1,20 @@
 package lehjr.numina.common.registration;
 
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.container.slot.SlotBackgrounds;
 import lehjr.numina.common.item.Battery;
 import lehjr.numina.common.item.ComponentItem;
 import lehjr.numina.common.item.NuminaArmorStandItem;
+import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -18,6 +22,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class NuminaItems {
@@ -69,6 +74,54 @@ public class NuminaItems {
     public static final DeferredHolder<Item, ComponentItem> WIRING_COPPER = registerComponent(NuminaConstants.COMPONENT__WIRING_COPPER__REGNAME);
     public static final DeferredHolder<Item, ComponentItem> WIRING_GOLD = registerComponent(NuminaConstants.COMPONENT__WIRING_GOLD__REGNAME);
 
+    // Smithing Upgrades ==============================================================================================
+    public static final DeferredHolder<Item, SmithingTemplateItem> IRON_SMITHING_UPGRADE_TEMPLATE = NUMINA_ITEMS.register(NuminaConstants.IRON_SMITHING_TEMPLATE.getPath(),
+        ()-> new SmithingTemplateItem(
+            NuminaConstants.IRON_UPGRADE_APPLIES_TO,
+            NuminaConstants.IRON_UPGRADE_INGREDIENTS,
+            NuminaConstants.IRON_UPGRADE,
+            NuminaConstants.IRON_UPGRADE_BASE_SLOT_DESCRIPTION,
+            NuminaConstants.IRON_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
+            createNetheriteUpgradeIconList(),
+            createNetheriteUpgradeMaterialList()));
+    public static final DeferredHolder<Item, SmithingTemplateItem> DIAMOND_SMITHING_UPGRADE_TEMPLATE = NUMINA_ITEMS.register(NuminaConstants.DIAMOND_SMITHING_TEMPLATE.getPath(),
+        ()-> new SmithingTemplateItem(
+            NuminaConstants.DIAMOND_UPGRADE_APPLIES_TO,
+            NuminaConstants.DIAMOND_UPGRADE_INGREDIENTS,
+            NuminaConstants.DIAMOND_UPGRADE,
+            NuminaConstants.DIAMOND_UPGRADE_BASE_SLOT_DESCRIPTION,
+            NuminaConstants.DIAMOND_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
+            createNetheriteUpgradeIconList(),
+            createNetheriteUpgradeMaterialList()));
+
+    public static final DeferredHolder<Item, SmithingTemplateItem> NETHERITE_SMITHING_UPGRADE_TEMPLATE = NUMINA_ITEMS.register(NuminaConstants.NETHERITE_SMITHING_TEMPLATE.getPath(),
+        ()-> new SmithingTemplateItem(
+            NuminaConstants.NETHERITE_UPGRADE_APPLIES_TO,
+            NuminaConstants.NETHERITE_UPGRADE_INGREDIENTS,
+            NuminaConstants.NETHERITE_UPGRADE,
+            NuminaConstants.NETHERITE_UPGRADE_BASE_SLOT_DESCRIPTION,
+            NuminaConstants.NETHERITE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
+            createNetheriteUpgradeIconList(),
+            createNetheriteUpgradeMaterialList()));
+
+
+    private static List<ResourceLocation> createNetheriteUpgradeIconList() {
+        return List.of(
+            IconUtils.EMPTY_SLOT_HELMET,
+            SlotBackgrounds.EMPTY_SLOT_SWORD,
+            IconUtils.EMPTY_SLOT_CHESTPLATE,
+            SlotBackgrounds.EMPTY_SLOT_PICKAXE,
+            IconUtils.EMPTY_SLOT_LEGGINGS,
+            SlotBackgrounds.EMPTY_SLOT_AXE,
+            IconUtils.EMPTY_SLOT_BOOTS,
+            SlotBackgrounds.EMPTY_SLOT_HOE,
+            SlotBackgrounds.EMPTY_SLOT_SHOVEL);
+    }
+
+    private static List<ResourceLocation> createNetheriteUpgradeMaterialList() {
+        return List.of(SlotBackgrounds.EMPTY_SLOT_INGOT);
+    }
+
     static DeferredHolder<Item, ComponentItem> registerComponent(String name) {
         return NUMINA_ITEMS.register(name, ComponentItem::new);
     }
@@ -113,6 +166,11 @@ public class NuminaItems {
                         output.accept(SOLENOID.get());
                         output.accept(WIRING_COPPER.get());
                         output.accept(WIRING_GOLD.get());
+
+                        // Smithing Templates -------------------------------------------------------------------------
+                        output.accept(IRON_SMITHING_UPGRADE_TEMPLATE.get());
+                        output.accept(DIAMOND_SMITHING_UPGRADE_TEMPLATE.get());
+                        output.accept(NETHERITE_SMITHING_UPGRADE_TEMPLATE.get());
 
                         // Modules ------------------------------------------------------------------------------------
                         // Energy Storage

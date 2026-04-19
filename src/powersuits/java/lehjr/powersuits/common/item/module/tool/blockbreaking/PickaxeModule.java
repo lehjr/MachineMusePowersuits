@@ -1,5 +1,6 @@
 package lehjr.powersuits.common.item.module.tool.blockbreaking;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -17,9 +18,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-
-import javax.annotation.Nonnull;
-
 
 public class PickaxeModule extends AbstractPowerModule {
     public static class BlockBreaker extends PowerModule implements IBlockBreakingModule {
@@ -63,7 +61,7 @@ public class PickaxeModule extends AbstractPowerModule {
         }
 
         @Override
-        public boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+        public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
 //            NuminaLogger.logDebug("energy usage: " + getEnergyUsage() +", player energy: " + playerEnergy);
 
             if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
@@ -85,7 +83,6 @@ public class PickaxeModule extends AbstractPowerModule {
             return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
-        @Nonnull
         @Override
         public ItemStack getEmulatedTool() {
             return switch (tier) {

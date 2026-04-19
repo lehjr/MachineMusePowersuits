@@ -9,7 +9,7 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 
-@EventBusSubscriber(modid = NuminaConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = NuminaConstants.MOD_ID)
 public class NuminaClientConfig {
     /**
      * General Settings -----------------------------------------------------------------------------------------------

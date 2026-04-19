@@ -61,7 +61,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import java.util.Arrays;
 import java.util.HashMap;
 
-@EventBusSubscriber(modid = MPSConstants.MOD_ID, /* bus = EventBusSubscriber.Bus.MOD, */value = Dist.CLIENT)
+@EventBusSubscriber(modid = MPSConstants.MOD_ID, value = Dist.CLIENT)
 public class ClientEventBusSubscriber {
 
     @SubscribeEvent

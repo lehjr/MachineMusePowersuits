@@ -2,6 +2,10 @@ package powersuits.common.recipes;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.registration.NuminaItems;
+import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import numina.common.recipes.ShapedEnchantmentRecipeBuilder;
 import numina.common.recipes.ShapedModularItemUpgradeRecipeBuilder;
 import lehjr.powersuits.common.registration.MPSItems;
@@ -589,6 +593,17 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .define('X', NuminaItems.SOLENOID.get())
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
             .save(output);
+
+//        SmithingTransformRecipeBuilder.smithing(
+//            Ingredient.of(MPSItems.IRON_SMITHING_UPGRADE_TEMPLATE.get()),
+//            Ingredient.of(MPSItems.STONE_AXE_MODULE.get()),
+//            Ingredient.of(new ItemStack(Items.IRON_INGOT, 3)),
+//            RecipeCategory.TOOLS,
+//            MPSItems.IRON_AXE_MODULE.get()).save(output, "powersuits:iron_axe_module_smithing_upgrade");
+
+
+
+
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.IRON_AXE_MODULE.get())
             .pattern("IIW")

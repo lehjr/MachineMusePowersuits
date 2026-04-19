@@ -33,7 +33,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
-@EventBusSubscriber(modid = NuminaConstants.MOD_ID, /*bus = EventBusSubscriber.Bus.MOD,*/ value = Dist.CLIENT)
+@EventBusSubscriber(modid = NuminaConstants.MOD_ID, value = Dist.CLIENT)
 public class NuminaClientEventBusSubscriber {
     @SubscribeEvent
     public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {

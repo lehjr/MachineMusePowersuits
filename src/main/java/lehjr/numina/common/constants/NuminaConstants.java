@@ -1,5 +1,8 @@
 package lehjr.numina.common.constants;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class NuminaConstants {
@@ -80,6 +83,36 @@ public class NuminaConstants {
     public static final String PART = "part";
     public static final String GLOW = "glow";
     public static final String COLOUR_INDEX = "colorindex";
+
+    /**
+     * Smithing Upgrades --------------------------------------------------------------------------
+     */
+    static final ChatFormatting DESCRIPTION_FORMAT = ChatFormatting.BLUE;
+    static final ChatFormatting TITLE_FORMAT = ChatFormatting.GRAY;
+
+    public static final ResourceLocation IRON_SMITHING_TEMPLATE = getRegName("ironsmithing_template");
+    public static final Component IRON_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("iron_upgrade"))).withStyle(TITLE_FORMAT);
+    public static final Component IRON_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.iron_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component IRON_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.iron_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component IRON_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.iron_upgrade.base_slot_description")));
+    public static final Component IRON_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.iron_upgrade.additions_slot_description")));
+
+    public static final ResourceLocation DIAMOND_SMITHING_TEMPLATE = getRegName("diamondsmithing_template");
+    public static final Component DIAMOND_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("diamond_upgrade"))).withStyle(TITLE_FORMAT);
+    public static final Component DIAMOND_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.diamond_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component DIAMOND_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.diamond_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component DIAMOND_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.diamond_upgrade.base_slot_description")));
+    public static final Component DIAMOND_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.diamond_upgrade.additions_slot_description")));
+
+    public static final ResourceLocation NETHERITE_SMITHING_TEMPLATE =  getRegName("netheritesmithing_template");
+    public static final Component NETHERITE_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("netherite_upgrade"))).withStyle(TITLE_FORMAT);
+    public static final Component NETHERITE_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.netherite_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component NETHERITE_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.netherite_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component NETHERITE_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.netherite_upgrade.base_slot_description")));
+    public static final Component NETHERITE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.netherite_upgrade.additions_slot_description")));
+
+
+
 
     /**
      * Registry Names -----------------------------------------------------------------------------
@@ -182,4 +215,9 @@ public class NuminaConstants {
 
     public static final ResourceLocation ENERGY_STORAGE_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energystorage");
     public static final ResourceLocation ENERGY_GENERATION_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energygeneration");
+
+
+    public static ResourceLocation getRegName(String regNameString) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, regNameString);
+    }
 }

@@ -2,6 +2,9 @@ package lehjr.powersuits.common.constants;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.StringUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class MPSConstants {
@@ -320,8 +323,6 @@ public class MPSConstants {
     public static final ResourceLocation POWER_FIST_2 = getRegName("powerfist2");
     public static final ResourceLocation POWER_FIST_3 = getRegName("powerfist3");
     public static final ResourceLocation POWER_FIST_4 = getRegName("powerfist4");
-
-
 
     // Modules --------------------------------------------------------------------------------------------------------
     // Armor

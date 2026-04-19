@@ -6,7 +6,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-@EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MPSConstants.MOD_ID)
 public class MPSCommonConfig {
 
     private static final ModConfigSpec.Builder builder = new ModConfigSpec.Builder().comment("General settings").push("General");
