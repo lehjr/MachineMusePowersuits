@@ -7,6 +7,7 @@ import lehjr.numina.common.registration.NuminaCapabilities;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lehjr.numina.common.registration.RecipeSerializersRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

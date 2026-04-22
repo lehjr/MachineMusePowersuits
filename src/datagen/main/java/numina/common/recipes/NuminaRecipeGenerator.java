@@ -123,49 +123,6 @@ public class NuminaRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
             .save(recipeOutput);
 
-
-        //        // Old recipes
-        //        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.BATTERY_1.get())
-        //                .pattern("WIW")
-        //                .pattern("ICI")
-        //                .pattern("IWI")
-        //                .define('W', NuminaItems.WIRING_COPPER.get())
-        //                .define('I', Tags.Items.INGOTS_IRON)
-        //                .define('C', NuminaItems.CAPACITOR_1.get())
-        //                .unlockedBy(getHasName(NuminaItems.CAPACITOR_1.get()), has(NuminaItems.CAPACITOR_1.get()))
-        //                .save(recipeOutput);
-        //
-        //        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.BATTERY_2.get())
-        //                .pattern("WIW")
-        //                .pattern("ICI")
-        //                .pattern("IWI")
-        //                .define('W', NuminaItems.WIRING_COPPER.get())
-        //                .define('I', Tags.Items.INGOTS_IRON)
-        //                .define('C', NuminaItems.CAPACITOR_2.get())
-        //                .unlockedBy(getHasName(NuminaItems.CAPACITOR_2.get()), has(NuminaItems.CAPACITOR_2.get()))
-        //                .save(recipeOutput);
-        //
-        //        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.BATTERY_3.get())
-        //                .pattern("WGW")
-        //                .pattern("GCG")
-        //                .pattern("GWG")
-        //                .define('W', NuminaItems.WIRING_GOLD.get())
-        //                .define('G', Tags.Items.GLASS_PANES)
-        //                .define('C', NuminaItems.CAPACITOR_3.get())
-        //                .unlockedBy(getHasName(NuminaItems.CAPACITOR_3.get()), has(NuminaItems.CAPACITOR_3.get()))
-        //                .save(recipeOutput);
-        //
-        //       ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.BATTERY_4.get())
-        //                .pattern("WGW")
-        //                .pattern("GCG")
-        //                .pattern("GWG")
-        //                .define('W', NuminaItems.WIRING_GOLD.get())
-        //                .define('G', Tags.Items.GLASS_PANES)
-        //                .define('C', NuminaItems.CAPACITOR_4.get())
-        //                .unlockedBy(getHasName(NuminaItems.CAPACITOR_4.get()), has(NuminaItems.CAPACITOR_4.get()))
-        //                .save(recipeOutput);
-
-
         // Components ---------------------------------------------------------------------------------
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.ARTIFICIAL_MUSCLE.get())
             .pattern("CCC")

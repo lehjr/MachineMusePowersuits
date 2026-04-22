@@ -3,6 +3,7 @@ package lehjr.numina.common.recipe;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.registration.RecipeSerializersRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;

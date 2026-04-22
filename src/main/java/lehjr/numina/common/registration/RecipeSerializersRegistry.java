@@ -24,9 +24,10 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.recipe;
+package lehjr.numina.common.registration;
 
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.recipe.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
@@ -41,5 +42,5 @@ public class RecipeSerializersRegistry {
 //    public static final DeferredHolder<RecipeSerializer<?>, ShapedModularItemUpgradeRecipe.ModularItemSerializer> MODULAR_ITEM_UPGRADE_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_modular_item", () -> new SimpleCraftingRecipeSerializer<>(ShapedModularItemUpgradeRecipe::new));
 
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<ModuleInstallationRecipe>> ATTACHMENT = RECIPE_SERIALIZERS.register("module_install", () -> new SimpleCraftingRecipeSerializer<>(ModuleInstallationRecipe::new));
-    public static final DeferredHolder<RecipeSerializer<?>, SmithingModuleUpgradeRecipe.ModuleSmithingUpgradeSerializer> SMITHING_MODULE_UPGRADE_SERIALIZER = RECIPE_SERIALIZERS.register("smithing_module_upgrade", SmithingModuleUpgradeRecipe.ModuleSmithingUpgradeSerializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>, SmithingUpgradeRecipe.SmithingUpgradeSerializer> SMITHING_UPGRADE_SERIALIZER = RECIPE_SERIALIZERS.register("smithing_upgrade", SmithingUpgradeRecipe.SmithingUpgradeSerializer::new);
 }

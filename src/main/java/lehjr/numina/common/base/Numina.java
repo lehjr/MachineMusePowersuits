@@ -10,7 +10,7 @@ import lehjr.numina.common.entity.NuminaArmorStand;
 import lehjr.numina.common.event.HarvestEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.recipe.RecipeSerializersRegistry;
+import lehjr.numina.common.registration.RecipeSerializersRegistry;
 import lehjr.numina.common.registration.NuminaBlockEntities;
 import lehjr.numina.common.registration.NuminaBlocks;
 import lehjr.numina.common.registration.NuminaCapabilities;

@@ -1,6 +1,6 @@
 package lehjr.numina.mixin.common.recipe;
 
-import lehjr.numina.common.recipe.SmithingRecipeWithSizedAdditionalIngredient;
+import lehjr.numina.common.recipe.SmithingUpgradeRecipe;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ItemCombinerMenu;
@@ -30,7 +30,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
 
     @Inject(method = "shrinkStackInSlot", at = @At("HEAD"), cancellable = true)
     private void removeCorrectAdditionalItems(int index, CallbackInfo ci) {
-        if (index == ADDITIONAL_SLOT && (this.selectedRecipe.value() instanceof SmithingRecipeWithSizedAdditionalIngredient recipe)) {
+        if (index == ADDITIONAL_SLOT && (this.selectedRecipe.value() instanceof SmithingUpgradeRecipe recipe)) {
             int count = recipe.getAdditionalIngredient().count();
             ItemStack itemstack = this.inputSlots.getItem(index);
 

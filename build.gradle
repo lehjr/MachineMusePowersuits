@@ -330,7 +330,7 @@ dependencies {
 
     localRuntime "blank:FallingTree-1.21.1-1.21.1.11"
 
-    localRuntime "blank:jei-1.21.1-neoforge-19.27.0.340"
+    implementation "blank:jei-1.21.1-neoforge-19.27.0.340"
     localRuntime "blank:theoneprobe-1.21_neo-12.0.8" // try it?
 
     localRuntime "blank:journeymap-neoforge-1.21.1-6.0.0-beta.53"
