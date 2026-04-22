@@ -41,5 +41,5 @@ public class RecipeSerializersRegistry {
 //    public static final DeferredHolder<RecipeSerializer<?>, ShapedModularItemUpgradeRecipe.ModularItemSerializer> MODULAR_ITEM_UPGRADE_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_modular_item", () -> new SimpleCraftingRecipeSerializer<>(ShapedModularItemUpgradeRecipe::new));
 
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<ModuleInstallationRecipe>> ATTACHMENT = RECIPE_SERIALIZERS.register("module_install", () -> new SimpleCraftingRecipeSerializer<>(ModuleInstallationRecipe::new));
-
+    public static final DeferredHolder<RecipeSerializer<?>, SmithingModuleUpgradeRecipe.ModuleSmithingUpgradeSerializer> SMITHING_MODULE_UPGRADE_SERIALIZER = RECIPE_SERIALIZERS.register("smithing_module_upgrade", SmithingModuleUpgradeRecipe.ModuleSmithingUpgradeSerializer::new);
 }
