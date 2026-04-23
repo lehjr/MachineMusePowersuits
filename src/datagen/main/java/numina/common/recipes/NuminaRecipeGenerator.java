@@ -42,7 +42,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
             .save(recipeOutput);
 
         // Upgrades -----------------------------------------------------------------------------------
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.IRON_SMITHING_UPGRADE_TEMPLATE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get())
             .pattern("WIW")
             .pattern("WCW")
             .pattern("WWW")
@@ -53,7 +53,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
             .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.DIAMOND_SMITHING_UPGRADE_TEMPLATE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get())
             .pattern("WIW")
             .pattern("WCW")
             .pattern("WWW")
@@ -64,7 +64,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(NuminaItems.WIRING_GOLD.get()), has(NuminaItems.WIRING_GOLD.get()))
             .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.NETHERITE_SMITHING_UPGRADE_TEMPLATE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get())
             .pattern("WIW")
             .pattern("WCW")
             .pattern("WWW")

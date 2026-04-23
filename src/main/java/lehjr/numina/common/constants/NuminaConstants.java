@@ -90,29 +90,26 @@ public class NuminaConstants {
     static final ChatFormatting DESCRIPTION_FORMAT = ChatFormatting.BLUE;
     static final ChatFormatting TITLE_FORMAT = ChatFormatting.GRAY;
 
-    public static final ResourceLocation IRON_SMITHING_TEMPLATE = getRegName("ironsmithing_template");
-    public static final Component IRON_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("iron_upgrade"))).withStyle(TITLE_FORMAT);
-    public static final Component IRON_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.iron_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
-    public static final Component IRON_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.iron_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
-    public static final Component IRON_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.iron_upgrade.base_slot_description")));
-    public static final Component IRON_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.iron_upgrade.additions_slot_description")));
+    public static final ResourceLocation TIER_2_SMITHING_TEMPLATE = getRegName("tier_2_smithing_template");
+    public static final Component TIER_2_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("tier_2_upgrade"))).withStyle(TITLE_FORMAT);
+    public static final Component TIER_2_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_2_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component TIER_2_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_2_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component TIER_2_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_2_upgrade.base_slot_description")));
+    public static final Component TIER_2_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_2_upgrade.additions_slot_description")));
 
-    public static final ResourceLocation DIAMOND_SMITHING_TEMPLATE = getRegName("diamondsmithing_template");
-    public static final Component DIAMOND_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("diamond_upgrade"))).withStyle(TITLE_FORMAT);
-    public static final Component DIAMOND_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.diamond_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
-    public static final Component DIAMOND_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.diamond_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
-    public static final Component DIAMOND_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.diamond_upgrade.base_slot_description")));
-    public static final Component DIAMOND_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.diamond_upgrade.additions_slot_description")));
+    public static final ResourceLocation TIER_3_SMITHING_TEMPLATE = getRegName("tier_3_smithing_template");
+    public static final Component TIER_3_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("tier_3_upgrade"))).withStyle(TITLE_FORMAT);
+    public static final Component TIER_3_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_3_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component TIER_3_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_3_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component TIER_3_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_3_upgrade.base_slot_description")));
+    public static final Component TIER_3_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_3_upgrade.additions_slot_description")));
 
-    public static final ResourceLocation NETHERITE_SMITHING_TEMPLATE =  getRegName("netheritesmithing_template");
-    public static final Component NETHERITE_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("netherite_upgrade"))).withStyle(TITLE_FORMAT);
-    public static final Component NETHERITE_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.netherite_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
-    public static final Component NETHERITE_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.netherite_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
-    public static final Component NETHERITE_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.netherite_upgrade.base_slot_description")));
-    public static final Component NETHERITE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.netherite_upgrade.additions_slot_description")));
-
-
-
+    public static final ResourceLocation TIER_4_SMITHING_TEMPLATE =  getRegName("tier_4_smithing_template");
+    public static final Component TIER_4_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("tier_4_upgrade"))).withStyle(TITLE_FORMAT);
+    public static final Component TIER_4_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_4_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component TIER_4_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_4_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+    public static final Component TIER_4_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_4_upgrade.base_slot_description")));
+    public static final Component TIER_4_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_4_upgrade.additions_slot_description")));
 
     /**
      * Registry Names -----------------------------------------------------------------------------

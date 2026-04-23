@@ -64,16 +64,16 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.IRON_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.POWER_FIST_1.get()),
                 SizedIngredient.of(Items.IRON_INGOT, 4),
                 RecipeCategory.TOOLS,
                 MPSItems.POWER_FIST_2.get())
-            .unlockedBy(getHasName(NuminaItems.IRON_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.IRON_SMITHING_UPGRADE_TEMPLATE.get()))
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.DIAMOND_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.POWER_FIST_2.get()),
                 SizedIngredient.of(Items.DIAMOND, 4),
                 RecipeCategory.TOOLS,
@@ -82,7 +82,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.NETHERITE_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.POWER_FIST_3.get()),
                 SizedIngredient.of(Items.NETHERITE_INGOT, 4),
                 RecipeCategory.TOOLS,
@@ -90,128 +90,182 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
             .save(output);
 
-
-
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_2.get())
-            .pattern(" W ")
-            .pattern("WXC")
-            .pattern(" IW")
-            .define('X', MPSItems.POWER_FIST_1.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_COPPER.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
-            .unlockedBy(getHasName(MPSItems.POWER_FIST_1.get()), has(MPSItems.POWER_FIST_1.get()))
-            .save(output);
-
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_3.get())
-            .pattern(" W ")
-            .pattern("WXC")
-            .pattern(" IW")
-            .define('X', MPSItems.POWER_FIST_2.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
-            .unlockedBy(getHasName(MPSItems.POWER_FIST_2.get()), has(MPSItems.POWER_FIST_2.get()))
-            .save(output);
-
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_4.get())
-            .pattern(" W ")
-            .pattern("WXC")
-            .pattern(" IW")
-            .define('X', MPSItems.POWER_FIST_3.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
-            .unlockedBy(getHasName(MPSItems.POWER_FIST_3.get()), has(MPSItems.POWER_FIST_3.get()))
-            .save(output);
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_2.get())
+//            .pattern(" W ")
+//            .pattern("WXC")
+//            .pattern(" IW")
+//            .define('X', MPSItems.POWER_FIST_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_FIST_1.get()), has(MPSItems.POWER_FIST_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_3.get())
+//            .pattern(" W ")
+//            .pattern("WXC")
+//            .pattern(" IW")
+//            .define('X', MPSItems.POWER_FIST_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_FIST_2.get()), has(MPSItems.POWER_FIST_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_4.get())
+//            .pattern(" W ")
+//            .pattern("WXC")
+//            .pattern(" IW")
+//            .define('X', MPSItems.POWER_FIST_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_FIST_3.get()), has(MPSItems.POWER_FIST_3.get()))
+//            .save(output);
 
         // Armor ==========================================================================================================
         // Helmet
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_1.get())
             .pattern("III")
             .pattern("WCW")
-            .define('I', Tags.Items.INGOTS_IRON)
+            .define('I', Tags.Items.INGOTS_COPPER)
             .define('W', NuminaItems.WIRING_COPPER.get())
             .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
             .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_2.get())
-            .pattern("III")
-            .pattern("WCW")
-            .pattern(" X ")
-            .define('X', MPSItems.POWER_ARMOR_HELMET_1.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_COPPER.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_HELMET_1.get()), has(MPSItems.POWER_ARMOR_HELMET_1.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_HELMET_1.get()),
+                SizedIngredient.of(Items.IRON_INGOT, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_HELMET_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_3.get())
-            .pattern("III")
-            .pattern("WCW")
-            .pattern(" X ")
-            .define('X', MPSItems.POWER_ARMOR_HELMET_2.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_HELMET_2.get()), has(MPSItems.POWER_ARMOR_HELMET_2.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_HELMET_2.get()),
+                SizedIngredient.of(Items.DIAMOND, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_HELMET_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_4.get())
-            .pattern("III")
-            .pattern("WCW")
-            .pattern(" X ")
-            .define('X', MPSItems.POWER_ARMOR_HELMET_3.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_HELMET_3.get()), has(MPSItems.POWER_ARMOR_HELMET_3.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_HELMET_3.get()),
+                SizedIngredient.of(Items.NETHERITE_INGOT, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_HELMET_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
             .save(output);
+
+
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_2.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern(" X ")
+//            .define('X', MPSItems.POWER_ARMOR_HELMET_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_HELMET_1.get()), has(MPSItems.POWER_ARMOR_HELMET_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_3.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern(" X ")
+//            .define('X', MPSItems.POWER_ARMOR_HELMET_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_HELMET_2.get()), has(MPSItems.POWER_ARMOR_HELMET_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_4.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern(" X ")
+//            .define('X', MPSItems.POWER_ARMOR_HELMET_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_HELMET_3.get()), has(MPSItems.POWER_ARMOR_HELMET_3.get()))
+//            .save(output);
 
         // ChestPlate
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_1.get())
             .pattern("ICI")
             .pattern("WIW")
             .pattern("III")
-            .define('I', Tags.Items.INGOTS_IRON)
+            .define('I', Tags.Items.INGOTS_COPPER)
             .define('W', NuminaItems.WIRING_COPPER.get())
             .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
             .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_2.get())
-            .pattern("ICI")
-            .pattern("WXW")
-            .pattern("III")
-            .define('X', MPSItems.POWER_ARMOR_CHESTPLATE_1.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_COPPER.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()),
+                SizedIngredient.of(Items.IRON_INGOT, 5),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_CHESTPLATE_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_3.get())
-            .pattern("ICI")
-            .pattern("WXW")
-            .pattern("III")
-            .define('X', MPSItems.POWER_ARMOR_CHESTPLATE_2.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_2.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_2.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_CHESTPLATE_2.get()),
+                SizedIngredient.of(Items.DIAMOND, 5),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_CHESTPLATE_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_4.get())
-            .pattern("ICI")
-            .pattern("WXW")
-            .pattern("III")
-            .define('X', MPSItems.POWER_ARMOR_CHESTPLATE_3.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_3.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_3.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_CHESTPLATE_3.get()),
+                SizedIngredient.of(Items.NETHERITE_INGOT, 5),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_CHESTPLATE_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
             .save(output);
+
+
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_2.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .pattern("III")
+//            .define('X', MPSItems.POWER_ARMOR_CHESTPLATE_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_3.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .pattern("III")
+//            .define('X', MPSItems.POWER_ARMOR_CHESTPLATE_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_2.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_4.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .pattern("III")
+//            .define('X', MPSItems.POWER_ARMOR_CHESTPLATE_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_3.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_3.get()))
+//            .save(output);
 
         // Leggings
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_1.get())
@@ -224,38 +278,65 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_2.get())
-            .pattern("III")
-            .pattern("WCW")
-            .pattern("IXI")
-            .define('X', MPSItems.POWER_ARMOR_LEGGINGS_1.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_COPPER.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_LEGGINGS_1.get()), has(MPSItems.POWER_ARMOR_LEGGINGS_1.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_LEGGINGS_1.get()),
+                SizedIngredient.of(Items.IRON_INGOT, 5),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_LEGGINGS_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_3.get())
-            .pattern("III")
-            .pattern("WCW")
-            .pattern("IXI")
-            .define('X', MPSItems.POWER_ARMOR_LEGGINGS_2.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_LEGGINGS_2.get()), has(MPSItems.POWER_ARMOR_LEGGINGS_2.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_LEGGINGS_2.get()),
+                SizedIngredient.of(Items.DIAMOND, 5),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_LEGGINGS_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_4.get())
-            .pattern("III")
-            .pattern("WCW")
-            .pattern("IXI")
-            .define('X', MPSItems.POWER_ARMOR_LEGGINGS_3.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_LEGGINGS_3.get()), has(MPSItems.POWER_ARMOR_LEGGINGS_3.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_LEGGINGS_3.get()),
+                SizedIngredient.of(Items.NETHERITE_INGOT, 5),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_LEGGINGS_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
             .save(output);
+
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_2.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern("IXI")
+//            .define('X', MPSItems.POWER_ARMOR_LEGGINGS_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_LEGGINGS_1.get()), has(MPSItems.POWER_ARMOR_LEGGINGS_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_3.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern("IXI")
+//            .define('X', MPSItems.POWER_ARMOR_LEGGINGS_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_LEGGINGS_2.get()), has(MPSItems.POWER_ARMOR_LEGGINGS_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_4.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern("IXI")
+//            .define('X', MPSItems.POWER_ARMOR_LEGGINGS_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_LEGGINGS_3.get()), has(MPSItems.POWER_ARMOR_LEGGINGS_3.get()))
+//            .save(output);
 
         // Boots
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_1.get())
@@ -267,35 +348,62 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_2.get())
-            .pattern("ICI")
-            .pattern("WXW")
-            .define('X', MPSItems.POWER_ARMOR_BOOTS_1.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_COPPER.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_BOOTS_1.get()), has(MPSItems.POWER_ARMOR_BOOTS_1.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_BOOTS_1.get()),
+                SizedIngredient.of(Items.IRON_INGOT, 2),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_BOOTS_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_3.get())
-            .pattern("ICI")
-            .pattern("WXW")
-            .define('X', MPSItems.POWER_ARMOR_BOOTS_2.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_BOOTS_2.get()), has(MPSItems.POWER_ARMOR_BOOTS_2.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_BOOTS_2.get()),
+                SizedIngredient.of(Items.DIAMOND, 2),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_BOOTS_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
             .save(output);
 
-        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_4.get())
-            .pattern("ICI")
-            .pattern("WXW")
-            .define('X', MPSItems.POWER_ARMOR_BOOTS_3.get())
-            .define('I', Tags.Items.INGOTS_IRON)
-            .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
-            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_BOOTS_3.get()), has(MPSItems.POWER_ARMOR_BOOTS_3.get()))
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_BOOTS_3.get()),
+                SizedIngredient.of(Items.NETHERITE_INGOT, 2),
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_BOOTS_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
             .save(output);
+
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_2.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .define('X', MPSItems.POWER_ARMOR_BOOTS_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_BOOTS_1.get()), has(MPSItems.POWER_ARMOR_BOOTS_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_3.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .define('X', MPSItems.POWER_ARMOR_BOOTS_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_BOOTS_2.get()), has(MPSItems.POWER_ARMOR_BOOTS_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_4.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .define('X', MPSItems.POWER_ARMOR_BOOTS_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_BOOTS_3.get()), has(MPSItems.POWER_ARMOR_BOOTS_3.get()))
+//            .save(output);
 
         // Modules ========================================================================================================
         // Armor --------------------------------------------------------------------------------------------
@@ -623,7 +731,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.IRON_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.STONE_AXE_MODULE.get()),
                 SizedIngredient.of(Items.IRON_INGOT, 3),
                 RecipeCategory.TOOLS,
@@ -632,7 +740,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.DIAMOND_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.IRON_AXE_MODULE.get()),
                 SizedIngredient.of(Items.DIAMOND, 3),
                 RecipeCategory.TOOLS,
@@ -641,7 +749,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.NETHERITE_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.DIAMOND_AXE_MODULE.get()),
                 SizedIngredient.of(Items.NETHERITE_INGOT, 3),
                 RecipeCategory.TOOLS,
@@ -662,7 +770,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.IRON_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.STONE_PICKAXE_MODULE.get()),
                 SizedIngredient.of(Items.IRON_INGOT, 3),
                 RecipeCategory.TOOLS,
@@ -671,7 +779,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.DIAMOND_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.IRON_PICKAXE_MODULE.get()),
                 SizedIngredient.of(Items.DIAMOND, 3),
                 RecipeCategory.TOOLS,
@@ -680,7 +788,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.NETHERITE_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.DIAMOND_PICKAXE_MODULE.get()),
                 SizedIngredient.of(Items.NETHERITE_INGOT, 3),
                 RecipeCategory.TOOLS,
@@ -701,7 +809,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.IRON_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.STONE_ROTOTILLER_MODULE.get()),
                 SizedIngredient.of(Items.IRON_INGOT, 2),
                 RecipeCategory.TOOLS,
@@ -710,7 +818,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.DIAMOND_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.IRON_ROTOTILLER_MODULE.get()),
                 SizedIngredient.of(Items.DIAMOND, 2),
                 RecipeCategory.TOOLS,
@@ -719,7 +827,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.NETHERITE_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.DIAMOND_ROTOTILLER_MODULE.get()),
                 SizedIngredient.of(Items.NETHERITE_INGOT, 2),
                 RecipeCategory.TOOLS,
@@ -740,7 +848,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.IRON_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.STONE_SHOVEL_MODULE.get()),
                 SizedIngredient.of(Items.IRON_INGOT, 1),
                 RecipeCategory.TOOLS,
@@ -749,7 +857,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.DIAMOND_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.IRON_SHOVEL_MODULE.get()),
                 SizedIngredient.of(Items.DIAMOND, 1),
                 RecipeCategory.TOOLS,
@@ -758,7 +866,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         SmithingUpgradeRecipeBuilder.smithing(
-                Ingredient.of(NuminaItems.NETHERITE_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
                 Ingredient.of(MPSItems.DIAMOND_SHOVEL_MODULE.get()),
                 SizedIngredient.of(Items.NETHERITE_INGOT, 1),
                 RecipeCategory.TOOLS,

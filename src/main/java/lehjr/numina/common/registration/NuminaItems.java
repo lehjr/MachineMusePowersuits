@@ -75,37 +75,36 @@ public class NuminaItems {
     public static final DeferredHolder<Item, ComponentItem> WIRING_GOLD = registerComponent(NuminaConstants.COMPONENT__WIRING_GOLD__REGNAME);
 
     // Smithing Upgrades ==============================================================================================
-    public static final DeferredHolder<Item, SmithingTemplateItem> IRON_SMITHING_UPGRADE_TEMPLATE = NUMINA_ITEMS.register(NuminaConstants.IRON_SMITHING_TEMPLATE.getPath(),
+    public static final DeferredHolder<Item, SmithingTemplateItem> TIER_2_SMITHING_UPGRADE_TEMPLATE = NUMINA_ITEMS.register(NuminaConstants.TIER_2_SMITHING_TEMPLATE.getPath(),
         ()-> new SmithingTemplateItem(
-            NuminaConstants.IRON_UPGRADE_APPLIES_TO,
-            NuminaConstants.IRON_UPGRADE_INGREDIENTS,
-            NuminaConstants.IRON_UPGRADE,
-            NuminaConstants.IRON_UPGRADE_BASE_SLOT_DESCRIPTION,
-            NuminaConstants.IRON_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
-            createNetheriteUpgradeIconList(),
+            NuminaConstants.TIER_2_UPGRADE_APPLIES_TO,
+            NuminaConstants.TIER_2_UPGRADE_INGREDIENTS,
+            NuminaConstants.TIER_2_UPGRADE,
+            NuminaConstants.TIER_2_UPGRADE_BASE_SLOT_DESCRIPTION,
+            NuminaConstants.TIER_2_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
+            createItemUpgradeIconList(),
             createNetheriteUpgradeMaterialList()));
-    public static final DeferredHolder<Item, SmithingTemplateItem> DIAMOND_SMITHING_UPGRADE_TEMPLATE = NUMINA_ITEMS.register(NuminaConstants.DIAMOND_SMITHING_TEMPLATE.getPath(),
+    public static final DeferredHolder<Item, SmithingTemplateItem> TIER_3_SMITHING_UPGRADE_TEMPLATE = NUMINA_ITEMS.register(NuminaConstants.TIER_3_SMITHING_TEMPLATE.getPath(),
         ()-> new SmithingTemplateItem(
-            NuminaConstants.DIAMOND_UPGRADE_APPLIES_TO,
-            NuminaConstants.DIAMOND_UPGRADE_INGREDIENTS,
-            NuminaConstants.DIAMOND_UPGRADE,
-            NuminaConstants.DIAMOND_UPGRADE_BASE_SLOT_DESCRIPTION,
-            NuminaConstants.DIAMOND_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
-            createNetheriteUpgradeIconList(),
-            createNetheriteUpgradeMaterialList()));
-
-    public static final DeferredHolder<Item, SmithingTemplateItem> NETHERITE_SMITHING_UPGRADE_TEMPLATE = NUMINA_ITEMS.register(NuminaConstants.NETHERITE_SMITHING_TEMPLATE.getPath(),
-        ()-> new SmithingTemplateItem(
-            NuminaConstants.NETHERITE_UPGRADE_APPLIES_TO,
-            NuminaConstants.NETHERITE_UPGRADE_INGREDIENTS,
-            NuminaConstants.NETHERITE_UPGRADE,
-            NuminaConstants.NETHERITE_UPGRADE_BASE_SLOT_DESCRIPTION,
-            NuminaConstants.NETHERITE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
-            createNetheriteUpgradeIconList(),
+            NuminaConstants.TIER_3_UPGRADE_APPLIES_TO,
+            NuminaConstants.TIER_3_UPGRADE_INGREDIENTS,
+            NuminaConstants.TIER_3_UPGRADE,
+            NuminaConstants.TIER_3_UPGRADE_BASE_SLOT_DESCRIPTION,
+            NuminaConstants.TIER_3_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
+            createItemUpgradeIconList(),
             createNetheriteUpgradeMaterialList()));
 
+    public static final DeferredHolder<Item, SmithingTemplateItem> TIER_4_SMITHING_UPGRADE_TEMPLATE = NUMINA_ITEMS.register(NuminaConstants.TIER_4_SMITHING_TEMPLATE.getPath(),
+        ()-> new SmithingTemplateItem(
+            NuminaConstants.TIER_4_UPGRADE_APPLIES_TO,
+            NuminaConstants.TIER_4_UPGRADE_INGREDIENTS,
+            NuminaConstants.TIER_4_UPGRADE,
+            NuminaConstants.TIER_4_UPGRADE_BASE_SLOT_DESCRIPTION,
+            NuminaConstants.TIER_4_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
+            createItemUpgradeIconList(),
+            createNetheriteUpgradeMaterialList()));
 
-    private static List<ResourceLocation> createNetheriteUpgradeIconList() {
+    private static List<ResourceLocation> createItemUpgradeIconList() {
         return List.of(
             IconUtils.EMPTY_SLOT_HELMET,
             SlotBackgrounds.EMPTY_SLOT_SWORD,
@@ -168,9 +167,9 @@ public class NuminaItems {
                         output.accept(WIRING_GOLD.get());
 
                         // Smithing Templates -------------------------------------------------------------------------
-                        output.accept(IRON_SMITHING_UPGRADE_TEMPLATE.get());
-                        output.accept(DIAMOND_SMITHING_UPGRADE_TEMPLATE.get());
-                        output.accept(NETHERITE_SMITHING_UPGRADE_TEMPLATE.get());
+                        output.accept(TIER_2_SMITHING_UPGRADE_TEMPLATE.get());
+                        output.accept(TIER_3_SMITHING_UPGRADE_TEMPLATE.get());
+                        output.accept(TIER_4_SMITHING_UPGRADE_TEMPLATE.get());
 
                         // Modules ------------------------------------------------------------------------------------
                         // Energy Storage
