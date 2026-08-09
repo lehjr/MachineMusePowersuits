@@ -45,11 +45,9 @@ public class LeafBlowerModule extends AbstractPowerModule {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionBase, "FE");
             addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionRadiusMultipler);
-            //
-            addBaseProperty(MPSConstants.RADIUS, 1, "m");
-            addIntTradeoffProperty(MPSConstants.RADIUS,
-                MPSConstants.RADIUS, ToolModuleConfig.leafBlowerModuleRadiusMax -1, "m", 1, 1);
 
+            addBaseProperty(MPSConstants.RADIUS, 1, "m");
+            addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, ToolModuleConfig.leafBlowerModuleRadiusMax -1, "m", 1, 1);
         }
 
         @Override
@@ -59,6 +57,7 @@ public class LeafBlowerModule extends AbstractPowerModule {
                 toggleModule(false);
                 player.stopUsingItem();
             } else if(player.isUsingItem()) {
+                useBlower(player, level, 60);
                 ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
             } else {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_LEAF_BLOWER.get());
@@ -73,11 +72,8 @@ public class LeafBlowerModule extends AbstractPowerModule {
         @Override
         public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level level, Player player, InteractionHand hand) {
             if(isModuleOnline()) {
-                int radius = (int) applyPropertyModifiers(MPSConstants.RADIUS);
-                NuminaLogger.logDebug("radius " + radius);
                 if(getPlayerEnergy(player) >= getEnergyUsage()) {
                     player.startUsingItem(hand);
-                    useBlower(radius, player, level, 60);
                     return InteractionResultHolder.success(itemStackIn);
                 }
             }
@@ -89,122 +85,69 @@ public class LeafBlowerModule extends AbstractPowerModule {
             return ToolModuleConfig.leafBlowerModuleIsAllowed;
         }
 
-        private void useBlower(int radius,Player player, Level level, double fovDegrees) {
+        /**
+         *
+         * @param player
+         * @param level
+         * @param fovDegrees
+         */
+        private void useBlower(Player player, Level level, double fovDegrees) {
             double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
             if(playerEnergy >= getEnergyUsage()) {
+                int radius = (int) applyPropertyModifiers(MPSConstants.RADIUS);
+
                 if (NuminaClientConfig.useSounds) {
-                    Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_LEAF_BLOWER.get(), SoundSource.PLAYERS, 1, 1F, false);
+                    Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_LEAF_BLOWER.get(), SoundSource.PLAYERS, 1, 1F, true);
                 }
-                getBlocksInCone(player, level, radius, fovDegrees);
 
-                Vec3 lookVec = player.getLookAngle().normalize();
+                double eyeX = player.getX();
+                double eyeY = player.getEyeY();
+                double eyeZ  = player.getZ();
+                Vec3 lookAngle = player.getLookAngle().normalize();
 
+                // Cosine threshold for the half-angle of the cone
+                double maxAngleRad = Math.toRadians(fovDegrees / 2.0);
+                double cosThreshold = Math.cos(maxAngleRad);
+                double radiusSq = radius * radius;
 
-                NuminaLogger.logDebug("look angle: " + player.getLookAngle().normalize());
-                //  X   (East+, West-)  |   Y   (Up+, Down-)    |   Z   (North-, South+)    |
-                //---------------------------------------------------------------------------------------
-                // North: look angle: (-0.26874525621565576, -0.026170557558752368, -0.9628556948882037)
-                // South: look angle: (-0.01313430507065444, 0.00258859347220951, 0.9999103905921504)
-                // East: look angle: (0.9996008861876374, -0.026170559198380884, 0.01063814664939885)
-                // West: look angle: (-0.999045530115737, -0.013038519464809798, 0.04168963619332382)
-//
-//                if(lookVec.x > 0) {
-//                    NuminaLogger.logDebug("facing east: " + lookVec.x);
-//                } else {
-//                    NuminaLogger.logDebug("facing west: " + lookVec.x);
-//                }
-//
-//                if(lookVec.z > 0) {
-//                    NuminaLogger.logDebug("facing south: " + lookVec.z);
-//                } else {
-//                    NuminaLogger.logDebug("facing north: " + lookVec.z);
-//                }
-//
-//                if(lookVec.y > 0) {
-//                    NuminaLogger.logDebug("facing up: " + lookVec.y);
-//                } else {
-//                    NuminaLogger.logDebug("facing down: " + lookVec.y);
-//                }
-//
-//                // East +/- West
-//                for (int i = pos.getX() - radius; i < pos.getX() + radius; i++) {
-//                    // North -/+ South
-//                    for (int j = pos.getZ() - radius; j < pos.getZ() + radius; j++) {
-//                        // Up +/- Down
-//                        for (int k = pos.getY() - radius; k < pos.getY() + radius; k++) {
-//                            newPos = new BlockPos(i, k, j);
-//                            BlockState state = level.getBlockState(newPos);
-//                            if (!state.isAir()) {
-//                                blockCheckAndHarvest(player, level, newPos);
-//                            }
-//                        }
-//                    }
-//                }
-            }
-        }
+                // Bounding box range
+                int minX = (int) Math.floor(eyeX - radius);
+                int maxX = (int) Math.ceil(eyeX + radius);
+                int minY = (int) Math.floor(eyeY - radius);
+                int maxY = (int) Math.ceil(eyeY + radius);
+                int minZ = (int) Math.floor(eyeZ - radius);
+                int maxZ = (int) Math.ceil(eyeZ + radius);
 
-        /**
-         * Selects block positions within a cone expanding in the direction of lookAngle.
-         *
-//         * @param eyeX      Player's eye position X
-//         * @param eyeY      Player's eye position Y
-//         * @param eyeZ      Player's eye position Z
-//         * @param lookAngle Player's look direction (from getLookAngle())
-         * @param radius    Maximum range of the cone
-         * @param fovDegrees Total opening angle of the cone (e.g., 60.0 degrees)
-         */
-        public void getBlocksInCone(Player player,
-            Level level,
-            double radius,
-            double fovDegrees) {
+                for (int x = minX; x <= maxX; x++) {
+                    for (int y = minY; y <= maxY; y++) {
+                        for (int z = minZ; z <= maxZ; z++) {
 
-            double eyeX = player.getX();
-            double eyeY = player.getEyeY();
-            double eyeZ  = player.getZ();
-            Vec3 lookAngle = player.getLookAngle().normalize();
+                            // Offset to block center
+                            double dx = (x + 0.5) - eyeX;
+                            double dy = (y + 0.5) - eyeY;
+                            double dz = (z + 0.5) - eyeZ;
 
-            // Cosine threshold for the half-angle of the cone
-            double maxAngleRad = Math.toRadians(fovDegrees / 2.0);
-            double cosThreshold = Math.cos(maxAngleRad);
-            double radiusSq = radius * radius;
+                            double distSq = dx * dx + dy * dy + dz * dz;
 
-            // Bounding box range
-            int minX = (int) Math.floor(eyeX - radius);
-            int maxX = (int) Math.ceil(eyeX + radius);
-            int minY = (int) Math.floor(eyeY - radius);
-            int maxY = (int) Math.ceil(eyeY + radius);
-            int minZ = (int) Math.floor(eyeZ - radius);
-            int maxZ = (int) Math.ceil(eyeZ + radius);
+                            // Skip blocks outside radius sphere or at exact origin
+                            if (distSq > radiusSq || distSq == 0) {
+                                continue;
+                            }
 
-            for (int x = minX; x <= maxX; x++) {
-                for (int y = minY; y <= maxY; y++) {
-                    for (int z = minZ; z <= maxZ; z++) {
+                            double dist = Math.sqrt(distSq);
 
-                        // Offset to block center
-                        double dx = (x + 0.5) - eyeX;
-                        double dy = (y + 0.5) - eyeY;
-                        double dz = (z + 0.5) - eyeZ;
+                            // Normalize direction vector pointing toward block center
+                            double dirX = dx / dist;
+                            double dirY = dy / dist;
+                            double dirZ = dz / dist;
 
-                        double distSq = dx * dx + dy * dy + dz * dz;
+                            // Dot product: lookAngle • blockDir
+                            double dotProduct = (lookAngle.x * dirX) + (lookAngle.y * dirY) + (lookAngle.z * dirZ);
 
-                        // Skip blocks outside radius sphere or at exact origin
-                        if (distSq > radiusSq || distSq == 0) {
-                            continue;
-                        }
-
-                        double dist = Math.sqrt(distSq);
-
-                        // Normalize direction vector pointing toward block center
-                        double dirX = dx / dist;
-                        double dirY = dy / dist;
-                        double dirZ = dz / dist;
-
-                        // Dot product: lookAngle • blockDir
-                        double dotProduct = (lookAngle.x * dirX) + (lookAngle.y * dirY) + (lookAngle.z * dirZ);
-
-                        // If inside cone angle, store as BlockPos
-                        if (dotProduct >= cosThreshold) {
-                            blockCheckAndHarvest(player, level, new BlockPos(x, y, z));
+                            // If inside cone angle, store as BlockPos
+                            if (dotProduct >= cosThreshold) {
+                                blockCheckAndHarvest(player, level, new BlockPos(x, y, z));
+                            }
                         }
                     }
                 }
@@ -228,8 +171,6 @@ public class LeafBlowerModule extends AbstractPowerModule {
         if(block == Blocks.SNOW || block == Blocks.SNOW_BLOCK || block == Blocks.POWDER_SNOW) {
             block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.DIAMOND_SHOVEL));
             world.removeBlock(pos, false);
-
-            NuminaLogger.logDebug("snow type block removed");
             return;
         }
 
@@ -237,37 +178,14 @@ public class LeafBlowerModule extends AbstractPowerModule {
         if(shears.isCorrectToolForDrops(state)) {
             block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.SHEARS));
             world.removeBlock(pos, false);
-            NuminaLogger.logDebug("shearable type block removed");
-
             return;
         }
-
-
 
         if ((block instanceof IShearable || block instanceof BushBlock || block instanceof LeavesBlock)
             && block.canHarvestBlock(state, world, pos, player)) {
             block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.SHEARS));
             world.removeBlock(pos, false);
-
-//            NuminaLogger.logDebug("block removed? " + block);
-            return;
         }
-        if(block != Blocks.DIRT
-            && block != Blocks.GRASS_BLOCK
-            && block != Blocks.FARMLAND
-            && block != Blocks.MYCELIUM
-            && block != Blocks.STONE
-            && block != Blocks.COBBLESTONE
-            & block != Blocks.GRANITE
-            && block != Blocks.DIORITE
-            && block != Blocks.PODZOL
-            && block != Blocks.ANDESITE
-            && block != Blocks.DEEPSLATE
-            && block != Blocks.GRAVEL
-            && block != Blocks.SAND) {
-            NuminaLogger.logDebug("block: " + block);
-        }
-
     }
 
     @Override
