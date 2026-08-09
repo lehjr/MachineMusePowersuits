@@ -50,18 +50,18 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected static final VoxelShape BASE_SHAPE = Block.box(
-            0.0D, // West
-            0.0D, // down?
-            0.0D, // north
-            16.0D, // east
-            1.0D, // up?
-            16.0D);
+        0.0D, // West
+        0.0D, // down?
+        0.0D, // north
+        16.0D, // east
+        1.0D, // up?
+        16.0D);
 
     public ChargingBase() {
         super(Properties.of()
-                .strength(0.5F, 4.0F)
-                .sound(SoundType.ANVIL)
-                .requiresCorrectToolForDrops());
+            .strength(0.5F, 4.0F)
+            .sound(SoundType.ANVIL)
+            .requiresCorrectToolForDrops());
         registerDefaultState(this.stateDefinition.any().setValue(BlockStateProperties.WATERLOGGED, false).setValue(BlockStateProperties.POWERED, false));
     }
 
@@ -105,18 +105,18 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
             return InteractionResult.SUCCESS;
         } else {
             MenuProvider containerProvider =
-                    new MenuProvider() {
-                        @Override
-                        public Component getDisplayName() {
-                            return title;
-                        }
+                new MenuProvider() {
+                    @Override
+                    public Component getDisplayName() {
+                        return title;
+                    }
 
-                        @Nullable
-                        @Override
-                        public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player pPlayer) {
-                            return new ChargingBaseMenu(containerId, player, pos);
-                        }
-                    };
+                    @Nullable
+                    @Override
+                    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player pPlayer) {
+                        return new ChargingBaseMenu(containerId, player, pos);
+                    }
+                };
             player.openMenu(containerProvider, buf -> buf.writeBlockPos(pos));
             return InteractionResult.CONSUME;
         }
@@ -141,8 +141,8 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
         return this.defaultBlockState()
-                .setValue(BlockStateProperties.POWERED, false) // fixme: should indicate if item placed has stored power
-                .setValue(WATERLOGGED, Boolean.valueOf(ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8));
+            .setValue(BlockStateProperties.POWERED, false) // fixme: should indicate if item placed has stored power
+            .setValue(WATERLOGGED, Boolean.valueOf(ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8));
     }
 
     @Nullable
@@ -158,7 +158,7 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-//        return type == NuminaObjects.CHARGING_BASE_BLOCK_ENTITY.get() ? ChargingBaseBlockEntity::tick : null;
+        //        return type == NuminaObjects.CHARGING_BASE_BLOCK_ENTITY.get() ? ChargingBaseBlockEntity::tick : null;
 
         if (level.isClientSide) {
             return null;

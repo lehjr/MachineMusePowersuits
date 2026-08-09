@@ -20,7 +20,6 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 
@@ -91,7 +90,6 @@ public class ChargingBaseBlockEntity extends BlockEntity {
         }
     }
 
-    @Nonnull
     private ItemStackHandler createItemHandler() {
         return new ItemStackHandler(SLOT_COUNT) {
             @Override
@@ -100,13 +98,12 @@ public class ChargingBaseBlockEntity extends BlockEntity {
             }
 
             @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            public boolean isItemValid(int slot, ItemStack stack) {
                 return stack.getCapability(Capabilities.EnergyStorage.ITEM) != null;
             }
         };
     }
 
-    @Nonnull
     private ExtendedEnergyStorage createEnergyStorage() {
         return new ExtendedEnergyStorage() {
             @Override

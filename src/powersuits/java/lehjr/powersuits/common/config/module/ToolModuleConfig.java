@@ -15,7 +15,7 @@ public class ToolModuleConfig {
     // Leaf Blower
     private static final ModConfigSpec.Builder LEAF_BLOWER_MODULE__SETTINGS_BUILDER = FLINT_AND_STEEL_MODULE__SETTINGS_BUILDER.pop().push("Leaf_Blower_Module");
     private static final ModConfigSpec.BooleanValue LEAF_BLOWER_MODULE__IS_ALLOWED = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
-    private static final ModConfigSpec.DoubleValue LEAF_BLOWER_MODULE__RADIUS_MAX = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.RADIUS_MAX, 1D, 0, 1000);
+    private static final ModConfigSpec.IntValue LEAF_BLOWER_MODULE__RADIUS_MAX = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.RADIUS_MAX, 10, 3, 50);
     private static final ModConfigSpec.DoubleValue LEAF_BLOWER_MODULE__ENERGY_CONSUMPTION_BASE = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 500, 0, 10000000.0D);
     private static final ModConfigSpec.DoubleValue LEAF_BLOWER_MODULE__ENERGY_CONSUMPTION_RADIUS_MULTIPLIER = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION + MPSConstants.RADIUS_MULTIPLIER  , 9500, 0, 10000000.0D);
 
@@ -48,7 +48,7 @@ public class ToolModuleConfig {
 
     // Leaf Blower
     public static boolean leafBlowerModuleIsAllowed;
-    public static double leafBlowerModuleRadiusMax;
+    public static int leafBlowerModuleRadiusMax;
     public static double leafBlowerModuleEnergyConsumptionBase;
     public static double leafBlowerModuleEnergyConsumptionRadiusMultipler;
 

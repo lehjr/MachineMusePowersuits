@@ -212,10 +212,30 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) {
         IPowerModule pm = getModuleCapability(getActiveModule());
+        NuminaLogger.logDebug("releaseUsing mci, timeLeft " + timeLeft);
+
+
         if (pm instanceof IRightClickModule rightClickModule) {
+            NuminaLogger.logDebug("releaseUsing mci, activeModule " + getActiveModule());
             rightClickModule.releaseUsing(stack, level, entityLiving, timeLeft);
+        } else {
+            NuminaLogger.logDebug(getActiveModule() + " mci not IRightClick?");
         }
     }
+
+    // Fixme: maybe just call releaseUsing with 0 timeLeft?
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+        NuminaLogger.logDebug("finishUsing " + getActiveModule());
+
+        IPowerModule pm = getModuleCapability(getActiveModule());
+        if (pm instanceof IRightClickModule rightClickModule) {
+            rightClickModule.finishUsingItem(stack, level, livingEntity);
+        }
+        return getModularItemStack();
+    }
+
+
 
     //    @Override
     //    public boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining) {

@@ -11,9 +11,9 @@ import lehjr.powersuits.common.capabilities.armor.PowerArmorModularItemWrapper;
 import lehjr.powersuits.common.capabilities.armor.PowerArmorRenderWrapper;
 import lehjr.powersuits.common.capabilities.module.PortableCraftingCapability;
 import lehjr.powersuits.common.capabilities.module.TinkerTableCap;
-import lehjr.powersuits.common.capabilities.item.tool.PowerFistHeatWrapper;
-import lehjr.powersuits.common.capabilities.item.tool.PowerFistModeChangingWrapper;
-import lehjr.powersuits.common.capabilities.item.tool.PowerFistRenderWrapper;
+import lehjr.powersuits.common.capabilities.tool.PowerFistHeatWrapper;
+import lehjr.powersuits.common.capabilities.tool.PowerFistModeChangingWrapper;
+import lehjr.powersuits.common.capabilities.tool.PowerFistRenderWrapper;
 import lehjr.powersuits.common.config.PowerFistConfig;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
@@ -369,7 +369,7 @@ public class MPSCapabilities {
 
         // Misc
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlintAndSteelModule.RightClickie(stack), MPSItems.FLINT_AND_STEEL_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LeafBlowerModule.RightClickie(stack), MPSItems.LEAF_BLOWER_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LeafBlowerModule.Ticker(stack), MPSItems.LEAF_BLOWER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LuxCapacitorModule.RightClickie(stack), MPSItems.LUX_CAPACITOR_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShearsModule.BlockBreaker(stack), MPSItems.SHEARS_MODULE.get());
 

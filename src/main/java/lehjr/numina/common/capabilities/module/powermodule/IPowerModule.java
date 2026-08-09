@@ -1,7 +1,9 @@
 package lehjr.numina.common.capabilities.module.powermodule;
 
+import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -49,6 +51,10 @@ public interface IPowerModule {
 
     default int getEnergyUsage() {
         return 0;
+    }
+
+    default double getPlayerEnergy(Player player) {
+        return ElectricItemUtils.getPlayerEnergy(player);
     }
 
     default void addSimpleTradeoff(String tradeoffName,

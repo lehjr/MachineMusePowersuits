@@ -18,8 +18,7 @@ public final class NuminaLogger {
     public static void logDebug(String string) {
         boolean debugging = true;
         try {
-//            if (!NuminaSettings.enableDebugging()) {
-              if(NuminaClientConfig.enableDebugging()) {
+            if(NuminaClientConfig.enableDebugging()) {
                 debugging = false;
             }
         } catch (Exception ignored) {

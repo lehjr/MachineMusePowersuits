@@ -140,7 +140,23 @@ public interface IModeChangingItem extends IModularItem {
 //                .orElse(stack);
 //    }
 
+    /**
+     * Item.releaseUsing(ItemStack, Level, LivingEntity, int) (ItemStack, Level, LivingEntity)} for when the player releases but the full timer has not passed
+     * @param stack
+     * @param level
+     * @param entityLiving
+     * @param timeLeft
+     */
     void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft);
+
+    /**
+     * Item.finishUsingItem(ItemStack, Level, LivingEntity) for when the player releases and enough ticks have passed
+     * @param stack
+     * @param level
+     * @param livingEntity
+     * @return
+     */
+    ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity);
 
     default boolean canContinueUsing(@Nonnull ItemStack itemStack) {
 //        return ItemStack.isSameItemSameTags(itemStack, getModularItemStack()) || ItemStack.isSameItemSameTags(itemStack, getActiveExternalModule());

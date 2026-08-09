@@ -1,9 +1,9 @@
 package lehjr.numina.common.capabilities.energy;
 
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.registration.NuminaCapabilities;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -95,13 +95,11 @@ public class ModularItemEnergyWrapper implements IEnergyStorage {
         List<IEnergyStorage> ret = new ArrayList<>();
         if (cap != null) {
             Pair<Integer, Integer> range = cap.getRangeForCategory(ModuleCategory.ENERGY_STORAGE);
-            if(range != null) {
-                for (int j = range.getFirst(); j < range.getSecond(); j++) {
-                    ItemStack module = cap.getStackInSlot(j);
-                    IEnergyStorage energyStorage = module.getCapability(Capabilities.EnergyStorage.ITEM);
-                    if (energyStorage != null) {
-                        ret.add(energyStorage);
-                    }
+            for (int j = range.getFirst(); j < range.getSecond(); j++) {
+                ItemStack module = cap.getStackInSlot(j);
+                IEnergyStorage energyStorage = module.getCapability(Capabilities.EnergyStorage.ITEM);
+                if (energyStorage != null) {
+                    ret.add(energyStorage);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package lehjr.powersuits.common.item.electric.tool;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.AdditionalInfo;
@@ -8,10 +9,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -74,6 +77,41 @@ import java.util.List;
         }
         return (int) retVal;
     }
+
+    /**
+     * Item.releaseUsing(ItemStack, Level, LivingEntity, int) (ItemStack, Level, LivingEntity)} for when the player releases but the full timer has not passed
+     * @param stack
+     * @param level
+     * @param entityLiving
+     * @param timeLeft
+     */
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) {
+
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
+        if(mci != null) {
+            NuminaLogger.logDebug("releaseUsing tool, timeleft: " + timeLeft);
+            mci.releaseUsing(stack, level, entityLiving, timeLeft);
+        }
+    }
+
+    /**
+     * Item.finishUsingItem(ItemStack, Level, LivingEntity) for when the player releases and enough ticks have passed
+     * @param stack
+     * @param level
+     * @param livingEntity
+     * @return
+     */
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
+        if(mci != null) {
+            NuminaLogger.logDebug("finishUsing tool");
+            return mci.finishUsingItem(stack, level, livingEntity);
+        }
+        return stack;
+    }
+
 
     @Override
     public int getBarColor(ItemStack stack) {

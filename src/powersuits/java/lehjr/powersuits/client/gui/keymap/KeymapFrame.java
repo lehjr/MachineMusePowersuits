@@ -54,7 +54,7 @@ public class KeymapFrame extends ScrollableFrame {
                 .filter(MPSKeyMapping.class::isInstance)
                 .map(MPSKeyMapping.class::cast)
                 .forEach(keyBinding -> {
-                    KeyBindSubFrame prev = keyBindSubFrames.size() > 0 ? keyBindSubFrames.get(keyBindSubFrames.size() -1) : null;
+                    KeyBindSubFrame prev = !keyBindSubFrames.isEmpty() ? keyBindSubFrames.getLast() : null;
                     KeyBindSubFrame subFrame = new KeyBindSubFrame(left(), top(), width() - 8, keyBinding, prev);
                     keyBindSubFrames.add(subFrame);
                     this.totalSize += subFrame.height();

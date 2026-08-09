@@ -6,6 +6,7 @@ import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.registration.NuminaCodecs;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.HeatUtils;
+import lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -98,14 +99,13 @@ public class CoolantTank extends AbstractPowerModule {
         public boolean isAllowed() {
             // FIXME: set up proper config values
             return switch (this.tier) {
-                case 1 -> true;
-                case 2 -> true;
-                case 3 -> true;
-                case 4 -> true;
+                case 1 -> EnvironmentalModuleConfig.coolantModuleIsAllowed1;
+                case 2 -> EnvironmentalModuleConfig.coolantModuleIsAllowed2;
+                case 3 -> EnvironmentalModuleConfig.coolantModuleIsAllowed3;
+                case 4 -> EnvironmentalModuleConfig.coolantModuleIsAllowed4;
                 default -> false;
             };
         }
-
 
         // one heat unit per 5 mB of water
         static final double coolingFactor = 1.0 / 5.0;

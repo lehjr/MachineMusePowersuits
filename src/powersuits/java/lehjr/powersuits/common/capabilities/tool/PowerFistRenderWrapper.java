@@ -1,4 +1,4 @@
-package lehjr.powersuits.common.capabilities.item.tool;
+package lehjr.powersuits.common.capabilities.tool;
 
 import lehjr.numina.common.capabilities.render.modelspec.IHandHeldEntitySpecNBT;
 import lehjr.numina.common.capabilities.render.modelspec.ModelSpecStorage;

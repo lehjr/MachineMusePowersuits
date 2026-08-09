@@ -1,5 +1,6 @@
 package lehjr.powersuits.common.item.electric.tool;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -135,14 +136,6 @@ public class PowerFist extends AbstractElectricTool {
             }
         }
         return super.interactLivingEntity(itemStack, player, entity, hand);
-    }
-
-    @Override
-    public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
-        if(mci != null) {
-            mci.releaseUsing(stack, worldIn, entityLiving, timeLeft);
-        }
     }
 
     @Override

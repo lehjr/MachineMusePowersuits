@@ -22,6 +22,30 @@ public class EnvironmentalModuleConfig {
     private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EFFICIENCY_ENERGY__CONSUMPTION_MULTIPLIER = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EFFICIENCY + MPSConstants.ENERGY_CONSUMPTION + MPSConstants.MULTIPLIER, 1000, 0, 1000000D);
     private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EFFICIENCY_EATING_EFFICIENCY_MULTIPLIER = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EFFICIENCY + MPSConstants.AUTO_FEEDER_EFFICIENCY + MPSConstants.MULTIPLIER, 50, 0, 1000000D);
 
+    // Coolant Tank
+    private static final ModConfigSpec.Builder COOLANT_TANK_MODULE_1__BUILDER = ACTIVE_CAMOUFLAGE_MODULE_BUILDER.pop().push("Coolant_Tank_1");
+    private static final ModConfigSpec.BooleanValue COOLANT_TANK_MODULE_1__IS_ALLOWED = COOLANT_TANK_MODULE_1__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+
+    private static final ModConfigSpec.Builder COOLANT_TANK_MODULE_2__BUILDER = COOLANT_TANK_MODULE_1__BUILDER.pop().push("Coolant_Tank_2");
+    private static final ModConfigSpec.BooleanValue COOLANT_TANK_MODULE_2__IS_ALLOWED = COOLANT_TANK_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+
+
+    private static final ModConfigSpec.Builder COOLANT_TANK_MODULE_3__BUILDER = COOLANT_TANK_MODULE_2__BUILDER.pop().push("Coolant_Tank_3");
+    private static final ModConfigSpec.BooleanValue COOLANT_TANK_MODULE_3__IS_ALLOWED = COOLANT_TANK_MODULE_3__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+
+    private static final ModConfigSpec.Builder COOLANT_TANK_MODULE_4__BUILDER = COOLANT_TANK_MODULE_3__BUILDER.pop().push("Coolant_Tank_4");
+    private static final ModConfigSpec.BooleanValue COOLANT_TANK_MODULE_4__IS_ALLOWED = COOLANT_TANK_MODULE_4__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+
+
+
+
+//    private static final ModConfigSpec.BooleanValue AUTO_FEEDER_MODULE__USE_OLD_AUTO_FEEDER = AUTO_FEEDER_MODULE_BUILDER.define(MPSConstants.USE_OLD_AUTO_FEEDER, false);
+//    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__ENERGY_CONSUMPTION_BASE = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 100, 0, 1000000D);
+//    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EATING_EFFICIENCY_BASE = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.AUTO_FEEDER_EFFICIENCY + MPSConstants.BASE, 50, 0, 1000000D);
+//    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EFFICIENCY_ENERGY__CONSUMPTION_MULTIPLIER = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EFFICIENCY + MPSConstants.ENERGY_CONSUMPTION + MPSConstants.MULTIPLIER, 1000, 0, 1000000D);
+//    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EFFICIENCY_EATING_EFFICIENCY_MULTIPLIER = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EFFICIENCY + MPSConstants.AUTO_FEEDER_EFFICIENCY + MPSConstants.MULTIPLIER, 50, 0, 1000000D);
+
+
     // Magnet
     private static final ModConfigSpec.Builder MAGNET_MODULE_BUILDER = AUTO_FEEDER_MODULE_BUILDER.pop().push("Magnet");
     private static final ModConfigSpec.BooleanValue MAGNET_MODULE__IS_ALLOWED = MAGNET_MODULE_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
@@ -58,6 +82,13 @@ public class EnvironmentalModuleConfig {
     public static double autoFeederModuleEfficiencyEnergyConsumptionMultiplier;
     public static double autoFeederModuleEfficiencyEatingEfficiencyMultiplier;
 
+    // Coolant Tank
+    public static boolean coolantModuleIsAllowed1;
+    public static boolean coolantModuleIsAllowed2;
+    public static boolean coolantModuleIsAllowed3;
+    public static boolean coolantModuleIsAllowed4;
+
+
     // Magnet
     public static boolean magnetModuleIsAllowed;
     public static int magnetModuleRadiusBase;
@@ -90,6 +121,11 @@ public class EnvironmentalModuleConfig {
             autoFeederModuleEfficiencyEnergyConsumptionMultiplier = AUTO_FEEDER_MODULE__EFFICIENCY_ENERGY__CONSUMPTION_MULTIPLIER.get();
             autoFeederModuleEfficiencyEatingEfficiencyMultiplier = AUTO_FEEDER_MODULE__EFFICIENCY_EATING_EFFICIENCY_MULTIPLIER.get();
 
+            // Coolant Tank
+            coolantModuleIsAllowed1 = COOLANT_TANK_MODULE_1__IS_ALLOWED.get();
+            coolantModuleIsAllowed2 = COOLANT_TANK_MODULE_2__IS_ALLOWED.get();
+            coolantModuleIsAllowed3 = COOLANT_TANK_MODULE_3__IS_ALLOWED.get();
+            coolantModuleIsAllowed4 = COOLANT_TANK_MODULE_4__IS_ALLOWED.get();
 
             // Magnet
             magnetModuleIsAllowed = MAGNET_MODULE__IS_ALLOWED.get();

@@ -59,7 +59,7 @@ import javax.annotation.Nullable;
 
 public class RailgunModule extends AbstractPowerModule {
 
-    public static class Ticker extends PlayerTickModule implements IRightClickModule{
+    public static class Ticker extends PlayerTickModule implements IRightClickModule {
 
         public Ticker(ItemStack module) {
             super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
