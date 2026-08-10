@@ -57,6 +57,9 @@ public class MPSConstants {
     // Fluid Tank
     public static final String FLUID_TANK_SIZE = "fluidTankSize";
     public static final String HEAT_ACTIVATION_PERCENT = "heatActivationPercent";//Heat Activation Percent";
+    public static final String HEAT_ACTIVATION_PERCENT_BASE = HEAT_ACTIVATION_PERCENT + BASE;
+    public static final String HEAT_ACTIVATION_PERCENT_MULTIPLIER = HEAT_ACTIVATION_PERCENT + MULTIPLIER;
+
     public static final String ACTIVATION_PERCENT = "activationPercent";//"Activation Percent"
 
     // AutoFeeder

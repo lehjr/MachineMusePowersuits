@@ -28,9 +28,6 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
 
             addBaseProperty(MPSConstants.ENERGY_GENERATION, 250);
             addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.ENERGY_GENERATION, 250, "FE");
-
-
-
         }
 
         @Override
@@ -46,8 +43,6 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
                     ElectricItemUtils.givePlayerEnergy(player, (int) applyPropertyModifiers(MPSConstants.ENERGY_GENERATION), false);
                 }
             }
-
-
         }
 
         @Override

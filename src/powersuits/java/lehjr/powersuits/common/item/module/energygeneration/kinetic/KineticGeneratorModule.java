@@ -36,7 +36,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
             // really hate running this check on every tick but needed for player speed adjustments
             if (ElectricItemUtils.getPlayerEnergy(player) < ElectricItemUtils.getMaxPlayerEnergy(player)) {
                 // server side
-                if (!player.level().isClientSide &&
+                if (!level.isClientSide() &&
                     // every 20 ticks
                     (player.level().getGameTime() % 20) == 0 &&
                     // player not jumping, flying, or riding

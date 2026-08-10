@@ -2,7 +2,6 @@ package lehjr.powersuits.common.item.module.tool.misc;
 
 import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.sound.Musique;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -13,7 +12,6 @@ import lehjr.powersuits.common.config.module.ToolModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -32,8 +30,6 @@ import net.neoforged.neoforge.common.IShearable;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by User: Andrew2448
@@ -46,7 +42,7 @@ public class LeafBlowerModule extends AbstractPowerModule {
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionBase, "FE");
             addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionRadiusMultipler);
 
-            addBaseProperty(MPSConstants.RADIUS, 1, "m");
+            addBaseProperty(MPSConstants.RADIUS, 1, "m"); // no config value here since 1 is as low as a single block radius can be
             addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, ToolModuleConfig.leafBlowerModuleRadiusMax -1, "m", 1, 1);
         }
 

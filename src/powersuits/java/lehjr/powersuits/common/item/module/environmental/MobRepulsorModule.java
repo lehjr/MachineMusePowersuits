@@ -20,15 +20,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nonnull;
-
 /**
  * Created by User: Andrew2448
  * 8:26 PM 4/25/13
  */
 public class MobRepulsorModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
-        public Ticker(@Nonnull ItemStack module) {
+        public Ticker(ItemStack module) {
             super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.mobReulsorModuleEnergyConsumptionBase, "FE");
         }
@@ -39,7 +37,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item) {
+        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
             int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
                 if (level.getGameTime() % 20 == 0) {

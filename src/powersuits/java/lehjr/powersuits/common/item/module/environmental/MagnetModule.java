@@ -19,12 +19,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class MagnetModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
-        public Ticker(@Nonnull ItemStack module) {
+        public Ticker(ItemStack module) {
             super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY);
                 addBaseProperty(MPSConstants.RADIUS, EnvironmentalModuleConfig.magnetModuleRadiusBase, "m");
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.magnetModuleEnergyConsumptionBase, "FE");
@@ -38,7 +37,7 @@ public class MagnetModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack stack) {
+        public void onPlayerTickActive(Player player, Level level, ItemStack stack) {
             int energyUSage = getEnergyUsage();
             if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
                 boolean isServerSide = !level.isClientSide;

@@ -10,6 +10,7 @@ import lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -27,8 +28,6 @@ import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
-
-import javax.annotation.Nonnull;
 
 public class CoolantTank extends AbstractPowerModule {
     public static class FluidHandlerItemStackMPS extends FluidHandlerItemStack {
@@ -99,7 +98,7 @@ public class CoolantTank extends AbstractPowerModule {
         public boolean isAllowed() {
             // FIXME: set up proper config values
             return switch (this.tier) {
-                case 1 -> EnvironmentalModuleConfig.coolantModuleIsAllowed1;
+                case 1 -> EnvironmentalModuleConfig.coolantTankModuleIsAllowed1;
                 case 2 -> EnvironmentalModuleConfig.coolantModuleIsAllowed2;
                 case 3 -> EnvironmentalModuleConfig.coolantModuleIsAllowed3;
                 case 4 -> EnvironmentalModuleConfig.coolantModuleIsAllowed4;
@@ -111,8 +110,8 @@ public class CoolantTank extends AbstractPowerModule {
         static final double coolingFactor = 1.0 / 5.0;
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item) {
-            IFluidHandlerItem fluidHandler = getFluidHandler(getModule());
+        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
+            IFluidHandlerItem fluidHandler = getModule().getCapability(Capabilities.FluidHandler.ITEM);
             if (fluidHandler == null) {
                 return;
             }
@@ -131,7 +130,7 @@ public class CoolantTank extends AbstractPowerModule {
                     // fill by being in water
                     if (player.isInWater() && level.getBlockState(pos).getBlock() != Blocks.BUBBLE_COLUMN) {
                         if (blockstate.getBlock() instanceof BucketPickup && blockstate.getFluidState().getType() == Fluids.WATER) {
-                            FluidActionResult pickup = FluidUtil.tryPickUpFluid(getModule(), player, level, pos, null); // fixme?
+                            FluidActionResult pickup = FluidUtil.tryPickUpFluid(getModule(), player, level, pos, Direction.UP);
                             if (pickup.isSuccess()) {
                                 FluidStack water = new FluidStack(Fluids.WATER, 1000);
                                 if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
@@ -184,10 +183,6 @@ public class CoolantTank extends AbstractPowerModule {
                     }
                 }
             }
-        }
-
-        static IFluidHandlerItem getFluidHandler(@Nonnull ItemStack module) {
-            return module.getCapability(Capabilities.FluidHandler.ITEM);
         }
     }
 }

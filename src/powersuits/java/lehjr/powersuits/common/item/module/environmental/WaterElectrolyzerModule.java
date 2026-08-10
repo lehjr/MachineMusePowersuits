@@ -13,8 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import javax.annotation.Nonnull;
-
 public class WaterElectrolyzerModule extends AbstractPowerModule {
 
     public static class Ticker extends PlayerTickModule {
@@ -30,7 +28,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack item) {
+        public void onPlayerTickInactive(Player player, Level level, ItemStack item) {
             super.onPlayerTickInactive(player, level, item);
         }
 
