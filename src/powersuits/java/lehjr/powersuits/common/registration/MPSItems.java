@@ -1,7 +1,5 @@
 package lehjr.powersuits.common.registration;
 
-import lehjr.numina.common.container.slot.SlotBackgrounds;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.block.TinkerTableItem;
 import lehjr.powersuits.common.item.debug.MPSDebugItem;
@@ -15,6 +13,7 @@ import lehjr.powersuits.common.item.module.energygeneration.heat.ThermalGenerato
 import lehjr.powersuits.common.item.module.energygeneration.solar.SolarGeneratorModule;
 import lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
+import lehjr.powersuits.common.item.module.environmental.CoolantTankModule;
 import lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
@@ -52,24 +51,19 @@ import lehjr.powersuits.common.item.module.weapon.LightningModule;
 import lehjr.powersuits.common.item.module.weapon.MeleeAssistModule;
 import lehjr.powersuits.common.item.module.weapon.PlasmaCannonModule;
 import lehjr.powersuits.common.item.module.weapon.RailgunModule;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SmithingTemplateItem;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = MPSConstants.MOD_ID)
@@ -197,10 +191,12 @@ public class MPSItems {
     // Environmental ------------------------------------------------------------------------------
     public static DeferredHolder<Item, ActiveCamouflageModule> ACTIVE_CAMOUFLAGE_MODULE = MPS_ITEMS.register(MPSConstants.ACTIVE_CAMOUFLAGE_MODULE.getPath(), ActiveCamouflageModule::new);
     public static DeferredHolder<Item, AutoFeederModule> AUTO_FEEDER_MODULE = MPS_ITEMS.register(MPSConstants.AUTO_FEEDER_MODULE.getPath(), AutoFeederModule::new);
-    //    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_1 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_1.getPath(), CoolingSystemModule::new);
-    //    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_2 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_2.getPath(), CoolingSystemModule::new);
-    //    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_3 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_3.getPath(), CoolingSystemModule::new);
-    //    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_4 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_4.getPath(), CoolingSystemModule::new);
+
+    public static DeferredHolder<Item, CoolantTankModule> COOLANT_TANK_MODULE_1 = MPS_ITEMS.register(MPSConstants.COOLANT_TANK_MODULE_1.getPath(), CoolantTankModule::new);
+    public static DeferredHolder<Item, CoolantTankModule> COOLANT_TANK_MODULE_2 = MPS_ITEMS.register(MPSConstants.COOLANT_TANK_MODULE_2.getPath(), CoolantTankModule::new);
+    public static DeferredHolder<Item, CoolantTankModule> COOLANT_TANK_MODULE_3 = MPS_ITEMS.register(MPSConstants.COOLANT_TANK_MODULE_3.getPath(), CoolantTankModule::new);
+    public static DeferredHolder<Item, CoolantTankModule> COOLANT_TANK_MODULE_4 = MPS_ITEMS.register(MPSConstants.COOLANT_TANK_MODULE_4.getPath(), CoolantTankModule::new);
+
     public static DeferredHolder<Item, MagnetModule> MAGNET_MODULE = MPS_ITEMS.register(MPSConstants.MAGNET_MODULE.getPath(), MagnetModule::new);
     public static DeferredHolder<Item, MobRepulsorModule> MOB_REPULSOR_MODULE = MPS_ITEMS.register(MPSConstants.MOB_REPULSOR_MODULE.getPath(), MobRepulsorModule::new);
     public static DeferredHolder<Item, PiglinPacificationModule> PIGLIN_PACIFICATION_MODULE = MPS_ITEMS.register(MPSConstants.PIGLIN_PACIFICATION_MODULE.getPath(), PiglinPacificationModule::new);

@@ -24,17 +24,19 @@ public class PowerArmorModularItemWrapper extends ModularItem {
         this.type = ItemUtils.getArmorType(modularItem);
         ArmorItem.Type type = ItemUtils.getArmorType(getModularItemStack());
         Map<ModuleCategory, RangedWrapper> rangedWrapperMap = new HashMap<>();
+        int numSlots = getSlots();
 
         switch (type) {
             case HELMET -> {
+
                 // Note on ranged wrapper. The max slot is actually max plus 1.
                 rangedWrapperMap.put(ModuleCategory.ARMOR, new RangedWrapper(this, 0, 1));
-                if (getSlots() > 1) {
+                if (numSlots > 1) {
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new RangedWrapper(this, 1, 2));
-                    if (getSlots() > 2) {
+                    if (numSlots > 2) {
                         rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION, new RangedWrapper(this, 2, 3));
-                        if (getSlots() > 3) {
-                            rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 3, this.getSlots()));
+                        if (numSlots > 3) {
+                            rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 3, numSlots));
                         }
                     }
                 }
@@ -42,13 +44,16 @@ public class PowerArmorModularItemWrapper extends ModularItem {
             }
             case CHESTPLATE -> {
                 rangedWrapperMap.put(ModuleCategory.ARMOR, new RangedWrapper(this, 0, 1));
-                if (getSlots() > 1) {
+                if (numSlots > 1) {
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new RangedWrapper(this, 1, 2));
-                    if (getSlots() > 2) {
+                    if (numSlots > 2) {
                         rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION, new RangedWrapper(this, 2, 3));
                         // TODO?: cooling system sub category?
-                        if (getSlots() > 3) {
-                            rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 3, this.getSlots()));
+                        if (numSlots > 3) {
+                            rangedWrapperMap.put(ModuleCategory.FLUID_STORAGE, new RangedWrapper(this, 3, 4));
+                            if(numSlots > 4) {
+                                rangedWrapperMap.put(ModuleCategory.FLUID_STORAGE, new RangedWrapper(this, 4, numSlots));
+                            }
                         }
                     }
                 }
@@ -57,12 +62,12 @@ public class PowerArmorModularItemWrapper extends ModularItem {
 
             case LEGGINGS -> {
                 rangedWrapperMap.put(ModuleCategory.ARMOR, new RangedWrapper(this, 0, 1));
-                if (getSlots() > 1) {
+                if (numSlots > 1) {
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new RangedWrapper(this, 1, 2));
-                    if (getSlots() > 2) {
+                    if (numSlots > 2) {
                         rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION, new RangedWrapper(this, 2, 3));
-                        if (getSlots() > 3) {
-                            rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 3, this.getSlots()));
+                        if (numSlots > 3) {
+                            rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 3, numSlots));
                         }
                     }
                 }
@@ -71,12 +76,12 @@ public class PowerArmorModularItemWrapper extends ModularItem {
 
             case BOOTS -> {
                 rangedWrapperMap.put(ModuleCategory.ARMOR, new RangedWrapper(this, 0, 1));
-                if (getSlots() > 1) {
+                if (numSlots > 1) {
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new RangedWrapper(this, 1, 2));
-                    if (getSlots() > 2) {
+                    if (numSlots > 2) {
                         rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION, new RangedWrapper(this, 2, 3));
-                        if (getSlots() > 3) {
-                            rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 3, this.getSlots()));
+                        if (numSlots > 3) {
+                            rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 3, numSlots));
                         }
                     }
                 }

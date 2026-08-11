@@ -6,6 +6,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
 import lehjr.numina.common.capabilities.render.hud.HudModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.capabilities.armor.PowerArmorFluidWrapper;
 import lehjr.powersuits.common.capabilities.armor.PowerArmorHeatWrapper;
 import lehjr.powersuits.common.capabilities.armor.PowerArmorModularItemWrapper;
 import lehjr.powersuits.common.capabilities.armor.PowerArmorRenderWrapper;
@@ -21,6 +22,7 @@ import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import lehjr.powersuits.common.item.module.energygeneration.solar.SolarGeneratorModule;
 import lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
+import lehjr.powersuits.common.item.module.environmental.CoolantTankModule;
 import lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
@@ -161,8 +163,16 @@ public class MPSCapabilities {
             MPSItems.POWER_ARMOR_BOOTS_4.get());
 
         // Fluid
-        // Todo: chestplate wrappers
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) -> new PowerArmorFluidWrapper(stack),
+            MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_4.get());
 
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 1), MPSItems.COOLANT_TANK_MODULE_1.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 2), MPSItems.COOLANT_TANK_MODULE_2.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 3), MPSItems.COOLANT_TANK_MODULE_3.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 4), MPSItems.COOLANT_TANK_MODULE_4.get());
 
         // Render
         event.registerItem(NuminaCapabilities.RENDER, (stack, ctx) -> new PowerArmorRenderWrapper(stack),

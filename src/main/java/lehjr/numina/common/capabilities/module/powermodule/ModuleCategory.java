@@ -37,6 +37,7 @@ public enum ModuleCategory {
     ARMOR("armor", "Armor", true, false),
     ENERGY_STORAGE("energystorage", "Energy_Storage", true, true),
     ENERGY_GENERATION("energygeneration", "Energy_Generation", true, true),
+    FLUID_STORAGE("fluidstorage", "Fluid_Storage", true, true),
     TOOL("tool", "Tool"),
 
     // FIXME/TODO finish:

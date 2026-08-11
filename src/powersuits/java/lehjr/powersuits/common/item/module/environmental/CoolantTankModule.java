@@ -29,7 +29,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 
-public class CoolantTank extends AbstractPowerModule {
+public class CoolantTankModule extends AbstractPowerModule {
     public static class FluidHandlerItemStackMPS extends FluidHandlerItemStack {
         /**
          * @param container The container itemStack, data is stored on it directly under a component.
@@ -66,31 +66,31 @@ public class CoolantTank extends AbstractPowerModule {
             super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY);
             this.tier = tier;
             switch (tier) {
-            case 1: {
-                // FIXME: set up proper config values
-                addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
-                addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
-                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
-                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
-            }
-            case 2: {
-                addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
-                addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
-                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
-                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
-            }
-            case 3: {
-                addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
-                addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
-                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
-                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
-            }
-            case 4: {
-                addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
-                addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
-                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
-                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
-            }
+                case 1: {
+                    // FIXME: set up proper config values
+                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
+                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+                }
+                case 2: {
+                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
+                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+                }
+                case 3: {
+                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
+                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+                }
+                case 4: {
+                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
+                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+                }
             }
         }
 

@@ -2,9 +2,6 @@ package lehjr.powersuits.common.constants;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.StringUtils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class MPSConstants {
@@ -373,10 +370,10 @@ public class MPSConstants {
     // Environmental ------------------------------------------------------------------------------
     public static final ResourceLocation ACTIVE_CAMOUFLAGE_MODULE = getRegName("invisibility");
     public static final ResourceLocation AUTO_FEEDER_MODULE = getRegName("auto_feeder");
-    public static final ResourceLocation COOLING_SYSTEM_MODULE_1 = getRegName("cooling_system1");
-    public static final ResourceLocation COOLING_SYSTEM_MODULE_2 = getRegName("cooling_system2");
-    public static final ResourceLocation COOLING_SYSTEM_MODULE_3 = getRegName("cooling_system3");
-    public static final ResourceLocation COOLING_SYSTEM_MODULE_4 = getRegName("cooling_system4");
+    public static final ResourceLocation COOLANT_TANK_MODULE_1 = getRegName("coolant_tank1");
+    public static final ResourceLocation COOLANT_TANK_MODULE_2 = getRegName("coolant_tank2");
+    public static final ResourceLocation COOLANT_TANK_MODULE_3 = getRegName("coolant_tank3");
+    public static final ResourceLocation COOLANT_TANK_MODULE_4 = getRegName("coolant_tank4");
     public static final ResourceLocation MAGNET_MODULE = getRegName("magnet");
     public static final ResourceLocation PIGLIN_PACIFICATION_MODULE = getRegName("piglin_pacification_module");
     public static final ResourceLocation MOB_REPULSOR_MODULE = getRegName("mob_repulsor");
