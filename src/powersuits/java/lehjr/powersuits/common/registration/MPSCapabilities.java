@@ -19,6 +19,7 @@ import lehjr.powersuits.common.config.PowerFistConfig;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
+import lehjr.powersuits.common.item.module.energygeneration.heat.ThermalGeneratorModule;
 import lehjr.powersuits.common.item.module.energygeneration.solar.SolarGeneratorModule;
 import lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
@@ -251,12 +252,10 @@ public class MPSCapabilities {
 
         // Thermal
         //FIXME!!!
-//        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new ThermalGeneratorModule.FluidHandlerItemStackMPS(stack, 1), MPSItems.THERMAL_GENERATOR_MODULE_1.get());
-//        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new ThermalGeneratorModule.FluidHandlerItemStackMPS(stack, 2), MPSItems.THERMAL_GENERATOR_MODULE_2.get());
-//        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new ThermalGeneratorModule.FluidHandlerItemStackMPS(stack, 3), MPSItems.THERMAL_GENERATOR_MODULE_3.get());
-//        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new ThermalGeneratorModule.FluidHandlerItemStackMPS(stack, 4), MPSItems.THERMAL_GENERATOR_MODULE_4.get());
-
-
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 1), MPSItems.THERMAL_GENERATOR_MODULE_1.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 2), MPSItems.THERMAL_GENERATOR_MODULE_2.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 3), MPSItems.THERMAL_GENERATOR_MODULE_3.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 4), MPSItems.THERMAL_GENERATOR_MODULE_4.get());
 
         // Solar
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 1), MPSItems.SOLAR_GENERATOR_MODULE_1.get());
@@ -270,11 +269,10 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AutoFeederModule.Ticker(stack), MPSItems.AUTO_FEEDER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ActiveCamouflageModule.Ticker(stack), MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get());
 
-
-//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 1), MPSItems.COOLING_MODULE_1.get());
-//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 2), MPSItems.COOLING_MODULE_2.get());
-//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 3), MPSItems.COOLING_MODULE_2.get());
-//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 4), MPSItems.COOLING_MODULE_4.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack, 1), MPSItems.COOLANT_TANK_MODULE_1.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack,  2), MPSItems.COOLANT_TANK_MODULE_2.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack, 3), MPSItems.COOLANT_TANK_MODULE_3.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack, 4), MPSItems.COOLANT_TANK_MODULE_4.get());
 
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MagnetModule.Ticker(stack), MPSItems.MAGNET_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());

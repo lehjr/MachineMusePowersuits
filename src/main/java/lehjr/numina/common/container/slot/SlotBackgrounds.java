@@ -41,7 +41,8 @@ public class SlotBackgrounds {
         put(ModuleCategory.ARMOR, Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD));
 
         put(ModuleCategory.ENERGY_STORAGE, Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, NuminaConstants.ENERGY_STORAGE_ICON));
-        put(ModuleCategory.ENERGY_GENERATION, Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS));
+        put(ModuleCategory.ENERGY_GENERATION, Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, NuminaConstants.ENERGY_GENERATION_ICON));
+        put(ModuleCategory.FLUID_STORAGE, Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, NuminaConstants.FLUID_STORAGE_ICON));
     }};
 
     @Nullable

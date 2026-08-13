@@ -15,52 +15,29 @@ public class EnergyGenerationModuleConfig {
 
 
     // Thermal Generators ----------------------------------------------------------------------------
-    private static final ModConfigSpec.Builder THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER = COMBUSTION_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Heat_Generators").push("Heat_Energy_Generator_Module_1");
+    private static final ModConfigSpec.Builder THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER = COMBUSTION_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Thermal_Generators").push("Thermal_Energy_Generator_Module_1");
     private static final ModConfigSpec.BooleanValue THERMAL_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
-    private static final ModConfigSpec.IntValue THERMAL_ENERGY_GENERATOR_MODULE_1__FLUID_TANK_SIZE = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.FLUID_TANK_SIZE, 1000, 0, 100000);
-    private static final ModConfigSpec.IntValue THERMAL_ENERGY_GENERATOR_MODULE_1__HEAT_ACTIVATION_PERCENT = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.HEAT_ACTIVATION_PERCENT , 80, 0, 100);
+    private static final ModConfigSpec.DoubleValue THERMAL_ENERGY_GENERATOR_MODULE_1__THERMOELECTRIC_ENERGY_GENERATION = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION, 250D, 0, 100000D);
+    private static final ModConfigSpec.DoubleValue THERMAL_ENERGY_GENERATOR_MODULE_1__STEAM_ELECTRIC_ENERGY_GENERATION = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.STEAM_ELECTRIC_ENERGY_GENERATION, 500D, 0, 100000D);
 
+    private static final ModConfigSpec.Builder THERMAL_ENERGY_GENERATOR_MODULE_2__BUILDER = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Thermal_Energy_Generator_Module_2");
+    private static final ModConfigSpec.BooleanValue THERMAL_ENERGY_GENERATOR_MODULE_2__IS_ALLOWED = THERMAL_ENERGY_GENERATOR_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue THERMAL_ENERGY_GENERATOR_MODULE_2__THERMOELECTRIC_ENERGY_GENERATION = THERMAL_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION, 250D, 0, 100000D);
+    private static final ModConfigSpec.DoubleValue THERMAL_ENERGY_GENERATOR_MODULE_2__STEAM_ELECTRIC_ENERGY_GENERATION = THERMAL_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.STEAM_ELECTRIC_ENERGY_GENERATION, 500D, 0, 100000D);
 
-    // Activation percent
-// water per energy
-// heat per water
+    private static final ModConfigSpec.Builder THERMAL_ENERGY_GENERATOR_MODULE_3__BUILDER = THERMAL_ENERGY_GENERATOR_MODULE_2__BUILDER.pop().push("Thermal_Energy_Generator_Module_3");
+    private static final ModConfigSpec.BooleanValue THERMAL_ENERGY_GENERATOR_MODULE_3__IS_ALLOWED = THERMAL_ENERGY_GENERATOR_MODULE_3__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue THERMAL_ENERGY_GENERATOR_MODULE_3__THERMOELECTRIC_ENERGY_GENERATION = THERMAL_ENERGY_GENERATOR_MODULE_3__BUILDER.defineInRange(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION, 250D, 0, 100000D);
+    private static final ModConfigSpec.DoubleValue THERMAL_ENERGY_GENERATOR_MODULE_3__STEAM_ELECTRIC_ENERGY_GENERATION = THERMAL_ENERGY_GENERATOR_MODULE_3__BUILDER.defineInRange(MPSConstants.STEAM_ELECTRIC_ENERGY_GENERATION, 500D, 0, 100000D);
 
-    public static boolean thermalEnergyGenerator_1_isAllowed;
-    public static int thermalEnergyGenerator_1_fluidTankSize;
-    public static int thermalEnergyGenerator_1_heatActivationPercent;
-
-    public static int thermalEnergyGenerator_1_passiveEnergyPerHeatPerTick;
-    public static int thermalEnergyGenerator_1_activeEnergyPerHeatPerTick;
-    public static int thermalEnergyGenerator_1_activeWaterPerHeatPerTick;
-
-
-
-
-
-    private static final ModConfigSpec.Builder HEAT_ENERGY_GENERATOR_MODULE_2__BUILDER = THERMAL_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Heat_Energy_Generator_Module_2");
-    private static final ModConfigSpec.BooleanValue HEAT_ENERGY_GENERATOR_MODULE_2__IS_ALLOWED = HEAT_ENERGY_GENERATOR_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private static final ModConfigSpec.Builder THERMAL_ENERGY_GENERATOR_MODULE_4__BUILDER = THERMAL_ENERGY_GENERATOR_MODULE_3__BUILDER.pop().push("Thermal_Energy_Generator_Module_4");
+    private static final ModConfigSpec.BooleanValue THERMAL_ENERGY_GENERATOR_MODULE_4__IS_ALLOWED = THERMAL_ENERGY_GENERATOR_MODULE_4__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue THERMAL_ENERGY_GENERATOR_MODULE_4__THERMOELECTRIC_ENERGY_GENERATION = THERMAL_ENERGY_GENERATOR_MODULE_4__BUILDER.defineInRange(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION, 250D, 0, 100000D);
+    private static final ModConfigSpec.DoubleValue THERMAL_ENERGY_GENERATOR_MODULE_4__STEAM_ELECTRIC_ENERGY_GENERATION = THERMAL_ENERGY_GENERATOR_MODULE_4__BUILDER.defineInRange(MPSConstants.STEAM_ELECTRIC_ENERGY_GENERATION, 500D, 0, 100000D);
 
     // Kinetic Generators -------------------------------------------------------------------------
-    private static final ModConfigSpec.Builder KINETIC_ENERGY_GENERATOR_MODULE_1__BUILDER = HEAT_ENERGY_GENERATOR_MODULE_2__BUILDER.pop().push("Kinetic_Generators").push("Kinetic_Energy_Generator_Module_1");
+    private static final ModConfigSpec.Builder KINETIC_ENERGY_GENERATOR_MODULE_1__BUILDER = THERMAL_ENERGY_GENERATOR_MODULE_2__BUILDER
+        .pop().push("Kinetic_Generators").push("Kinetic_Energy_Generator_Module_1");
     private static final ModConfigSpec.BooleanValue KINETIC_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED = KINETIC_ENERGY_GENERATOR_MODULE_1__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
     private static final ModConfigSpec.Builder KINETIC_ENERGY_GENERATOR_MODULE_2__BUILDER = KINETIC_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Kinetic_Energy_Generator_Module_2");
@@ -106,7 +83,21 @@ public class EnergyGenerationModuleConfig {
     // Combustion Generators
 
     // Heat Generators
+    public static boolean thermalEnergyGenerator_1_isAllowed;
+    public static double thermalEnergyGenerator_1_thermoelectricEnergyGeneration;
+    public static double thermalEnergyGenerator_1_steamElectricEnergyGeneration;
 
+    public static boolean thermalEnergyGenerator_2_isAllowed;
+    public static double thermalEnergyGenerator_2_thermoelectricEnergyGeneration;
+    public static double thermalEnergyGenerator_2_steamElectricEnergyGeneration;
+
+    public static boolean thermalEnergyGenerator_3_isAllowed;
+    public static double thermalEnergyGenerator_3_thermoelectricEnergyGeneration;
+    public static double thermalEnergyGenerator_3_steamElectricEnergyGeneration;
+
+    public static boolean thermalEnergyGenerator_4_isAllowed;
+    public static double thermalEnergyGenerator_4_thermoelectricEnergyGeneration;
+    public static double thermalEnergyGenerator_4_steamElectricEnergyGeneration;
     // Kinetic Generators
 
     // Solar Generators
@@ -136,6 +127,23 @@ public class EnergyGenerationModuleConfig {
 
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_GENERATOR_MODULE_SPEC) {
+            // Thermal Generators -----------------------------------------------------------------------------------------------
+            thermalEnergyGenerator_1_isAllowed = THERMAL_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED.get();
+            thermalEnergyGenerator_1_thermoelectricEnergyGeneration = THERMAL_ENERGY_GENERATOR_MODULE_1__THERMOELECTRIC_ENERGY_GENERATION.get();
+            thermalEnergyGenerator_1_steamElectricEnergyGeneration = THERMAL_ENERGY_GENERATOR_MODULE_1__STEAM_ELECTRIC_ENERGY_GENERATION.get();
+
+            thermalEnergyGenerator_2_isAllowed = THERMAL_ENERGY_GENERATOR_MODULE_2__IS_ALLOWED.get();
+            thermalEnergyGenerator_2_thermoelectricEnergyGeneration = THERMAL_ENERGY_GENERATOR_MODULE_2__THERMOELECTRIC_ENERGY_GENERATION.get();
+            thermalEnergyGenerator_2_steamElectricEnergyGeneration = THERMAL_ENERGY_GENERATOR_MODULE_2__STEAM_ELECTRIC_ENERGY_GENERATION.get();
+
+            thermalEnergyGenerator_3_isAllowed = THERMAL_ENERGY_GENERATOR_MODULE_3__IS_ALLOWED.get();
+            thermalEnergyGenerator_3_thermoelectricEnergyGeneration = THERMAL_ENERGY_GENERATOR_MODULE_3__THERMOELECTRIC_ENERGY_GENERATION.get();
+            thermalEnergyGenerator_3_steamElectricEnergyGeneration = THERMAL_ENERGY_GENERATOR_MODULE_3__STEAM_ELECTRIC_ENERGY_GENERATION.get();
+
+            thermalEnergyGenerator_4_isAllowed = THERMAL_ENERGY_GENERATOR_MODULE_4__IS_ALLOWED.get();
+            thermalEnergyGenerator_4_thermoelectricEnergyGeneration = THERMAL_ENERGY_GENERATOR_MODULE_4__THERMOELECTRIC_ENERGY_GENERATION.get();
+            thermalEnergyGenerator_4_steamElectricEnergyGeneration = THERMAL_ENERGY_GENERATOR_MODULE_4__STEAM_ELECTRIC_ENERGY_GENERATION.get();
+
             // Solar Generators -------------------------------------------------------------------------------------------------
             solarGeneratorModule_1_IsAllowed = SOLAR_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED.get();
             solarGeneratorModule_1_energyGenerationDay = SOLAR_ENERGY_GENERATOR_MODULE_1__ENERGY_GENERATION_DAY_BASE.get();

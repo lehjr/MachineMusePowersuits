@@ -52,7 +52,7 @@ public class PowerArmorModularItemWrapper extends ModularItem {
                         if (numSlots > 3) {
                             rangedWrapperMap.put(ModuleCategory.FLUID_STORAGE, new RangedWrapper(this, 3, 4));
                             if(numSlots > 4) {
-                                rangedWrapperMap.put(ModuleCategory.FLUID_STORAGE, new RangedWrapper(this, 4, numSlots));
+                                rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 4, numSlots));
                             }
                         }
                     }

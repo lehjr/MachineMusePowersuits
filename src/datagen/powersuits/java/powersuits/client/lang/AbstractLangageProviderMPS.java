@@ -1,6 +1,6 @@
 package powersuits.client.lang;
 
-import numina.client.AbstractLanguageProvider;
+import numina.client.lang.AbstractLanguageProvider;
 import net.minecraft.data.PackOutput;
 
 public abstract class AbstractLangageProviderMPS extends AbstractLanguageProvider {

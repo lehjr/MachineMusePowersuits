@@ -24,6 +24,7 @@ public class NuminaIcons {
     public final DrawableIcon colorclicker;
     public final DrawableIcon energygeneration;
     public final DrawableIcon energystorage;
+    public final DrawableIcon fluidStorage;
     public final DrawableIcon glowArmor;
 
     public final DrawableIcon lightning;
@@ -43,6 +44,7 @@ public class NuminaIcons {
         this.colorclicker = registerIcon("colorclicker", 8, 8);
         this.energygeneration = registerIcon(NuminaConstants.ENERGY_GENERATION_ICON,32, 32);
         this.energystorage = registerIcon(NuminaConstants.ENERGY_STORAGE_ICON,32, 32);
+        this.fluidStorage = registerIcon(NuminaConstants.FLUID_STORAGE_ICON, 32, 32);
         this.glowArmor= registerIcon("glowarmor", 8, 8);
         this.lightning = registerIcon("lightning", 800, 62);
         this.lightning2 = registerIcon("lightning2", 800, 62);

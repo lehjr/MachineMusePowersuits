@@ -32,17 +32,17 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
             super.onPlayerTickInactive(player, level, item);
         }
 
-            @Override
-            public void onPlayerTickActive(Player player, Level level, ItemStack item) {
-                double energy = ElectricItemUtils.getPlayerEnergy(player);
-                double energyConsumption = Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
-                if (energy > energyConsumption && player.getAirSupply() < 10) {
-                    if ((level.isClientSide()) && NuminaClientConfig.useSounds) {
-                        player.playSound(MPSSoundDictionary.SOUND_EVENT_ELECTROLYZER.get(), 1.0f, 1.0f);
-                    }
-                    ElectricItemUtils.drainPlayerEnergy(player, energyConsumption, false);
-                    player.setAirSupply(300);
+        @Override
+        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
+            double energy = ElectricItemUtils.getPlayerEnergy(player);
+            double energyConsumption = Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
+            if (energy > energyConsumption && player.getAirSupply() < 10) {
+                if ((level.isClientSide()) && NuminaClientConfig.useSounds) {
+                    player.playSound(MPSSoundDictionary.SOUND_EVENT_ELECTROLYZER.get(), 1.0f, 1.0f);
                 }
+                ElectricItemUtils.drainPlayerEnergy(player, energyConsumption, false);
+                player.setAirSupply(300);
             }
+        }
     }
 }

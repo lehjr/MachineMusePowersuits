@@ -8,6 +8,7 @@ import lehjr.powersuits.common.config.PowerFistConfig;
 import lehjr.powersuits.common.config.module.ArmorModuleConfig;
 import lehjr.powersuits.common.config.module.AxeModuleConfig;
 import lehjr.powersuits.common.config.module.CosmeticModuleConfig;
+import lehjr.powersuits.common.config.module.EnergyGenerationModuleConfig;
 import lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import lehjr.powersuits.common.config.module.HoeModuleConfig;
 import lehjr.powersuits.common.config.module.MiningEnchantmentModuleConfig;
@@ -54,7 +55,7 @@ public class MPSConfigurations {
         registerCommon(modContainer, AxeModuleConfig.MPS_AXE_MODULE_SPEC, "common/items/modules/tool_axe.toml");
 
         // Energy Generation
-        // Todo
+        registerCommon(modContainer, EnergyGenerationModuleConfig.MPS_GENERATOR_MODULE_SPEC, "common/items/modules/energy_generation.toml");
 
         // Environmental
         registerCommon(modContainer, EnvironmentalModuleConfig.ENVIRONMENTAL_MODULE_SPEC, "common/items/modules/environmental.toml");
@@ -101,7 +102,9 @@ public class MPSConfigurations {
         ArmorModuleConfig.onLoad(event);
 
         CosmeticModuleConfig.onLoad(event);
-        // TODO: EnergyGeneration
+
+        EnergyGenerationModuleConfig.onLoad(event);
+
         EnvironmentalModuleConfig.onLoad(event);
 
         MiningEnchantmentModuleConfig.onLoad(event);

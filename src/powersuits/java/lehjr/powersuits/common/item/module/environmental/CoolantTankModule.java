@@ -52,10 +52,10 @@ public class CoolantTankModule extends AbstractPowerModule {
     static int getCapacity(int tier) {
         return switch (tier) {
             // FIXME: set up proper config values
-            case 1 -> 1000;
-            case 2 -> 2000;
-            case 3 -> 3000;
-            case 4 -> 4000;
+            case 1 -> EnvironmentalModuleConfig.coolantTankModuleCapacity1;
+            case 2 -> EnvironmentalModuleConfig.coolantTankModuleCapacity2;
+            case 3 -> EnvironmentalModuleConfig.coolantTankModuleCapacity3;
+            case 4 -> EnvironmentalModuleConfig.coolantTankModuleCapacity4;
             default -> 0;
         };
     }
@@ -63,7 +63,7 @@ public class CoolantTankModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
         int tier;
         public Ticker(ItemStack module, int tier) {
-            super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY);
+            super(module, ModuleCategory.FLUID_STORAGE, ModuleTarget.TORSOONLY);
             this.tier = tier;
             switch (tier) {
                 case 1: {

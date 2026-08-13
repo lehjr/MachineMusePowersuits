@@ -1,4 +1,4 @@
-package numina.client;
+package numina.client.lang;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;

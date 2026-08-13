@@ -212,7 +212,7 @@ public class NuminaConstants {
 
     public static final ResourceLocation ENERGY_STORAGE_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energystorage");
     public static final ResourceLocation ENERGY_GENERATION_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energygeneration");
-
+    public static final ResourceLocation FLUID_STORAGE_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "droplet");
 
     public static ResourceLocation getRegName(String regNameString) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, regNameString);

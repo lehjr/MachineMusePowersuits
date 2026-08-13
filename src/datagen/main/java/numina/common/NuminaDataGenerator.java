@@ -2,7 +2,8 @@ package numina.common;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
-import numina.client.NuminaLanguageProvider_EN_US;
+import numina.client.lang.NuminaLanguageProvider_EN_US;
+import numina.client.model.NuminaItemModelProvider;
 import numina.common.damage.HeatDamageDataGen;
 import numina.common.loot.NuminaBlockLoot;
 import numina.common.loot.NuminaBlockTagProvider;
@@ -34,6 +35,9 @@ public class NuminaDataGenerator {
 
         //Client side data generators
         generator.addProvider(event.includeServer(), new NuminaLanguageProvider_EN_US(output));
+        generator.addProvider(event.includeClient(), new NuminaItemModelProvider(output, helper));
+
+
 //        translator.quit();
 
 //        PackOutput pOutput,

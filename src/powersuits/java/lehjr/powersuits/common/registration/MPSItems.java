@@ -362,6 +362,11 @@ public class MPSItems {
 
                 // Energy Generation ----------------------------------
                 // Energy Generation --------------------------------------------------------------------------
+                // Thermal
+                output.accept(THERMAL_GENERATOR_MODULE_1.get());
+                output.accept(THERMAL_GENERATOR_MODULE_2.get());
+                output.accept(THERMAL_GENERATOR_MODULE_3.get());
+                output.accept(THERMAL_GENERATOR_MODULE_4.get());
 
                 // Solar
                 output.accept(SOLAR_GENERATOR_MODULE_1.get());
@@ -375,10 +380,12 @@ public class MPSItems {
                 // Environmental --------------------------------------
                 output.accept(ACTIVE_CAMOUFLAGE_MODULE.get());
                 output.accept(AUTO_FEEDER_MODULE.get());
-                //                        output.accept(COOLING_MODULE_1.get());
-                //                        output.accept(COOLING_MODULE_2.get());
-                //                        output.accept(COOLING_MODULE_3.get());
-                //                        output.accept(COOLING_MODULE_4.get());
+
+                output.accept(COOLANT_TANK_MODULE_1.get());
+                output.accept(COOLANT_TANK_MODULE_2.get());
+                output.accept(COOLANT_TANK_MODULE_3.get());
+                output.accept(COOLANT_TANK_MODULE_4.get());
+
                 output.accept(MAGNET_MODULE.get());
                 output.accept(MOB_REPULSOR_MODULE.get());
                 output.accept(PIGLIN_PACIFICATION_MODULE.get());

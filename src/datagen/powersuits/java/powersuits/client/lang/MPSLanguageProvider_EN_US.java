@@ -96,9 +96,17 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 //        addItemDescriptions(MPSItems.KINETIC_GENERATOR_MODULE.get(), "Generate power with your movement.");
 
         // Thermal Generator ---------------------------------------------------------------------------
-//        add(MPSItems.THERMAL_GENERATOR_MODULE.get(), "Thermal Generator");
-//
-//        addItemDescriptions(MPSItems.THERMAL_GENERATOR_MODULE.get(), "Generate power from extreme amounts of heat.");
+        add(MPSItems.THERMAL_GENERATOR_MODULE_1.get(), "Thermal Generator");
+        addItemDescriptions(MPSItems.THERMAL_GENERATOR_MODULE_1.get(), "Generate power from extreme amounts of heat.");
+
+        add(MPSItems.THERMAL_GENERATOR_MODULE_2.get(), "Thermal Generator");
+        addItemDescriptions(MPSItems.THERMAL_GENERATOR_MODULE_2.get(), "Generate power from extreme amounts of heat.");
+
+        add(MPSItems.THERMAL_GENERATOR_MODULE_3.get(), "Thermal Generator");
+        addItemDescriptions(MPSItems.THERMAL_GENERATOR_MODULE_3.get(), "Generate power from extreme amounts of heat.");
+
+        add(MPSItems.THERMAL_GENERATOR_MODULE_4.get(), "Thermal Generator");
+        addItemDescriptions(MPSItems.THERMAL_GENERATOR_MODULE_4.get(), "Generate power from extreme amounts of heat.");
 
         // Environmental ===============================================================================
         // Auto Feeder ---------------------------------------------------------------------------------
@@ -106,56 +114,51 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
         addItemDescriptions(MPSItems.AUTO_FEEDER_MODULE.get(), "Whenever you're hungry, this module will grab the bottom-left-most food item from your inventory and feed it to you, storing the rest for later.");
 
-        // Cooling System ------------------------------------------------------------------------------
-//        add(MPSItems.COOLING_SYSTEM_MODULE.get(), "Cooling System");
-//
-//        addItemDescriptions(MPSItems.COOLING_SYSTEM_MODULE.get(),  "Cools down heat-producing modules quicker. Add a fluid tank module and fluid to enhance performance.");
+        // Coolant Tank --------------------------------------------------------------------------------
+        add(MPSItems.COOLANT_TANK_MODULE_1.get(), "Coolant Tank 1");
+        addItemDescriptions(MPSItems.COOLANT_TANK_MODULE_1.get(),  "Boosts output of thermal generators and provides emergency cooling");
 
-        // Fluid Tank  ---------------------------------------------------------------------------------
-//        add(MPSItems.FLUID_TANK_MODULE.get(),  "Fluid Tank");
-//
-//        addItemDescriptions(MPSItems.FLUID_TANK_MODULE.get(), "Stores fluid to enhance the performance of the cooling system.");
+        add(MPSItems.COOLANT_TANK_MODULE_2.get(), "Coolant Tank 2");
+        addItemDescriptions(MPSItems.COOLANT_TANK_MODULE_2.get(),  "Boosts output of thermal generators and provides emergency cooling");
+
+        add(MPSItems.COOLANT_TANK_MODULE_3.get(), "Coolant Tank 3");
+        addItemDescriptions(MPSItems.COOLANT_TANK_MODULE_3.get(),  "Boosts output of thermal generators and provides emergency cooling");
+
+        add(MPSItems.COOLANT_TANK_MODULE_4.get(), "Coolant Tank 4");
+        addItemDescriptions(MPSItems.COOLANT_TANK_MODULE_3.get(),  "Boosts output of thermal generators and provides emergency cooling");
 
         // Mob Repulsor --------------------------------------------------------------------------------
         add(MPSItems.MOB_REPULSOR_MODULE.get(), "Mob Repulsor");
-
         addItemDescriptions(MPSItems.MOB_REPULSOR_MODULE.get(), "Pushes mobs away from you when activated, but constantly drains power. It is highly recommended that you set this module to a keybind because of the high energy draw.");
 
         // Water Electrolyzer --------------------------------------------------------------------------
         add(MPSItems.WATER_ELECTROLYZER_MODULE.get(), "Water Electrolyzer");
-
         addItemDescriptions(MPSItems.WATER_ELECTROLYZER_MODULE.get(), "When you run out of air, this module will jolt the water around you, electrolyzing a small bubble to breathe from.");
 
         // Mining Enchantments =========================================================================
         // Aqua Affinity -------------------------------------------------------------------------------
         add(MPSItems.AQUA_AFFINITY_MODULE.get(), "Aqua Affinity");
-
         addItemDescriptions(MPSItems.AQUA_AFFINITY_MODULE.get(), "Reduces the speed penalty for using your tool underwater.");
 
         // Silk Touch Enchantment ----------------------------------------------------------------------
         add(MPSItems.SILK_TOUCH_MODULE.get(), "Silk Touch Enchantment");
-
         addItemDescriptions(MPSItems.SILK_TOUCH_MODULE.get(), "A module that provides the Silk Touch enchantment");
 
         // Fortune Enchantment -------------------------------------------------------------------------
         add(MPSItems.FORTUNE_MODULE.get(), "Fortune Enchantment");
-
         addItemDescriptions(MPSItems.FORTUNE_MODULE.get(), "A module that provides the fortune enchantment.");
 
         // Mining Enhancements =========================================================================
         // Vein Miner ----------------------------------------------------------------------------------
         add(MPSItems.VEIN_MINER_MODULE.get(), "Vein Miner");
-
         addItemDescriptions(MPSItems.VEIN_MINER_MODULE.get(), "A module for mining ore veins");
 
         // Tunnel Bore ---------------------------------------------------------------------------------
         add(MPSItems.TUNNEL_BORE_MODULE.get(), "Tunnel Bore");
-
         addItemDescriptions(MPSItems.TUNNEL_BORE_MODULE.get(), "A module that enables the pickaxe module to mine 5x5 range blocks simultaneously.");
 
         // Selective Miner -----------------------------------------------------------------------------
         add(MPSItems.SELECTIVE_MINER_MODULE.get(), "Selective Miner");
-
         addItemDescriptions(MPSItems.SELECTIVE_MINER_MODULE.get(), "Breaks blocks similar to the vein miner, but selectively. Shift and click to select block type.");
 
         // Movement ====================================================================================

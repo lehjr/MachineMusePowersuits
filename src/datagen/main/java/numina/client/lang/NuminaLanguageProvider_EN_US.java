@@ -1,4 +1,4 @@
-package numina.client;
+package numina.client.lang;
 
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.constants.NuminaConstants;
@@ -244,6 +244,9 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
 
         // Energy Generation ---------------------------------------------------------------------------
         add(ModuleCategory.ENERGY_GENERATION.getTranslationKey(), "Energy Generation");
+
+        // Fluid Storage -------------------------------------------------------------------------------
+        add(ModuleCategory.FLUID_STORAGE.getTranslationKey(), "Fluid Storage");
 
         // Tool ----------------------------------------------------------------------------------------
         add(ModuleCategory.TOOL.getTranslationKey(), "Tool");
