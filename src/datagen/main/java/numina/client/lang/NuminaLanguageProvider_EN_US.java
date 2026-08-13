@@ -22,6 +22,7 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
         addToolTips();
         addModules();
         addComponents();
+        addItemUpgrades();
         addModuleCategories();
     }
 
@@ -169,63 +170,72 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
 
         // Force Field Emitter -------------------------------------------------------------------------
         add(NuminaItems.FIELD_EMITTER.get(), "Force Field Emitter");
-
         addItemDescriptions(NuminaItems.FIELD_EMITTER.get(), "An advanced device which directly manipulates electromagnetic and gravitational fields in an area.");
 
         // Glider Wing ---------------------------------------------------------------------------------
         add(NuminaItems.GLIDER_WING.get(), "Glider Wing");
-
         addItemDescriptions(NuminaItems.GLIDER_WING.get(), "A lightweight aerodynamic wing with an electromagnet for quick deployment and retraction.");
 
         // Ion Thruster --------------------------------------------------------------------------------
         add(NuminaItems.ION_THRUSTER.get(), "Ion Thruster");
-
         addItemDescriptions(NuminaItems.ION_THRUSTER.get(), "Essentially a miniature particle accelerator. Accelerates ions to near-light speed to produce thrust.");
 
         // Hologram Emitter ----------------------------------------------------------------------------
         add(NuminaItems.LASER_EMITTER.get(), "Hologram Emitter");
-
         addItemDescriptions(NuminaItems.LASER_EMITTER.get(), "A multicolored laser array which can cheaply alter the appearance of something.");
 
         // Magnet --------------------------------------------------------------------------------------
         add(NuminaItems.MAGNET.get(), "Magnet");
-
         addItemDescriptions(NuminaItems.MAGNET.get(), "A metallic device that generates a magnetic field which pulls items towards the player.");
 
         // Myofiber Gel --------------------------------------------------------------------------------
         add(NuminaItems.MYOFIBER_GEL.get(), "Myofiber Gel");
-
         addItemDescriptions(NuminaItems.MYOFIBER_GEL.get(), "A thick, conductive paste, perfect for fitting between myofibers in an artificial muscle.");
+
+        // Plating -------------------------------------------------------------------------------------
+        add(NuminaItems.PLATING_IRON.get(), "Iron Plate");
+        addItemDescriptions(NuminaItems.PLATING_IRON.get(), "Structural crafting component made of iron and used to create some modules.");
+
+        add(NuminaItems.PLATING_DIAMOND.get(), "Diamond Plate");
+        addItemDescriptions(NuminaItems.PLATING_DIAMOND.get(), "Structural crafting component made of diamond and used to create some modules.");
+
+        add(NuminaItems.PLATING_NETHERITE.get(), "Netherite Plate");
+        addItemDescriptions(NuminaItems.PLATING_NETHERITE.get(), "Structural crafting component made of netherite and used to create some modules.");
 
         // Parachute -----------------------------------------------------------------------------------
         add(NuminaItems.PARACHUTE.get(), "Parachute");
-
         addItemDescriptions(NuminaItems.PARACHUTE.get(), "A simple reusable parachute which can be deployed and recovered in midair.");
 
         // Rubber Hose ---------------------------------------------------------------------------------
         add(NuminaItems.RUBBER_HOSE.get(), "Insulated Rubber Hose");
-
         addItemDescriptions(NuminaItems.RUBBER_HOSE.get(), "A heavily insulated rubber hose capable of withstanding extreme heat or cold");
 
         // Servo Motor ---------------------------------------------------------------------------------
         add(NuminaItems.SERVO.get(), "Servo Motor");
-
         addItemDescriptions(NuminaItems.SERVO.get(), "A special type of motor which uses a pulse-modulated signal to enact very precise movements.");
 
         // Solar Panel ---------------------------------------------------------------------------------
         add(NuminaItems.SOLAR_PANEL.get(), "Solar Panel");
-
         addItemDescriptions(NuminaItems.SOLAR_PANEL.get(), "A light sensitive device that will generate electricity from the sun.");
 
         // Solenoid ------------------------------------------------------------------------------------
         add(NuminaItems.SOLENOID.get(), "Solenoid");
-
         addItemDescriptions(NuminaItems.SOLENOID.get(), "Wires wound around a ferromagnetic core produces a basic electromagnet.");
 
         // Wiring --------------------------------------------------------------------------------------
         add(NuminaItems.WIRING_COPPER.get(), "Wiring");
-
         addItemDescriptions(NuminaItems.WIRING_COPPER.get(), "A special type of wiring with high voltaic capacity and precision, necessary for the sensitive electronics in power armor.");
+    }
+
+    public void addItemUpgrades() {
+        add(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get(), "Tier 2 Smithing Upgrade");
+        addItemDescriptions(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get(), "Used for upgrading some modules and modular items from tier 1 to tier 2");
+
+        add(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get(), "Tier 3 Smithing Upgrade");
+        addItemDescriptions(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get(), "Used for upgrading some modules and modular items from tier 2 to tier 3");
+
+        add(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get(), "Tier 4 Smithing Upgrade");
+        addItemDescriptions(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get(), "Used for upgrading some modules and modular items from tier 3 to tier 4");
     }
 
     @Override

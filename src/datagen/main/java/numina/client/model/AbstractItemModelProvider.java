@@ -17,7 +17,7 @@ public abstract class AbstractItemModelProvider extends ItemModelProvider {
     }
 
     public ItemModelBuilder basicItem(Item item, String texturePath) {
-        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item), texturePath));
+        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)), Objects.requireNonNull(texturePath));
     }
 
     public ItemModelBuilder basicItem(ResourceLocation item, String texturePath) {
@@ -26,4 +26,18 @@ public abstract class AbstractItemModelProvider extends ItemModelProvider {
             ResourceLocation.fromNamespaceAndPath(item.getNamespace(), texturePath));
     }
 
+    public ItemModelBuilder itemEntity(Item item) {
+        return blockItemEntity(item, mcLoc("builtin/entity"));
+    }
+
+    public ItemModelBuilder blockItemEntity(Item item, ResourceLocation parent) {
+        return this.getBuilder(item.toString())
+            .parent(new ModelFile.UncheckedModelFile(parent));
+    }
+
+    public ItemModelBuilder itemEntity(Item item, String texturePath) {
+        return this.getBuilder(item.toString())
+            .parent(new ModelFile.UncheckedModelFile(mcLoc("builtin/entity")))
+            .texture("particle", modLoc(texturePath));
+    }
 }

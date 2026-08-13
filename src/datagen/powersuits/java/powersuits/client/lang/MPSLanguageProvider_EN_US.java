@@ -125,7 +125,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addItemDescriptions(MPSItems.COOLANT_TANK_MODULE_3.get(),  "Boosts output of thermal generators and provides emergency cooling");
 
         add(MPSItems.COOLANT_TANK_MODULE_4.get(), "Coolant Tank 4");
-        addItemDescriptions(MPSItems.COOLANT_TANK_MODULE_3.get(),  "Boosts output of thermal generators and provides emergency cooling");
+        addItemDescriptions(MPSItems.COOLANT_TANK_MODULE_4.get(),  "Boosts output of thermal generators and provides emergency cooling");
 
         // Mob Repulsor --------------------------------------------------------------------------------
         add(MPSItems.MOB_REPULSOR_MODULE.get(), "Mob Repulsor");

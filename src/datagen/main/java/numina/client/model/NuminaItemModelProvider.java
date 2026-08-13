@@ -4,7 +4,9 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -17,53 +19,49 @@ public class NuminaItemModelProvider extends AbstractItemModelProvider {
 
     @Override
     protected void registerModels() {
-        //        // Generates a basic generated item model pointing to textures/item/example_item.png
-        //        basicItem(ModItems.EXAMPLE_ITEM.get());
-        //
-        //        // Handheld tool example
-        //        handheldItem(ModItems.EXAMPLE_SWORD.get());
+        itemEntity(NuminaItems.ARMOR_STAND_ITEM.get())
+            .transforms()
+            .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+            .rotation(70, 0, 0)
+            .translation(-50.5f, 1, 18.25f)
+            .scale(0.62f, 0.62f, 0.62f)
+            .end()
 
-        //        armor_stand :
-//        {
-//            "parent": "builtin/entity",
-//            "display": {
-//            "gui": {
-//                "rotation": [ 0, 0, 316 ],
-//                "translation": [ 22.25, 12.00, 0.00 ],
-//                "scale": [ 1.00, 1.00, 1.00 ]
-//            },
-//            "ground": {
-//                "rotation": [ 0, 0, 0 ],
-//                "translation": [ 0.00, 18.75, 0.00 ],
-//                "scale": [ 0.62, 0.62, 0.62 ]
-//            },
-//            "fixed": {
-//                "rotation": [ 0, 180, 0 ],
-//                "translation": [ -6.25, 17.75, -6.50 ],
-//                "scale": [ 0.75, 0.75, 0.75 ]
-//            },
-//            "thirdperson_righthand": {
-//                "rotation": [ 70, 0, 0 ],
-//                "translation": [ 4.25, 1.00, 18.25 ],
-//                "scale": [ 0.62, 0.62, 0.62 ]
-//            },
-//            "thirdperson_lefthand": {
-//                "rotation": [ 70, 0, 0 ],
-//                "translation": [ -5.50, 1.00, 18.25 ],
-//                "scale": [ 0.62, 0.62, 0.62 ]
-//            },
-//            "firstperson_righthand": {
-//                "rotation": [ 0, 0, 352 ],
-//                "translation": [ 11.50, 11.50, 0.00 ],
-//                "scale": [ 0.40, 0.40, 0.40 ]
-//            },
-//            "firstperson_lefthand": {
-//                "rotation": [ 0, 0, 352 ],
-//                "translation": [ 3.75, 11.50, 0.00 ],
-//                "scale": [ 0.40, 0.40, 0.40 ]
-//            }
-//        }
-//        }
+            .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+            .rotation(70, 0, 0)
+            .translation(4.25F, 1, 18.25F)
+            .scale(0.62f, 0.62f, 0.62f)
+            .end()
+
+            .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
+            .rotation(0, 0, 352)
+            .translation(3.75F, 11.5F, 0)
+            .scale(0.42f, 0.4f, 0.4f)
+            .end()
+
+            .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
+            .rotation(0, 0, 352)
+            .translation(11.5F, 11.5F, 0)
+            .scale(0.42f, 0.4f, 0.4f)
+            .end()
+
+            .transform(ItemDisplayContext.GUI)
+            .rotation(0, 0, 316)
+            .translation(22.5F, 12, 0)
+            .scale(1, 1, 1)
+            .end()
+
+            .transform(ItemDisplayContext.GROUND)
+            .rotation(0, 0, 0)
+            .translation( 0, 18.75F, 0)
+            .scale(0.62F, 0.62F, 0.62F)
+            .end()
+
+            .transform(ItemDisplayContext.FIXED)
+            .rotation(0, 180, 0)
+            .translation(-6.25F, 17.75F, -6.50F)
+            .scale( 0.75F, 0.75F, 0.75F)
+            .end();
 
         // Batteries ----------------------------------------------------------------------------------------
         batteryItem(NuminaItems.BATTERY_1.get(), "basic");
@@ -71,7 +69,39 @@ public class NuminaItemModelProvider extends AbstractItemModelProvider {
         batteryItem(NuminaItems.BATTERY_3.get(), "elite");
         batteryItem(NuminaItems.BATTERY_4.get(), "ultimate");
 
-        //        charging_base
+        // BlockItem ----------------------------------------------------------------------------------------
+        blockItemEntity(NuminaItems.CHARGING_BASE_ITEM.get(),
+            Objects.requireNonNull(modLoc("block/" + BuiltInRegistries.ITEM.getKey(NuminaItems.CHARGING_BASE_ITEM.get()).getPath())))
+            .transforms()
+            .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
+            .rotation(75, 315, 0)
+            .translation(0, 2.5F, 0)
+            .scale( 0.375F, 0.375F, 0.375F)
+            .end()
+
+            .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
+            .rotation( 0, 315, 0 )
+            .translation(0, 2.5F, 0)
+            .scale(0.4F, 0.4F, 0.4F)
+            .end()
+
+            .transform(ItemDisplayContext.GUI)
+            .rotation(30, 45, 0)
+            .translation(0, 0, 0)
+            .scale(0.625F, 0.625F, 0.625F)
+            .end()
+
+            .transform(ItemDisplayContext.GROUND)
+            .rotation(0, 0, 0)
+            .translation( 0, 3, 0)
+            .scale(0.25F,  0.25F, 0.25F)
+            .end()
+
+            .transform(ItemDisplayContext.FIXED)
+            .rotation(0, 180, 0)
+            .translation(0, 0, 0)
+            .scale( 1, 1, 1)
+            .end();
 
         // Components ---------------------------------------------------------------------------------------
         componentItem(NuminaItems.ARTIFICIAL_MUSCLE.get(), "artificialmuscle");
@@ -103,20 +133,20 @@ public class NuminaItemModelProvider extends AbstractItemModelProvider {
         componentItem(NuminaItems.WIRING_GOLD.get(), "wiring_gold");
 
         // Smithing Templates -------------------------------------------------------------------------------
-        componentItem(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get(), "tier_2_smithing_upgrade_template");
-        componentItem(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get(), "tier_3_smithing_upgrade_template");
-        componentItem(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get(), "tier_4_smithing_upgrade_template");
+        upgrade(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get(), "tier_2_smithing_template");
+        upgrade(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get(), "tier_3_smithing_template");
+        upgrade(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get(), "tier_4_smithing_template");
     }
 
     public ItemModelBuilder batteryItem(Item item, String texturePath) {
-        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item),"item/battery/" + texturePath));
+        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)), "item/battery/" + texturePath);
     }
 
     public ItemModelBuilder componentItem(Item item, String texturePath) {
-        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item),"item/component/" + texturePath));
+        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)),"item/component/" + texturePath);
     }
 
     public ItemModelBuilder upgrade(Item item, String texturePath) {
-        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item),"item/upgrade/" + texturePath));
+        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)),"item/upgrade/" + texturePath);
     }
 }

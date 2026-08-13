@@ -2,12 +2,6 @@ package numina.common;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
-import numina.client.lang.NuminaLanguageProvider_EN_US;
-import numina.client.model.NuminaItemModelProvider;
-import numina.common.damage.HeatDamageDataGen;
-import numina.common.loot.NuminaBlockLoot;
-import numina.common.loot.NuminaBlockTagProvider;
-import numina.common.recipes.NuminaRecipeGenerator;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -17,6 +11,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import numina.client.lang.NuminaLanguageProvider_EN_US;
+import numina.client.model.NuminaItemModelProvider;
+import numina.common.damage.HeatDamageDataGen;
+import numina.common.loot.NuminaBlockLoot;
+import numina.common.loot.NuminaBlockTagProvider;
+import numina.common.recipes.NuminaRecipeGenerator;
 
 import java.util.Collections;
 import java.util.List;
