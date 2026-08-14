@@ -1,9 +1,5 @@
 package lehjr.numina.common.utils;
 
-import lehjr.numina.client.gui.NuminaIcons;
-import lehjr.numina.client.gui.NuminaSpriteUploader;
-import lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
-import lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -15,6 +11,10 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.MatrixUtil;
+import lehjr.numina.client.gui.NuminaIcons;
+import lehjr.numina.client.gui.NuminaSpriteUploader;
+import lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;

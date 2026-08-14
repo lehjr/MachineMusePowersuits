@@ -2,7 +2,7 @@ package lehjr.powersuits.client.control;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.serverbound.ToggleRequestPacketServerBound;
+import lehjr.numina.common.network.serverbound.ToggleRequestPacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.client.overlay.MPSOverlay;
 import com.mojang.blaze3d.platform.InputConstants;

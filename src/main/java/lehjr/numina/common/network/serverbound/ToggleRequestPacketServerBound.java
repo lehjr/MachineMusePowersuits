@@ -1,4 +1,4 @@
-package lehjr.numina.common.network.packets.serverbound;
+package lehjr.numina.common.network.serverbound;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.constants.NuminaConstants;

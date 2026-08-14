@@ -1,7 +1,7 @@
 package lehjr.numina.common.base;
 
-import lehjr.numina.client.config.NuminaClientConfig;
 import com.mojang.logging.LogUtils;
+import lehjr.numina.client.config.NuminaClientConfig;
 import org.slf4j.Logger;
 
 /**

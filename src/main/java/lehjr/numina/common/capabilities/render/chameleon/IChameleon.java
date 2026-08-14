@@ -1,8 +1,8 @@
 package lehjr.numina.common.capabilities.render.chameleon;
 
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.serverbound.BlockPositionPacketServerBound;
-import lehjr.numina.common.network.packets.serverbound.BlockStateClearPacketServerBound;
+import lehjr.numina.common.network.serverbound.BlockPositionPacketServerBound;
+import lehjr.numina.common.network.serverbound.BlockStateClearPacketServerBound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;

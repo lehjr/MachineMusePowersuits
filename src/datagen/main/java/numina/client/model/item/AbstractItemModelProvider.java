@@ -1,4 +1,4 @@
-package numina.client.model;
+package numina.client.model.item;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;

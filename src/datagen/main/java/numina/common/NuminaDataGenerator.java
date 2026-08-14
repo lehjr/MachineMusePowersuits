@@ -6,13 +6,15 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import numina.client.lang.NuminaLanguageProvider_EN_US;
-import numina.client.model.NuminaItemModelProvider;
+import numina.client.model.block.NuminaBlockStateProvider;
+import numina.client.model.item.NuminaItemModelProvider;
 import numina.common.damage.HeatDamageDataGen;
 import numina.common.loot.NuminaBlockLoot;
 import numina.common.loot.NuminaBlockTagProvider;
@@ -21,9 +23,12 @@ import numina.common.recipes.NuminaRecipeGenerator;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 @EventBusSubscriber(modid = NuminaConstants.MOD_ID)
 public class NuminaDataGenerator {
+    Consumer<BlockStateGenerator> blockStateOutput;
+
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         NuminaLogger.logError("Hello from Numina Data generator");
@@ -34,9 +39,9 @@ public class NuminaDataGenerator {
         ExistingFileHelper helper = event.getExistingFileHelper();
 
         //Client side data generators
-        generator.addProvider(event.includeServer(), new NuminaLanguageProvider_EN_US(output));
+        generator.addProvider(event.includeClient(), new NuminaLanguageProvider_EN_US(output));
         generator.addProvider(event.includeClient(), new NuminaItemModelProvider(output, helper));
-
+        generator.addProvider(event.includeClient(), new NuminaBlockStateProvider(output, helper));
 
 //        translator.quit();
 

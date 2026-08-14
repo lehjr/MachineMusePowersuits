@@ -10,6 +10,7 @@ import lehjr.powersuits.common.config.module.AxeModuleConfig;
 import lehjr.powersuits.common.config.module.CosmeticModuleConfig;
 import lehjr.powersuits.common.config.module.EnergyGenerationModuleConfig;
 import lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
+import lehjr.powersuits.common.config.module.FluidStorageConfig;
 import lehjr.powersuits.common.config.module.HoeModuleConfig;
 import lehjr.powersuits.common.config.module.MiningEnchantmentModuleConfig;
 import lehjr.powersuits.common.config.module.MiningEnhancementModuleConfig;
@@ -60,6 +61,9 @@ public class MPSConfigurations {
         // Environmental
         registerCommon(modContainer, EnvironmentalModuleConfig.ENVIRONMENTAL_MODULE_SPEC, "common/items/modules/environmental.toml");
 
+        // FLuid Storage
+        registerCommon(modContainer, FluidStorageConfig.FLUID_STORAGE_MODULE_SPEC, "common/items/modules/fluid_storage.toml");
+
         // Tool - Hoe
         registerCommon(modContainer, HoeModuleConfig.MPS_HOE_MODULE_SPEC, "common/items/modules/tool_rototiller.toml");
 
@@ -106,6 +110,8 @@ public class MPSConfigurations {
         EnergyGenerationModuleConfig.onLoad(event);
 
         EnvironmentalModuleConfig.onLoad(event);
+
+        FluidStorageConfig.onLoad(event);
 
         MiningEnchantmentModuleConfig.onLoad(event);
 

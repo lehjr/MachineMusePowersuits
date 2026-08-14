@@ -27,7 +27,11 @@
 package lehjr.numina.common.registration;
 
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.recipe.*;
+import lehjr.numina.common.recipe.ModuleInstallationRecipe;
+import lehjr.numina.common.recipe.ShapedEnchantmentRecipe;
+import lehjr.numina.common.recipe.ShapedEnergyRecipe;
+import lehjr.numina.common.recipe.ShapedModularItemUpgradeRecipe;
+import lehjr.numina.common.recipe.SmithingUpgradeRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;

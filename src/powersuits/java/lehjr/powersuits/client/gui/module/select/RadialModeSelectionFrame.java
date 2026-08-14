@@ -11,7 +11,7 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
+import lehjr.numina.common.network.serverbound.ModeChangeRequestPacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.gui.GuiGraphics;

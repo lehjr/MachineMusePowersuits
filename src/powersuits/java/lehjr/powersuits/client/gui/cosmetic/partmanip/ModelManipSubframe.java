@@ -40,7 +40,7 @@ import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBinding;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.serverbound.CosmeticInfoPacketServerBound;
+import lehjr.numina.common.network.serverbound.CosmeticInfoPacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.ItemUtils;

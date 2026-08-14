@@ -1,6 +1,6 @@
-package lehjr.numina.common.network.packets.clientbound;
+package lehjr.numina.common.network.clientbound;
 
-import lehjr.numina.client.network.packets.clienthandlers.ColorInfoPacketClientHandler;
+import lehjr.numina.client.network.ColorInfoPacketClientHandler;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

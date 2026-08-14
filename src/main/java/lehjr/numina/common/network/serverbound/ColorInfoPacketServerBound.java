@@ -1,9 +1,9 @@
-package lehjr.numina.common.network.packets.serverbound;
+package lehjr.numina.common.network.serverbound;
 
 import lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.clientbound.ColorInfoPacketClientBound;
+import lehjr.numina.common.network.clientbound.ColorInfoPacketClientBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.network.FriendlyByteBuf;

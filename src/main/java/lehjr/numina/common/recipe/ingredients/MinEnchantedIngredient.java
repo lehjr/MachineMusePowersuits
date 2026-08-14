@@ -1,9 +1,9 @@
 package lehjr.numina.common.recipe.ingredients;
 
-import lehjr.numina.common.registration.NuminaIngredientTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lehjr.numina.common.registration.NuminaIngredientTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;

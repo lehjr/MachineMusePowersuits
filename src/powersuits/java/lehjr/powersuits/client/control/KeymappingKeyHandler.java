@@ -6,7 +6,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.serverbound.PlayerUpdatePacketServerBound;
+import lehjr.numina.common.network.serverbound.PlayerUpdatePacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.MathUtils;

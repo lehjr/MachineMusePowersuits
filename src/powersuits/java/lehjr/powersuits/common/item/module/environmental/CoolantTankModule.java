@@ -7,6 +7,7 @@ import lehjr.numina.common.registration.NuminaCodecs;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.HeatUtils;
 import lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
+import lehjr.powersuits.common.config.module.FluidStorageConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -52,10 +53,10 @@ public class CoolantTankModule extends AbstractPowerModule {
     static int getCapacity(int tier) {
         return switch (tier) {
             // FIXME: set up proper config values
-            case 1 -> EnvironmentalModuleConfig.coolantTankModuleCapacity1;
-            case 2 -> EnvironmentalModuleConfig.coolantTankModuleCapacity2;
-            case 3 -> EnvironmentalModuleConfig.coolantTankModuleCapacity3;
-            case 4 -> EnvironmentalModuleConfig.coolantTankModuleCapacity4;
+            case 1 -> FluidStorageConfig.coolantTankModuleCapacity1;
+            case 2 -> FluidStorageConfig.coolantTankModuleCapacity2;
+            case 3 -> FluidStorageConfig.coolantTankModuleCapacity3;
+            case 4 -> FluidStorageConfig.coolantTankModuleCapacity4;
             default -> 0;
         };
     }
@@ -98,10 +99,10 @@ public class CoolantTankModule extends AbstractPowerModule {
         public boolean isAllowed() {
             // FIXME: set up proper config values
             return switch (this.tier) {
-                case 1 -> EnvironmentalModuleConfig.coolantTankModuleIsAllowed1;
-                case 2 -> EnvironmentalModuleConfig.coolantModuleIsAllowed2;
-                case 3 -> EnvironmentalModuleConfig.coolantModuleIsAllowed3;
-                case 4 -> EnvironmentalModuleConfig.coolantModuleIsAllowed4;
+                case 1 -> FluidStorageConfig.coolantTankModuleIsAllowed1;
+                case 2 -> FluidStorageConfig.coolantModuleIsAllowed2;
+                case 3 -> FluidStorageConfig.coolantModuleIsAllowed3;
+                case 4 -> FluidStorageConfig.coolantModuleIsAllowed4;
                 default -> false;
             };
         }

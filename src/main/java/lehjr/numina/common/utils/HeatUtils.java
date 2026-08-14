@@ -1,6 +1,5 @@
 package lehjr.numina.common.utils;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaCapabilities;

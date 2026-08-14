@@ -1,7 +1,7 @@
 package lehjr.numina.common.container.slot;
 
-import lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.vertex.PoseStack;
+import lehjr.numina.common.math.Color;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 

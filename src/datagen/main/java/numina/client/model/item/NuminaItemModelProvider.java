@@ -1,10 +1,9 @@
-package numina.client.model;
+package numina.client.model.item;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;

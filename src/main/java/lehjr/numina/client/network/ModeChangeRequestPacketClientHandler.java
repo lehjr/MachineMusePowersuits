@@ -1,4 +1,4 @@
-package lehjr.numina.client.network.packets.clienthandlers;
+package lehjr.numina.client.network;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.utils.ItemUtils;

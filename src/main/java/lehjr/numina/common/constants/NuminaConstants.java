@@ -125,7 +125,7 @@ public class NuminaConstants {
     public static final String ARMOR_STAND__ENTITY_TYPE_REGNAME = ARMORSTAND_REGNAME + "_entity";
 
     // Blocks
-    public static final String CHARGING_BASE_REGNAME = "charging_base";
+    public static final String CHARGING_BASE_REGNAME = "chargingbase";
 
     // Batteries ----------------------------------------------------------------------------------
     public static final String MODULE_BATTERY_1__REGNAME = "battery_1";

@@ -1,8 +1,8 @@
 package lehjr.numina.common.container;
 
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.container.slot.SlotBackgrounds;
 import lehjr.numina.common.registration.NuminaMenus;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;

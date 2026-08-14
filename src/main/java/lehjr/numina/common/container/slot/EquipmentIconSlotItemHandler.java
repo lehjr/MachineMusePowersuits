@@ -1,9 +1,9 @@
 package lehjr.numina.common.container.slot;
 
-import lehjr.numina.client.gui.NuminaIcons;
-import lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
+import lehjr.numina.client.gui.NuminaIcons;
+import lehjr.numina.common.math.Color;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.neoforged.api.distmarker.Dist;

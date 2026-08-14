@@ -1,8 +1,8 @@
 package lehjr.numina.common.math;
 
-import lehjr.numina.common.base.NuminaLogger;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.gui.GuiGraphics;
 import org.joml.Vector4f;
 

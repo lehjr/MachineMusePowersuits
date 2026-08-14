@@ -1,11 +1,10 @@
-package lehjr.numina.common.network.packets.serverbound;
+package lehjr.numina.common.network.serverbound;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,16 +12,18 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import javax.annotation.Nonnull;
 
 /**
- * Sets the state for which a specific module will search for when block breaking
- * @param pos
+ * Clears the state for which a certain module would be searching for
  */
-public record BlockPositionPacketServerBound(BlockPos pos) implements CustomPacketPayload {
-    public static final Type<BlockPositionPacketServerBound> ID = new Type<>(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "block_pos_to_sever"));
+public class BlockStateClearPacketServerBound implements CustomPacketPayload {
+    public BlockStateClearPacketServerBound() {
+    }
+    public static final Type<BlockStateClearPacketServerBound> ID = new Type<>(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "block_state_clear_to_sever"));
 
     @Override
     @Nonnull
@@ -30,31 +31,27 @@ public record BlockPositionPacketServerBound(BlockPos pos) implements CustomPack
         return ID;
     }
 
-    public static final StreamCodec<FriendlyByteBuf, BlockPositionPacketServerBound> STREAM_CODEC =
-            StreamCodec.ofMember(BlockPositionPacketServerBound::write, BlockPositionPacketServerBound::new);
+    public static final StreamCodec<FriendlyByteBuf, BlockStateClearPacketServerBound> STREAM_CODEC =
+            StreamCodec.ofMember(BlockStateClearPacketServerBound::write, BlockStateClearPacketServerBound::new);
 
-    public BlockPositionPacketServerBound(FriendlyByteBuf packetBuffer) {
-        this(packetBuffer.readBlockPos());
+    public BlockStateClearPacketServerBound(FriendlyByteBuf packetBuffer) {
+        this();
     }
 
     public void write(FriendlyByteBuf packetBuffer) {
-        packetBuffer.writeBlockPos(pos);
     }
 
-    public static void handle(BlockPositionPacketServerBound data, IPayloadContext ctx) {
-        NuminaLogger.logDebug("trying to set blockstate pt1");
-
+    public static void handle(BlockStateClearPacketServerBound ignored, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             Player player = ctx.player();
-            if (player instanceof ServerPlayer && data.pos != null) {
+            if (player instanceof ServerPlayer) {
                 try {
                     IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(player.getMainHandItem());
                     if(mci != null) {
-                        NuminaLogger.logDebug("trying to set blockstate");
-                        mci.setModuleBlockState(ItemUtils.getRegistryName(mci.getActiveModule()), player.level().getBlockState(data.pos));
+                        mci.setModuleBlockState(ItemUtils.getRegistryName(mci.getActiveModule()), Blocks.AIR.defaultBlockState());
                     }
                 } catch (Exception e) {
-                    NuminaLogger.logException("failed to change block position: ", e);
+                    NuminaLogger.logException("failed to clear blockstate: ", e);
                 }
             }
         }).exceptionally(e -> {

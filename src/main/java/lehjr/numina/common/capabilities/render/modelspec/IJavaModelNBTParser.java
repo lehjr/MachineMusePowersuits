@@ -1,8 +1,8 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
-import lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.nbt.CompoundTag;

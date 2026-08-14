@@ -1,8 +1,8 @@
 package lehjr.numina.common.registration;
 
+import com.mojang.serialization.Codec;
 import lehjr.numina.common.capabilities.player.keystates.PlayerKeyStateStorage;
 import lehjr.numina.common.constants.NuminaConstants;
-import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;

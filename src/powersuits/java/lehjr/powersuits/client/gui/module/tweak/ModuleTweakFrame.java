@@ -13,7 +13,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.UnitMap;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.serverbound.TweakRequestDoublePacketServerBound;
+import lehjr.numina.common.network.serverbound.TweakRequestDoublePacketServerBound;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.StringUtils;
 import lehjr.numina.common.utils.TagUtils;

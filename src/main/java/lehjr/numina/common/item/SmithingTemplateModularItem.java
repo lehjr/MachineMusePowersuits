@@ -1,7 +1,5 @@
 package lehjr.numina.common.item;
 
-import lehjr.numina.common.container.slot.SlotBackgrounds;
-import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlag;

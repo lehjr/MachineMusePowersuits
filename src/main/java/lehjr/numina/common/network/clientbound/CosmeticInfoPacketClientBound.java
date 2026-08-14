@@ -1,6 +1,6 @@
-package lehjr.numina.common.network.packets.clientbound;
+package lehjr.numina.common.network.clientbound;
 
-import lehjr.numina.client.network.packets.clienthandlers.CosmeticInfoPacketClientHandler;
+import lehjr.numina.client.network.CosmeticInfoPacketClientHandler;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
