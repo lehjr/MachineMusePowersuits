@@ -1,4 +1,4 @@
-package lehjr.powersuits.common.item.module.environmental;
+package lehjr.powersuits.common.item.module.fluidstorage;
 
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -6,7 +6,6 @@ import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.registration.NuminaCodecs;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.HeatUtils;
-import lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import lehjr.powersuits.common.config.module.FluidStorageConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -118,7 +117,7 @@ public class CoolantTankModule extends AbstractPowerModule {
             }
 
             // Fill if player in some sort of water
-            if (/*player.world.isRemote() &&*/ player.getCommandSenderWorld().getGameTime() % 10 == 0) {
+            if (player.getCommandSenderWorld().getGameTime() % 10 == 0) {
                 // we only have one tank, so index 0;
                 int maxFluid = fluidHandler.getTankCapacity(0);
                 int currentFluid = fluidHandler.getFluidInTank(0).getAmount();

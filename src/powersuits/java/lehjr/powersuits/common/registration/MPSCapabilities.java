@@ -23,7 +23,7 @@ import lehjr.powersuits.common.item.module.energygeneration.heat.ThermalGenerato
 import lehjr.powersuits.common.item.module.energygeneration.solar.SolarGeneratorModule;
 import lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
-import lehjr.powersuits.common.item.module.environmental.CoolantTankModule;
+import lehjr.powersuits.common.item.module.fluidstorage.CoolantTankModule;
 import lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;

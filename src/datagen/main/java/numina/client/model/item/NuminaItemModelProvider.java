@@ -70,7 +70,7 @@ public class NuminaItemModelProvider extends AbstractItemModelProvider {
 
         // BlockItem ----------------------------------------------------------------------------------------
         blockItemEntity(NuminaItems.CHARGING_BASE_ITEM.get(),
-            Objects.requireNonNull(modLoc("block/" + BuiltInRegistries.ITEM.getKey(NuminaItems.CHARGING_BASE_ITEM.get()).getPath())))
+            Objects.requireNonNull(modLoc("block/base_unpowered")))// texture location
             .transforms()
             .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
             .rotation(75, 315, 0)
