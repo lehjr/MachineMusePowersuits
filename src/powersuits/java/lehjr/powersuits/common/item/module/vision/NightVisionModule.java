@@ -44,9 +44,9 @@ public class NightVisionModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item) {
+        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item, int moduleIndex) {
             if (level.isClientSide) {
-                return;
+                return false;
             }
             double powerDrain = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
 
@@ -67,12 +67,13 @@ public class NightVisionModule extends AbstractPowerModule {
                     }
                 }
             } else {
-                onPlayerTickInactive(player, level, item);
+                return onPlayerTickInactive(player, level, item,  moduleIndex);
             }
+            return false;
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack item) {
+        public boolean onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack item, int moduleIndex) {
             // there doesn't seem to be any way to immediately remove effect.
             if (added && !removed && player.hasEffect(MobEffects.NIGHT_VISION)) {
                 player.removeEffect(MobEffects.NIGHT_VISION);
@@ -82,6 +83,7 @@ public class NightVisionModule extends AbstractPowerModule {
                     modularItem.setModuleBoolean(MPSConstants.NIGHT_VISION_MODULE, REMOVED, true);
                 }
             }
+            return false;
         }
     }
 }

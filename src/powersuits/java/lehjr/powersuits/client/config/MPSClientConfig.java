@@ -208,11 +208,11 @@ public class MPSClientConfig {
 
     private static ModConfigSpec.IntValue WATER_METER_BAR_RED = WATER_METER_SETTINGS_BUILDER
                 .comment("hud water meter bar red color amount (0 - 100)")
-                .defineInRange("waterMeterBarRedPercent", 100, 0, 100);
+                .defineInRange("waterMeterBarRedPercent", 15, 0, 100);
 
     private static ModConfigSpec.IntValue WATER_METER_BAR_GREEN = WATER_METER_SETTINGS_BUILDER
                 .comment("hud water meter bar green color amount (0 - 100)")
-                .defineInRange("waterMeterBarGreenPercent", 100, 0, 100);
+                .defineInRange("waterMeterBarGreenPercent", 50, 0, 100);
 
     private static ModConfigSpec.IntValue WATER_METER_BAR_BLUE = WATER_METER_SETTINGS_BUILDER
                 .comment("hud water meter bar blue color amount (0 - 100)")

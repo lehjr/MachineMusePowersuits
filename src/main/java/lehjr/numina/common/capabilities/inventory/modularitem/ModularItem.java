@@ -1,6 +1,7 @@
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
 import com.mojang.datafixers.util.Pair;
+import lehjr.numina.common.base.Numina;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -10,6 +11,7 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import lehjr.numina.imixin.common.item.IMixinRangedWrapper;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -19,6 +21,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.ComponentItemHandler;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 
@@ -26,24 +31,24 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class ModularItem extends ComponentItemHandler implements IModularItem {
     final boolean isTool;
     final int tier;
     Map<ModuleCategory, RangedWrapper> rangedWrappers;
 
-    public ModularItem(@Nonnull ItemStack modularItem, int tier, int size) {
+    public ModularItem(ItemStack modularItem, int tier, int size) {
         this(modularItem, tier, size, false);
     }
 
-    public ModularItem(@Nonnull ItemStack modularItem, int tier, int size, boolean isTool) {
+    public ModularItem(ItemStack modularItem, int tier, int size, boolean isTool) {
         super(modularItem, DataComponents.CONTAINER, size);
         this.rangedWrappers = new HashMap<>();
         this.isTool = isTool;
         this.tier = tier;
     }
 
-    @Nonnull
     @Override
     public ItemStack getModularItemStack() {
         return (ItemStack) parent;
@@ -65,7 +70,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public boolean isModuleValid (@Nonnull IPowerModule pm) {
+    public boolean isModuleValid (IPowerModule pm) {
         if(pm.isAllowed() && pm.getTier() <= getTier()) {
             // check module target against item stack type
             switch (pm.getTarget()) {
@@ -83,19 +88,19 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
                 }
                 case HEADONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem
-                            && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.HEAD;
+                        && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.HEAD;
                 }
                 case TORSOONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem
-                            && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.CHEST;
+                        && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.CHEST;
                 }
                 case LEGSONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem
-                            && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.LEGS;
+                        && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.LEGS;
                 }
                 case FEETONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem
-                            && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.FEET;
+                        && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.FEET;
                 }
                 default-> {
                     return false;
@@ -106,7 +111,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public boolean isModuleValid(@Nonnull ItemStack module) {
+    public boolean isModuleValid(ItemStack module) {
         // empty item is valid
         if (module.isEmpty()) {
             return false;
@@ -136,7 +141,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public int getStackLimit(final int slot, @Nonnull final ItemStack module) {
+    public int getStackLimit(final int slot, final ItemStack module) {
         // allow empty slots, else empty slots will crash on opening container
         if (module.isEmpty()) {
             return 1;
@@ -164,8 +169,6 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
             // fallback on generic type if null
             if (wrapper == null) {
                 wrapper = getRangedWrappers().get(ModuleCategory.NONE);
-
-
             }
 
             // Note, not using the actual wrapper mechanics, just slot ranges
@@ -187,7 +190,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
      * @return
      */
     @Override
-    public boolean isModuleValidForPlacement(int slot, @Nonnull ItemStack module) {
+    public boolean isModuleValidForPlacement(int slot, ItemStack module) {
         if (!isModuleValid(module)) {
             IPowerModule cap = getModuleCapability(module);
             if (cap == null) {
@@ -205,7 +208,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public int findInstalledModule(@Nonnull ItemStack module) {
+    public int findInstalledModule(ItemStack module) {
         return findInstalledModule(ItemUtils.getRegistryName(module));
     }
 
@@ -215,7 +218,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public boolean isModuleInstalled(@Nonnull ItemStack module) {
+    public boolean isModuleInstalled(ItemStack module) {
         return findInstalledModule(module) > -1;
     }
 
@@ -256,16 +259,21 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public void toggleModule(ResourceLocation moduleName, boolean online) {
-        int slot = findInstalledModule(moduleName);
-        if (slot > -1) {
-            ItemStack module = getStackInSlot(slot);
+    public void toggleModule(boolean online, int moduleIndex) {
+        if (moduleIndex > -1) {
+            ItemStack module = getStackInSlot(moduleIndex);
             IPowerModule pm = getModuleCapability(module);
             if (pm instanceof IToggleableModule tm) {
                 ItemStack newModule = tm.toggleModule(online);
-                updateModuleInSlot(slot, newModule);
+                updateModuleInSlot(moduleIndex, newModule);
             }
         }
+    }
+
+    @Override
+    public void toggleModule(ResourceLocation moduleName, boolean online) {
+        int slot = findInstalledModule(moduleName);
+        toggleModule(online, slot);
     }
 
     @Override
@@ -381,14 +389,18 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public void tick(Player player, Level level, @Nonnull ItemStack itemStack) {
+    public void tick(Player player, Level level, ItemStack host) {
         for (int i = 0; i < getSlots(); i++) {
             IPowerModule pm = getModuleCapability(getStackInSlot(i));
             if(pm instanceof IPlayerTickModule ticker) {
                 if(ticker.isAllowed() && ticker.isModuleOnline()) {
-                    ticker.onPlayerTickActive(player, level, this.getModularItemStack());
+                    if(ticker.onPlayerTickActive(player, level, this.getModularItemStack(), i)) {
+                        updateModuleInSlot(i, ticker.getModule());
+                    }
                 } else {
-                    ticker.onPlayerTickInactive(player, level, this.getModularItemStack());
+                    if(ticker.onPlayerTickInactive(player, level, this.getModularItemStack(), i)) {
+                        updateModuleInSlot(i, ticker.getModule());
+                    }
                 }
             }
         }
@@ -396,8 +408,27 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
 
     // call server side only
     @Override
-    public void updateModuleInSlot(int slot, @Nonnull ItemStack module) {
+    public void updateModuleInSlot(int slot, ItemStack module) {
+        NuminaLogger.logDebug("Updating module in slot " + slot + ": " + module);
+
+        IFluidHandlerItem fluidHandler = getStackInSlot(slot).getCapability(Capabilities.FluidHandler.ITEM, null);
+        if(fluidHandler != null) {
+            NuminaLogger.logDebug("fluid in module already in slot: " + fluidHandler.getFluidInTank(0));
+
+            IFluidHandlerItem fluidHandler2 = module.getCapability(Capabilities.FluidHandler.ITEM, null);
+            if(fluidHandler2 != null) {
+                NuminaLogger.logDebug("fluid in incoming module: " + fluidHandler2.getFluidInTank(0));
+            }
+
+        }
+
         this.updateContents(getContents(), module, slot);
+
+        IFluidHandlerItem fluidHandler3 = getStackInSlot(slot).getCapability(Capabilities.FluidHandler.ITEM, null);
+        if(fluidHandler3 != null) {
+            NuminaLogger.logDebug("fluid in module placed in slot: " + fluidHandler3.getFluidInTank(0));
+        }
+
     }
 
     @Override

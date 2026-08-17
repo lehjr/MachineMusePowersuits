@@ -39,9 +39,9 @@ public class JetPackModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, ItemStack torso) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack torso, int moduleIndex) {
             if (player.isInWater()) {
-                return;
+                return false;
             }
 
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
@@ -69,15 +69,17 @@ public class JetPackModule extends AbstractPowerModule {
                     Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get(), SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
                 }
             } else {
-                onPlayerTickInactive(player, level, torso);
+                onPlayerTickInactive(player, level, torso,  moduleIndex);
             }
+            return false;
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, ItemStack item) {
+        public boolean onPlayerTickInactive(Player player, Level level, ItemStack item,  int moduleIndex) {
             if (level.isClientSide && NuminaClientConfig.useSounds) {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
             }
+            return false;
         }
     }
 }

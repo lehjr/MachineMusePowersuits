@@ -47,7 +47,7 @@ public class LeafBlowerModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn) {
+        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn, int moduleIndex) {
             int energyUsage = getEnergyUsage();
             if(getPlayerEnergy(player) < energyUsage) {
                 toggleModule(false);
@@ -58,11 +58,13 @@ public class LeafBlowerModule extends AbstractPowerModule {
             } else {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_LEAF_BLOWER.get());
             }
+            return false;
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn) {
+        public boolean onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn, int moduleIndex) {
             Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_LEAF_BLOWER.get());
+            return false;
         }
 
         @Override

@@ -32,7 +32,7 @@ public class ActiveCamouflageModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
             double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
             MobEffectInstance invis = null;
             if (player.hasEffect(invisibility)) {
@@ -45,12 +45,13 @@ public class ActiveCamouflageModule extends AbstractPowerModule {
                     ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
                 }
             } else {
-                onPlayerTickInactive(player, level, item);
+                onPlayerTickInactive(player, level, item,  moduleIndex);
             }
+            return false;
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, ItemStack item) {
+        public boolean onPlayerTickInactive(Player player, Level level, ItemStack item,  int moduleIndex) {
             MobEffectInstance invis = null;
             if (player.hasEffect(invisibility)) {
                 invis = player.getEffect(invisibility);
@@ -62,6 +63,7 @@ public class ActiveCamouflageModule extends AbstractPowerModule {
                     player.removeEffect(invisibility);
                 }
             }
+            return false;
         }
 
         @Override

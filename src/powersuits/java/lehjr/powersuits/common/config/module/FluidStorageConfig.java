@@ -51,21 +51,21 @@ public class FluidStorageConfig {
     public static double coolantTankModuleEnergyConsumptionBase1;
     public static double coolantTankModuleEnergyConsumptionBMultiplier1;
 
-    public static boolean coolantModuleIsAllowed2;
+    public static boolean coolantTankModuleIsAllowed2;
     public static int coolantTankModuleCapacity2;
     public static double coolantTankModuleHeatActivationPercentBase2;
     public static double coolantTankModuleHeatActivationPercentMultiplier2;
     public static double coolantTankModuleEnergyConsumptionBase2;
     public static double coolantTankModuleEnergyConsumptionBMultiplier2;
 
-    public static boolean coolantModuleIsAllowed3;
+    public static boolean coolantTankModuleIsAllowed3;
     public static int coolantTankModuleCapacity3;
     public static double coolantTankModuleHeatActivationPercentBase3;
     public static double coolantTankModuleHeatActivationPercentMultiplier3;
     public static double coolantTankModuleEnergyConsumptionBase3;
     public static double coolantTankModuleEnergyConsumptionBMultiplier3;
 
-    public static boolean coolantModuleIsAllowed4;
+    public static boolean coolantTankModuleIsAllowed4;
     public static int coolantTankModuleCapacity4;
     public static double coolantTankModuleHeatActivationPercentBase4;
     public static double coolantTankModuleHeatActivationPercentMultiplier4;
@@ -83,21 +83,21 @@ public class FluidStorageConfig {
             coolantTankModuleEnergyConsumptionBase1 = COOLANT_TANK_MODULE_1__ENERGY_CONSUMPTION_BASE.get();
             coolantTankModuleEnergyConsumptionBMultiplier1 = COOLANT_TANK_MODULE_1__ENERGY_CONSUMPTION_MULTIPLIER.get();
 
-            coolantModuleIsAllowed2 = COOLANT_TANK_MODULE_2__IS_ALLOWED.get();
+            coolantTankModuleIsAllowed2 = COOLANT_TANK_MODULE_2__IS_ALLOWED.get();
             coolantTankModuleCapacity2 = COOLANT_TANK_MODULE_2_CAPACITY.get();
             coolantTankModuleHeatActivationPercentBase2 = COOLANT_TANK_MODULE_2__HEAT_ACTIVATION_PERCENT_BASE.get();
             coolantTankModuleHeatActivationPercentMultiplier2 = COOLANT_TANK_MODULE_2__HEAT_ACTIVATION_PERCENT_MULTIPLIER.get();
             coolantTankModuleEnergyConsumptionBase2 = COOLANT_TANK_MODULE_2__ENERGY_CONSUMPTION_BASE.get();
             coolantTankModuleEnergyConsumptionBMultiplier2 = COOLANT_TANK_MODULE_2__ENERGY_CONSUMPTION_MULTIPLIER.get();
 
-            coolantModuleIsAllowed3 = COOLANT_TANK_MODULE_3__IS_ALLOWED.get();
+            coolantTankModuleIsAllowed3 = COOLANT_TANK_MODULE_3__IS_ALLOWED.get();
             coolantTankModuleCapacity3 = COOLANT_TANK_MODULE_3_CAPACITY.get();
             coolantTankModuleHeatActivationPercentBase3 = COOLANT_TANK_MODULE_3__HEAT_ACTIVATION_PERCENT_BASE.get();
             coolantTankModuleHeatActivationPercentMultiplier3 = COOLANT_TANK_MODULE_3__HEAT_ACTIVATION_PERCENT_MULTIPLIER.get();
             coolantTankModuleEnergyConsumptionBase3 = COOLANT_TANK_MODULE_3__ENERGY_CONSUMPTION_BASE.get();
             coolantTankModuleEnergyConsumptionBMultiplier3 = COOLANT_TANK_MODULE_3__ENERGY_CONSUMPTION_MULTIPLIER.get();
 
-            coolantModuleIsAllowed4 = COOLANT_TANK_MODULE_4__IS_ALLOWED.get();
+            coolantTankModuleIsAllowed4 = COOLANT_TANK_MODULE_4__IS_ALLOWED.get();
             coolantTankModuleCapacity4 = COOLANT_TANK_MODULE_4_CAPACITY.get();
             coolantTankModuleHeatActivationPercentBase4 = COOLANT_TANK_MODULE_4__HEAT_ACTIVATION_PERCENT_BASE.get();
             coolantTankModuleHeatActivationPercentMultiplier4 = COOLANT_TANK_MODULE_4__HEAT_ACTIVATION_PERCENT_MULTIPLIER.get();

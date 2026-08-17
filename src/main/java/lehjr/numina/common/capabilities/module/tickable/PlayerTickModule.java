@@ -15,12 +15,12 @@ public class PlayerTickModule extends ToggleableModule implements IPlayerTickMod
     }
 
     @Override
-    public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item) {
-
+    public boolean onPlayerTickActive(Player player, Level level, ItemStack host, int moduleIndex) {
+        return false;
     }
 
     @Override
-    public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack item) {
-
+    public boolean onPlayerTickInactive(Player player, Level level, ItemStack host, int moduleIndex) {
+        return false;
     }
 }

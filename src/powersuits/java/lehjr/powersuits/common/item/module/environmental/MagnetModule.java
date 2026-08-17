@@ -37,7 +37,7 @@ public class MagnetModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, ItemStack stack) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack stack, int moduleIndex) {
             int energyUSage = getEnergyUsage();
             if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
                 boolean isServerSide = !level.isClientSide;
@@ -88,6 +88,7 @@ public class MagnetModule extends AbstractPowerModule {
                     }
                 }
             }
+            return false;
         }
 
         @Override

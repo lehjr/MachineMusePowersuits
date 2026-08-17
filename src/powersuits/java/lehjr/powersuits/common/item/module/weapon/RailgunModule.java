@@ -72,16 +72,18 @@ public class RailgunModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn) {
-            onPlayerTickInactive(player, level, itemStackIn);
+        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn, int moduleIndex) {
+            return onPlayerTickInactive(player, level, itemStackIn,  moduleIndex);
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn) {
+        public boolean onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn, int moduleIndex) {
             double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
             if (timer > 0) {
                 TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, timer - 1 > 0 ? timer - 1 : 0);
+                return true;
             }
+            return false;
         }
 
         @Override
@@ -154,31 +156,29 @@ public class RailgunModule extends AbstractPowerModule {
             float pPartialTicks = 1.0F;
             HitResult hitResult = null;
 
-            if (player != null) {
-                double pickRange = player.getPickRadius();
-                Vec3 eyePositionVec = player.getEyePosition(pPartialTicks);
-                double range;
-                range = Math.max(pickRange, attackRange);
-                pickRange = range;
-                hitResult = player.pick(range, pPartialTicks, false);
-                range *= range;
-                if (hitResult.getType() != HitResult.Type.MISS) { // Add != MISS to ensure Attack Range is not clamped at the value of Reach Distance.
-                    range = hitResult.getLocation().distanceToSqr(eyePositionVec);
-                }
+            double pickRange = player.getPickRadius();
+            Vec3 eyePositionVec = player.getEyePosition(pPartialTicks);
+            double range;
+            range = Math.max(pickRange, attackRange);
+            pickRange = range;
+            hitResult = player.pick(range, pPartialTicks, false);
+            range *= range;
+            if (hitResult.getType() != HitResult.Type.MISS) { // Add != MISS to ensure Attack Range is not clamped at the value of Reach Distance.
+                range = hitResult.getLocation().distanceToSqr(eyePositionVec);
+            }
 
-                Vec3 viewVector = player.getViewVector(1.0F);
-                Vec3 vec32 = eyePositionVec.add(viewVector.x * pickRange, viewVector.y * pickRange, viewVector.z * pickRange);
-                AABB aabb = player.getBoundingBox().expandTowards(viewVector.scale(pickRange)).inflate(1.0D, 1.0D, 1.0D);
-                EntityHitResult entityhitresult = ProjectileUtil.
-                        getEntityHitResult(player, eyePositionVec, vec32, aabb,
-                                (entity) -> !entity.isSpectator() && entity.isPickable(), range);
+            Vec3 viewVector = player.getViewVector(1.0F);
+            Vec3 vec32 = eyePositionVec.add(viewVector.x * pickRange, viewVector.y * pickRange, viewVector.z * pickRange);
+            AABB aabb = player.getBoundingBox().expandTowards(viewVector.scale(pickRange)).inflate(1.0D, 1.0D, 1.0D);
+            EntityHitResult entityhitresult = ProjectileUtil.
+                    getEntityHitResult(player, eyePositionVec, vec32, aabb,
+                            (entity) -> !entity.isSpectator() && entity.isPickable(), range);
 
-                if (entityhitresult != null && entityhitresult.getEntity() instanceof LivingEntity) {
-                    Vec3 entityHitLocation = entityhitresult.getLocation();
-                    double d2 = eyePositionVec.distanceToSqr(entityHitLocation);
-                    if (d2 < range) {
-                        hitResult = entityhitresult;
-                    }
+            if (entityhitresult != null && entityhitresult.getEntity() instanceof LivingEntity) {
+                Vec3 entityHitLocation = entityhitresult.getLocation();
+                double d2 = eyePositionVec.distanceToSqr(entityHitLocation);
+                if (d2 < range) {
+                    hitResult = entityhitresult;
                 }
             }
             return hitResult;

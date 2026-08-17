@@ -71,7 +71,7 @@ public class MPSConstants {
 
     public static final String THERMOELECTRIC_ENERGY_GENERATION = "thermoelectricEnergyGeneration";
     public static final String STEAM_ELECTRIC_ENERGY_GENERATION = "steamEnergyGeneration";
-    public static final String STEAM_ELECTRIC_WATER_COMSUMPTION = "steamWaterConsumption";
+    public static final String STEAM_ELECTRIC_WATER_CONSUMPTION = "steamWaterConsumption";
 
     public static final String ENERGY_GENERATION_DAY = "daytimeEnergyGen";
     public static final String ENERGY_GENERATION_DAY_BASE = ENERGY_GENERATION_DAY + BASE;

@@ -43,18 +43,20 @@ public class EnergyShieldModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item) {
-            double energy = ElectricItemUtils.getPlayerEnergy(player);
-            double energyUsage = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item, int moduleIndex) {
+            double energy = getPlayerEnergy(player);
+            double energyUsage = getEnergyUsage();
             if (energy < energyUsage) {
-                // turn off module if energy is too low. This will fire on both sides so no need to sync
-                IModularItem mi = item.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
-                if (mi !=null) {
-                    mi.toggleModule(MPSConstants.ENERGY_SHIELD_MODULE, false);
-                }
+                toggleModule(false);
             } else {
                 ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
             }
+            return false;
+        }
+
+        @Override
+        public int getEnergyUsage() {
+            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
     }
 }

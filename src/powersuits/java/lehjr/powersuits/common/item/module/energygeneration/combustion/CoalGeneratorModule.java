@@ -45,7 +45,7 @@
 //    }
 //
 //    @Override
-//    public void onPlayerTickActive(Player player, ItemStack item) {
+//    public boolean onPlayerTickActive(Player player, ItemStack item) {
 //
 //        // TODO: add charging code, change to more generic combustion types... maybe add GUI
 //
@@ -74,7 +74,7 @@
 //    }
 ////
 ////    @Override
-////    public void onPlayerTickInactive(Player player, ItemStack item) {
+////    public boolean onPlayerTickInactive(Player player, ItemStack item) {
 ////    }
 ////
 ////    @Override

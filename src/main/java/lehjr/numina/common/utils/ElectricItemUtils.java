@@ -1,5 +1,6 @@
 package lehjr.numina.common.utils;
 
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -69,6 +70,11 @@ public class ElectricItemUtils {
      * Note that charging held items while in use causes issues so they are skipped
      */
     public static double givePlayerEnergy(LivingEntity entity, double rfToGive, boolean simulate) {
+        if(rfToGive <= 0) {
+            return 0;
+        }
+
+        NuminaLogger.logDebug("giving player energy: " + rfToGive + (simulate ? " simulated" : " unsimulated"));
         double rfLeft = rfToGive;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             if (rfLeft > 0) {
@@ -81,7 +87,7 @@ public class ElectricItemUtils {
         if(entity instanceof Player player) {
             // charge other compatible items in inventory
             if (rfLeft > 0) {
-                for (int i = 0; i < ((Player) entity).getInventory().getContainerSize(); i++) {
+                for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                     if (rfLeft > 0) {
                         rfLeft = rfLeft - chargeItem(player.getInventory().getItem(i), (int) rfLeft, simulate);
                     } else {

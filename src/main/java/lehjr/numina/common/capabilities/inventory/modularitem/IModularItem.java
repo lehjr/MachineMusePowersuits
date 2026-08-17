@@ -23,28 +23,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Important: changes made to a module do not automatically get applied, even with a codec. So
+ * all changes require the module to be updated in the inventory
+ */
 public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
     /**
      * This is the "Modular Item" (weapon, armor, shield?) that has the inventory for modules.
-     * @return
+     * @return host item
      */
     @Nonnull
     ItemStack getModularItemStack();
 
     /**
      * Any handheld item, tool, shield, crayon, whatever
-     * @return
+     * @return is handheld item. No would generally be armor
      */
     default boolean isHandHeld() {
-        if(isTool()) {
-            return true;
-        }
-        return false;
+        return isTool();
     }
 
     /**
      * A handheld item that is specifically a tool or weapon
-     * @return
+     * @return is tool
      */
     default boolean isTool() {
         return false;
@@ -56,23 +57,23 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
      */
     int getTier();
 
+    void setRangedWrapperMap(Map<ModuleCategory, RangedWrapper> rangedWrappers);
+
     /**
      * Ranged wrappers are used as a way of partitioning the storage so that some special purpose modules have a specific slot.
      * This is done as a way of mitigating performance issues of parsing the entire storage while having to perform related calculations
      * based on the presence of certain modules.
-     * @return
+     * @return ranged wrapper
      */
     Map<ModuleCategory, RangedWrapper> getRangedWrappers();
 
-    void setRangedWrapperMap(Map<ModuleCategory, RangedWrapper> rangedWrappers);
+    boolean isModuleValidForPlacement(int slot, ItemStack module);
 
-    boolean isModuleValidForPlacement(int slot, @Nonnull ItemStack module);
+    boolean isModuleValid (IPowerModule pm);
 
-    boolean isModuleValid (@Nonnull IPowerModule pm);
+    boolean isModuleValid(ItemStack module);
 
-    boolean isModuleValid(@Nonnull ItemStack module);
-
-    void updateModuleInSlot(int slot, @Nonnull ItemStack module);
+    void updateModuleInSlot(int slot, ItemStack module);
 
     /**
      * Returns a range of slots (partition) for a given module category, or null if there is none
@@ -81,20 +82,20 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
      */
     Pair<Integer, Integer> getRangeForCategory(ModuleCategory category);
 
-    int getStackLimit(final int slot, @Nonnull final ItemStack module);
+    int getStackLimit(final int slot, final ItemStack module);
 
     @Override
     default int getSlotLimit(int slot) {
         return 1;
     }
 
-    int findInstalledModule(@Nonnull ItemStack module);
+    int findInstalledModule(ItemStack module);
 
     int findInstalledModule(ResourceLocation registryName);
 
     boolean isModuleInstalled(ResourceLocation regName);
 
-    boolean isModuleInstalled(@Nonnull ItemStack module);
+    boolean isModuleInstalled(ItemStack module);
 
     boolean isModuleInstalled(Item item);
 
@@ -106,6 +107,8 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
     boolean isModuleOnline(ItemStack module);
 
     ItemStack getOnlineModuleOrEmpty(ResourceLocation moduleName);
+
+    void toggleModule(boolean online, int moduleIndex);
 
     void toggleModule(ResourceLocation moduleName, boolean online);
 
@@ -164,11 +167,10 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
      */
     double getMovementResistance();
 
-
-    void tick(Player player, Level level, @Nonnull ItemStack itemStack);
+    void tick(Player player, Level level, ItemStack host);
 
     @Nullable
-    default IPowerModule getModuleCapability(@Nonnull ItemStack module) {
+    default IPowerModule getModuleCapability(ItemStack module) {
         return module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
     }
 

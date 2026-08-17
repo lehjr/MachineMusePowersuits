@@ -76,7 +76,7 @@ public class SolarGeneratorModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @NotNull ItemStack item) {
+        public boolean onPlayerTickActive(Player player, Level level, @NotNull ItemStack item, int moduleIndex) {
             Level world = player.level();
             boolean isRaining, canRain = true;
             if (world.getGameTime() % 20 == 0) {
@@ -97,6 +97,7 @@ public class SolarGeneratorModule extends AbstractPowerModule {
                     HeatUtils.heatPlayer(player, applyPropertyModifiers(MPSConstants.HEAT_GENERATION_NIGHT) * lightLevelScaled / 2);
                 }
             }
+            return false;
         }
     }
 }

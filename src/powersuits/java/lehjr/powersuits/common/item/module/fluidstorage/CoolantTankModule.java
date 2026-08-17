@@ -1,5 +1,6 @@
 package lehjr.powersuits.common.item.module.fluidstorage;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
@@ -25,6 +26,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
@@ -66,26 +68,26 @@ public class CoolantTankModule extends AbstractPowerModule {
             super(module, ModuleCategory.FLUID_STORAGE, ModuleTarget.TORSOONLY);
             this.tier = tier;
             switch (tier) {
-                case 1: {
+                case 1 -> {
                     // FIXME: set up proper config values
                     addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
                     addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
                     addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
                     addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
                 }
-                case 2: {
+                case 2 -> {
                     addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
                     addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
                     addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
                     addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
                 }
-                case 3: {
+                case 3 -> {
                     addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
                     addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
                     addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
                     addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
                 }
-                case 4: {
+                case 4 -> {
                     addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
                     addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
                     addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
@@ -96,12 +98,11 @@ public class CoolantTankModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            // FIXME: set up proper config values
             return switch (this.tier) {
                 case 1 -> FluidStorageConfig.coolantTankModuleIsAllowed1;
-                case 2 -> FluidStorageConfig.coolantModuleIsAllowed2;
-                case 3 -> FluidStorageConfig.coolantModuleIsAllowed3;
-                case 4 -> FluidStorageConfig.coolantModuleIsAllowed4;
+                case 2 -> FluidStorageConfig.coolantTankModuleIsAllowed2;
+                case 3 -> FluidStorageConfig.coolantTankModuleIsAllowed3;
+                case 4 -> FluidStorageConfig.coolantTankModuleIsAllowed4;
                 default -> false;
             };
         }
@@ -110,10 +111,11 @@ public class CoolantTankModule extends AbstractPowerModule {
         static final double coolingFactor = 1.0 / 5.0;
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
+            boolean ret = false;
             IFluidHandlerItem fluidHandler = getModule().getCapability(Capabilities.FluidHandler.ITEM);
             if (fluidHandler == null) {
-                return;
+                return false;
             }
 
             // Fill if player in some sort of water
@@ -134,6 +136,7 @@ public class CoolantTankModule extends AbstractPowerModule {
                             if (pickup.isSuccess()) {
                                 FluidStack water = new FluidStack(Fluids.WATER, 1000);
                                 if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
+                                    ret = true;
                                     player.playSound(SoundEvents.BUCKET_FILL, 1.0F, 1.0F);
                                 }
                             }
@@ -142,6 +145,7 @@ public class CoolantTankModule extends AbstractPowerModule {
                     } else if (player.isInWaterRainOrBubble()) {
                         FluidStack water = new FluidStack(Fluids.WATER, 100);
                         if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
+                            ret = true;
                             player.playSound(SoundEvents.BUCKET_FILL, 1.0F, 1.0F);
                         }
                     }
@@ -162,6 +166,7 @@ public class CoolantTankModule extends AbstractPowerModule {
                     ElectricItemUtils.drainPlayerEnergy(player, (int) (energyUsage), false);
 
                     if (coolAmount > 0) {
+                        ret = true;
                         level.playSound(player, player.blockPosition(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.MASTER, 1.0F, 1.0F);
                         for (int i = 0; i < 4; i++) {
                             level.addAlwaysVisibleParticle(ParticleTypes.SMOKE, player.getX(), player.getY() + 0.5, player.getZ(), 0.0D, 0.0D, 0.0D);
@@ -176,6 +181,7 @@ public class CoolantTankModule extends AbstractPowerModule {
                         level.isClientSide ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE).getAmount() * coolingFactor;
                     HeatUtils.coolPlayer(player, coolAmount);
                     if (coolAmount > 0) {
+                        ret = true;
                         level.playSound(player, player.blockPosition(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.MASTER, 1.0F, 1.0F);
                         for (int i = 0; i < 4; i++) {
                             level.addAlwaysVisibleParticle(ParticleTypes.SMOKE, player.getX(), player.getY() + 0.5, player.getZ(), 0.0D, 0.0D, 0.0D);
@@ -183,6 +189,13 @@ public class CoolantTankModule extends AbstractPowerModule {
                     }
                 }
             }
+            return ret;
         }
     }
+
+    //    @Override
+    //    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> toolTips, TooltipFlag flags) {
+    //        super.appendHoverText(itemStack, context, toolTips, flags);
+    //        AdditionalInfo.appendHoverText(itemStack, context, toolTips, flags, Screen.hasShiftDown());
+    //    }
 }

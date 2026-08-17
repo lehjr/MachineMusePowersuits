@@ -39,9 +39,9 @@ public class JetBootsModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
             if (player.isInWater())
-                return;
+                return false;
 
             boolean hasFlightControl = false;
             IModularItem modularItem = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
@@ -77,6 +77,7 @@ public class JetBootsModule extends AbstractPowerModule {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                 }
             }
+            return false;
         }
 
         @Override
@@ -85,10 +86,11 @@ public class JetBootsModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, ItemStack item) {
+        public boolean onPlayerTickInactive(Player player, Level level, ItemStack item, int moduleIndex) {
             if (level.isClientSide && NuminaClientConfig.useSounds) {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
             }
+            return false;
         }
     }
 }

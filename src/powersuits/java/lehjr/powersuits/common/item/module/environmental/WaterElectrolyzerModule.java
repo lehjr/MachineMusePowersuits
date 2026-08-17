@@ -28,12 +28,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, ItemStack item) {
-            super.onPlayerTickInactive(player, level, item);
-        }
-
-        @Override
-        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
             double energy = ElectricItemUtils.getPlayerEnergy(player);
             double energyConsumption = Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
             if (energy > energyConsumption && player.getAirSupply() < 10) {
@@ -43,6 +38,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
                 ElectricItemUtils.drainPlayerEnergy(player, energyConsumption, false);
                 player.setAirSupply(300);
             }
+            return false;
         }
     }
 }

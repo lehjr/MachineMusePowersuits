@@ -37,7 +37,7 @@ public class AutoFeederModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack modularItemStack) {
+        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack modularItemStack, int moduleIndex) {
             float foodLevel = getFoodLevel(getModule());
             float saturationLevel = getSaturationLevel(getModule());
             Inventory inv = player.getInventory();
@@ -146,6 +146,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                     }
                 }
             }
+            return false;
         }
 
         // these setters should be called server side only -------------------------------------------------------------

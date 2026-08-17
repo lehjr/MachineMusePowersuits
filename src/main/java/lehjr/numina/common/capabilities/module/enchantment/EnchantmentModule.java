@@ -26,9 +26,9 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
     }
 
     @Override
-    public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item) {
+    public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item, int moduleIndex) {
         if (level.isClientSide()) {
-            return;
+            return false;
         }
 
         double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
@@ -39,18 +39,22 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
             ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
             setAdded(true);
             setRemoved(false);
+            return true;
         } else {
             toggleModule(false);
+            return false;
         }
     }
 
     @Override
-    public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack item) {
+    public boolean onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack item, int moduleIndex) {
         if (added && !removed) {
             removeEnchantment(item, level);
             setAdded(false);
             setRemoved(true);
+            return true;
         }
+        return false;
     }
 
     @Override

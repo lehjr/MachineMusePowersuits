@@ -35,7 +35,7 @@ public class JumpAssistModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
             if (playerInput.jumpKey) {
                 double multiplier = MovementManager.INSTANCE.getPlayerJumpMultiplier(player);
@@ -49,6 +49,7 @@ public class JumpAssistModule extends AbstractPowerModule {
                 MovementManager.INSTANCE.setPlayerJumpTicks(player, 0);
             }
             PlayerUtils.resetFloatKickTicks(player);
+            return false;
         }
     }
 }

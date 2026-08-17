@@ -96,16 +96,16 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 //        addItemDescriptions(MPSItems.KINETIC_GENERATOR_MODULE.get(), "Generate power with your movement.");
 
         // Thermal Generator ---------------------------------------------------------------------------
-        add(MPSItems.THERMAL_GENERATOR_MODULE_1.get(), "Thermal Generator");
+        add(MPSItems.THERMAL_GENERATOR_MODULE_1.get(), "Thermal Generator 1");
         addItemDescriptions(MPSItems.THERMAL_GENERATOR_MODULE_1.get(), "Generate power from extreme amounts of heat.");
 
-        add(MPSItems.THERMAL_GENERATOR_MODULE_2.get(), "Thermal Generator");
+        add(MPSItems.THERMAL_GENERATOR_MODULE_2.get(), "Thermal Generator 2");
         addItemDescriptions(MPSItems.THERMAL_GENERATOR_MODULE_2.get(), "Generate power from extreme amounts of heat.");
 
-        add(MPSItems.THERMAL_GENERATOR_MODULE_3.get(), "Thermal Generator");
+        add(MPSItems.THERMAL_GENERATOR_MODULE_3.get(), "Thermal Generator 3");
         addItemDescriptions(MPSItems.THERMAL_GENERATOR_MODULE_3.get(), "Generate power from extreme amounts of heat.");
 
-        add(MPSItems.THERMAL_GENERATOR_MODULE_4.get(), "Thermal Generator");
+        add(MPSItems.THERMAL_GENERATOR_MODULE_4.get(), "Thermal Generator 4");
         addItemDescriptions(MPSItems.THERMAL_GENERATOR_MODULE_4.get(), "Generate power from extreme amounts of heat.");
 
         // Environmental ===============================================================================
@@ -282,12 +282,10 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
         // Leaf Blower ---------------------------------------------------------------------------------
         add(MPSItems.LEAF_BLOWER_MODULE.get(), "Leaf Blower");
-
         addItemDescriptions(MPSItems.LEAF_BLOWER_MODULE.get(), "Create a torrent of air to knock plants out of the ground and leaves off of trees.");
 
         // Lux Capacitor -------------------------------------------------------------------------------
         add(MPSItems.LUX_CAPACITOR_MODULE.get(), "Lux Capacitor");
-
         addItemDescriptions(MPSItems.LUX_CAPACITOR_MODULE.get(), "Launch a virtually infinite number of attractive light sources at the wall.");
 
         // Pickaxe -------------------------------------------------------------------------------------
@@ -330,27 +328,22 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         // Weapons =====================================================================================
         // Blade Launcher ------------------------------------------------------------------------------
         add(MPSItems.BLADE_LAUNCHER_MODULE.get(), "Blade Launcher");
-
         addItemDescriptions(MPSItems.BLADE_LAUNCHER_MODULE.get(), "Launches a spinning blade of death (or shearing).");
 
         // Lightning Summoner ------------------------------------------------------------------------
         add(MPSItems.LIGHTNING_SUMMONER_MODULE.get(), "Lightning Summoner");
-
         addItemDescriptions(MPSItems.LIGHTNING_SUMMONER_MODULE.get(), "Allows you to summon lightning for a large energy cost.");
 
         // Melee Assist --------------------------------------------------------------------------------
         add(MPSItems.MELEE_ASSIST_MODULE.get(), "Melee Assist");
-
         addItemDescriptions(MPSItems.MELEE_ASSIST_MODULE.get(), "A much simpler addon, makes your powertool punches hit harder.");
 
         // Plasma Cannon -------------------------------------------------------------------------------
         add(MPSItems.PLASMA_CANNON_MODULE.get(), "Plasma Cannon");
-
         addItemDescriptions(MPSItems.PLASMA_CANNON_MODULE.get(), "Use electrical arcs in a containment field to superheat air to a plasma and launch it at enemies.");
 
         // Railgun -------------------------------------------------------------------------------------
         add(MPSItems.RAILGUN_MODULE.get(), "Railgun");
-
         addItemDescriptions(MPSItems.RAILGUN_MODULE.get(), "An assembly which accelerates a projectile to supersonic speeds using magnetic force. Heavy recoil.");
     }
 
@@ -417,7 +410,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
     @Override
     public void addModuleTradeoffs() {
         // Activation Percent --------------------------------------------------------------------------
-//        addTradeoff(MPSConstants.ACTIVATION_PERCENT, "Activation Percent");
+        addTradeoff(MPSConstants.ACTIVATION_PERCENT, "Activation Percent");
 
         // Alpha ---------------------------------------------------------------------------------------
         addTradeoff(MPSConstants.ALPHA, "Alpha");
@@ -425,8 +418,30 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         // Amperage ------------------------------------------------------------------------------------
         addTradeoff(MPSConstants.AMPERAGE, "Amperage");
 
+        // Armor (Energy) ------------------------------------------------------------------------------
+        addTradeoff(MPSConstants.ARMOR_VALUE_ENERGY, "Armor (Energy)");
+
+        // Armor Energy Per Damage ---------------------------------------------------------------------
+        addTradeoff(MPSConstants.ARMOR_ENERGY_CONSUMPTION, "Energy Per Damage");
+
+        // Armor (Physical) ----------------------------------------------------------------------------
+        addTradeoff(MPSConstants.ARMOR_VALUE_PHYSICAL, "Armor (Physical)");
+
+        // Armor Toughness -----------------------------------------------------------------------------
+        addTradeoff(MPSConstants.ARMOR_TOUGHNESS, "Toughness");
+
+        // Auto-Feeder Efficiency ----------------------------------------------------------------------
+        addTradeoff(MPSConstants.AUTO_FEEDER_EFFICIENCY, "Auto-Feeder Efficiency");
+
         // Block Limit ---------------------------------------------------------------------------------
         addTradeoff(MPSConstants.SELECTIVE_MINER_LIMIT, "Block Limit");
+
+        // Cooling Bonus -------------------------------------------------------------------------------
+        addTradeoff(MPSConstants.COOLING_BONUS, "Cooling Bonus");
+
+        // Heat Activation Percent ---------------------------------------------------------------------
+        addTradeoff(MPSConstants.HEAT_ACTIVATION_PERCENT, "Heat Activation %");
+
 
 //        // Mining Diameter -----------------------------------------------------------------------------
 //        addTradeoff(miningDiameter", "Mining Diameter");
@@ -434,23 +449,14 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         // Harvest Speed -------------------------------------------------------------------------------
         addTradeoff(MPSConstants.AQUA_HARVEST_SPEED, "Harvest Speed");
 
-        // Armor (Energy) ------------------------------------------------------------------------------
-        addTradeoff(MPSConstants.ARMOR_VALUE_ENERGY, "Armor (Energy)");
 
-        // Armor Toughness -----------------------------------------------------------------------------
-        addTradeoff(MPSConstants.ARMOR_TOUGHNESS, "Toughness");
 
-        // Energy Per Damage ---------------------------------------------------------------------------
-        addTradeoff(MPSConstants.ARMOR_ENERGY_CONSUMPTION, "Energy Per Damage");
 
-        // Armor (Physical) ----------------------------------------------------------------------------
-        addTradeoff(MPSConstants.ARMOR_VALUE_PHYSICAL, "Armor (Physical)");
 
         // pts -----------------------------------------------------------------------------------------
         addTradeoff(MPSConstants.ARMOR_POINTS, "pts");
 
-        // Auto-Feeder Efficiency ----------------------------------------------------------------------
-        addTradeoff(MPSConstants.AUTO_FEEDER_EFFICIENCY, "Auto-Feeder Efficiency");
+
 
         // Range ---------------------------------------------------------------------------------------
 //        addTradeoff(MPSConstants.BLINK_DRIVE_RANGE, "Range");
@@ -626,8 +632,14 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         // Sprint Speed Multiplier ---------------------------------------------------------------------
         addTradeoff(MPSConstants.SPRINT_SPEED_MULTIPLIER, "Sprint Speed Multiplier");
 
+        // Steam Energy Generation ---------------------------------------------------------------------
+        addTradeoff(MPSConstants.STEAM_ELECTRIC_ENERGY_GENERATION, "Steam Generation");
 
+        // Steam Water Consumption ---------------------------------------------------------------------
+        addTradeoff(MPSConstants.STEAM_ELECTRIC_WATER_CONSUMPTION, "Water Consumption");
 
+        // Thermoelectric Energy Generation ------------------------------------------------------------
+        addTradeoff(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION, "Thermoelectric Generation");
 
 //        // Energy Generation ---------------------------------------------------------------------------
 //        addTradeoff(thermalEnergyGen", "Energy Generation");

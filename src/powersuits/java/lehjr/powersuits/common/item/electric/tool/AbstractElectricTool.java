@@ -45,7 +45,7 @@ import java.util.List;
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
         super.appendHoverText(stack, context, components, flag);
-        AdditionalInfo.appendHoverText(stack, context, components, flag, Screen.hasShiftDown());
+        AdditionalInfo.appendHoverText(stack, components, Screen.hasShiftDown());
     }
 
     /**

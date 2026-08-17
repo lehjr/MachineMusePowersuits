@@ -61,16 +61,18 @@ public class LuxCapacitorModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn) {
-            onPlayerTickInactive(player, level, itemStackIn);
+        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn, int moduleIndex) {
+            return onPlayerTickInactive(player, level, itemStackIn,  moduleIndex);
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn) {
+        public boolean onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn,  int moduleIndex) {
             double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
             if (timer > 0) {
                 TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, timer - 1 > 0 ? timer - 1 : 0);
+                return true;
             }
+            return false;
         }
 
         @Override

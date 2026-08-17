@@ -39,7 +39,7 @@ public class SwimAssistModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStack) {
+        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStack, int moduleIndex) {
 //                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
             if((player.isInWater() && !player.isPassenger()) && (playerInput.strafeLeftKey || playerInput.strafeRightKey || playerInput.forwardKey || playerInput.reverseKey || playerInput.jumpKey || player.isCrouching())) {
@@ -68,19 +68,21 @@ public class SwimAssistModule extends AbstractPowerModule {
                     MovementManager.thrust(player, swimAssistRate, true);
 //                    SprintAssistModule.setMovementModifier(itemStack, getModule(), swimAssistRate * 100000, MPSConstants.SWIM_SPEED);
                 } else {
-                    onPlayerTickInactive(player, level, itemStack);
+                    onPlayerTickInactive(player, level, itemStack, moduleIndex);
                 }
             } else {
-                onPlayerTickInactive(player, level, itemStack);
+                onPlayerTickInactive(player, level, itemStack, moduleIndex);
             }
+            return false;
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack itemStack) {
+        public boolean onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack itemStack, int moduleIndex) {
             if (level.isClientSide && NuminaClientConfig.useSounds) {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get());
             }
 //            SprintAssistModule.setMovementModifier(itemStack, getModule(), 0, MPSConstants.SWIM_SPEED);
+            return false;
         }
     }
 }

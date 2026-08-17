@@ -37,7 +37,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
             int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
                 if (level.getGameTime() % 20 == 0) {
@@ -45,6 +45,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
                 }
                 repulse(level, player.blockPosition());
             }
+            return false;
         }
 
         // FIXME: check for instances instead of direct references

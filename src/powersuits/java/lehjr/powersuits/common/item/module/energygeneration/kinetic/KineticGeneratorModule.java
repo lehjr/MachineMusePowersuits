@@ -28,10 +28,10 @@ public class KineticGeneratorModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, Level level, @NotNull ItemStack item) {
-            super.onPlayerTickActive(player, level, item);
+        public boolean onPlayerTickActive(Player player, Level level, @NotNull ItemStack item,  int moduleIndex) {
+            super.onPlayerTickActive(player, level, item,  moduleIndex);
             if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying() || !player.onGround())
-                onPlayerTickInactive(player, level, item);
+                onPlayerTickInactive(player, level, item,  moduleIndex);
 
             // really hate running this check on every tick but needed for player speed adjustments
             if (ElectricItemUtils.getPlayerEnergy(player) < ElectricItemUtils.getMaxPlayerEnergy(player)) {
@@ -45,6 +45,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
                     ElectricItemUtils.givePlayerEnergy(player, (int) (distance * 20 * applyPropertyModifiers(MPSConstants.ENERGY_GENERATION)), false);
                 }
             }
+            return false;
         }
     }
 }

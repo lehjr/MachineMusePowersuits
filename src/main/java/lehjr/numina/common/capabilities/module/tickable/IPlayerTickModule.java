@@ -8,11 +8,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nonnull;
 
 public interface IPlayerTickModule extends IToggleableModule {
-    void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item);
+    boolean onPlayerTickActive(Player player, Level level, ItemStack host, int moduleIndex);
 
-    void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack item);
-
-    default int getEnergyUsage() {
-        return 0;
-    }
+    boolean onPlayerTickInactive(Player player, Level level, ItemStack host, int moduleIndex);
 }

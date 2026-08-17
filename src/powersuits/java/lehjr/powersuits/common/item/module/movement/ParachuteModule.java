@@ -20,7 +20,7 @@ public class ParachuteModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive (Player player, Level level, ItemStack itemStack){
+        public boolean onPlayerTickActive (Player player, Level level, ItemStack itemStack, int moduleIndex){
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
             boolean hasGlider = false; // fixme!!!
             PlayerUtils.resetFloatKickTicks(player);
@@ -34,6 +34,7 @@ public class ParachuteModule extends AbstractPowerModule {
                             motion.z * 0.1 / totalVelocity);
                 }
             }
+            return false;
         }
     }
 }

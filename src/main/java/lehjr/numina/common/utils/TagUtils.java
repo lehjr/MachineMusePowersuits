@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class TagUtils {
     @Nonnull
@@ -155,12 +156,6 @@ public class TagUtils {
         stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
         return stack;
     }
-
-
-
-
-
-
 
     public static float getModularItemFloat(@Nonnull ItemStack stack, String tagName) {
         return getFloatOrZero(getModularItemTag(stack), tagName);

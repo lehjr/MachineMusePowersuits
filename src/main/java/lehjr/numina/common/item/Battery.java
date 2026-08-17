@@ -82,6 +82,6 @@ public class Battery extends Item {
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> toolTips, TooltipFlag flags) {
         super.appendHoverText(itemStack, context, toolTips, flags);
-        AdditionalInfo.appendHoverText(itemStack, context, toolTips, flags, Screen.hasShiftDown());
+        AdditionalInfo.appendHoverText(itemStack, toolTips, Screen.hasShiftDown());
     }
 }

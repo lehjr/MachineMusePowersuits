@@ -24,7 +24,7 @@ public class GliderModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(Player player, Level level, ItemStack chestPlate) {
+            public boolean onPlayerTickActive(Player player, Level level, ItemStack chestPlate, int moduleIndex) {
                 Vec3 playerHorzFacing = player.getLookAngle();
                 playerHorzFacing = new Vec3(playerHorzFacing.x, 0, playerHorzFacing.z);
                 playerHorzFacing.normalize();
@@ -53,6 +53,7 @@ public class GliderModule extends AbstractPowerModule {
                         player.getAbilities().setFlyingSpeed(flySpeed);
                     }
                 }
+                return false;
             }
 
             @Override

@@ -65,7 +65,7 @@
 //        }
 //
 //        @Override
-//        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn) {
+//        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn) {
 //            double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
 //            if (timer > 0) {
 //                TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, timer - 1 > 0 ? timer - 1 : 0);
@@ -73,7 +73,7 @@
 //        }
 //
 //        @Override
-//        public void onPlayerTickInactive(Player player, Level level, @NotNull ItemStack item) {
+//        public boolean onPlayerTickInactive(Player player, Level level, @NotNull ItemStack item) {
 //            super.onPlayerTickInactive(player, level, item);
 //        }
 //
@@ -417,7 +417,7 @@
 ////            }
 ////
 ////            @Override
-////            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
+////            public boolean onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
 ////                double timer = NBTUtils.getModularItemDoubleOrZero(itemStackIn, MPSConstants.TIMER);
 ////                if (timer > 0)
 ////                    NBTUtils.setModularItemDoubleOrRemove(itemStackIn, MPSConstants.TIMER, timer - 1 > 0 ? timer - 1 : 0);

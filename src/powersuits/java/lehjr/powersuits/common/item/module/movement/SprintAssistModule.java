@@ -52,14 +52,14 @@ public class SprintAssistModule extends AbstractPowerModule {
          * Testing shoes neither walkDistO or deltaMovement update on the server side, and deltaMovement often returns NaN
          */
         @Override
-        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack armorLegs) {
+        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack armorLegs, int moduleIndex) {
             // Normal:
             // ----------------------------------------
             // player speed .1 walking, .13 sprinting
             // ----------------------------------------
             if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()  || player.isInWaterOrBubble()) {
                 setPlayerSpeed(0, 0);
-                return;
+                return false;
             }
 
             if (level.isClientSide()) {
@@ -89,11 +89,13 @@ public class SprintAssistModule extends AbstractPowerModule {
                     setPlayerSpeed(0, 0);
                 }
             }
+            return false;
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack itemStack) {
+        public boolean onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack itemStack, int moduleIndex) {
             setPlayerSpeed(0, 0);
+            return false;
         }
 
         void setPlayerSpeed(double value, int drainAmount) {
