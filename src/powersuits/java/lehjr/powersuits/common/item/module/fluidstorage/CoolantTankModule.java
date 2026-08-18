@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.item.module.fluidstorage;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
@@ -26,7 +25,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
@@ -53,7 +51,6 @@ public class CoolantTankModule extends AbstractPowerModule {
     */
     static int getCapacity(int tier) {
         return switch (tier) {
-            // FIXME: set up proper config values
             case 1 -> FluidStorageConfig.coolantTankModuleCapacity1;
             case 2 -> FluidStorageConfig.coolantTankModuleCapacity2;
             case 3 -> FluidStorageConfig.coolantTankModuleCapacity3;
@@ -69,29 +66,28 @@ public class CoolantTankModule extends AbstractPowerModule {
             this.tier = tier;
             switch (tier) {
                 case 1 -> {
-                    // FIXME: set up proper config values
-                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
-                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
-                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
-                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, FluidStorageConfig.coolantTankModuleHeatActivationPercentBase1);
+                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, FluidStorageConfig.coolantTankModuleHeatActivationPercentMultiplier1, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, FluidStorageConfig.coolantTankModuleEnergyConsumptionCoolingBonusMultiplier1, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, FluidStorageConfig.coolantTankModuleEnergyConsumptionMultiplier1, "RF/t");
                 }
                 case 2 -> {
-                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
-                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
-                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
-                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, FluidStorageConfig.coolantTankModuleHeatActivationPercentBase2);
+                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, FluidStorageConfig.coolantTankModuleHeatActivationPercentMultiplier2, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, FluidStorageConfig.coolantTankModuleEnergyConsumptionCoolingBonusMultiplier2, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, FluidStorageConfig.coolantTankModuleEnergyConsumptionMultiplier2, "RF/t");
                 }
                 case 3 -> {
-                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
-                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
-                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
-                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, FluidStorageConfig.coolantTankModuleHeatActivationPercentBase3);
+                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, FluidStorageConfig.coolantTankModuleHeatActivationPercentMultiplier3, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, FluidStorageConfig.coolantTankModuleEnergyConsumptionCoolingBonusMultiplier3, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, FluidStorageConfig.coolantTankModuleEnergyConsumptionMultiplier3, "RF/t");
                 }
                 case 4 -> {
-                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
-                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
-                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
-                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+                    addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, FluidStorageConfig.coolantTankModuleHeatActivationPercentBase4);
+                    addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, FluidStorageConfig.coolantTankModuleHeatActivationPercentMultiplier4, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, FluidStorageConfig.coolantTankModuleEnergyConsumptionCoolingBonusMultiplier4, "%");
+                    addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, FluidStorageConfig.coolantTankModuleEnergyConsumptionMultiplier4, "RF/t");
                 }
             }
         }

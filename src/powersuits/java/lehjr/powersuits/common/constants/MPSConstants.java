@@ -27,6 +27,7 @@ public class MPSConstants {
     public static final String ON_USE_ENERGY_CONSUMPTION = "onUseEnergyCon";
 
     public static final String ENERGY_CONSUMPTION_BASE = ENERGY_CONSUMPTION + BASE;
+
     public static final String ENERGY_CONSUMPTION__OVERCLOCK_MULTIPLIER = ENERGY_CONSUMPTION + OVERCLOCK_MULTIPLIER;
     public static final String JUMP_BOOST = "jumpBoost";
     public static final String JUMP_BOOST_BASE = JUMP_BOOST + BASE;
@@ -51,6 +52,8 @@ public class MPSConstants {
     // Environmental --------------------------------------------------------------------------------------------------
     // Cooling System
     public static final String COOLING_BONUS = "coolingBonus";
+    public static final String ENERGY_CONSUMPTION_COOLING_BONUS_MULTIPLIER = ENERGY_CONSUMPTION + COOLING_BONUS + MULTIPLIER;
+
     // Fluid Tank
     public static final String FLUID_TANK_SIZE = "fluidTankSize";
     public static final String HEAT_ACTIVATION_PERCENT = "heatActivationPercent";//Heat Activation Percent";

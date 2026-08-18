@@ -113,7 +113,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                     });
                 }
 
-                InteractionResultHolder test = InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
+                InteractionResultHolder<ItemStack> test = InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
                 NuminaLogger.logDebug("sided success: " + test.getResult().name());
 
                 return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());

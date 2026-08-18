@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 
 public class AutoFeederModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
-        public Ticker(@Nonnull ItemStack module) {
+        public Ticker(ItemStack module) {
             super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.autoFeederModuleEnergyConsumptionBase);
             addBaseProperty(MPSConstants.AUTO_FEEDER_EFFICIENCY, EnvironmentalModuleConfig.autoFeederModuleEatingEfficiencyBase);
@@ -37,7 +37,7 @@ public class AutoFeederModule extends AbstractPowerModule {
         }
 
         @Override
-        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack modularItemStack, int moduleIndex) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack modularItemStack, int moduleIndex) {
             float foodLevel = getFoodLevel(getModule());
             float saturationLevel = getSaturationLevel(getModule());
             Inventory inv = player.getInventory();
@@ -150,7 +150,7 @@ public class AutoFeederModule extends AbstractPowerModule {
         }
 
         // these setters should be called server side only -------------------------------------------------------------
-        public void setFoodLevel(@Nonnull ItemStack stack, float food, Level level) {
+        public void setFoodLevel(ItemStack stack, float food, Level level) {
             if(!level.isClientSide()) {
                 IModularItem modularItem = NuminaCapabilities.getModularItem(stack);
                 if (modularItem != null) {
@@ -159,7 +159,7 @@ public class AutoFeederModule extends AbstractPowerModule {
             }
         }
 
-        public void setSaturationLevel(@Nonnull ItemStack stack, float saturation, Level level) {
+        public void setSaturationLevel(ItemStack stack, float saturation, Level level) {
             if (!level.isClientSide()) {
                 IModularItem modularItem = NuminaCapabilities.getModularItem(stack);
                 if (modularItem != null) {
@@ -169,11 +169,11 @@ public class AutoFeederModule extends AbstractPowerModule {
         }
     }
 
-    public static float getFoodLevel(@Nonnull ItemStack stack) {
+    public static float getFoodLevel(ItemStack stack) {
         return TagUtils.getModuleFloat(stack, MPSConstants.TAG_FOOD);
     }
 
-    public static float getSaturationLevel(@Nonnull ItemStack stack) {
+    public static float getSaturationLevel(ItemStack stack) {
         return TagUtils.getModuleFloat(stack, MPSConstants.TAG_SATURATION);
     }
 }

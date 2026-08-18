@@ -6,12 +6,20 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static lehjr.numina.common.registration.NuminaCapabilities.getModularItem;
 
 public class PowerArmorFluidWrapper implements IFluidHandlerItem {
     int moduleIndex = -1;
+    // TODO: use this map in if multiple modules have fluid..
+//    Map<IFluidHandlerItem, Integer> fluidHandlers = new HashMap<>();
     IFluidHandlerItem fluidHandler = null;
     IModularItem modularItem;
     ItemStack container = ItemStack.EMPTY;
@@ -31,6 +39,20 @@ public class PowerArmorFluidWrapper implements IFluidHandlerItem {
                     }
                 }
             }
+
+            // --------------------------------------
+//            Pair<Integer, Integer> range = modularItem.getRangeForCategory(ModuleCategory.FLUID_STORAGE);
+//            if(range.getFirst() >= 0 && range.getSecond() >= range.getFirst()) {
+//                for(int i = range.getFirst(); i < range.getSecond(); i++) {
+//                    ItemStack module = modularItem.getStackInSlot(i);
+//                    IFluidHandler fluidHandler= module.getCapability(Capabilities.FluidHandler.ITEM, null);
+//                    if(fluidHandler != null) {
+//                        fluidHandlers.put(fluidHandler, moduleIndex);
+//                        moduleIndex = i;
+//                        container = module;
+//                    }
+//                }
+//            }
         }
     }
 

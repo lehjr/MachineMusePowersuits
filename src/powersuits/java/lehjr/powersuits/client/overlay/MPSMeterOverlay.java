@@ -34,6 +34,14 @@ public class MPSMeterOverlay {
     private static PlasmaChargeMeter plasmaMeter = null;
     final static double meterTextOffsetY = 0;
 
+    /**
+     *
+     * @param player
+     * @param poseStack
+     * @param deltaTracker unused, left for potential future "features"
+     * @param scaledWidth
+     * @param scaledHeight
+     */
     public static void render(Player player, GuiGraphics poseStack, DeltaTracker deltaTracker, float scaledWidth, float scaledHeight) {
         float top = scaledHeight / 2.0F - 16F;
         float left = scaledWidth - 36;

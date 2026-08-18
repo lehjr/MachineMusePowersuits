@@ -21,7 +21,7 @@ public class ActiveCamouflageModule extends AbstractPowerModule {
     private static final Holder<MobEffect> invisibility = MobEffects.INVISIBILITY;
 
     public static class Ticker extends PlayerTickModule {
-        public Ticker(@Nonnull ItemStack module) {
+        public Ticker(ItemStack module) {
             super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION_BASE, EnvironmentalModuleConfig.activeCamouflageModuleEnergyConsumptionBase, "FE");
         }

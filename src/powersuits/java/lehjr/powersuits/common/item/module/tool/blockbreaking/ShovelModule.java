@@ -37,35 +37,35 @@ public class ShovelModule extends AbstractPowerModule {
             this.tier = tier;
 
             switch(tier) {
-            case 1 -> {
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.stoneShovelModuleEnergyConsumptionBase, "FE");
-                addBaseProperty(NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.stoneShovelModuleHarvestSpeedBase, "x");
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.stoneShovelModuleEnergyConsumptionOverclockMultiplier);
-                addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.stoneShovelModuleHarvestSpeedOverclockMultiplier);
-            }
-            case 2-> {
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.ironShovelModuleEnergyConsumptionBase, "FE");
-                addBaseProperty(NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.ironShovelModuleHarvestSpeedBase, "x");
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.ironShovelModuleEnergyConsumptionOverclockMultiplier);
-                addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.ironShovelModuleHarvestSpeedOverclockMultiplier);
-            }
-            case 3-> {
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.diamondShovelModuleEnergyConsumptionBase, "FE");
-                addBaseProperty(NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.diamondShovelModuleHarvestSpeedBase, "x");
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.diamondShovelModuleEnergyConsumptionOverclockMultiplier);
-                addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.diamondShovelModuleHarvestSpeedOverclockMultiplier);
-            }
-            case 4-> {
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.netheriteShovelModuleEnergyConsumptionBase, "FE");
-                addBaseProperty(NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.netheriteShovelModuleHarvestSpeedBase, "x");
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.netheriteShovelModuleEnergyConsumptionOverclockMultiplier);
-                addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.netheriteShovelModuleHarvestSpeedOverclockMultiplier);
-            }
+                case 1 -> {
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.stoneShovelModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.stoneShovelModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.stoneShovelModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.stoneShovelModuleHarvestSpeedOverclockMultiplier);
+                }
+                case 2-> {
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.ironShovelModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.ironShovelModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.ironShovelModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.ironShovelModuleHarvestSpeedOverclockMultiplier);
+                }
+                case 3-> {
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.diamondShovelModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.diamondShovelModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.diamondShovelModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.diamondShovelModuleHarvestSpeedOverclockMultiplier);
+                }
+                case 4-> {
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.netheriteShovelModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.netheriteShovelModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ShovelModuleConfig.netheriteShovelModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, ShovelModuleConfig.netheriteShovelModuleHarvestSpeedOverclockMultiplier);
+                }
             }
         }
 
         @Override
-        public boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+        public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
             if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                 ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage(), false);
                 return true;
@@ -84,7 +84,7 @@ public class ShovelModule extends AbstractPowerModule {
         }
 
         @Override
-        public @Nonnull ItemStack getEmulatedTool() {
+        public ItemStack getEmulatedTool() {
             return switch (tier) {
                 case 1 -> new ItemStack(Items.STONE_SHOVEL);
                 case 2 -> new ItemStack(Items.IRON_SHOVEL);
