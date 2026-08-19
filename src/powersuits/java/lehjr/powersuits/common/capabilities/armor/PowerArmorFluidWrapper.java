@@ -31,7 +31,7 @@ public class PowerArmorFluidWrapper implements IFluidHandlerItem {
             if(range.getFirst() >= 0 && range.getSecond() >= range.getFirst()) {
                 for(int i = range.getFirst(); i < range.getSecond(); i++) {
                     ItemStack module = modularItem.getStackInSlot(i);
-                    fluidHandler = module.getCapability(Capabilities.FluidHandler.ITEM, null);
+                    fluidHandler = module.getCapability(Capabilities.FluidHandler.ITEM);
                     if(fluidHandler != null) {
                         moduleIndex = i;
                         container = module;
@@ -45,17 +45,19 @@ public class PowerArmorFluidWrapper implements IFluidHandlerItem {
 //            if(range.getFirst() >= 0 && range.getSecond() >= range.getFirst()) {
 //                for(int i = range.getFirst(); i < range.getSecond(); i++) {
 //                    ItemStack module = modularItem.getStackInSlot(i);
-//                    IFluidHandler fluidHandler= module.getCapability(Capabilities.FluidHandler.ITEM, null);
+//                    IFluidHandler fluidHandler= module.getCapability(Capabilities.FluidHandler.ITEM);
 //                    if(fluidHandler != null) {
 //                        fluidHandlers.put(fluidHandler, moduleIndex);
-//                        moduleIndex = i;
-//                        container = module;
 //                    }
 //                }
 //            }
         }
     }
 
+    /**
+     * This probably doesn't matter that much since data is set on each fluid handler's data internally
+     * @return
+     */
     @Override
     public ItemStack getContainer() {
         return container;

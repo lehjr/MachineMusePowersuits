@@ -17,13 +17,33 @@ public abstract class AbstractItemModelProvider extends ItemModelProvider {
     }
 
     public ItemModelBuilder basicItem(Item item, String texturePath) {
-        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)), Objects.requireNonNull(texturePath));
+        return this.basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)),
+            Objects.requireNonNull(texturePath));
+    }
+
+    public ItemModelBuilder basicItemMC(Item item, String texturePath) {
+        return this.basicItemMC(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)),
+            Objects.requireNonNull(texturePath));
     }
 
     public ItemModelBuilder basicItem(ResourceLocation item, String texturePath) {
-        return this.getBuilder(item.toString()).parent(
-            new ModelFile.UncheckedModelFile("item/generated")).texture("layer0",
-            ResourceLocation.fromNamespaceAndPath(item.getNamespace(), texturePath));
+        return this.getBuilder(item.toString())
+            .parent(new ModelFile.UncheckedModelFile("item/generated"))
+            .texture("layer0", ResourceLocation.fromNamespaceAndPath(item.getNamespace(), texturePath));
+    }
+
+    public ItemModelBuilder basicItemMC(ResourceLocation item, String texturePath) {
+        return this.getBuilder(item.toString())
+            .parent(new ModelFile.UncheckedModelFile("item/generated"))
+            .texture("layer0", mcLoc(texturePath));
+    }
+
+
+
+    public ItemModelBuilder basicItem(Item item, ResourceLocation textureLocation) {
+        return basicItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)))
+            .parent(new ModelFile.UncheckedModelFile("item/generated"))
+            .texture("layer0", textureLocation);
     }
 
     public ItemModelBuilder itemEntity(Item item) {

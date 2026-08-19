@@ -2,6 +2,7 @@ package powersuits.common;
 
 import lehjr.powersuits.common.constants.MPSConstants;
 import powersuits.client.lang.MPSLanguageProvider_EN_US;
+import powersuits.client.model.item.MPSItemModelProvider;
 import powersuits.common.loot.MPSBlockLoot;
 import powersuits.common.loot.MPSBlockTagProvider;
 import powersuits.common.recipes.MPSRecipeGenerator;
@@ -31,6 +32,9 @@ public class PowersuitsDataGenerator {
 
         //        //Client side data generators
         generator.addProvider(event.includeClient(), new MPSLanguageProvider_EN_US(output));
+        generator.addProvider(event.includeClient(), new MPSItemModelProvider(output, helper));
+
+
         ////        translator.quit();
         //
         //        //Server side data generators

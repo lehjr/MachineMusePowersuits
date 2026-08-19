@@ -290,43 +290,12 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TunnelBoreModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.VEIN_MINER_MODULE.get());
 
-
-
-
         // Special
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.CLOCK);
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.COMPASS);
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.RECOVERY_COMPASS);
 
-
-
-
         // Cosmetic
-
-        //        // Debug (LOL)         // Test successful!!
-        //        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx)-> {
-        //            if (stack.is(MPSItems.DEBUG_ITEM.value())) {
-        ////                var contents = stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
-        //
-        //
-        //
-        ////                int size = ModularItemArmorWrapper.getActualSize(stack, 1);
-        ////                if(size == 0) {
-        ////                    size = contents.getSlots();
-        ////                }
-        ////                //
-        ////                var items = NonNullList.withSize(size, new ItemStack(NuminaObjects.ULTIMATE_BATTERY.get()));
-        ////                NuminaLogger.logDebug("modularItem items size: " + items.size());
-        ////                contents.copyInto(items);
-        ////                return new ModularItemArmorWrapper(stack, 1, items);
-        //                return new ModularItem2(stack, 27);
-        ////            }
-        //            return null;
-        //        }, MPSItems.DEBUG_ITEM.get());
-
-
-
-
 
         // Movement -------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BlinkDriveModule.RightClickie(stack), MPSItems.BLINK_DRIVE_MODULE.get());

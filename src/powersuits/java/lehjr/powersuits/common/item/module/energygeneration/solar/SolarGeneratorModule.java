@@ -24,10 +24,6 @@ public class SolarGeneratorModule extends AbstractPowerModule {
 
             switch(tier) {
                 case 1-> {
-//                    addBaseProperty(MPSConstants.ENERGY_GENERATION_DAY, 15000, "FE");
-//                    addBaseProperty(MPSConstants.ENERGY_GENERATION_NIGHT, 1500, "FE");
-//                    addBaseProperty(MPSConstants.HEAT_GENERATION_DAY, 15);
-//                    addBaseProperty(MPSConstants.HEAT_GENERATION_NIGHT, 5);
                     addBaseProperty(MPSConstants.ENERGY_GENERATION_DAY, EnergyGenerationModuleConfig.solarGeneratorModule_1_energyGenerationDay, "FE");
                     addBaseProperty(MPSConstants.ENERGY_GENERATION_NIGHT, EnergyGenerationModuleConfig.solarGeneratorModule_1_energyGenerationNight, "FE");
                     addBaseProperty(MPSConstants.HEAT_GENERATION_DAY, EnergyGenerationModuleConfig.solarGeneratorModule_1_heatGenerationDay);
