@@ -1,11 +1,11 @@
 package lehjr.powersuits.client.render.block;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.block.TinkerTableModel;
 import lehjr.powersuits.common.block.TinkerTable;
 import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;

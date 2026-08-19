@@ -1,13 +1,12 @@
 package lehjr.numina.client.gui.clickable.slider;
 
-import lehjr.numina.client.gui.geometry.MusePoint2D;
 import com.mojang.blaze3d.systems.RenderSystem;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-
 
 /**
  * uses vanilla texture for vanilla look and feel

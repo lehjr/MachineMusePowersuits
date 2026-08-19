@@ -1,7 +1,7 @@
 package lehjr.numina.mixin.common.item;
 
-import lehjr.numina.imixin.common.item.IMixinRangedWrapper;
 import com.mojang.datafixers.util.Pair;
+import lehjr.numina.imixin.common.item.IMixinRangedWrapper;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

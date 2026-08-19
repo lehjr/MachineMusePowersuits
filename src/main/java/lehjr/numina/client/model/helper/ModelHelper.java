@@ -1,10 +1,10 @@
 package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.math.Transformation;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
-import com.mojang.math.Transformation;
 import net.forge.client.NuminaObjLoader;
 import net.forge.client.NuminaObjModel;
 import net.minecraft.client.Minecraft;

@@ -1,11 +1,11 @@
 package lehjr.powersuits.client.control;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.serverbound.ToggleRequestPacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.client.overlay.MPSOverlay;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

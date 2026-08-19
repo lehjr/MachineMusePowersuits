@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.client.gui.cosmetic;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.frame.EntityRenderFrame;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
@@ -34,7 +35,6 @@ import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.client.gui.cosmetic.colorpicker.ColorPickerFrame;
 import lehjr.powersuits.client.gui.cosmetic.partmanip.ModelManipFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;

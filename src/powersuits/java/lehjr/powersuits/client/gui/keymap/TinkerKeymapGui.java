@@ -26,14 +26,14 @@
 
 package lehjr.powersuits.client.gui.keymap;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.powersuits.client.control.KeyMappingReaderWriter;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
-import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -41,7 +41,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.settings.KeyModifier;
-
 
 /**
  * Fixme: buttons rendering on top of module icons and their label/text

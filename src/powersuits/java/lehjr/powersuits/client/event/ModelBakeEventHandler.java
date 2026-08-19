@@ -7,11 +7,13 @@ import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
 import lehjr.powersuits.client.model.item.PowerFistModelWrapper;
 import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.registration.MPSItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -26,7 +28,7 @@ import java.util.Map;
 
 public enum ModelBakeEventHandler {
     INSTANCE;
-    public static final ModelResourceLocation plasmaBall = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "entity/plasma"), "standalone");
+    public static final ModelResourceLocation plasmaBall = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "item/" + MPSConstants.PLASMA_BALL.getPath()), "standalone");
 
     public final MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
 
@@ -41,7 +43,7 @@ public enum ModelBakeEventHandler {
     public void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         Map<ModelResourceLocation, BakedModel> registry = event.getModels();
         for (Direction facing : Direction.values()) {
-            BakedModel model = registry.get(new ModelResourceLocation(ResourceLocation.parse("powersuits:luxcapacitor"), "facing=" + facing + ",waterlogged=true"));
+            BakedModel model = registry.get(new ModelResourceLocation(BuiltInRegistries.ITEM.getKey(MPSItems.LUX_CAPACITOR_ITEM.get()), "facing=" + facing + ",waterlogged=true"));
             if(model instanceof OBJBakedCompositeModel) {
                 HashMap<DIR, List<BakedQuad>> map = new HashMap<>();
                 for (DIR dir : DIR.values()) {

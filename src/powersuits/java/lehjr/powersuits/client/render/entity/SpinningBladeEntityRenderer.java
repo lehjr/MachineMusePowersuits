@@ -1,9 +1,9 @@
 package lehjr.powersuits.client.render.entity;
 
-import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.entity.SpinningBladeEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.entity.SpinningBladeEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;

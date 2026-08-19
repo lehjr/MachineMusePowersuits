@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.client.model.block;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.math.Color;
@@ -34,7 +35,6 @@ import lehjr.numina.common.utils.TagUtils;
 import lehjr.powersuits.client.model.LuxCapHelper;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.constants.MPSConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;

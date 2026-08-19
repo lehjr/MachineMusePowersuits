@@ -1,9 +1,9 @@
 package lehjr.numina.client.render.item;
 
-import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ArmorStandModel;
 import net.minecraft.client.model.Model;

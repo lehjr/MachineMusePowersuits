@@ -1,7 +1,6 @@
 package lehjr.powersuits.common.item.module.miningenhancement;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.enhancement.MiningEnhancement;
@@ -12,7 +11,6 @@ import lehjr.numina.common.capabilities.render.highlight.IHighlight;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.numina.common.utils.block.CheckBlocksFrom;
 import lehjr.numina.common.utils.block.CheckOreBlocksFrom;
 import lehjr.powersuits.common.config.module.MiningEnhancementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;

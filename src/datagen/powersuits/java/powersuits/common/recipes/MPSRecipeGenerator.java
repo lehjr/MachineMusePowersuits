@@ -2,10 +2,6 @@ package powersuits.common.recipes;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.registration.NuminaItems;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.common.crafting.SizedIngredient;
-import numina.common.recipes.ShapedEnchantmentRecipeBuilder;
-import numina.common.recipes.ShapedModularItemUpgradeRecipeBuilder;
 import lehjr.powersuits.common.registration.MPSItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -16,8 +12,11 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import numina.common.recipes.ShapedEnchantmentRecipeBuilder;
 import numina.common.recipes.SmithingUpgradeRecipeBuilder;
 
 import javax.annotation.Nonnull;

@@ -26,9 +26,9 @@
 
 package lehjr.powersuits.client.gui.module.select;
 
+import com.mojang.blaze3d.platform.Window;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;

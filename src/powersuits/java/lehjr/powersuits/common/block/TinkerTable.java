@@ -1,12 +1,12 @@
 package lehjr.powersuits.common.block;
 
+import com.mojang.serialization.MapCodec;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.powersuits.client.gui.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,5 +1,3 @@
-
-
 import org.ajoberstar.grgit.gradle.GrgitService
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ProjectLayout
@@ -7,11 +5,7 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 
 import javax.inject.Inject
 

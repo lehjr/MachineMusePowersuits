@@ -1,7 +1,5 @@
 package lehjr.numina.client.gui.geometry;
 
-import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -11,6 +9,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import org.joml.Matrix4f;

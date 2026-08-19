@@ -26,8 +26,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
-import javax.annotation.Nonnull;
-
 public class ShovelModule extends AbstractPowerModule {
     public static class BlockBreaker extends PowerModule implements IBlockBreakingModule, IRightClickModule {
         int tier;

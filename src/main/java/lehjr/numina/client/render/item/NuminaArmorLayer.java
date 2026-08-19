@@ -1,5 +1,8 @@
 package lehjr.numina.client.render.item;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Transformation;
 import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.client.model.item.armor.ArmorModelInstance;
 import lehjr.numina.client.model.item.armor.HighPolyArmor;
@@ -15,9 +18,6 @@ import lehjr.numina.common.math.Color;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.tags.NBTTagAccessor;
 import lehjr.numina.common.utils.ItemUtils;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Transformation;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -26,13 +26,13 @@
 
 package lehjr.powersuits.client.model.item;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.render.modelspec.IJavaModelNBTParser;
 import lehjr.numina.common.capabilities.render.modelspec.MorphTarget;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.common.constants.MPSConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

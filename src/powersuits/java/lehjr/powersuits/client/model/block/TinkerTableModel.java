@@ -26,11 +26,11 @@
 
 package lehjr.powersuits.client.model.block;
 
-import lehjr.numina.common.math.Color;
-import lehjr.powersuits.common.constants.MPSConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import lehjr.numina.common.math.Color;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

@@ -15,8 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import javax.annotation.Nonnull;
-
 public class ActiveCamouflageModule extends AbstractPowerModule {
     private static final Holder<MobEffect> invisibility = MobEffects.INVISIBILITY;
 

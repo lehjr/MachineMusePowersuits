@@ -1,11 +1,9 @@
 package lehjr.powersuits.common.item.module.armor;
 
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.ArmorModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;

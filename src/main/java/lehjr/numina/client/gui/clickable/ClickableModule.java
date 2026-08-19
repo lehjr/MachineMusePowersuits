@@ -1,5 +1,6 @@
 package lehjr.numina.client.gui.clickable;
 
+import com.mojang.blaze3d.platform.Lighting;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -7,7 +8,6 @@ import lehjr.numina.common.math.Color;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.StringUtils;
-import com.mojang.blaze3d.platform.Lighting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;

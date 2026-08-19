@@ -1,6 +1,8 @@
 package lehjr.powersuits.client.overlay;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import lehjr.numina.client.gui.geometry.DrawableRect;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
@@ -12,8 +14,6 @@ import lehjr.numina.common.utils.StringUtils;
 import lehjr.powersuits.client.config.MPSClientConfig;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.control.MPSKeyMapping;
-import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;

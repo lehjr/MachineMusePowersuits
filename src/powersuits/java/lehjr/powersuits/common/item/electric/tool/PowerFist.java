@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.item.electric.tool;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;

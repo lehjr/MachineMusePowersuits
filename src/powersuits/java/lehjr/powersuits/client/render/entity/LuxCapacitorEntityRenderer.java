@@ -26,11 +26,11 @@
 
 package lehjr.powersuits.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.TagUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.LuxCapacitorEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;

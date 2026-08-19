@@ -1,5 +1,6 @@
 package lehjr.powersuits.common.item.electric.armor;
 
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -11,7 +12,6 @@ import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.registration.MPSArmorMaterial;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

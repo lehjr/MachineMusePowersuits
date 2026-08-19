@@ -1,5 +1,6 @@
 package lehjr.numina.client.gui.clickable;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
@@ -7,7 +8,6 @@ import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.StringUtils;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;

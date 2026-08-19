@@ -26,8 +26,8 @@
 
 package lehjr.numina.client.model.helper;
 
-import lehjr.numina.common.base.NuminaLogger;
 import com.mojang.math.Transformation;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;

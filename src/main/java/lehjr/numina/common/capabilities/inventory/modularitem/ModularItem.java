@@ -1,7 +1,6 @@
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.base.Numina;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -11,7 +10,6 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import lehjr.numina.imixin.common.item.IMixinRangedWrapper;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,16 +20,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.ComponentItemHandler;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class ModularItem extends ComponentItemHandler implements IModularItem {
     final boolean isTool;

@@ -1,5 +1,7 @@
 package lehjr.powersuits.client.event;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
@@ -23,8 +25,6 @@ import lehjr.powersuits.common.registration.MPSBlocks;
 import lehjr.powersuits.common.registration.MPSEntities;
 import lehjr.powersuits.common.registration.MPSItems;
 import lehjr.powersuits.common.registration.MPSMenuTypes;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;

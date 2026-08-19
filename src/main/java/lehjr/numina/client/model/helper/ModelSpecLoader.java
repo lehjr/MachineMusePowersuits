@@ -30,6 +30,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.math.Transformation;
 import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.JavaModelSpec;
@@ -42,7 +43,6 @@ import lehjr.numina.common.capabilities.render.modelspec.SpecBinding;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
-import com.mojang.math.Transformation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -60,7 +60,6 @@ import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.Map;
-
 
 /**
  * Loads model settings into a common registry and queues Obj models for baking. These settings are beyond that of what Forge or vanilla Minecraft use.

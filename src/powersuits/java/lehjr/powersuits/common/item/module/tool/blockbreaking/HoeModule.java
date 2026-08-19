@@ -1,5 +1,6 @@
 package lehjr.powersuits.common.item.module.tool.blockbreaking;
 
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -9,7 +10,6 @@ import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.HoeModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;

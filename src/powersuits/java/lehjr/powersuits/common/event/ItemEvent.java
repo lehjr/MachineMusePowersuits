@@ -1,5 +1,6 @@
 package lehjr.powersuits.common.event;
 
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
@@ -8,7 +9,6 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;

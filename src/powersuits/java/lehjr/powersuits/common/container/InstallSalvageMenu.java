@@ -1,5 +1,7 @@
 package lehjr.powersuits.common.container;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -14,8 +16,6 @@ import lehjr.numina.common.math.Color;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.MathUtils;
 import lehjr.powersuits.common.registration.MPSMenuTypes;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;

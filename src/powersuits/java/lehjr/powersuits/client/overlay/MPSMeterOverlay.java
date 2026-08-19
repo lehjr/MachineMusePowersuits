@@ -4,7 +4,6 @@ import lehjr.numina.client.gui.meter.EnergyMeter;
 import lehjr.numina.client.gui.meter.HeatMeter;
 import lehjr.numina.client.gui.meter.PlasmaChargeMeter;
 import lehjr.numina.client.gui.meter.WaterMeter;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
@@ -25,7 +24,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MPSMeterOverlay {
     private static HeatMeter heatMeter = null;

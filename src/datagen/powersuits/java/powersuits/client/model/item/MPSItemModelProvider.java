@@ -1,10 +1,18 @@
 package powersuits.client.model.item;
 
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.registration.MPSEntities;
 import lehjr.powersuits.common.registration.MPSItems;
+import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import numina.client.model.item.AbstractItemModelProvider;
 
@@ -15,12 +23,112 @@ public class MPSItemModelProvider extends AbstractItemModelProvider {
         super(output, MPSConstants.MOD_ID, existingFileHelper);
     }
 
+    ItemModelBuilder LUX_CAP_MODEL_ITEM;
+
     @Override
     protected void registerModels() {
+        registerBlockItemModels();
         registerModularItemModels();
         registerModuleModels();
         registerModuleModels();
     }
+
+    protected void registerBlockItemModels() {
+        // Block Items ============================================================
+        itemEntity(MPSItems.TINKER_TABLE_ITEM.get())
+            .guiLight(BlockModel.GuiLight.FRONT)
+            .transforms()
+            .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+            .rotation( 75, 45, 0 )
+            .translation( 0, 2.5F, 0)
+            .scale(0.38F).end()
+
+            .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+            .rotation( 75, 45, 0 )
+            .translation( 0, 2.5F, 0)
+            .scale(0.38F).end()
+
+            .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
+            .rotation( 0, 225, 0 )
+            .translation( 0, 0, 0)
+            .scale(0.4F).end()
+
+            .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
+            .rotation( 0, 45, 0 )
+            .translation( 0, 0, 0)
+            .scale(0.4F).end()
+
+            .transform(ItemDisplayContext.GUI)
+            .rotation( 30, 225, 0 )
+            .translation( 0, 0, 0)
+            .scale(0.63F).end()
+
+            .transform(ItemDisplayContext.FIXED)
+            .rotation(0, 0, 0)
+            .translation( 0, 0, 0)
+            .scale(0.5F).end()
+
+            .transform(ItemDisplayContext.GROUND)
+            .rotation(0, 0, 0)
+            .translation( 0, 3, 0)
+            .scale(0.25F).end();
+
+        LUX_CAP_MODEL_ITEM = blockItemEntity(MPSItems.LUX_CAPACITOR_ITEM.get(), modLoc("block/luxcapacitor"))
+            .transforms()
+            .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+            .rotation(0, 0, 45)
+            .translation(0, 2, 3)
+            .scale(0.5F).end()
+
+            .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+            .rotation(0, 0, 45)
+            .translation(0, 2, 3)
+            .scale(0.5F).end()
+
+            .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
+            .rotation(-25, -90, 0)
+            .translation(1.13F, 3.2F, 1.13F)
+            .scale(0.68F).end()
+
+            .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
+            .rotation(0, -90, 25)
+            .translation(1.13F, 3.2F, 1.13F)
+            .scale(0.68F).end()
+
+            .transform(ItemDisplayContext.GUI)
+            .rotation(-45, 0, 45)
+            .translation(0, 2.75F, 0)
+            .scale(0.625F).end()
+
+            .transform(ItemDisplayContext.FIXED)
+            .rotation(0, 180, 0)
+            .scale(1).end()
+
+            .transform(ItemDisplayContext.GROUND)
+            .rotation(-90, 0, 0)
+            .translation(0, 2, 0)
+            .scale(0.5F).end().end();
+
+
+        // Append this inside your registerModels() method
+        getBuilder(MPSEntities.PLASMA_BALL_ENTITY_TYPE.get())
+            .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
+            .texture("particle", ResourceLocation.fromNamespaceAndPath("numina", "block/white"))
+            .customLoader((parent, existingFileHelper) ->
+                new CustomLoaderBuilder<>(ResourceLocation.fromNamespaceAndPath("numina", "obj"), parent, existingFileHelper, false) {
+                    @Override
+                    public com.google.gson.JsonObject toJson(com.google.gson.JsonObject json) {
+                        super.toJson(json);
+                        json.addProperty("model", MPSConstants.MOD_ID + ":models/entity/obj/sphere.obj");
+                        json.addProperty("flip_v", true);
+                        return json;
+                    }
+                }
+            );
+    }
+
+
+
 
     protected void registerModularItemModels() {
         // Power Fist =============================================================
@@ -148,7 +256,7 @@ public class MPSItemModelProvider extends AbstractItemModelProvider {
         // Misc -----------------------------------------------
         this.basicItemMC(MPSItems.FLINT_AND_STEEL_MODULE.get(), "item/flint_and_steel");
         this.basicItem(MPSItems.LEAF_BLOWER_MODULE.get(),  "item/module/tool/leaf_blower");
-        this.basicItem(MPSItems.LUX_CAPACITOR_MODULE.get(),  "block/luxlight");
+        this.basicItem(MPSItems.LUX_CAPACITOR_MODULE.get(),  "block/luxlight").parent(LUX_CAP_MODEL_ITEM);
 
         // Vision ---------------------------------------------
         this.basicItem(MPSItems.BINOCULARS_MODULE.get(), "item/module/vision/binoculars");
@@ -162,82 +270,7 @@ public class MPSItemModelProvider extends AbstractItemModelProvider {
         this.basicItem(MPSItems.RAILGUN_MODULE.get(), "item/module/weapon/railgun");
     }
 
-    protected void registerBlockItemModels() {
-        // Block Items ============================================================
-        itemEntity(MPSItems.TINKER_TABLE_ITEM.get())
-            .transforms()
-            .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
-            .rotation( 75, 45, 0 )
-            .translation( 0, 2.5F, 0)
-            .scale(0.38F).end()
 
-            .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
-            .rotation( 75, 45, 0 )
-            .translation( 0, 2.5F, 0)
-            .scale(0.38F).end()
-
-            .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
-            .rotation( 0, 225, 0 )
-            .translation( 0, 0, 0)
-            .scale(0.4F).end()
-
-            .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
-            .rotation( 0, 45, 0 )
-            .translation( 0, 0, 0)
-            .scale(0.4F).end()
-
-            .transform(ItemDisplayContext.GUI)
-            .rotation( 30, 225, 0 )
-            .translation( 0, 0, 0)
-            .scale(0.63F).end()
-
-            .transform(ItemDisplayContext.FIXED)
-            .rotation(0, 0, 0)
-            .translation( 0, 0, 0)
-            .scale(0.5F).end()
-
-            .transform(ItemDisplayContext.GROUND)
-            .rotation(0, 0, 0)
-            .translation( 0, 3, 0)
-            .scale(0.25F).end();
-
-        itemEntity(MPSItems.LUX_CAPACITOR_ITEM.get())
-            .transforms()
-            .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
-            .rotation(75, 45, 0)
-            .translation(0, 2.5F, 0)
-            .scale(0.38F).end()
-
-            .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
-            .rotation(75, 45, 0)
-            .translation(0, 2.5F, 0)
-            .scale(0.38F).end()
-
-            .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
-            .rotation(0, 225, 0)
-            .translation(0, 0, 0)
-            .scale(0.4F).end()
-
-            .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
-            .rotation(0, 45, 0)
-            .translation(0, 0, 0)
-            .scale(0.4F).end()
-
-            .transform(ItemDisplayContext.GUI)
-            .rotation(30, 225, 0)
-            .translation(0, 0, 0)
-            .scale(0.63F).end()
-
-            .transform(ItemDisplayContext.FIXED)
-            .rotation(0, 0, 0)
-            .translation(0, 0, 0)
-            .scale(0.5F).end()
-
-            .transform(ItemDisplayContext.GROUND)
-            .rotation(0, 0, 0)
-            .translation(0, 3, 0)
-            .scale(0.25F).end();
-    }
 
     protected void powerFist(Item item, String texture) {
         blockItemEntity(item,  Objects.requireNonNull(mcLoc("item/generated")))
@@ -278,5 +311,9 @@ public class MPSItemModelProvider extends AbstractItemModelProvider {
             .rotation(160, 0, 0)
             .translation(2, 1, -1.75F)
             .scale(0.25F).end();
+    }
+
+    ItemModelBuilder getBuilder(EntityType entity) {
+        return getBuilder(BuiltInRegistries.ENTITY_TYPE.getKey(entity).getPath());
     }
 }

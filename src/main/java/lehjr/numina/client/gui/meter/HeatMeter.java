@@ -1,14 +1,14 @@
 package lehjr.numina.client.gui.meter;
 
-import lehjr.numina.client.config.IMeterConfig;
-import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.utils.IconUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import lehjr.numina.client.config.IMeterConfig;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;

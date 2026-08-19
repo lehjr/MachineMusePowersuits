@@ -1,10 +1,10 @@
 package lehjr.numina.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.IconUtils;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

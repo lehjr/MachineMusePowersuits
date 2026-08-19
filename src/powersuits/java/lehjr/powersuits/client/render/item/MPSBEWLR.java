@@ -1,5 +1,7 @@
 package lehjr.powersuits.client.render.item;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import lehjr.numina.common.constants.NuminaConstants;
@@ -12,8 +14,6 @@ import lehjr.powersuits.client.model.item.PowerFistModel2;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.electric.tool.PowerFist;
 import lehjr.powersuits.common.registration.MPSItems;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.LocalPlayer;

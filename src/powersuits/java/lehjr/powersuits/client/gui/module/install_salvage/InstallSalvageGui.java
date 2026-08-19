@@ -1,5 +1,6 @@
 package lehjr.powersuits.client.gui.module.install_salvage;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrameContainered;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
@@ -14,7 +15,6 @@ import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;

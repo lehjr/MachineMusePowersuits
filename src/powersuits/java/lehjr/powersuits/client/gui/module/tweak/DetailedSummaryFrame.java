@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.client.gui.module.tweak;
 
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
@@ -36,7 +37,6 @@ import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.StringUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
