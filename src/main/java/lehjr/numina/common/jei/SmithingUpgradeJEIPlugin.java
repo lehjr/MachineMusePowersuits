@@ -12,13 +12,11 @@ import net.minecraft.resources.ResourceLocation;
 public class SmithingUpgradeJEIPlugin implements IModPlugin {
     @Override
     public ResourceLocation getPluginUid() {
-        NuminaLogger.logDebug("SmithingUpgradeJEIPlugin");
         return RecipeSerializersRegistry.SMITHING_UPGRADE_SERIALIZER.getId();
     }
 
     @Override
     public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
-        NuminaLogger.logDebug("SmithingUpgradeJEIPlugin registration");
         registration.getSmithingCategory().addExtension(SmithingUpgradeRecipe.class, new SmithingUpgradeCategoryExtension());
     }
 }

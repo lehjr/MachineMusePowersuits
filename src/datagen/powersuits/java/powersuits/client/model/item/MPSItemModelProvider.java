@@ -128,6 +128,37 @@ public class MPSItemModelProvider extends AbstractItemModelProvider {
     }
 
 
+    void applyColor(ItemModelBuilder builder, int tier) {
+        String color = switch (tier) {
+            case 2 -> "red";
+            case 3 -> "blue";
+            case 4 -> "purple";
+            default -> "green";
+        };
+
+        builder
+            .customLoader((parent, existingFileHelper) ->
+                new net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder<>(
+                    ResourceLocation.fromNamespaceAndPath("neoforge", "elements"), parent, existingFileHelper, false) {
+                    @Override
+                    public com.google.gson.JsonObject toJson(com.google.gson.JsonObject json) {
+                        super.toJson(json);
+
+                        //                        // Set your standard generated layers
+                        //                        com.google.gson.JsonObject textures = new com.google.gson.JsonObject();
+                        //                        textures.addProperty("layer0", "minecraft:item/water_bucket");
+                        //                        json.add("textures", textures);
+
+                        // Force a static hardcoded hex tint onto the model natively
+                        com.google.gson.JsonObject extraData = new com.google.gson.JsonObject();
+                        extraData.addProperty("color", "0xFF9C27B0"); // Plasma Purple
+                        json.add("neoforge_data", extraData);
+
+                        return json;
+                    }
+                }
+            );
+    }
 
 
     protected void registerModularItemModels() {
@@ -176,10 +207,10 @@ public class MPSItemModelProvider extends AbstractItemModelProvider {
 
         // Energy Generation --------------------------------------------------------------------------
         // Thermal
-        this.basicItem(MPSItems.THERMAL_GENERATOR_MODULE_1.get(), "item/module/energy/generation/thermalgenerator");
-        this.basicItem(MPSItems.THERMAL_GENERATOR_MODULE_2.get(), "item/module/energy/generation/thermalgenerator");
-        this.basicItem(MPSItems.THERMAL_GENERATOR_MODULE_3.get(), "item/module/energy/generation/thermalgenerator");
-        this.basicItem(MPSItems.THERMAL_GENERATOR_MODULE_4.get(), "item/module/energy/generation/thermalgenerator");
+        this.basicItem(MPSItems.THERMAL_GENERATOR_MODULE_1.get(), "item/module/energy/generation/thermalgenerator1");
+        this.basicItem(MPSItems.THERMAL_GENERATOR_MODULE_2.get(), "item/module/energy/generation/thermalgenerator2");
+        this.basicItem(MPSItems.THERMAL_GENERATOR_MODULE_3.get(), "item/module/energy/generation/thermalgenerator3");
+        this.basicItem(MPSItems.THERMAL_GENERATOR_MODULE_4.get(), "item/module/energy/generation/thermalgenerator4");
 
         // Solar
         this.basicItem(MPSItems.SOLAR_GENERATOR_MODULE_1.get(), "item/module/energy/generation/generator.solar1");
