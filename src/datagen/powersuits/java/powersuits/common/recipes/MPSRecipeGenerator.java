@@ -444,7 +444,47 @@ public class MPSRecipeGenerator extends RecipeProvider {
 
 
         // Energy Generation --------------------------------------------------------------------------
-        // TODO
+        // Thermal
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.THERMAL_GENERATOR_MODULE_1.get())
+            .pattern("IOI")
+            .pattern("SWO")
+            .pattern("IOI")
+            .define('I', NuminaItems.PLATING_IRON.get())
+            .define('O', Tags.Items.INGOTS_COPPER)
+            .define('S', NuminaItems.SERVO.get())
+            .define('W', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()))
+            .save(output);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.THERMAL_GENERATOR_MODULE_1.get()),
+                SizedIngredient.of(Items.GOLD_INGOT, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.THERMAL_GENERATOR_MODULE_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(output);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.THERMAL_GENERATOR_MODULE_2.get()),
+                SizedIngredient.of(Tags.Items.GEMS_DIAMOND, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.THERMAL_GENERATOR_MODULE_3.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(output);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.THERMAL_GENERATOR_MODULE_3.get()),
+                SizedIngredient.of(Tags.Items.INGOTS_NETHERITE, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.THERMAL_GENERATOR_MODULE_4.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(output);
+
+
+        // Solar
 
         // Environmental ------------------------------------------------------------------------------
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get())
@@ -510,6 +550,10 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .define('O', NuminaItems.SOLENOID.get())
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
             .save(output);
+
+        // Fluid Tanks ---------------------------------------------------------------------------------
+
+
 
         // Mining Enchantments ------------------------------------------------------------------------
         if(provider != null) {

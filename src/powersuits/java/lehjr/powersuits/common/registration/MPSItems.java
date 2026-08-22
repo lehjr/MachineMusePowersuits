@@ -81,7 +81,7 @@ public class MPSItems {
             .setNoRepair()));
 
     // Debug Item =====================================================================================================
-    public static final DeferredHolder<Item, MPSDebugItem> DEBUG_ITEM = MPS_ITEMS.register("debugitem", MPSDebugItem::new);
+//    public static final DeferredHolder<Item, MPSDebugItem> DEBUG_ITEM = MPS_ITEMS.register("debugitem", MPSDebugItem::new);
 
     // Tools ==========================================================================================================
     public static final DeferredHolder<Item, PowerFist> POWER_FIST_1 = MPS_ITEMS.register(MPSConstants.POWER_FIST_1.getPath(),
@@ -164,8 +164,8 @@ public class MPSItems {
         TransparentArmorModule::new);
 
     // Debug --------------------------------------------------------------------------------------
-    public static final DeferredHolder<Item, DebugModule> DEBUG_MODULE = MPS_ITEMS.register("debugmodule", DebugModule::new);
-
+//    public static final DeferredHolder<Item, DebugModule> DEBUG_MODULE = MPS_ITEMS.register("debugmodule", DebugModule::new);
+//
 
     // Energy Generation --------------------------------------------------------------------------
 
@@ -315,7 +315,7 @@ public class MPSItems {
         ()-> CreativeModeTab.builder().icon(()->new ItemStack(POWER_ARMOR_HELMET_1.get()))
             .title(Component.translatable(MPSConstants.CREATIVE_TAB_TRANSLATION_KEY))
             .displayItems((parameters, output) -> {
-                output.accept(DEBUG_ITEM.get());
+//                output.accept(DEBUG_ITEM.get());
                 // Block Items ============================================================
                 output.accept(TINKER_TABLE_ITEM.get());
                 output.accept(LUX_CAPACITOR_ITEM.get());
@@ -358,7 +358,7 @@ public class MPSItems {
                 output.accept(TRANSPARENT_ARMOR_MODULE.get());
 
                 // Debug ----------------------------------------------
-                output.accept(DEBUG_MODULE.get());
+//                output.accept(DEBUG_MODULE.get());
 
                 // Energy Generation ----------------------------------
                 // Energy Generation --------------------------------------------------------------------------
