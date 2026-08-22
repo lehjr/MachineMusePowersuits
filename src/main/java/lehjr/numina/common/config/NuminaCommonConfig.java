@@ -55,7 +55,7 @@ public class NuminaCommonConfig {
     private static final ModConfigSpec.BooleanValue KEEP_MODULAR_ITEMS_ON_DEATH = KEEP_MODULAR_ITEMS_ON_DEATH_BUILDER.define(NuminaConstants.KEEP_MODULAR_ITEMS_ON_DEATH, true);
 
 
-    private static final ModConfigSpec.Builder BUILDER = KEEP_MODULAR_ITEMS_ON_DEATH_BUILDER.pop(2);
+    private static final ModConfigSpec.Builder BUILDER = KEEP_MODULAR_ITEMS_ON_DEATH_BUILDER.pop();
 
     public static final ModConfigSpec COMMON_SPEC = BUILDER.build();
 
