@@ -52,7 +52,8 @@ public class Numina {
         modEventBus.addListener(this::addEntityAttributes);
         modEventBus.addListener(NuminaPackets::register);
 
-        NeoForge.EVENT_BUS.addListener(PlayerUpdateHandler::onPlayerUpdate);
+//        NeoForge.EVENT_BUS.addListener(PlayerUpdateHandler::onPlayerUpdate);
+        NeoForge.EVENT_BUS.register(PlayerUpdateHandler.class);
         RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
 
         SoundDictionary.NUMINA_SOUND_EVENTS.register(modEventBus);

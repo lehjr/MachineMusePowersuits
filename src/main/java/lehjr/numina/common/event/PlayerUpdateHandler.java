@@ -20,7 +20,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -68,9 +68,8 @@ public class PlayerUpdateHandler {
     }
 
     @SubscribeEvent
-    public static void onPlayerDrops(LivingDropsEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            // Skip if keepInventory rule is active globally
+    public static void onPlayerDeath(LivingDeathEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && NuminaCommonConfig.keepModularItemsOnDeath) {
             if (player.serverLevel().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
                 return;
             }
@@ -78,28 +77,27 @@ public class PlayerUpdateHandler {
             ListTag savedItemsList = new ListTag();
             Inventory inventory = player.getInventory();
 
-            // 1. Loop through all standard inventory slots (0 to 40 covers main, armor, and offhand)
             for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
                 ItemStack stack = inventory.getItem(slot);
 
                 if (!stack.isEmpty()) {
-                    // 2. Apply your custom filtering logic here
                     if (shouldPreserveItem(stack)) {
+                        // CRITICAL FIX: stack.saveOptional() creates and returns the valid 1.21 NBT data structure
+                        // Tag is returned as a generic Tag interface, so we cast it to CompoundTag
+                        CompoundTag itemTag = (CompoundTag) stack.saveOptional(player.registryAccess());
 
-                        // Create an NBT compound for this item, explicitly including its slot index
-                        CompoundTag itemTag = new CompoundTag();
+                        // Inject the explicit slot tracker into the newly generated item NBT structure
                         itemTag.putByte("Slot", (byte) slot);
-                        stack.save(player.registryAccess(), itemTag); // Note: 1.21.1 requires registryAccess() for item saving
+
                         savedItemsList.add(itemTag);
 
-                        // 3. Remove this specific item stack from vanilla's dropping logic
-                        // Vanilla converts inventory items to ItemEntities inside event.getDrops() right before this event fires
-                        event.getDrops().removeIf(itemEntity -> ItemStack.matches(itemEntity.getItem(), stack));
+                        // Clear the stack from the player inventory right here so that vanilla
+                        // Minecraft doesn't drop it into the world when player death drops process next!
+                        inventory.setItem(slot, ItemStack.EMPTY);
                     }
                 }
             }
 
-            // 4. Save the filtered NBT bundle into your Data Attachment
             if (!savedItemsList.isEmpty()) {
                 CompoundTag data = new CompoundTag();
                 data.put("FilteredInventory", savedItemsList);
@@ -110,20 +108,17 @@ public class PlayerUpdateHandler {
 
     // Example Filtering Logic
     private static boolean shouldPreserveItem(ItemStack stack) {
-        return NuminaCapabilities.getModularItem(stack) != null;
+        return NuminaCapabilities.getModularItemOrModeChangingCapability(stack) != null;
     }
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
-        if (event.isWasDeath() && event.getEntity() instanceof ServerPlayer newPlayer) {
+        if (event.isWasDeath() && event.getEntity() instanceof ServerPlayer newPlayer && NuminaCommonConfig.keepModularItemsOnDeath) {
             ServerPlayer oldPlayer = (ServerPlayer) event.getOriginal();
-
             if (oldPlayer.hasData(NuminaCodecs.INVENTORY_BACKUP.get())) {
                 CompoundTag data = oldPlayer.getData(NuminaCodecs.INVENTORY_BACKUP.get());
-
                 if (data.contains("FilteredInventory", 9)) { // 9 is ListTag ID
                     ListTag listTag = data.getList("FilteredInventory", 10); // 10 is CompoundTag ID
-
                     for (int i = 0; i < listTag.size(); i++) {
                         CompoundTag itemTag = listTag.getCompound(i);
                         int slot = itemTag.getByte("Slot") & 255; // Decode raw byte slot index
