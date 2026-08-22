@@ -2,17 +2,26 @@ package lehjr.numina.common.event;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCodecs;
 import lehjr.numina.common.utils.HeatUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.PlayerUtils;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class PlayerUpdateHandler {
@@ -53,6 +62,79 @@ public class PlayerUpdateHandler {
 
                 if (playerHeat.currentHeat() < playerHeat.maxHeat() * 0.95) {
                     player.clearFire();
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerDrops(LivingDropsEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            // Skip if keepInventory rule is active globally
+            if (player.serverLevel().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+                return;
+            }
+
+            ListTag savedItemsList = new ListTag();
+            Inventory inventory = player.getInventory();
+
+            // 1. Loop through all standard inventory slots (0 to 40 covers main, armor, and offhand)
+            for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+                ItemStack stack = inventory.getItem(slot);
+
+                if (!stack.isEmpty()) {
+                    // 2. Apply your custom filtering logic here
+                    if (shouldPreserveItem(stack)) {
+
+                        // Create an NBT compound for this item, explicitly including its slot index
+                        CompoundTag itemTag = new CompoundTag();
+                        itemTag.putByte("Slot", (byte) slot);
+                        stack.save(player.registryAccess(), itemTag); // Note: 1.21.1 requires registryAccess() for item saving
+                        savedItemsList.add(itemTag);
+
+                        // 3. Remove this specific item stack from vanilla's dropping logic
+                        // Vanilla converts inventory items to ItemEntities inside event.getDrops() right before this event fires
+                        event.getDrops().removeIf(itemEntity -> ItemStack.matches(itemEntity.getItem(), stack));
+                    }
+                }
+            }
+
+            // 4. Save the filtered NBT bundle into your Data Attachment
+            if (!savedItemsList.isEmpty()) {
+                CompoundTag data = new CompoundTag();
+                data.put("FilteredInventory", savedItemsList);
+                player.setData(NuminaCodecs.INVENTORY_BACKUP.get(), data);
+            }
+        }
+    }
+
+    // Example Filtering Logic
+    private static boolean shouldPreserveItem(ItemStack stack) {
+        return NuminaCapabilities.getModularItem(stack) != null;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        if (event.isWasDeath() && event.getEntity() instanceof ServerPlayer newPlayer) {
+            ServerPlayer oldPlayer = (ServerPlayer) event.getOriginal();
+
+            if (oldPlayer.hasData(NuminaCodecs.INVENTORY_BACKUP.get())) {
+                CompoundTag data = oldPlayer.getData(NuminaCodecs.INVENTORY_BACKUP.get());
+
+                if (data.contains("FilteredInventory", 9)) { // 9 is ListTag ID
+                    ListTag listTag = data.getList("FilteredInventory", 10); // 10 is CompoundTag ID
+
+                    for (int i = 0; i < listTag.size(); i++) {
+                        CompoundTag itemTag = listTag.getCompound(i);
+                        int slot = itemTag.getByte("Slot") & 255; // Decode raw byte slot index
+
+                        // Reconstruct the ItemStack using the server's registry context
+                        ItemStack restoredStack = ItemStack.parse(newPlayer.registryAccess(), itemTag).orElse(ItemStack.EMPTY);
+
+                        if (!restoredStack.isEmpty() && slot < newPlayer.getInventory().getContainerSize()) {
+                            newPlayer.getInventory().setItem(slot, restoredStack);
+                        }
+                    }
                 }
             }
         }

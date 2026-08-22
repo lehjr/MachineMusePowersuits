@@ -3,18 +3,24 @@ package lehjr.powersuits.common.event;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCodecs;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.clientbound.ToggleableModuleListClientBound;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 public class PlayerEventHandler {
@@ -34,4 +40,17 @@ public class PlayerEventHandler {
             MPSPackets.sendToPlayer(new ToggleableModuleListClientBound(moduleNames), (ServerPlayer) player);
         }
     }
+
+//    @SubscribeEvent
+//    public static void onPlayerDeath(LivingDeathEvent event) {
+//        if (event.getEntity() instanceof Player player) {
+//
+//
+//
+//            // Code to run when a player dies
+//        }
+//    }
+
+
+
 }

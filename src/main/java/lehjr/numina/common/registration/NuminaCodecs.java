@@ -84,4 +84,7 @@ public class NuminaCodecs {
         return DATA_COMPONENT_TYPES.register(name, () -> builderOperator.get().apply(DataComponentType.builder()).build());
     }
 
+    public static final Supplier<AttachmentType<CompoundTag>> INVENTORY_BACKUP =
+        ATTACHMENT_TYPES.register("inventory_backup", () -> AttachmentType.builder(() -> new CompoundTag()).build());
+
 }

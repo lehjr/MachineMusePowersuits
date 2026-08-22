@@ -51,7 +51,11 @@ public class NuminaCommonConfig {
     private static final ModConfigSpec.IntValue BATTERY_4__MAX_TRANSFER = BATTERIES_BUILDER4.defineInRange(NuminaConstants.CONFIG_MAX_TRANSFER, 1250000, 0, Integer.MAX_VALUE);
     private static final ModConfigSpec.BooleanValue BATTERY_4__IS_ALLOWED = BATTERIES_BUILDER4.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
-    private static final ModConfigSpec.Builder BUILDER = BATTERIES_BUILDER4.pop(2);
+    private static final ModConfigSpec.Builder KEEP_MODULAR_ITEMS_ON_DEATH_BUILDER = BATTERIES_BUILDER4.pop().pop().push("PlayerDeath");
+    private static final ModConfigSpec.BooleanValue KEEP_MODULAR_ITEMS_ON_DEATH = KEEP_MODULAR_ITEMS_ON_DEATH_BUILDER.define(NuminaConstants.KEEP_MODULAR_ITEMS_ON_DEATH, true);
+
+
+    private static final ModConfigSpec.Builder BUILDER = KEEP_MODULAR_ITEMS_ON_DEATH_BUILDER.pop(2);
 
     public static final ModConfigSpec COMMON_SPEC = BUILDER.build();
 
@@ -76,6 +80,8 @@ public class NuminaCommonConfig {
     public static int batteryMaxTransfer4;
     public static boolean batteryIsAllowed4;
 
+    public static boolean keepModularItemsOnDeath;
+
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == COMMON_SPEC) {
@@ -97,6 +103,8 @@ public class NuminaCommonConfig {
             batteryMaxEnergy4 = BATTERY_4__MAX_ENERGY.getAsInt();
             batteryMaxTransfer4 = BATTERY_4__MAX_TRANSFER.getAsInt();
             batteryIsAllowed4 = BATTERY_4__IS_ALLOWED.getAsBoolean();
+
+            keepModularItemsOnDeath = KEEP_MODULAR_ITEMS_ON_DEATH.get();
         }
     }
 }

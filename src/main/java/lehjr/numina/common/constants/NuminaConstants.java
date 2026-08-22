@@ -18,6 +18,7 @@ public class NuminaConstants {
     public static final String CONFIG_IS_ALLOWED = "isAllowed";
     public static final String CONFIG_MAX_TRANSFER = "maxEnergyTransfer";
     public static final String CONFIG_MAX_ENERGY = "maxEnergy";
+    public static final String KEEP_MODULAR_ITEMS_ON_DEATH = "keepModularItemsOnDeath";
 
     /**
      * Client Config ------------------------------------------------------------------------------
