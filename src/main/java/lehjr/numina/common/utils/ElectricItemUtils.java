@@ -1,6 +1,5 @@
 package lehjr.numina.common.utils;
 
-import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -74,8 +73,8 @@ public class ElectricItemUtils {
             return 0;
         }
 
-        NuminaLogger.logDebug("giving player energy: " + rfToGive + (simulate ? " simulated" : " unsimulated"));
         double rfLeft = rfToGive;
+        // Charges equipped items first
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             if (rfLeft > 0) {
                 ItemStack stack = ItemUtils.getItemFromEntitySlot(entity, slot);
@@ -84,8 +83,8 @@ public class ElectricItemUtils {
                 break;
             }
         }
+        // charge other compatible items in inventory
         if(entity instanceof Player player) {
-            // charge other compatible items in inventory
             if (rfLeft > 0) {
                 for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                     if (rfLeft > 0) {

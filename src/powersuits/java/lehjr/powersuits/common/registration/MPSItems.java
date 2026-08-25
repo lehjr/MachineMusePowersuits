@@ -2,13 +2,11 @@ package lehjr.powersuits.common.registration;
 
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.block.TinkerTableItem;
-import lehjr.powersuits.common.item.debug.MPSDebugItem;
 import lehjr.powersuits.common.item.electric.armor.AbstractElectricArmor;
 import lehjr.powersuits.common.item.electric.tool.PowerFist;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
-import lehjr.powersuits.common.item.module.debug.DebugModule;
 import lehjr.powersuits.common.item.module.energygeneration.heat.ThermalGeneratorModule;
 import lehjr.powersuits.common.item.module.energygeneration.solar.SolarGeneratorModule;
 import lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
@@ -462,6 +460,20 @@ public class MPSItems {
                 //                        output.accept(SONIC_WEAPON_MODULE.get());
             })
             .build());
+
+
+//    static ItemStack getLuxCapModule(Item item) {
+//        ItemStack itemStack = new ItemStack(item);
+//        IPowerModule pm = NuminaCapabilities.getPowerModuleCapability(itemStack);
+//        if(pm != null){
+//            itemStack = TagUtils.setModuleDouble(itemStack, MPSConstants.RED_HUE, 0.6);
+//            itemStack = TagUtils.setModuleDouble(itemStack, MPSConstants.GREEN_HUE, 0.7);
+//            itemStack = TagUtils.setModuleDouble(itemStack, MPSConstants.BLUE_HUE, 0.5);
+//            itemStack = TagUtils.setModuleDouble(itemStack, MPSConstants.OPACITY, 0.75);
+//        }
+//
+//        return itemStack;
+//    }
 
 
 

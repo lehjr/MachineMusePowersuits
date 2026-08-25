@@ -6,7 +6,6 @@ import lehjr.numina.common.container.slot.CategoryIconSlotItemHandler;
 import lehjr.numina.common.registration.NuminaBlocks;
 import lehjr.numina.common.registration.NuminaMenus;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -14,8 +13,6 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import static lehjr.numina.common.blockentity.ChargingBaseBlockEntity.SLOT;
 import static lehjr.numina.common.blockentity.ChargingBaseBlockEntity.SLOT_COUNT;
@@ -24,6 +21,7 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
 
     private final BlockPos pos;
     private int power;
+    private int maxPower;
     ChargingBaseBlockEntity blockEntity;
 
     public ChargingBaseMenu(int windowId, Player player, BlockPos pos) {
@@ -65,6 +63,33 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
                     ChargingBaseMenu.this.power = (ChargingBaseMenu.this.power & 0xffff) | ((pValue & 0xffff) << 16);
                 }
             });
+
+            // Setup syncing of power from server to client so that the GUI can show the amount of power in the block
+            // Unfortunatelly on a dedicated server ints are actually truncated to short so we need
+            // to split our integer here (split our 32 bit integer into two 16 bit integers)
+            addDataSlot(new DataSlot() {
+                @Override
+                public int get() {
+                    return chargingBase.getMaxPower() & 0xffff;
+                }
+
+                @Override
+                public void set(int pValue) {
+                    ChargingBaseMenu.this.maxPower = (ChargingBaseMenu.this.maxPower & 0xffff0000) | (pValue & 0xffff);
+                }
+            });
+            addDataSlot(new DataSlot() {
+                @Override
+                public int get() {
+                    return (chargingBase.getMaxPower() >> 16) & 0xffff;
+                }
+
+                @Override
+                public void set(int pValue) {
+                    ChargingBaseMenu.this.maxPower = (ChargingBaseMenu.this.maxPower & 0xffff) | ((pValue & 0xffff) << 16);
+                }
+            });
+
         }
 
 
@@ -85,6 +110,10 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
 
     public int getEnergy() {
         return power;
+    }
+
+    public int getMaxEnergy() {
+        return maxPower;
     }
 
     @Override
@@ -130,22 +159,7 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
         return stillValid(ContainerLevelAccess.create(playerIn.level(), pos), playerIn, NuminaBlocks.CHARGING_BASE_BLOCK.get());
     }
 
-    public int getBlockEntityEnergy() {
-        IEnergyStorage energyStorage =  blockEntity.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), Direction.UP);
-        return energyStorage != null ? energyStorage.getEnergyStored() : 0;
-    }
-
-    public int getBlockEntityMaxEnergy() {
-        IEnergyStorage energyStorage =  blockEntity.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), Direction.UP);
-        return energyStorage != null ? energyStorage.getMaxEnergyStored() : 0;
-    }
-
     public float getEnergyForMeter() {
-        float max = (float) getBlockEntityMaxEnergy();
-        float en = (float) getBlockEntityEnergy();
-        if(max > 0 && en > 0) {
-            return en/max;
-        }
-        return 0;
+        return (float)getEnergy() / (float)getMaxEnergy();
     }
 }

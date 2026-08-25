@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -29,16 +28,60 @@ public class ChargingBaseBlockEntity extends BlockEntity {
 
     public static int SLOT_COUNT = 1;
     public static int SLOT = 0;
-
-    private final ItemStackHandler items = createItemHandler();
-    private final Lazy<IItemHandler> itemHandler = Lazy.of(() -> items);
+    private final ItemStackHandler itemHandler;
+    private final ExtendedEnergyStorage internalEnergyHandler;
+    IEnergyStorage energyHandler;
 
     public ChargingBaseBlockEntity(BlockPos pos, BlockState state) {
         super(NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), pos, state);
-    }
+        itemHandler = new ItemStackHandler(SLOT_COUNT) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                setChanged();
+            }
 
-    private final ExtendedEnergyStorage energy = createEnergyStorage();
-    private final Lazy<IEnergyStorage> energyHandler = Lazy.of(() -> new BlockEnergyWrapper(energy, items));
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                return stack.getCapability(Capabilities.EnergyStorage.ITEM) != null;
+            }
+        };
+
+        internalEnergyHandler = new ExtendedEnergyStorage() {
+            @Override
+            public int getMaxEnergyStored() {
+                return NuminaCommonConfig.chargingBaseMaxEnergy;
+            }
+
+            @Override
+            public int getMaxTransfer() {
+                return NuminaCommonConfig.chargingBaseMaxTransfer;
+            }
+        };
+
+        energyHandler = new BlockEnergyWrapper(internalEnergyHandler, itemHandler) {
+            @Override
+            public int receiveEnergy(int toReceive, boolean simulate) {
+                int recieved = super.receiveEnergy(toReceive, simulate);
+                if(recieved > 0 && isDirty()) {
+                    setChanged();
+                    setDirty(false);
+                }
+
+                return recieved;
+            }
+
+            @Override
+            public int extractEnergy(int toExtract, boolean simulate) {
+                int extracted = super.extractEnergy(toExtract, simulate);
+                if(extracted > 0 && isDirty()) {
+                    setChanged();
+                    setDirty(false);
+                }
+
+                return extracted;
+            }
+        };
+    }
 
     /**
      * Fetch the entities within a given position
@@ -57,72 +100,48 @@ public class ChargingBaseBlockEntity extends BlockEntity {
     private void distributeEnergy(LivingEntity entity) {
         int energyStored = getStoredPower();
 
-        int received = (int) ElectricItemUtils.givePlayerEnergy(entity, energyStored, false);
-        if (received > 0) {
-            getEnergyHandler().extractEnergy(received, false);
+        int given = (int) ElectricItemUtils.givePlayerEnergy(entity, energyStored, false);
+        if (given > 0) {
+            energyHandler.extractEnergy(given, false);
             setChanged();
         }
     }
 
     public ItemStackHandler getItems() {
-        return items;
+        return itemHandler;
     }
 
     public int getStoredPower() {
-        return getEnergyHandler().getEnergyStored();
+        return energyHandler.getEnergyStored();
+    }
+
+    public int getMaxPower() {
+        return energyHandler.getMaxEnergyStored();
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         super.saveAdditional(tag, provider);
-        tag.put(ITEMS_TAG, items.serializeNBT(provider));
-        tag.put(NuminaConstants.ENERGY_TAG, energy.serializeNBT(provider));
+        tag.put(ITEMS_TAG, itemHandler.serializeNBT(provider));
+        tag.put(NuminaConstants.ENERGY_TAG, internalEnergyHandler.serializeNBT(provider));
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadAdditional(tag, provider);
         if (tag.contains(ITEMS_TAG)) {
-            items.deserializeNBT(provider, tag.getCompound(ITEMS_TAG));
+            itemHandler.deserializeNBT(provider, tag.getCompound(ITEMS_TAG));
         }
         if (tag.contains(NuminaConstants.ENERGY_TAG)) {
-            energy.deserializeNBT(provider, Objects.requireNonNull(tag.get(NuminaConstants.ENERGY_TAG)));
+            internalEnergyHandler.deserializeNBT(provider, Objects.requireNonNull(tag.get(NuminaConstants.ENERGY_TAG)));
         }
-    }
-
-    private ItemStackHandler createItemHandler() {
-        return new ItemStackHandler(SLOT_COUNT) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                setChanged();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, ItemStack stack) {
-                return stack.getCapability(Capabilities.EnergyStorage.ITEM) != null;
-            }
-        };
-    }
-
-    private ExtendedEnergyStorage createEnergyStorage() {
-        return new ExtendedEnergyStorage() {
-            @Override
-            public int getMaxEnergyStored() {
-                return NuminaCommonConfig.chargingBaseMaxEnergy;
-            }
-
-            @Override
-            public int getMaxTransfer() {
-                return NuminaCommonConfig.chargingBaseMaxTransfer;
-            }
-        };
     }
 
     public IItemHandler getItemHandler() {
-        return itemHandler.get();
+        return itemHandler;
     }
 
     public IEnergyStorage getEnergyHandler() {
-        return energyHandler.get();
+        return energyHandler;
     }
 }

@@ -1,6 +1,5 @@
 package lehjr.numina.common.jei;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.recipe.SmithingUpgradeRecipe;
 import lehjr.numina.common.registration.RecipeSerializersRegistry;
 import mezz.jei.api.IModPlugin;
