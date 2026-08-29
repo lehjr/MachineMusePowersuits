@@ -76,7 +76,6 @@ public class ModuleSelectionFrame extends ScrollableFrame {
                     if (selected >= 0 && selected < iModularItem.getSlots()) {
                         ItemStack otherModule = iModularItem.getStackInSlot(selected);
                         if (selectedModule.getModule().is(otherModule.getItem())) {
-                            NuminaLogger.logDebug("updating module in slot " + selected);
                             selectedModule.setModule(otherModule);
                         }
                     }

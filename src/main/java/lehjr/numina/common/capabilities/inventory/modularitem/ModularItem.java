@@ -404,26 +404,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     // call server side only
     @Override
     public void updateModuleInSlot(int slot, ItemStack module) {
-        NuminaLogger.logDebug("Updating module in slot " + slot + ": " + module);
-
-        IFluidHandlerItem fluidHandler = getStackInSlot(slot).getCapability(Capabilities.FluidHandler.ITEM, null);
-        if(fluidHandler != null) {
-            NuminaLogger.logDebug("fluid in module already in slot: " + fluidHandler.getFluidInTank(0));
-
-            IFluidHandlerItem fluidHandler2 = module.getCapability(Capabilities.FluidHandler.ITEM, null);
-            if(fluidHandler2 != null) {
-                NuminaLogger.logDebug("fluid in incoming module: " + fluidHandler2.getFluidInTank(0));
-            }
-
-        }
-
         this.updateContents(getContents(), module, slot);
-
-        IFluidHandlerItem fluidHandler3 = getStackInSlot(slot).getCapability(Capabilities.FluidHandler.ITEM, null);
-        if(fluidHandler3 != null) {
-            NuminaLogger.logDebug("fluid in module placed in slot: " + fluidHandler3.getFluidInTank(0));
-        }
-
     }
 
     @Override
