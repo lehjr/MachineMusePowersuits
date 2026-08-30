@@ -219,7 +219,6 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
         // Swim Boost ----------------------------------------------------------------------------------
         add(MPSItems.SWIM_ASSIST_MODULE.get(), "Swim Boost");
-
         addItemDescriptions(MPSItems.SWIM_ASSIST_MODULE.get(), "By refitting an ion thruster for underwater use, you may be able to add extra forward (or backward) thrust when underwater.");
 
         // Special =====================================================================================
@@ -229,23 +228,19 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
         // Magnet --------------------------------------------------------------------------------------
         add(MPSItems.MAGNET_MODULE.get(), "Magnet");
-
         addItemDescriptions(MPSItems.MAGNET_MODULE.get(), "Generates a magnetic field strong enough to attract items towards the player.         WARNING:                   This module drains power continuously. Turn it off when not needed.");
 
         // Piglin Pacification Module ------------------------------------------------------------------
         add(MPSItems.PIGLIN_PACIFICATION_MODULE.get(), "Piglin Pacification Module");
-
         addItemDescriptions(MPSItems.PIGLIN_PACIFICATION_MODULE.get(), "Simple module to make Piglins neutral as if wearing gold armor");
 
         // Vision ======================================================================================
         // Binoculars ----------------------------------------------------------------------------------
         add(MPSItems.BINOCULARS_MODULE.get(), "Binoculars");
-
         addItemDescriptions(MPSItems.BINOCULARS_MODULE.get(), "With the problems that have been plaguing Optifine lately, you've decided to take that Zoom ability into your own hands.");
 
         // Night Vision --------------------------------------------------------------------------------
         add(MPSItems.NIGHTVISION_MODULE.get(), "Night Vision");
-
         addItemDescriptions(MPSItems.NIGHTVISION_MODULE.get(), "A pair of augmented vision goggles to help you see at night and underwater.");
 
         // Tools =======================================================================================
@@ -444,7 +439,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
 
 //        // Mining Diameter -----------------------------------------------------------------------------
-//        addTradeoff(miningDiameter", "Mining Diameter");
+        addTradeoff(MPSConstants.MINING_DIAMETER, "Mining Diameter");
 
         // Harvest Speed -------------------------------------------------------------------------------
         addTradeoff(MPSConstants.AQUA_HARVEST_SPEED, "Harvest Speed");
@@ -592,6 +587,8 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
         // Power ---------------------------------------------------------------------------------------
         addTradeoff(MPSConstants.POWER, "Power");
+        addTradeoff(MPSConstants.HARVEST_ENERGY_CONSUMPTION, "Harvest Energy");
+        addTradeoff(MPSConstants.ON_USE_ENERGY_CONSUMPTION, "Use Energy");
 
         // Radius --------------------------------------------------------------------------------------
         addTradeoff(MPSConstants.RADIUS, "Radius");

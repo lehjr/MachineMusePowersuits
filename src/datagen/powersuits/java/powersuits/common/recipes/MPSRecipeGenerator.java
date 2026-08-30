@@ -483,10 +483,46 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()))
             .save(output);
 
+        // Solar ---------------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.SOLAR_GENERATOR_MODULE_1.get())
+            .pattern("SIS")
+            .pattern("WCI")
+            .pattern("SIS")
+            .define('I', Tags.Items.INGOTS_COPPER)
+            .define('S', NuminaItems.SOLAR_PANEL.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(output);
 
-        // Solar
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.SOLAR_GENERATOR_MODULE_1.get()),
+                SizedIngredient.of(Items.GOLD_INGOT, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.SOLAR_GENERATOR_MODULE_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(output);
 
-        // Environmental ------------------------------------------------------------------------------
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.SOLAR_GENERATOR_MODULE_2.get()),
+                SizedIngredient.of(Tags.Items.GEMS_DIAMOND, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.SOLAR_GENERATOR_MODULE_3.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(output);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.SOLAR_GENERATOR_MODULE_3.get()),
+                SizedIngredient.of(Tags.Items.INGOTS_NETHERITE, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.SOLAR_GENERATOR_MODULE_4.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(output);
+
+        // Environmental -------------------------------------------------------------------------------
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get())
             .pattern("LCL")
             .pattern("CMC")
