@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.common.item.module.tool.misc;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -47,7 +46,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 public class LuxCapacitorModule extends AbstractPowerModule {
     public static class RightClickie extends PlayerTickModule implements IRightClickModule {
@@ -100,21 +98,21 @@ public class LuxCapacitorModule extends AbstractPowerModule {
 
                     level.getServer().execute(()-> {
                         LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(level, playerIn, new Color(red, green, blue, alpha));
-                        NuminaLogger.logDebug("Lux Capacitor Entity is Null?: " + (Objects.isNull(luxCapacitor)));
+//                        NuminaLogger.logDebug("Lux Capacitor Entity is Null?: " + (Objects.isNull(luxCapacitor)));
 
 
                         if(level.addFreshEntity(luxCapacitor)) {
                             HeatUtils.heatPlayer(playerIn, energyConsumption / 500);
                             ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption, false);
-                            NuminaLogger.logDebug("Lux Capacitor Entity added to world: ");
+//                            NuminaLogger.logDebug("Lux Capacitor Entity added to world: ");
                         } else {
-                            NuminaLogger.logDebug("Lux Capacitor Entity failed to launch?: " + (Objects.isNull(luxCapacitor)));
+//                            NuminaLogger.logDebug("Lux Capacitor Entity failed to launch?: " + (Objects.isNull(luxCapacitor)));
                         }
                     });
                 }
 
                 InteractionResultHolder<ItemStack> test = InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
-                NuminaLogger.logDebug("sided success: " + test.getResult().name());
+//                NuminaLogger.logDebug("sided success: " + test.getResult().name());
 
                 return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
                 //                return InteractionResultHolder.consume(itemStackIn);

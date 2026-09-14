@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.item.module.weapon;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
@@ -35,7 +34,7 @@ public class PlasmaCannonModule extends AbstractPowerModule {
 
         @Override
         public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
-            NuminaLogger.logDebug("use here() ");
+//            NuminaLogger.logDebug("use here() ");
 
             if (hand == InteractionHand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
                 playerIn.startUsingItem(hand);

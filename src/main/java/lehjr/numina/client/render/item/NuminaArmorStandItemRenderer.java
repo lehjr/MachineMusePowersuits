@@ -28,8 +28,6 @@ public class NuminaArmorStandItemRenderer extends BlockEntityWithoutLevelRendere
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), new EntityModelSet());
     }
 
-
-
     @Override
     public void renderByItem(ItemStack itemStack, ItemDisplayContext transformType, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLightIn, int packedOverlayIn) {
         matrixStack.pushPose();

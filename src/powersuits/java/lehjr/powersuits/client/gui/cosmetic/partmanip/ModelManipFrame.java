@@ -31,7 +31,6 @@ import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
@@ -142,7 +141,7 @@ public class ModelManipFrame extends ScrollableFrame {
 //                        NuminaLogger.logDebug("newframe.getParts().isEmpty()");
                     }
                 } else {
-                    NuminaLogger.logDebug("spec not valid for slot:  " + specBase.getOwnName() + ", slot: " + getSlot().get());
+//                    NuminaLogger.logDebug("spec not valid for slot:  " + specBase.getOwnName() + ", slot: " + getSlot().get());
                 }
             });
         }
@@ -159,7 +158,7 @@ public class ModelManipFrame extends ScrollableFrame {
             EquipmentSlot slot = getSlot().get();
 
             if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-                NuminaLogger.logDebug("slot is armor and specBase.hasArmorEquipmentSlot(slot): " + specBase.hasArmorEquipmentSlot(slot));
+//                NuminaLogger.logDebug("slot is armor and specBase.hasArmorEquipmentSlot(slot): " + specBase.hasArmorEquipmentSlot(slot));
                 return specBase.hasArmorEquipmentSlot(slot);
             } else {
                 HumanoidArm arm = slot.equals(EquipmentSlot.MAINHAND) ? getMinecraft().player.getMainArm() : getMinecraft().player.getMainArm().getOpposite();
@@ -168,7 +167,7 @@ public class ModelManipFrame extends ScrollableFrame {
                 return specBase.getPartsAsStream().anyMatch(partSpecBase -> partSpecBase.isForHand(arm, getMinecraft().player));
             }
         }
-        NuminaLogger.logDebug("returning false ");
+//        NuminaLogger.logDebug("returning false ");
         return false;
     }
 
@@ -234,7 +233,7 @@ public class ModelManipFrame extends ScrollableFrame {
 
         CompoundTag testTag = getRenderTag();
         if (!Objects.equals(testTag, oldTag)) {
-            NuminaLogger.logDebug("need to update controls for render tag: " + testTag);
+//            NuminaLogger.logDebug("need to update controls for render tag: " + testTag);
             oldTag = testTag;
         }
 

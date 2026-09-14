@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.item.electric.tool;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.AdditionalInfo;
@@ -89,7 +88,7 @@ import java.util.List;
 
         IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
         if(mci != null) {
-            NuminaLogger.logDebug("releaseUsing tool, timeleft: " + timeLeft);
+//            NuminaLogger.logDebug("releaseUsing tool, timeleft: " + timeLeft);
             mci.releaseUsing(stack, level, entityLiving, timeLeft);
         }
     }
@@ -105,7 +104,7 @@ import java.util.List;
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
         IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
         if(mci != null) {
-            NuminaLogger.logDebug("finishUsing tool");
+//            NuminaLogger.logDebug("finishUsing tool");
             return mci.finishUsingItem(stack, level, livingEntity);
         }
         return stack;

@@ -58,9 +58,6 @@ public class AbstractElectricArmor extends ArmorItem {
         return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
     }
 
-
-
-
     @Override
     public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
         ItemAttributeModifiers modifiers = super.getDefaultAttributeModifiers(stack);

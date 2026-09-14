@@ -32,7 +32,6 @@ import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
@@ -401,7 +400,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     }
 
                     itemSelector.selectedType().ifPresent(slotType -> {
-                        NuminaLogger.logDebug("itemSelecter decAbove");
+//                        NuminaLogger.logDebug("itemSelecter decAbove");
 
                         NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                     });
@@ -415,7 +414,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 int index  = colorButtons.indexOf(colorRadioButton);
                 partSpec.setColorIndex(tagdata, index);
                 itemSelector.selectedType().ifPresent(slotType -> {
-                    NuminaLogger.logDebug("color button tagName: " + tagname +", tagData " + tagdata);
+//                    NuminaLogger.logDebug("color button tagName: " + tagname +", tagData " + tagdata);
 
                     NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                 });

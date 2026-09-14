@@ -184,9 +184,9 @@ public abstract class AbstractSlider extends Clickable implements ISlider {
     public void setValueByMouse(double value) {
         if (this.isEnabled() && this.isVisible() && dragging) {
 
-            if (this.getClass().toString().contains("VanillaTinkerSlider")) {
-                NuminaLogger.logDebug("setting by dragging " + this.id() + ", sliderValue: " +sliderValue +", " + this.getClass());
-            }
+//            if (this.getClass().toString().contains("VanillaTinkerSlider")) {
+//                NuminaLogger.logDebug("setting by dragging " + this.id() + ", sliderValue: " +sliderValue +", " + this.getClass());
+//            }
             if (isHorizontal) {
                 this.sliderValue = MathUtils.clampDouble((value - centerX()) / getSize() + 0.5, 0.0D, 1.0D);
             } else {
@@ -194,9 +194,9 @@ public abstract class AbstractSlider extends Clickable implements ISlider {
             }
         }
         else {
-            if (this.getClass().toString().contains("VanillaTinkerSlider")) {
-                NuminaLogger.logDebug("NOT setting by dragging " + this.id() + ", sliderValue: " +sliderValue +", " + this.getClass());
-            }
+//            if (this.getClass().toString().contains("VanillaTinkerSlider")) {
+//                NuminaLogger.logDebug("NOT setting by dragging " + this.id() + ", sliderValue: " +sliderValue +", " + this.getClass());
+//            }
             this.sliderValue = MathUtils.clampDouble(sliderValue, 0.0, 1.0);
         }
     }

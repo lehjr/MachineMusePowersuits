@@ -1,6 +1,5 @@
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.enhancement.IMiningEnhancementModule;
@@ -204,7 +203,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         if(pm instanceof IRightClickModule clickie) {
             return clickie.useOn(context);
         } else {
-            NuminaLogger.logDebug("not right click item? ");
+//            NuminaLogger.logDebug("not right click item? ");
         }
         return fallback;
     }
@@ -212,21 +211,21 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) {
         IPowerModule pm = getModuleCapability(getActiveModule());
-        NuminaLogger.logDebug("releaseUsing mci, timeLeft " + timeLeft);
+//        NuminaLogger.logDebug("releaseUsing mci, timeLeft " + timeLeft);
 
 
         if (pm instanceof IRightClickModule rightClickModule) {
-            NuminaLogger.logDebug("releaseUsing mci, activeModule " + getActiveModule());
+//            NuminaLogger.logDebug("releaseUsing mci, activeModule " + getActiveModule());
             rightClickModule.releaseUsing(stack, level, entityLiving, timeLeft);
         } else {
-            NuminaLogger.logDebug(getActiveModule() + " mci not IRightClick?");
+//            NuminaLogger.logDebug(getActiveModule() + " mci not IRightClick?");
         }
     }
 
     // Fixme: maybe just call releaseUsing with 0 timeLeft?
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-        NuminaLogger.logDebug("finishUsing " + getActiveModule());
+//        NuminaLogger.logDebug("finishUsing " + getActiveModule());
 
         IPowerModule pm = getModuleCapability(getActiveModule());
         if (pm instanceof IRightClickModule rightClickModule) {

@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.item.module.energygeneration.heat;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
@@ -100,17 +99,17 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
                 // fixme: water consumption is 0???????!!!!!!!
 
                 if(waterAmount > 0 && waterConsumption > 0) {
-                    NuminaLogger.logDebug("using steam power");
+//                    NuminaLogger.logDebug("using steam power");
 
                     if(waterConsumption > waterAmount){
                         steamPowerPercent = waterAmount/waterConsumption;
                     }
-                    NuminaLogger.logDebug("steam power percent: " +  steamPowerPercent);
+//                    NuminaLogger.logDebug("steam power percent: " +  steamPowerPercent);
 
 
                     generationAmount = ElectricItemUtils.givePlayerEnergy(player, (int) (ticksPerAction * steamPowerPercent * applyPropertyModifiers(MPSConstants.STEAM_ELECTRIC_ENERGY_GENERATION)), true);
-                    NuminaLogger.logDebug("generation amount first calc: " + generationAmount);
-                    NuminaLogger.logDebug("steamPowerPercent * waterConsumption: " + (steamPowerPercent * waterConsumption));
+//                    NuminaLogger.logDebug("generation amount first calc: " + generationAmount);
+//                    NuminaLogger.logDebug("steamPowerPercent * waterConsumption: " + (steamPowerPercent * waterConsumption));
 
                     fluidHander.drain((int)(steamPowerPercent * waterConsumption), IFluidHandler.FluidAction.EXECUTE);
                 } else {
@@ -128,12 +127,12 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
                 coolingAmount = Math.min(generationAmount, currentHeat);
                 generationAmount = generationAmount * efficiency;
 
-                NuminaLogger.logDebug("generation: " + generationAmount);
-                NuminaLogger.logDebug("cooling: " + coolingAmount);
+//                NuminaLogger.logDebug("generation: " + generationAmount);
+//                NuminaLogger.logDebug("cooling: " + coolingAmount);
 
                 if(coolingAmount > 0 && generationAmount > 0) {
                     double gaveEnergy = ElectricItemUtils.givePlayerEnergy(player, generationAmount, false);
-                    NuminaLogger.logDebug("gave energy: " + gaveEnergy);
+//                    NuminaLogger.logDebug("gave energy: " + gaveEnergy);
 
                     HeatUtils.coolPlayer(player, coolingAmount);
                 }

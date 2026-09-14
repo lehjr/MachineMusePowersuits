@@ -247,5 +247,76 @@ public class ClientEventBusSubscriber {
                 return renderer;
             }
         }, MPSItems.TINKER_TABLE_ITEM.get());
+
+//        event.registerItem(new IClientItemExtensions() {
+//            @Override
+//            public HumanoidModel<?> getHumanoidArmorModel(
+//                LivingEntity livingEntity,
+//                ItemStack itemStack,
+//                EquipmentSlot equipmentSlot,
+//                HumanoidModel<?> originalModel
+//            ) {
+//                // Fetch your custom model layer instance
+////                MyCustomArmorModel<?> model = ClientCache.getCustomModel(equipmentSlot);
+//                HighPolyArmor model = ArmorModelInstance.getInstance();
+//
+//                IModelSpec renderCapability = itemStack.getCapability(NuminaCapabilities.RENDER);
+//                if (renderCapability != null) {
+//                    model.renderSpec = renderCapability.getRenderTagOrDefault();
+//                }
+//
+//
+//                // Sync slot visibility rules (toggles helmet/chest/boots parts)
+//                model.setAllVisible(false);
+//                switch (equipmentSlot) {
+//                case HEAD -> {
+//                    model.head.visible = true;
+//                    model.hat.visible = true;
+//                }
+//                case CHEST -> {
+//                    model.body.visible = true;
+//                    model.rightArm.visible = true;
+//                    model.leftArm.visible = true;
+//                }
+//                case LEGS -> {
+//                    model.body.visible = true;
+//                    model.rightLeg.visible = true;
+//                    model.leftLeg.visible = true;
+//                }
+//                case FEET -> {
+//                    model.rightLeg.visible = true;
+//                    model.leftLeg.visible = true;
+//                }
+//                }
+//
+//
+////                new NuminaArmorLayer(renderer, (HumanoidArmorLayer<T, ?, ?>) layerRenderer, context.getModelManager()));
+//
+//                // IMPORTANT FOR ARMOR STANDS:
+//                // Copy properties from the original model so it adopts the exact body pose
+//                // (e.g., armor stand arms, head tilt, crouching state)
+//                originalModel.copyPropertiesTo((HumanoidModel) model);
+//
+//                return model;
+//            }
+//        }, MPSItems.POWER_ARMOR_HELMET_1.get(),
+//                MPSItems.POWER_ARMOR_HELMET_2.get(),
+//                MPSItems.POWER_ARMOR_HELMET_3.get(),
+//                MPSItems.POWER_ARMOR_HELMET_4.get(),
+//
+//                MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
+//                MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
+//                MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
+//                MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
+//
+//                MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
+//                MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
+//                MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
+//                MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
+//
+//                MPSItems.POWER_ARMOR_BOOTS_1.get(),
+//                MPSItems.POWER_ARMOR_BOOTS_2.get(),
+//                MPSItems.POWER_ARMOR_BOOTS_3.get(),
+//                MPSItems.POWER_ARMOR_BOOTS_4.get()); // Add all your armor items here
     }
 }

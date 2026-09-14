@@ -9,7 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -45,8 +44,8 @@ public class DrawableMuseCircle {
     public void render(VertexConsumer vertexconsumer, PoseStack poseStack, double radius, double x, double y, double z) {
         points.rewind();
         color.rewind();
-        NuminaLogger.logDebug("points size: " + points.limit());
-        NuminaLogger.logDebug("color size: " + color.limit());
+//        NuminaLogger.logDebug("points size: " + points.limit());
+//        NuminaLogger.logDebug("color size: " + color.limit());
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale((float) (radius / detail), (float) (radius / detail), 1.0F);
@@ -74,7 +73,7 @@ public class DrawableMuseCircle {
         Matrix4f matrix4f = poseStack.last().pose();
 
         while (points.hasRemaining() && color.hasRemaining()) {
-            NuminaLogger.logDebug("points remaining: " + points.remaining() +", color remaining: " + color.remaining());
+//            NuminaLogger.logDebug("points remaining: " + points.remaining() +", color remaining: " + color.remaining());
 
 
             vertexconsumer.addVertex(matrix4f, points.get(), points.get(), points.get()).setColor(color.get(), color.get(), color.get(), color.get());

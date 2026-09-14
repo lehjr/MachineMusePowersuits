@@ -53,12 +53,12 @@ public class NuminaArmorStand extends ArmorStand {
             if (player.isSpectator()) {
                 return InteractionResult.SUCCESS;
             } else if (player.level().isClientSide) {
-                return InteractionResult.SUCCESS;
+                return InteractionResult.CONSUME;
             } else {
                 player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 16.0F, 1.0F);
                 player.openMenu(
                         new SimpleMenuProvider((windowID, playerInventory, playerEntity) ->
-                                new ArmorStandMenu(windowID, playerInventory, (ArmorStand) this),
+                                new ArmorStandMenu(windowID, playerInventory,this),
                                 Component.translatable("screen.numina.armor_stand")),
                         buf -> buf.writeInt(getId()));
                 return InteractionResult.SUCCESS;

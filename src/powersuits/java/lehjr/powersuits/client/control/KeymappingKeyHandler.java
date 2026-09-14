@@ -241,13 +241,13 @@ public class KeymappingKeyHandler {
         for (Item item : BuiltInRegistries.ITEM.stream().toList()) {
             ItemStack module = new ItemStack(item);
             IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
-            if(pm != null) {
-                NuminaLogger.logDebug("power module cap found for : " + module + ", pm class: " + pm.getClass());
-                NuminaLogger.logDebug("is instanceof IToggleableModule: " + (pm instanceof IToggleableModule));
-
-            } else {
-                NuminaLogger.logDebug("not a valid module: " + module +", pm: " + pm);
-            }
+//            if(pm != null) {
+//                NuminaLogger.logDebug("power module cap found for : " + module + ", pm class: " + pm.getClass());
+//                NuminaLogger.logDebug("is instanceof IToggleableModule: " + (pm instanceof IToggleableModule));
+//
+//            } else {
+//                NuminaLogger.logDebug("not a valid module: " + module +", pm: " + pm);
+//            }
 
             if(pm instanceof IToggleableModule) {
 //                // Tool settings are a bit odd
@@ -268,7 +268,7 @@ public class KeymappingKeyHandler {
 //                        NuminaLogger.logDebug("NOT registering kb for module: " + ItemUtils.getRegistryName(item));
 //                    }
 //                } else {
-                NuminaLogger.logDebug("registering kb for armor module: " + ItemUtils.getRegistryName(item));
+//                NuminaLogger.logDebug("registering kb for armor module: " + ItemUtils.getRegistryName(item));
                 registerKeybinding(ItemUtils.getRegistryName(item), false);
 //                }
             } else {

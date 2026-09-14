@@ -1,6 +1,5 @@
 package lehjr.numina.common.utils.block;
 
-import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -64,20 +63,20 @@ public class CheckBlocksFrom {
         return match;
     }
 
-    void debugPrintChecked(BlockPos pos, BlockChecked checked) {
-        switch (checked.isMatch()) {
-        case NOT_CHECKED -> NuminaLogger.logDebug(pos + " not checked");
-        case CHECKED_MATCH -> NuminaLogger.logDebug(pos + " checked match");
-        default -> NuminaLogger.logDebug(pos + " checked NO Match");
-        }
-        for (Direction direction : Direction.values()) {
-            switch (checked.getChecked(direction)) {
-            case NOT_CHECKED -> NuminaLogger.logDebug(pos + " " + direction.getName() + " not checked");
-            case CHECKED_MATCH -> NuminaLogger.logDebug(pos + " " + direction.getName() + " checked match");
-            default -> NuminaLogger.logDebug(pos + " " + direction.getName() + " checked NO Match");
-            }
-        }
-    }
+//    void debugPrintChecked(BlockPos pos, BlockChecked checked) {
+//        switch (checked.isMatch()) {
+//        case NOT_CHECKED -> NuminaLogger.logDebug(pos + " not checked");
+//        case CHECKED_MATCH -> NuminaLogger.logDebug(pos + " checked match");
+//        default -> NuminaLogger.logDebug(pos + " checked NO Match");
+//        }
+//        for (Direction direction : Direction.values()) {
+//            switch (checked.getChecked(direction)) {
+//            case NOT_CHECKED -> NuminaLogger.logDebug(pos + " " + direction.getName() + " not checked");
+//            case CHECKED_MATCH -> NuminaLogger.logDebug(pos + " " + direction.getName() + " checked match");
+//            default -> NuminaLogger.logDebug(pos + " " + direction.getName() + " checked NO Match");
+//            }
+//        }
+//    }
 
 
     double getDistance(BlockPos pos) {

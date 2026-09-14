@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.network.packets.clienthandlers;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
@@ -24,7 +23,7 @@ public class SetSprintAssistDoubleClientHandler {
             IModularItem iModularItem = NuminaCapabilities.getModularItem(ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS));
             if(iModularItem != null) {
                 if (iModularItem.setModuleDouble(MPSConstants.SPRINT_ASSIST_MODULE, MPSConstants.MOVEMENT_SPEED, value)) {
-                    NuminaLogger.logDebug("set sprint value client side: " + value);
+//                    NuminaLogger.logDebug("set sprint value client side: " + value);
                 }
             }
         });

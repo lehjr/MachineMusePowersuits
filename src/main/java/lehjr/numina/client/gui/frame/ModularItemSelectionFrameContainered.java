@@ -1,7 +1,6 @@
 package lehjr.numina.client.gui.frame;
 
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.container.slot.IHideableSlot;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,7 +16,7 @@ public class ModularItemSelectionFrameContainered<C extends AbstractContainerMen
 
     @Override
     void disableAbstractContainerMenuSlots() {
-        NuminaLogger.logDebug("containerMenu.slots: " + containerMenu.slots);
+//        NuminaLogger.logDebug("containerMenu.slots: " + containerMenu.slots);
         for (Slot slot : containerMenu.slots) {
             if (slot instanceof IHideableSlot) {
                 ((IHideableSlot) slot).disable();

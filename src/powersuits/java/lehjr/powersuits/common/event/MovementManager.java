@@ -4,7 +4,6 @@ import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
@@ -22,7 +21,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
@@ -85,7 +83,7 @@ public enum MovementManager {
         // negative addative will make player slower
         double additive;
 
-        NuminaLogger.logDebug("multiplier: " + multiplier);
+//        NuminaLogger.logDebug("multiplier: " + multiplier);
 
         if(player.isSprinting()) {
             additive = multiplier * 0.13;
@@ -107,11 +105,11 @@ public enum MovementManager {
 //        removeModifiers(itemStack);
 
         ItemAttributeModifiers modifiers = itemStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
-        NuminaLogger.logDebug("compute before: " + modifiers.compute(player.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), EquipmentSlot.LEGS));
+//        NuminaLogger.logDebug("compute before: " + modifiers.compute(player.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), EquipmentSlot.LEGS));
 
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
 
-        NuminaLogger.logDebug("setting speed as: " + additive);
+//        NuminaLogger.logDebug("setting speed as: " + additive);
 
 //        builder.add(Attributes.MOVEMENT_SPEED, new AttributeModifier(getArmorAttributeResourceLocationBySlot(EquipmentSlot.LEGS), additive, AttributeModifier.Operation.ADD_VALUE),
 //            EquipmentSlotGroup.bySlot(EquipmentSlot.LEGS));

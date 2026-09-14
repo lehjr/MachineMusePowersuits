@@ -95,7 +95,7 @@ public class ModelHelper {
                 NuminaLogger.logError("Failed to load model. " + e);
             }
         }
-        NuminaLogger.logDebug("got model");
+//        NuminaLogger.logDebug("got model");
         return model;
     }
 

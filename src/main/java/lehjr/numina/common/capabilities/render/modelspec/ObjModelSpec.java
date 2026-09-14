@@ -3,7 +3,6 @@ package lehjr.numina.common.capabilities.render.modelspec;
 import com.mojang.math.Transformation;
 import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
@@ -69,7 +68,7 @@ public class ObjModelSpec extends SpecBase {
         if (model instanceof OBJBakedCompositeModel) {
             return Optional.of((OBJBakedCompositeModel) model);
         }
-        NuminaLogger.logDebug("model at location < " + location + " > missing");
+//        NuminaLogger.logDebug("model at location < " + location + " > missing");
         return Optional.empty();
     }
 

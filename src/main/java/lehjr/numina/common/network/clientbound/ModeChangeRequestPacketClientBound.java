@@ -1,7 +1,6 @@
 package lehjr.numina.common.network.clientbound;
 
 import lehjr.numina.client.network.ModeChangeRequestPacketClientHandler;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -35,9 +34,9 @@ public record ModeChangeRequestPacketClientBound(int mode) implements CustomPack
 
     public static void handle(ModeChangeRequestPacketClientBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
-            NuminaLogger.logDebug("trying to enque work here");
+//            NuminaLogger.logDebug("trying to enque work here");
             if (FMLEnvironment.dist == Dist.CLIENT) {
-                NuminaLogger.logDebug("passed client side check");
+//                NuminaLogger.logDebug("passed client side check");
                 ModeChangeRequestPacketClientHandler.handlePacket(data.mode);
             }
         });

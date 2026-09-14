@@ -26,7 +26,6 @@
 
 package lehjr.numina.common.capabilities.render.modelspec;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -52,15 +51,15 @@ public class ModelSpecStorage implements IModelSpec {
     @Override
     public ItemStack setRenderTag(CompoundTag renderDataIn, String tagName) {
         CompoundTag renderTag = getRenderTag();
-        NuminaLogger.logDebug("RenderTag start: " + renderTag);
+//        NuminaLogger.logDebug("RenderTag start: " + renderTag);
 
         if (tagName != null) {
             // set up clean render tag
             if (Objects.equals(tagName, NuminaConstants.RENDER_TAG)) {
-                NuminaLogger.logger.debug("Removing render tag");
+//                NuminaLogger.logger.debug("Removing render tag");
 
                 if (!renderDataIn.isEmpty()) {
-                    NuminaLogger.logger.debug("Setting tag render : " + renderDataIn);
+//                    NuminaLogger.logger.debug("Setting tag render : " + renderDataIn);
                     renderTag = renderDataIn;
                 } else {
                     renderTag = new CompoundTag();
@@ -73,11 +72,11 @@ public class ModelSpecStorage implements IModelSpec {
 
             } else {
                 if (renderDataIn.isEmpty()) {
-                    NuminaLogger.logger.debug("Removing tag " + tagName);
+//                    NuminaLogger.logger.debug("Removing tag " + tagName);
                     renderTag.remove(tagName);
                     renderTag.remove(tagName.replace(".", ""));
                 } else {
-                    NuminaLogger.logger.debug("Adding tag " + tagName + " : " + renderDataIn);
+//                    NuminaLogger.logger.debug("Adding tag " + tagName + " : " + renderDataIn);
                     renderTag.put(tagName, renderDataIn);
                 }
 

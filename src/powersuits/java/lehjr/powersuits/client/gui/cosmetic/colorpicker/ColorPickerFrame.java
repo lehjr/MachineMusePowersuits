@@ -304,7 +304,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                     slider.setValueByMouse(mousex);
                     if (colors.size() > selectedColor) {
                         int color = Color.getARGBInt((float) ((VanillaSlider)rects.get(1)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(3)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(5)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(7)).getSliderInternalValue());
-                        NuminaLogger.logDebug("colors.size: " + colors.size() + ", index: " + selectedColor + ", trying to set color " + new Color(color) + " as int: " + color);
+//                        NuminaLogger.logDebug("colors.size: " + colors.size() + ", index: " + selectedColor + ", trying to set color " + new Color(color) + " as int: " + color);
                         sendColorPacket(setColor(colors, selectedColor, color));
                     }});
                 // this just sets up the sliders on selecting an item

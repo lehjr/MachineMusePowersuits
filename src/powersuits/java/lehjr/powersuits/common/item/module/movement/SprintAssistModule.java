@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
@@ -103,7 +102,7 @@ public class SprintAssistModule extends AbstractPowerModule {
                 MPSPackets.sendToServer(new SetSprintAssistDoubleAndDrainServerBound(value, drainAmount));
             } catch (Exception e) {
                 e.printStackTrace();
-                NuminaLogger.logDebug("value: " + value + ", drain amount: " + drainAmount );
+//                NuminaLogger.logDebug("value: " + value + ", drain amount: " + drainAmount );
             }
         }
     }

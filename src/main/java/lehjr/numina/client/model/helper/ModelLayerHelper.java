@@ -27,13 +27,22 @@ public class ModelLayerHelper {
             if (layerRenderer != null) {
                 //Only allow an exact class match, so we don't add to modded entities that only have a modded extended armor or elytra layer
                 Class<?> layerClass = layerRenderer.getClass();
+                NuminaLogger.logDebug("Adding layer type: " + layerClass);
+
+
+
+
                 if (layerClass == HumanoidArmorLayer.class) {
                     //Note: We know that the MODEL is actually an instance of HumanoidModel, or there wouldn't be a
                     //noinspection unchecked,rawtypes
                     layersToAdd.put("Armor", new NuminaArmorLayer(renderer, (HumanoidArmorLayer<T, ?, ?>) layerRenderer, context.getModelManager()));
-                    if (layersToAdd.size() == layerTypes) {
-                        break;
-                    }
+//                    if (layersToAdd.size() == layerTypes) {
+//                        break;
+//                    }
+                } else {
+                    NuminaLogger.getLogger().debug("Armor layer to add other than humanoid layer {} Layer to entity of type: {}", layerClass, layerClass.getCanonicalName());
+
+
                 }
                 //                else if (layerClass == ElytraLayer.class) {
                 //                    layersToAdd.put("Elytra", new NuminaElytraLayer<>(renderer, context.getModelSet()));
@@ -47,7 +56,7 @@ public class ModelLayerHelper {
             ResourceLocation entityName = BuiltInRegistries.ENTITY_TYPE.getKey(type);
             for (Map.Entry<String, RenderLayer<T, M>> entry : layersToAdd.entrySet()) {
                 renderer.addLayer(entry.getValue());
-                NuminaLogger.getLogger().debug("Added NuminaArmor {} Layer to entity of type: {}", entry.getKey(), entityName);
+//                NuminaLogger.getLogger().debug("Added NuminaArmor {} Layer to entity of type: {}", entry.getKey(), entityName);
             }
         }
     }

@@ -1,6 +1,5 @@
 package lehjr.numina.common.event;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.enhancement.IMiningEnhancementModule;
@@ -202,10 +201,10 @@ public class HarvestEventHandler {
                         double finalSpeed = (correctedSpeeds.stream().mapToDouble(Double::doubleValue).average().orElse(1.0) * 1.2); // slight boost
 
                         // Speed not changed yet, just debugging to see what new values look like
-                        NuminaLogger.logDebug(
-                            "event old speed: " + event.getOriginalSpeed() + ", newSpeed: " + event.getNewSpeed() + ", speed to set: " + finalSpeed
-                                + ", finalSpeeds: " + correctedSpeeds);
-                        NuminaLogger.logDebug("mining enhancement speed adjustment: " + moduleCap.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED));
+//                        NuminaLogger.logDebug(
+//                            "event old speed: " + event.getOriginalSpeed() + ", newSpeed: " + event.getNewSpeed() + ", speed to set: " + finalSpeed
+//                                + ", finalSpeeds: " + correctedSpeeds);
+//                        NuminaLogger.logDebug("mining enhancement speed adjustment: " + moduleCap.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED));
                         //                        event.setNewSpeed((float) finalSpeed);
                         // Fixme testing
                         event.setNewSpeed((float) (finalSpeed * moduleCap.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED)));

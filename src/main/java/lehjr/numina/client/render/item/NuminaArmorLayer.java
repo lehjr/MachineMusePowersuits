@@ -32,6 +32,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -52,7 +53,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         Arrays.stream(EquipmentSlot.values()).filter(equipmentSlot -> equipmentSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR).forEach(slot ->
-                renderArmorPiece(matrixStackIn, bufferIn, entityIn, slot, packedLightIn, this.getModelFromSlot(slot)));
+            renderArmorPiece(matrixStackIn, bufferIn, entityIn, slot, packedLightIn, this.getModelFromSlot(slot), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch));
     }
 
     private A getModelFromSlot(EquipmentSlot slot) {
@@ -67,110 +68,152 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
     protected void setPartVisibility(A model, EquipmentSlot pSlot) {
         model.setAllVisible(false);
         switch (pSlot) {
-            case HEAD:
-                model.head.visible = true;
-                model.hat.visible = true;
-                break;
-            case CHEST:
-                model.body.visible = true;
-                model.rightArm.visible = true;
-                model.leftArm.visible = true;
-                break;
-            case LEGS:
-                model.body.visible = true;
-                model.rightLeg.visible = true;
-                model.leftLeg.visible = true;
-                break;
-            case FEET:
-                model.rightLeg.visible = true;
-                model.leftLeg.visible = true;
+        case HEAD:
+            model.head.visible = true;
+            model.hat.visible = true;
+            break;
+        case CHEST:
+            model.body.visible = true;
+            model.rightArm.visible = true;
+            model.leftArm.visible = true;
+            break;
+        case LEGS:
+            model.body.visible = true;
+            model.rightLeg.visible = true;
+            model.leftLeg.visible = true;
+            break;
+        case FEET:
+            model.rightLeg.visible = true;
+            model.leftLeg.visible = true;
         }
     }
 
     @Override
-    public void renderArmorPiece(PoseStack poseStack, MultiBufferSource bufferIn, T entityIn, EquipmentSlot slotIn, int packedLightIn, A model) {
-        ItemStack itemstack = ItemUtils.getItemFromEntitySlot(entityIn, slotIn);
+    public void renderArmorPiece(PoseStack poseStack,
+        MultiBufferSource bufferSource,
+        T livingEntity, EquipmentSlot slot,
+        int packedLight,
+        A p_model,
+        float limbSwing,
+        float limbSwingAmount,
+        float partialTick,
+        float ageInTicks,
+        float netHeadYaw,
+        float headPitch) {
+
+        ItemStack itemstack = ItemUtils.getItemFromEntitySlot(livingEntity, slot);
+        Item item  = itemstack.getItem();
         IModelSpec renderCapability = getRenderCapability(itemstack);
-        if (itemstack.getItem() instanceof ArmorItem armoritem && renderCapability != null) {
-            if (armoritem.getType().getSlot() == slotIn) {
+
+        if (item instanceof ArmorItem armoritem && renderCapability != null) {
+            if (armoritem.getType().getSlot() == slot) {
                 if (doesBypassRender(itemstack)) {
                     return;
                 }
 
+                CompoundTag renderTag = renderCapability.getRenderTagOrDefault();
+                //                    if (renderTag == null || renderTag.isEmpty()) {
+                //                        renderTag = renderCap.getDefaultRenderTag();
+                //                        if (renderTag != null && !renderTag.isEmpty()) {
+                //                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotIn, NuminaConstants.RENDER, renderTag));
+                //                        }
+                //                    }
 
-                    CompoundTag renderTag = renderCapability.getRenderTagOrDefault();
-//                    if (renderTag == null || renderTag.isEmpty()) {
-//                        renderTag = renderCap.getDefaultRenderTag();
-//                        if (renderTag != null && !renderTag.isEmpty()) {
-//                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotIn, NuminaConstants.RENDER, renderTag));
-//                        }
-//                    }
-
-                    if (renderTag != null && !renderTag.isEmpty()) {
-//                        NuminaLogger.logDebug("render tag  here: " + renderTag);
+                if (renderTag != null && !renderTag.isEmpty()) {
+                    //                        NuminaLogger.logDebug("render tag  here: " + renderTag);
 
 
-                        int[] colors = renderTag.getIntArray(NuminaConstants.COLORS);
-                        if (colors.length == 0) {
-                            colors = new int[]{Color.WHITE.getARGBInt()};
-                        }
+                    int[] colors = renderTag.getIntArray(NuminaConstants.COLORS);
+                    if (colors.length == 0) {
+                        colors = new int[]{Color.WHITE.getARGBInt()};
+                    }
 
-                        for (CompoundTag tag : NBTTagAccessor.getValues(renderTag)) {
-                            PartSpecBase partSpec = NuminaModelSpecRegistry.getInstance().getPart(tag);
-                            if (partSpec != null) {
-//                                NuminaLogger.logDebug("partSpec class: " + partSpec.getClass());
+                    for (CompoundTag tag : NBTTagAccessor.getValues(renderTag)) {
+                        PartSpecBase partSpec = NuminaModelSpecRegistry.getInstance().getPart(tag);
+                        if (partSpec != null) {
+                            //                                NuminaLogger.logDebug("partSpec class: " + partSpec.getClass());
 
-                                int partColor;
-                                int ix = partSpec.getColorIndex(tag);
-                                // checks the range of the index to avoid errors OpenGL or crashing
-                                if (ix < colors.length && ix >= 0) {
-                                    partColor = colors[ix];
-                                } else {
-                                    partColor = -1;
+                            int partColor;
+                            int ix = partSpec.getColorIndex(tag);
+                            // checks the range of the index to avoid errors OpenGL or crashing
+                            if (ix < colors.length && ix >= 0) {
+                                partColor = colors[ix];
+                            } else {
+                                partColor = -1;
+                            }
+                            Color color = new Color(partColor);
+                            boolean glow = partSpec.getGlow(tag);
+
+                            if (partSpec instanceof JavaPartSpec) {
+                                ResourceLocation location = ((JavaPartSpec) partSpec).getTextureLocation();
+                                this.getParentModel().copyPropertiesTo(p_model);
+                                ModelPart part = partSpec.getBinding().getTarget().apply(p_model);
+                                poseStack.pushPose();
+                                if (part != null) {
+                                    part.translateAndRotate(poseStack);
+                                    VertexConsumer consumer = getVertexConsumer(bufferSource, location, glow);
+                                    part.compile(poseStack.last(), consumer,
+                                        glow ? NuminaConstants.FULL_BRIGHTNESS : packedLight,
+                                        OverlayTexture.NO_OVERLAY,
+                                        color.getARGBInt());
                                 }
-                                Color color = new Color(partColor);
-                                boolean glow = partSpec.getGlow(tag);
+                                poseStack.popPose();
+                            } else if (partSpec instanceof ObjPartSpec) {
+                                Transformation transform = CALIBRATION.getTransform();
+                                if (transform != Transformation.identity()) {
+                                    poseStack.pushTransformation(transform);
+                                }
 
-                                if (partSpec instanceof JavaPartSpec) {
-                                    ResourceLocation location = ((JavaPartSpec) partSpec).getTextureLocation();
-                                    this.getParentModel().copyPropertiesTo(model);
-                                    ModelPart part = partSpec.getBinding().getTarget().apply(model);
-                                    poseStack.pushPose();
-                                    if (part != null) {
-                                        part.translateAndRotate(poseStack);
-                                        VertexConsumer consumer = getVertexConsumer(bufferIn, location, glow);
-                                        part.compile(poseStack.last(), consumer,
-                                                glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn,
-                                                OverlayTexture.NO_OVERLAY,
-                                                color.getARGBInt());
-                                    }
+                                HighPolyArmor highPolyArmor = ArmorModelInstance.getInstance();
+                                highPolyArmor.copyPropertiesFrom(getParentModel());
+                                VertexConsumer consumer = getVertexConsumer(bufferSource, InventoryMenu.BLOCK_ATLAS, glow);
+                                highPolyArmor.renderToBuffer((ObjPartSpec) partSpec, tag, poseStack, consumer, glow ? NuminaConstants.FULL_BRIGHTNESS : packedLight, OverlayTexture.NO_OVERLAY, color);
+
+                                if (transform != Transformation.identity()) {
                                     poseStack.popPose();
-                                } else if (partSpec instanceof ObjPartSpec) {
-                                    Transformation transform = CALIBRATION.getTransform();
-                                    if (transform != Transformation.identity()) {
-                                        poseStack.pushTransformation(transform);
-                                    }
-
-                                    HighPolyArmor highPolyArmor = ArmorModelInstance.getInstance();
-                                    highPolyArmor.copyPropertiesFrom(getParentModel());
-                                    VertexConsumer consumer = getVertexConsumer(bufferIn, InventoryMenu.BLOCK_ATLAS, glow);
-                                    highPolyArmor.renderToBuffer((ObjPartSpec) partSpec, tag, poseStack, consumer, glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn, OverlayTexture.NO_OVERLAY, color);
-
-                                    if (transform != Transformation.identity()) {
-                                        poseStack.popPose();
-                                    }
-                                } else {
-                                    NuminaLogger.logDebug("partSpec: " + partSpec);
                                 }
                             } else {
-                                // colorindex ends up here
-//                                NuminaLogger.logDebug("spec is null, tag: " + tag);
+                                NuminaLogger.logDebug("partSpec: " + partSpec);
                             }
+                        } else {
+                            // colorindex ends up here
+                            //                                NuminaLogger.logDebug("spec is null, tag: " + tag);
                         }
                     }
+                }
             }
+
+            //
+            //                    //                ((HumanoidModel)this.getParentModel()).copyPropertiesTo(p_model);
+            //                    //                this.setPartVisibility(p_model, slot);
+            //                    //                Model model = this.getArmorModelHook(livingEntity, itemstack, slot, p_model);
+            //                    //                boolean flag = this.usesInnerModel(slot);
+            //                    //                ArmorMaterial armormaterial = (ArmorMaterial)armoritem.getMaterial().value();
+            //                    //                IClientItemExtensions extensions = IClientItemExtensions.of(itemstack);
+            //                    //                extensions.setupModelAnimations(livingEntity, itemstack, slot, model, limbSwing, limbSwingAmount, partialTick, ageInTicks, netHeadYaw, headPitch);
+            //                    //                int fallbackColor = extensions.getDefaultDyeColor(itemstack);
+            //                    //
+            //                    //                for(int layerIdx = 0; layerIdx < armormaterial.layers().size(); ++layerIdx) {
+            //                    //                    ArmorMaterial.Layer armormaterial$layer = (ArmorMaterial.Layer)armormaterial.layers().get(layerIdx);
+            //                    //                    int j = extensions.getArmorLayerTintColor(itemstack, livingEntity, armormaterial$layer, layerIdx, fallbackColor);
+            //                    //                    if (j != 0) {
+            //                    //                        ResourceLocation texture = ClientHooks.getArmorTexture(livingEntity, itemstack, armormaterial$layer, flag, slot);
+            //                    //                        this.renderModel(poseStack, bufferSource, packedLight, model, j, texture);
+            //                    //                    }
+            //                    //                }
+            //                    //
+            //                    //                ArmorTrim armortrim = (ArmorTrim)itemstack.get(DataComponents.TRIM);
+            //                    //                if (armortrim != null) {
+            //                    //                    this.renderTrim(armoritem.getMaterial(), poseStack, bufferSource, packedLight, armortrim, model, flag);
+            //                    //                }
+            //                    //
+            //                    //                if (itemstack.hasFoil()) {
+            //                    //                    this.renderGlint(poseStack, bufferSource, packedLight, model);
+            //                    //                }
+            //                }
         } else {
-            super.renderArmorPiece(poseStack, bufferIn, entityIn, slotIn, packedLightIn, model);
+            super.renderArmorPiece(poseStack, bufferSource, livingEntity, slot, packedLight, p_model, limbSwing, limbSwingAmount, partialTick, ageInTicks,
+                netHeadYaw, headPitch);
         }
     }
 
@@ -187,10 +230,10 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 
     VertexConsumer getVertexConsumer(MultiBufferSource buffer, ResourceLocation location, boolean glow) {
         if (glow) {
-//            return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.beaconBeam(location, true), false, glow);
+            //            return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.beaconBeam(location, true), false, glow);
             return buffer.getBuffer(RenderType.beaconBeam(location, true));
         }
-//        return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.entityTranslucentCull(location), false, glow);
+        //        return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.entityTranslucentCull(location), false, glow);
         return buffer.getBuffer(RenderType.entityTranslucentCull(location));
     }
 

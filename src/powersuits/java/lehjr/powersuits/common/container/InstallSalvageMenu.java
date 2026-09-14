@@ -2,7 +2,6 @@ package lehjr.powersuits.common.container;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.container.slot.CategoryIconSlotItemHandler;
@@ -109,7 +108,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
                     @Override
                     public boolean mayPlace(ItemStack stack) {
-                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+//                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
 
                         return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                     }
@@ -118,13 +117,13 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
             } else {
                 for (ModuleCategory category: ModuleCategory.values()) {
                     if((MathUtils.isIntInRange(cap.getRangeForCategory(category), modularItemInvIndex))) {
-                        NuminaLogger.logDebug("category " + category +" is in range for slot: " + modularItemInvIndex);
+//                        NuminaLogger.logDebug("category " + category +" is in range for slot: " + modularItemInvIndex);
                         if(category.hasContainerIcon()){
                             if(category.usesNuminaGuiIcons()) {
                                 addSlot(new CategoryIconSlotItemHandler(cap, parentSlot, finalModularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18, category) {
                                     @Override
                                     public boolean mayPlace(ItemStack stack) {
-                                        NuminaLogger.logDebug("may place <" + stack + "> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+//                                        NuminaLogger.logDebug("may place <" + stack + "> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
 
                                         return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                                     }
@@ -139,7 +138,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
                                     @Override
                                     public boolean mayPlace(ItemStack stack) {
-                                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+//                                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
                                         return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                                     }
                                 });
@@ -149,7 +148,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
                             addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
                                 @Override
                                 public boolean mayPlace(ItemStack stack) {
-                                    NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+//                                    NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
                                     return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                                 }
                             });

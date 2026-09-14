@@ -480,6 +480,9 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         // Diameter ------------------------------------------------------------------------------------
         addTradeoff(MPSConstants.DIAMETER, "Diameter");
 
+        // Distance Reduction --------------------------------------------------------------------------
+        addTradeoff(MPSConstants.DISTANCE_REDUCTION, "Distance Reduction");
+
         // Efficiency ----------------------------------------------------------------------------------
         addTradeoff(MPSConstants.EFFICIENCY, "Efficiency");
 

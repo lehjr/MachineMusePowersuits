@@ -27,14 +27,15 @@ public class ArmorStandMenu extends AbstractContainerMenu {
         super(NuminaMenus.ARMOR_STAND_CONTAINER_TYPE.get(), windowID);
         this.player = playerInventory.player;
         this.armorStandEntity = armorStand;
+
         armorStandInventory = new SimpleContainer(
                 // These have high "inventory slot" numbers:
-                armorStand.getItemBySlot(EquipmentSlot.MAINHAND), // 98
-                armorStand.getItemBySlot(EquipmentSlot.OFFHAND), // 99
-                armorStand.getItemBySlot(EquipmentSlot.FEET), // 100
-                armorStand.getItemBySlot(EquipmentSlot.LEGS), // 101
-                armorStand.getItemBySlot(EquipmentSlot.CHEST), // 102
-                armorStand.getItemBySlot(EquipmentSlot.HEAD));  // 103
+                armorStand.getItemBySlot(EquipmentSlot.MAINHAND), // 98, container slot 0
+                armorStand.getItemBySlot(EquipmentSlot.OFFHAND), // 99, container slot 1
+                armorStand.getItemBySlot(EquipmentSlot.FEET), // 100, container slot 2
+                armorStand.getItemBySlot(EquipmentSlot.LEGS), // 101, container slot 3
+                armorStand.getItemBySlot(EquipmentSlot.CHEST), // 102, container slot 4
+                armorStand.getItemBySlot(EquipmentSlot.HEAD));  // 103, container slot 5
 
         // ArmorStand Equipment (container slots 0-3)
         for(int k = 0; k < 4; ++k) {
@@ -86,7 +87,7 @@ public class ArmorStandMenu extends AbstractContainerMenu {
             });
         }
 
-        // ArmorStand OffHand (container slot 4)
+        // ArmorStand OffHand (container slot 1)
         this.addSlot(new Slot(armorStandInventory, 1, 83, 8) {
             @OnlyIn(Dist.CLIENT)
             @Override
@@ -107,8 +108,8 @@ public class ArmorStandMenu extends AbstractContainerMenu {
             }
         });
 
-        // ArmorStand MainHand (container slot 5)
-        this.addSlot(new Slot(armorStandInventory, 1, 83, 26) {
+        // ArmorStand MainHand (container slot 0)
+        this.addSlot(new Slot(armorStandInventory, 0, 83, 26) {
             @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {

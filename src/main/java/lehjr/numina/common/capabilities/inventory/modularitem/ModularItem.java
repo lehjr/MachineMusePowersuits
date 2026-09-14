@@ -1,7 +1,6 @@
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
@@ -19,8 +18,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.ComponentItemHandler;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 
@@ -142,7 +139,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
             return 1;
         }
 
-        NuminaLogger.logDebug("checking stack limit 1");
+//        NuminaLogger.logDebug("checking stack limit 1");
 
         if (isModuleValid(module)) {
             //  Check if the module is already in this slot instead of just blindly
@@ -150,7 +147,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
             // on loading to check if the module is valid for the given slot.
             int isInstalled = findInstalledModule(module);
             if (isInstalled != -1 && isInstalled != slot) {
-                NuminaLogger.logDebug("module already installed in slot: " + isInstalled);
+//                NuminaLogger.logDebug("module already installed in slot: " + isInstalled);
                 return 0;
             }
 
@@ -160,7 +157,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
 
             // Specfic module type for limited modules
             RangedWrapper wrapper = getRangedWrappers().get(category);
-            NuminaLogger.logDebug("wrapper: " + wrapper);
+//            NuminaLogger.logDebug("wrapper: " + wrapper);
             // fallback on generic type if null
             if (wrapper == null) {
                 wrapper = getRangedWrappers().get(ModuleCategory.NONE);
@@ -173,7 +170,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
                 }
                 return getStackInSlot(slot).isEmpty() ? 1: 0;
             }
-            NuminaLogger.logDebug("checking stack limit 2");
+//            NuminaLogger.logDebug("checking stack limit 2");
         }
         return 0;
     }
@@ -189,16 +186,16 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         if (!isModuleValid(module)) {
             IPowerModule cap = getModuleCapability(module);
             if (cap == null) {
-                NuminaLogger.logDebug("no capability for module");
+//                NuminaLogger.logDebug("no capability for module");
                 return false;
             }
         }
-        NuminaLogger.logDebug("==================================================================");
-        NuminaLogger.logDebug("isValidForPlacement: <slot, module: <" + slot +", " +module +">"  );
-        NuminaLogger.logDebug("isSlotEmpty: " + getStackInSlot(slot).isEmpty());
-        NuminaLogger.logDebug("slotLimit: " + getStackLimit(slot, module));
-        NuminaLogger.logDebug("isItemValid: " + isItemValid(slot, module));
-        NuminaLogger.logDebug("------------------------------------------------------------------");
+//        NuminaLogger.logDebug("==================================================================");
+//        NuminaLogger.logDebug("isValidForPlacement: <slot, module: <" + slot +", " +module +">"  );
+//        NuminaLogger.logDebug("isSlotEmpty: " + getStackInSlot(slot).isEmpty());
+//        NuminaLogger.logDebug("slotLimit: " + getStackLimit(slot, module));
+//        NuminaLogger.logDebug("isItemValid: " + isItemValid(slot, module));
+//        NuminaLogger.logDebug("------------------------------------------------------------------");
         return getStackInSlot(slot).isEmpty() && getStackLimit(slot, module) != 0 && isItemValid(slot, module);
     }
 
@@ -237,7 +234,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         if(pm != null) {
             return pm.isModuleOnline() && pm.isAllowed();
         }
-        NuminaLogger.logDebug("pm cap is null for " + module);
+//        NuminaLogger.logDebug("pm cap is null for " + module);
         return false;
     }
 

@@ -112,7 +112,7 @@ public enum ModelSpecLoader {
         } catch (Exception e) {
             NuminaLogger.logException("failed to load ModelSpec", e);
         }
-        NuminaLogger.logDebug("Finished loading model specs");
+//        NuminaLogger.logDebug("Finished loading model specs");
     }
 
     void parseFile(JsonObject json) {
@@ -121,13 +121,13 @@ public enum ModelSpecLoader {
         SpecType specType = SpecType.getTypeFromName(specTypeString);
         boolean isDefault = json.has(DEFAULT) && json.get(DEFAULT).getAsBoolean();
         if (specType == null) {
-            NuminaLogger.logDebug("model spec loader spec type: NULL " + json);
+//            NuminaLogger.logDebug("model spec loader spec type: NULL " + json);
             return;
         }
 
         switch (specType) {
             case HANDHELD_OBJ_MODEL -> {
-                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_OBJ_MODEL " + json);
+//                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_OBJ_MODEL " + json);
                 if (json.has(MODELS) && json.get(MODELS).isJsonArray()) {
                     json.getAsJsonArray(MODELS).iterator().forEachRemaining(jsonElement -> {
                         parseObjModelSpec(jsonElement.getAsJsonObject(), SpecType.HANDHELD_OBJ_MODEL, specName, isDefault, false);
@@ -137,12 +137,12 @@ public enum ModelSpecLoader {
                 }
             }
             case ARMOR_SKIN -> {
-                NuminaLogger.logDebug("model spec loader spec type: ARMOR_SKIN " + json);
+//                NuminaLogger.logDebug("model spec loader spec type: ARMOR_SKIN " + json);
                 JavaModelSpec javaModel = new JavaModelSpec(specName, isDefault);
                 parseArmorJavaModelSpec(json, javaModel);
             }
             case ARMOR_OBJ_MODEL -> {
-                NuminaLogger.logDebug("model spec loader spec type: ARMOR_OBJ_MODEL " + json);
+//                NuminaLogger.logDebug("model spec loader spec type: ARMOR_OBJ_MODEL " + json);
                 if (json.has(MODELS) && json.get(MODELS).isJsonArray()) {
                     json.getAsJsonArray(MODELS).iterator().forEachRemaining(jsonElement -> {
                         // multiple models, a "model spec" for each
@@ -154,12 +154,12 @@ public enum ModelSpecLoader {
                 }
             }
             case HANDHELD_JAVA_MODEL -> {
-                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_JAVA_MODEL " + json);
+//                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_JAVA_MODEL " + json);
                 JavaModelSpec javaModel = new JavaModelSpec(specName, isDefault);
                 parseHandHeldJavaModel(javaModel, json);
             }
             case NONE -> {
-                NuminaLogger.logDebug("model spec loader found NONE");
+//                NuminaLogger.logDebug("model spec loader found NONE");
             }
         }
     }
@@ -366,7 +366,7 @@ public enum ModelSpecLoader {
      * SpecBinding is a subset if settings for the ModelPartSpec
      */
     public static SpecBinding getBinding(JsonObject bindingJson) {
-        NuminaLogger.logDebug("bindingJson: " + bindingJson);
+//        NuminaLogger.logDebug("bindingJson: " + bindingJson);
         return new SpecBinding(bindingJson.has("target") ? MorphTarget.getMorph(bindingJson.get("target").getAsString()) : null,
                 bindingJson.has("itemSlot") ? EquipmentSlot.byName(bindingJson.get("itemSlot").getAsString().toLowerCase()) : null,
                 bindingJson.has("itemState") ? bindingJson.get("itemState").getAsString() : "all");

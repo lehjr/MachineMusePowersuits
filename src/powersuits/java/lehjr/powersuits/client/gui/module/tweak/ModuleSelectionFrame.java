@@ -7,7 +7,6 @@ import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -289,7 +288,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
      */
     void onSelected() {
         if(this.doThis != null) {
-            NuminaLogger.logDebug("onSelected running");
+//            NuminaLogger.logDebug("onSelected running");
             this.doThis.onSelected(this);
         }
     }

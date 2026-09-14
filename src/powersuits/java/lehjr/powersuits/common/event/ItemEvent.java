@@ -1,7 +1,6 @@
 package lehjr.powersuits.common.event;
 
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -172,7 +171,7 @@ public class ItemEvent {
 //                NuminaLogger.logDebug("slot: " + slot);
 //            }
         } else {
-            NuminaLogger.logDebug("IModularItem Cap is broken");
+//            NuminaLogger.logDebug("IModularItem Cap is broken");
         }
 
 

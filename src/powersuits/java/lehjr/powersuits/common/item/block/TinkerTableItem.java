@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.common.item.block;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
@@ -62,7 +61,7 @@ public class TinkerTableItem extends BlockItem {
             if (!level.isClientSide()) {
                 SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new InstallSalvageMenu(id, inventory, EquipmentSlot.MAINHAND), Component.translatable("gui.powersuits.tab.install.salvage"));
 //                NetworkHooks.openScreen((ServerPlayer) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlot.MAINHAND));
-                NuminaLogger.logDebug("FIXME: missing code to open gui");
+//                NuminaLogger.logDebug("FIXME: missing code to open gui");
             }
             return super.use(itemStackIn, level, playerIn, hand);
         }

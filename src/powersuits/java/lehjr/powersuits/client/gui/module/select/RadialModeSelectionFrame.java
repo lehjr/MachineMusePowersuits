@@ -7,7 +7,6 @@ import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.SpiralPointToPoint2D;
 import lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.network.NuminaPackets;
@@ -20,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 /*
 TODO: revamp with a set of concentric circles to sort modules by category
