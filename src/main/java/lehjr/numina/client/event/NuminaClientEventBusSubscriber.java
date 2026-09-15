@@ -98,15 +98,11 @@ public class NuminaClientEventBusSubscriber {
             // additional note: this should also apply to most humanoid mobs
             if (event.getSkin(skin) instanceof LivingEntityRenderer<?, ?> renderer) {
                 Set<EntityType<?>> x = event.getEntityTypes();
-                for (EntityType<?> e : x) {
-                    ModelLayerHelper.addCustomLayers(e, renderer, event.getContext());
-
-
-                    NuminaLogger.logDebug("render layer for type: " + e);
-                }
-
-
-                //                ModelLayerHelper.addCustomLayers(EntityType.PLAYER, renderer, event.getContext());
+//                for (EntityType<?> e : x) {
+//                    ModelLayerHelper.addCustomLayers(e, renderer, event.getContext());
+////                    NuminaLogger.logDebug("render layer for type: " + e);
+//                }
+                ModelLayerHelper.addCustomLayers(EntityType.PLAYER, renderer, event.getContext());
             }
         }
     }
