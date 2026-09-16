@@ -31,8 +31,13 @@ public class TinkerTableCap extends RightClickModule {
         if (level.isClientSide) {
             return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide);
         } else {
-            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new InstallSalvageMenu(id, inventory, EquipmentSlot.MAINHAND), Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE));
-            playerIn.openMenu(container, buf -> buf.writeEnum(EquipmentSlot.MAINHAND));
+            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new InstallSalvageMenu(id, inventory, EquipmentSlot.MAINHAND, false, -1, -1), Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE));
+            playerIn.openMenu(container, buf -> {
+                buf.writeEnum(EquipmentSlot.MAINHAND);
+                buf.writeBoolean(false);
+                buf.writeDouble(-1);
+                buf.writeDouble(-1);
+            });
             return InteractionResultHolder.consume(itemStackIn);
         }
     }

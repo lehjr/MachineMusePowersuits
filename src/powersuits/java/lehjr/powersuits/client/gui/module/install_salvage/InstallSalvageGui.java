@@ -5,6 +5,7 @@ import lehjr.numina.client.gui.ExtendedContainerScreen;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrameContainered;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -45,6 +47,15 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         super(container, playerInventory, title, 352, 217);
         this.playerInventory = playerInventory;
     }
+
+    public void restoreMouse() {
+        if(menu.preserveMouse()) {
+            Minecraft mc = Minecraft.getInstance();
+            long windowHandle = mc.getWindow().getWindow();
+            GLFW.glfwSetCursorPos(windowHandle, menu.getMouseX(), menu.getMouseY());
+        }
+    }
+
 
     @Override
     public void init() {
@@ -120,7 +131,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
 
     @Override
     public void render(@Nonnull GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
-//        this.renderBackground(gfx, mouseX, mouseY, frameTime);
+        //        this.renderBackground(gfx, mouseX, mouseY, frameTime);
         super.render(gfx, mouseX, mouseY, frameTime);
         this.renderTooltip(gfx, mouseX, mouseY);
     }
@@ -128,22 +139,22 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
     @Override
     public void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
         gfx.drawString(this.font,
-                this.moduleSelectionFrameLabel,
-                this.titleLabelX,
-                this.titleLabelY,
-                4210752, false);
+            this.moduleSelectionFrameLabel,
+            this.titleLabelX,
+            this.titleLabelY,
+            4210752, false);
 
         gfx.drawString(this.font,
-                this.modularItemInventoryLabel,
-                this.titleLabelX + 173,
-                this.titleLabelY, 4210752, false);
+            this.modularItemInventoryLabel,
+            this.titleLabelX + 173,
+            this.titleLabelY, 4210752, false);
 
         gfx.drawString(this.font,
-                this.playerInventory.getDisplayName(),
-                this.inventoryLabelX,
-                inventoryLabelY,
-                4210752,
-                false);
+            this.playerInventory.getDisplayName(),
+            this.inventoryLabelX,
+            inventoryLabelY,
+            4210752,
+            false);
     }
 
     @Override

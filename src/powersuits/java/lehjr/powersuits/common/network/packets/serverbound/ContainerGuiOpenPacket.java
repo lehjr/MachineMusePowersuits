@@ -14,7 +14,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 /**
  * A packet for sending a containerGui open request from the client side.
  */
-public record ContainerGuiOpenPacket(EquipmentSlot slotType) implements CustomPacketPayload {
+public record ContainerGuiOpenPacket(EquipmentSlot slotType, boolean shouldpreserve, double mouseX, double mouseY) implements CustomPacketPayload {
     public static final Type<ContainerGuiOpenPacket> ID = new Type<>(ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "container_gui_open_to_server"));
 
     @Override
@@ -26,11 +26,14 @@ public record ContainerGuiOpenPacket(EquipmentSlot slotType) implements CustomPa
             StreamCodec.ofMember(ContainerGuiOpenPacket::write, ContainerGuiOpenPacket::new);
 
     public ContainerGuiOpenPacket(RegistryFriendlyByteBuf packetBuffer) {
-        this(packetBuffer.readEnum(EquipmentSlot.class));
+        this(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readBoolean(), packetBuffer.readDouble(),  packetBuffer.readDouble());
     }
 
     public void write(RegistryFriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(slotType);
+        packetBuffer.writeBoolean(shouldpreserve);
+        packetBuffer.writeDouble(mouseX);
+        packetBuffer.writeDouble(mouseY);
     }
 
     public static void handle(ContainerGuiOpenPacket data, IPayloadContext ctx) {
@@ -41,7 +44,12 @@ public record ContainerGuiOpenPacket(EquipmentSlot slotType) implements CustomPa
 
             ctx.player().openMenu(new SimpleMenuProvider((id, inventory, player) ->
                 new InstallSalvageMenu(id, inventory, data.slotType),
-                Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE)), buf -> buf.writeEnum(data.slotType));
+                Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE)), buf -> {
+                    buf.writeEnum(data.slotType);
+                    buf.writeBoolean(data.shouldpreserve);
+                    buf.writeDouble(data.mouseX);
+                    buf.writeDouble(data.mouseY);
+                });
         });
     }
 }

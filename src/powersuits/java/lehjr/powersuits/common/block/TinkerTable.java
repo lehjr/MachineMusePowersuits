@@ -85,6 +85,8 @@ public class TinkerTable extends HorizontalDirectionalBlock implements SimpleWat
             player.openMenu(Objects.requireNonNull(state.getMenuProvider(level, pos)), buf -> {
                 buf.writeEnum(EquipmentSlot.MAINHAND);
                 buf.writeBoolean(false);
+                buf.writeDouble(-1);
+                buf.writeDouble(-1);
             } );
             player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
             return InteractionResult.CONSUME;
@@ -96,19 +98,19 @@ public class TinkerTable extends HorizontalDirectionalBlock implements SimpleWat
         EquipmentSlot slotType = EquipmentSlot.MAINHAND;
         return new SimpleMenuProvider(
                 (id, inventory, player) ->
-                        new InstallSalvageMenu(id, inventory, slotType),
+                        new InstallSalvageMenu(id, inventory, slotType, false, -1, -1),
                 Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE));
 
     }
 
 
-    @OnlyIn(Dist.CLIENT)
-    public void openGui(Level world) {
-        if (world.isClientSide) {
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(Component.translatable("gui.tinkertable"))));
-        }
-    }
+//    @OnlyIn(Dist.CLIENT)
+//    public void openGui(Level world) {
+//        if (world.isClientSide) {
+//            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+//            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(Component.translatable("gui.tinkertable"))));
+//        }
+//    }
 
     static final VoxelShape makeRotationZeroShape() {
         VoxelShape shape = Shapes.empty();

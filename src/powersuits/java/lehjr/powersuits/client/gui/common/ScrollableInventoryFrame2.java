@@ -9,9 +9,11 @@ import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -46,7 +48,16 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
             if (selected != tab) {
                 selected = tab;
                 EquipmentSlot type = tab.getSlotType();
-                MPSPackets.sendToServer(new ContainerGuiOpenPacket(type));
+                Minecraft mc = Minecraft.getInstance();
+
+                if (mc.screen == null) {
+                    return;
+                }
+                double[] xPos = new double[1];
+                double[] yPos = new double[1];
+                long windowHandle = mc.getWindow().getWindow();
+                GLFW.glfwGetCursorPos(windowHandle, xPos, yPos);
+                MPSPackets.sendToServer(new ContainerGuiOpenPacket(type, true, xPos[0], yPos[0]));
             }
         });
         super.update(mouseX, mouseY);

@@ -13,9 +13,11 @@ import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
         button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.install.salvage"), active != 0);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
-            MPSPackets.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.HEAD));
+            MPSPackets.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.MAINHAND, false, -1, -1));
         });
         buttons.add(button);
 
@@ -98,5 +100,28 @@ public class TabSelectFrame extends AbstractGuiFrame {
     @Override
     public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         buttons.stream().forEach(b->b.render(gfx, mouseX, mouseY, partialTick));
+    }
+
+
+    public static void switchScreenPreservingMouse(Screen newScreen) {
+        Minecraft mc = Minecraft.getInstance();
+
+        // 1. Fall back to standard logic if there's no current screen to inherit from
+        if (mc.screen == null) {
+            mc.setScreen(newScreen);
+            return;
+        }
+
+        // 2. Fetch the raw GLFW sub-pixel cursor position relative to the game window
+        double[] xPos = new double[1];
+        double[] yPos = new double[1];
+        long windowHandle = mc.getWindow().getWindow();
+        GLFW.glfwGetCursorPos(windowHandle, xPos, yPos);
+
+        // 3. Update the game state with the new screen
+        mc.setScreen(newScreen);
+
+        // 4. Force GLFW to restore the exact window-relative mouse position
+        GLFW.glfwSetCursorPos(windowHandle, xPos[0], yPos[0]);
     }
 }

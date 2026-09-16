@@ -20,6 +20,9 @@ public class MPSMenuTypes {
             MENU_TYPES.register(MPSConstants.INSTALL_SALVAGE_CONTAINER_TYPE,
                     () -> IMenuTypeExtension.create((windowId, inv, data) -> {
                         EquipmentSlot slot = data.readEnum(EquipmentSlot.class);
-                        return new InstallSalvageMenu(windowId, inv, slot);
+                        boolean preserveMouse = data.readBoolean();
+                        double mouseX = data.readDouble();
+                        double mouseY = data.readDouble();
+                        return new InstallSalvageMenu(windowId, inv, slot,preserveMouse, mouseX, mouseY);
                     }));
 }
