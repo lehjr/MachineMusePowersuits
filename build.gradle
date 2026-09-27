@@ -334,12 +334,15 @@ dependencies {
     localRuntime "blank:theoneprobe-1.21_neo-12.0.8" // try it?
 
     localRuntime "blank:journeymap-neoforge-1.21.1-6.0.0-beta.53"
+    localRuntime "blank:cloth-config-15.0.140-neoforge"
+    localRuntime "blank:BuildingWands-neoforge-MC1.21.1-3.0.5"
+
 
     localRuntime "blank:energizedpower-1.21.1-2.15.7-neoforge"
 
     localRuntime "blank:kotlinforforge-5.10.0-all"
 
-    localRuntime "blank:architectury-13.0.8-neoforge"
+    localRuntime "blank:architectury-13.0.11-neoforge"
 
     localRuntime "blank:observable-5.4.4"
 }

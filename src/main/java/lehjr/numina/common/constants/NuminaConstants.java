@@ -166,18 +166,6 @@ public class NuminaConstants {
     public static final String COMPONENT__SOLAR_PANEL__REGNAME = getComponentName("solar_panel");
     public static final String COMPONENT__SOLENOID__REGNAME = getComponentName("solenoid");
 
-
-
-
-
-
-
-
-
-
-
-
-
     static String getComponentName(String component) {
         return new StringBuilder("component_").append(component).toString();
     }
@@ -214,6 +202,11 @@ public class NuminaConstants {
     public static final ResourceLocation ENERGY_STORAGE_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energystorage");
     public static final ResourceLocation ENERGY_GENERATION_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energygeneration");
     public static final ResourceLocation FLUID_STORAGE_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "droplet");
+
+    public static final ResourceLocation EMPTY_SLOT_HELMET = ResourceLocation.withDefaultNamespace("item/empty_armor_slot_helmet");
+    public static final ResourceLocation EMPTY_SLOT_CHESTPLATE = ResourceLocation.withDefaultNamespace("item/empty_armor_slot_chestplate");
+    public static final ResourceLocation EMPTY_SLOT_LEGGINGS = ResourceLocation.withDefaultNamespace("item/empty_armor_slot_leggings");
+    public static final ResourceLocation EMPTY_SLOT_BOOTS = ResourceLocation.withDefaultNamespace("item/empty_armor_slot_boots");
 
     public static ResourceLocation getRegName(String regNameString) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, regNameString);

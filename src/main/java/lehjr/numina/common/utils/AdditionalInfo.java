@@ -7,6 +7,7 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.item.ComponentItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -23,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 public class AdditionalInfo {
-    public static void appendHoverText(ItemStack stack, List<Component> components, boolean doAdditionalInfo) {
+    public static void appendHoverText(ItemStack stack, List<Component> components) {
+        boolean doAdditionalInfo = Screen.hasShiftDown();
+
         List<Component> installed = new ArrayList<>();
         Map<Component, FluidInfo> fluids = new HashMap<>();
 
@@ -55,7 +58,7 @@ public class AdditionalInfo {
         }
 
         if(pm != null || stack.getItem() instanceof ComponentItem) {
-            addDesc(stack, components, doAdditionalInfo);
+            addDesc(stack, components);
             if(pm != null) {
                 powerModuleFluidInfo(stack, fluids);
             }
@@ -117,7 +120,9 @@ public class AdditionalInfo {
     }
 
 
-    public static void addDesc(ItemStack stack, List<Component> components, boolean doAdditionalInfo) {
+    public static void addDesc(ItemStack stack, List<Component> components) {
+        boolean doAdditionalInfo = Screen.hasShiftDown();
+
         if (doAdditionalInfo) {
             Component description = Component.translatable( stack.getItem().getDescriptionId() + ".desc");
             components.addAll(StringUtils.wrapComponentToLength(description, 30));

@@ -5,7 +5,6 @@ import lehjr.numina.common.container.slot.SlotBackgrounds;
 import lehjr.numina.common.item.Battery;
 import lehjr.numina.common.item.ComponentItem;
 import lehjr.numina.common.item.NuminaArmorStandItem;
-import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -106,13 +105,13 @@ public class NuminaItems {
 
     private static List<ResourceLocation> createItemUpgradeIconList() {
         return List.of(
-            IconUtils.EMPTY_SLOT_HELMET,
+            NuminaConstants.EMPTY_SLOT_HELMET,
             SlotBackgrounds.EMPTY_SLOT_SWORD,
-            IconUtils.EMPTY_SLOT_CHESTPLATE,
+            NuminaConstants.EMPTY_SLOT_CHESTPLATE,
             SlotBackgrounds.EMPTY_SLOT_PICKAXE,
-            IconUtils.EMPTY_SLOT_LEGGINGS,
+            NuminaConstants.EMPTY_SLOT_LEGGINGS,
             SlotBackgrounds.EMPTY_SLOT_AXE,
-            IconUtils.EMPTY_SLOT_BOOTS,
+            NuminaConstants.EMPTY_SLOT_BOOTS,
             SlotBackgrounds.EMPTY_SLOT_HOE,
             SlotBackgrounds.EMPTY_SLOT_SHOVEL);
     }

@@ -112,23 +112,12 @@ public class NuminaCapabilities {
         event.registerItem(Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 3), NuminaItems.BATTERY_3.get());
         event.registerItem(Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 4), NuminaItems.BATTERY_4.get());
 
-        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx)-> new ComponentItemHandler(stack, DataComponents.CONTAINER, 1), NuminaBlocks.CHARGING_BASE_BLOCK.get().asItem());
-
         // Blocks -----------------------------------------------------------------------------------------------------
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getItemHandler());
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getEnergyHandler());
+        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx)-> new ComponentItemHandler(stack, DataComponents.CONTAINER, 1), NuminaBlocks.CHARGING_BASE_BLOCK.get().asItem());
 
         // Entities ---------------------------------------------------------------------------------------------------
         event.registerEntity(NuminaCapabilities.PLAYER_KEYSTATES, EntityType.PLAYER, (player, context)-> player.getData(NuminaCodecs.KEYSTATE_HANDLER));
     }
-
-
-
-
-
-
-
-
-
-
 }

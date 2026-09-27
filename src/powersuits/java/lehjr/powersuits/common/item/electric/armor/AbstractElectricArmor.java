@@ -12,7 +12,6 @@ import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.registration.MPSArmorMaterial;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -271,7 +270,7 @@ public class AbstractElectricArmor extends ArmorItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
         super.appendHoverText(stack, context, components, flag);
-        AdditionalInfo.appendHoverText(stack, components, Screen.hasShiftDown());
+        AdditionalInfo.appendHoverText(stack, components);
     }
 
     @Override

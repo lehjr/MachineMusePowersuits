@@ -1,7 +1,6 @@
 package lehjr.numina.common.base;
 
 import lehjr.numina.client.config.NuminaClientConfig;
-import lehjr.numina.client.event.NuminaClientEventBusSubscriber;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaCommonConfig;
@@ -21,6 +20,7 @@ import lehjr.numina.common.registration.NuminaMenus;
 import lehjr.numina.common.registration.RecipeSerializersRegistry;
 import lehjr.numina.common.utils.HeatUtils;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -34,10 +34,13 @@ public class Numina {
     public Numina(IEventBus modEventBus, ModContainer modContainer) {
         NuminaBlocks.NUMINA_BLOCKS.register(modEventBus);
         NuminaBlockEntities.BLOCKENTITY_TYPES.register(modEventBus);
-        NuminaItems.NUMINA_ITEMS.register(modEventBus);
         NuminaEntities.ENTITY_TYPES.register(modEventBus);
-        NuminaMenus.MENU_TYPES.register(modEventBus);
+
+        NuminaItems.NUMINA_ITEMS.register(modEventBus);
         NuminaItems.NUMINA_CREATIVE_MODE_TAB.register(modEventBus);
+
+        NuminaMenus.MENU_TYPES.register(modEventBus);
+
         NuminaCodecs.DATA_COMPONENT_TYPES.register(modEventBus);
         NuminaCodecs.ATTACHMENT_TYPES.register(modEventBus);
         NuminaIngredientTypes.INGREDIENT_TYPES.register(modEventBus);
@@ -45,22 +48,13 @@ public class Numina {
         NeoForge.EVENT_BUS.register(HarvestEventHandler.class);
         NeoForge.EVENT_BUS.register(HeatUtils.class);
 
-//        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
-//        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
-//        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::onBlockBreak);
-
         modEventBus.addListener(this::addEntityAttributes);
         modEventBus.addListener(NuminaPackets::register);
 
-//        NeoForge.EVENT_BUS.addListener(PlayerUpdateHandler::onPlayerUpdate);
+        NeoForge.EVENT_BUS.addListener(PlayerUpdateHandler::onPlayerUpdate);
         NeoForge.EVENT_BUS.register(PlayerUpdateHandler.class);
         RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
-
         SoundDictionary.NUMINA_SOUND_EVENTS.register(modEventBus);
-
-        modEventBus.addListener(NuminaClientEventBusSubscriber::onRegisterReloadListenerEvent);
-        modEventBus.addListener(NuminaClientEventBusSubscriber::modelRegistry);
-
         modEventBus.addListener(NuminaCapabilities::registerCapabilities);
 
 //        // Register ourselves for server and other game events we are interested in.
@@ -72,6 +66,7 @@ public class Numina {
         modContainer.registerConfig(ModConfig.Type.COMMON, NuminaCommonConfig.COMMON_SPEC, ConfigHelper.setupConfigFile("numina-common.toml", NuminaConstants.MOD_ID).getAbsolutePath());
     }
 
+    @SubscribeEvent
     public void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(NuminaEntities.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStand.createAttributes().build());
     }

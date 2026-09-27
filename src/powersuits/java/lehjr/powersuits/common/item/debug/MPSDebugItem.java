@@ -44,7 +44,7 @@ public class MPSDebugItem extends Item {
 //            NuminaLogger.logDebug("itemhandler size: " + mci.getSlots());
             for (int i = 0; i < mci.getSlots(); i++) {
                 if(mci.getStackInSlot(i).isEmpty()) {
-                    mci.insertItem(i, new ItemStack(NuminaItems.BATTERY_4.get()), false);
+//                    mci.insertItem(i, new ItemStack(NuminaItems.BATTERY_4.get()), false);
                 } else {
 //                    NuminaLogger.logDebug("item already in slot: " + mci.getStackInSlot(i));
                 }

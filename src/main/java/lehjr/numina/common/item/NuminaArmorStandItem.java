@@ -3,7 +3,6 @@ package lehjr.numina.common.item;
 import lehjr.numina.common.entity.NuminaArmorStand;
 import lehjr.numina.common.registration.NuminaEntities;
 import lehjr.numina.common.utils.AdditionalInfo;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Rotations;
@@ -87,6 +86,6 @@ public class NuminaArmorStandItem extends ArmorStandItem {
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> toolTips, TooltipFlag flags) {
         super.appendHoverText(itemStack, context, toolTips, flags);
-        AdditionalInfo.addDesc(itemStack, toolTips, Screen.hasShiftDown());
+        AdditionalInfo.addDesc(itemStack, toolTips);
     }
 }

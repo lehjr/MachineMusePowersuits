@@ -8,7 +8,6 @@ import lehjr.numina.client.render.item.NuminaArmorLayer;
 import lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import lehjr.numina.client.screen.ArmorStandScreen;
 import lehjr.numina.client.screen.ChargingBaseScreen;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaEntities;
 import lehjr.numina.common.registration.NuminaItems;
@@ -57,11 +56,13 @@ public class NuminaClientEventBusSubscriber {
         event.register(NuminaMenus.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
     }
 
+    @SubscribeEvent
     public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
         NuminaIcons icon = IconUtils.getIcon();
         event.registerReloadListener(icon.getSpriteUploader());
     }
 
+    @SubscribeEvent
     public static void modelRegistry(ModelEvent.RegisterGeometryLoaders event) {
         event.register(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "obj"), NuminaObjLoader.INSTANCE);
     }
@@ -131,9 +132,6 @@ public class NuminaClientEventBusSubscriber {
             }
         }
     }
-
-
-
 
     @SubscribeEvent
     public static void onAddAdditional(ModelEvent.RegisterAdditional e) {

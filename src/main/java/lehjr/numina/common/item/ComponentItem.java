@@ -1,7 +1,6 @@
 package lehjr.numina.common.item;
 
 import lehjr.numina.common.utils.AdditionalInfo;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +16,6 @@ public class ComponentItem extends Item {
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> toolTips, TooltipFlag flags) {
         super.appendHoverText(itemStack, context, toolTips, flags);
-        AdditionalInfo.appendHoverText(itemStack, toolTips, Screen.hasShiftDown());
+        AdditionalInfo.appendHoverText(itemStack, toolTips);
     }
 }
