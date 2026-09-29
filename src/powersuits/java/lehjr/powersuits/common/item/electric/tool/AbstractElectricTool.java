@@ -3,7 +3,6 @@ package lehjr.powersuits.common.item.electric.tool;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.AdditionalInfo;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;

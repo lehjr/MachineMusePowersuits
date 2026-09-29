@@ -1,7 +1,6 @@
 package lehjr.powersuits.common.item.module;
 
 import lehjr.numina.common.utils.AdditionalInfo;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;

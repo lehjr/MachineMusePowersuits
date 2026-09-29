@@ -3,7 +3,6 @@ package lehjr.powersuits.common.item.debug;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.numina.common.registration.NuminaItems;
 import lehjr.powersuits.common.registration.MPSItems;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionHand;

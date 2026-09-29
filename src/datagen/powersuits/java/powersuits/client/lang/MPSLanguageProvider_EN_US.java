@@ -81,9 +81,18 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 //        addItemDescriptions(MPSItems.COAL_GENERATOR_MODULE.get(), "Generate power with solid fuels");
 
         // Solar Generator -----------------------------------------------------------------------------
-//        add(MPSItems.SOLAR_GENERATOR_MODULE.get(), "Solar Generator");
-//
-//        addItemDescriptions(MPSItems.SOLAR_GENERATOR_MODULE.get(), "Let the sun power your adventures.");
+        add(MPSItems.SOLAR_GENERATOR_MODULE_1.get(), "Solar Generator 1");
+        addItemDescriptions(MPSItems.SOLAR_GENERATOR_MODULE_1.get(), "Let the sun power your adventures.");
+
+        add(MPSItems.SOLAR_GENERATOR_MODULE_2.get(), "Solar Generator 2");
+        addItemDescriptions(MPSItems.SOLAR_GENERATOR_MODULE_2.get(), "Let the sun power your adventures.");
+
+        add(MPSItems.SOLAR_GENERATOR_MODULE_3.get(), "Solar Generator 4");
+        addItemDescriptions(MPSItems.SOLAR_GENERATOR_MODULE_3.get(), "Let the sun power your adventures.");
+
+        add(MPSItems.SOLAR_GENERATOR_MODULE_4.get(), "Solar Generator 4");
+        addItemDescriptions(MPSItems.SOLAR_GENERATOR_MODULE_4.get(), "Let the sun power your adventures.");
+
 
         // High Efficiency Solar Generator -------------------------------------------------------------
 //        add(MPSItems.ADVANCED_SOLAR_GENERATOR_MODULE.get(), "High Efficiency Solar Generator");

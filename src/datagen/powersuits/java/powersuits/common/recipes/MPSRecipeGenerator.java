@@ -588,8 +588,44 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         // Fluid Tanks ---------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.COOLANT_TANK_MODULE_1.get())
+            .pattern("IBI")
+            .pattern("SCS")
+            .pattern("RSR")
+            .define('B', Items.BUCKET)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .define('I', Tags.Items.INGOTS_COPPER)
+            .define('R', NuminaItems.RUBBER_HOSE.get())
+            .define('S', NuminaItems.SOLENOID.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(output);
 
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.COOLANT_TANK_MODULE_1.get()),
+                SizedIngredient.of(Tags.Items.INGOTS_GOLD, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.COOLANT_TANK_MODULE_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(output);
 
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.COOLANT_TANK_MODULE_2.get()),
+                SizedIngredient.of(Tags.Items.GEMS_DIAMOND, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.COOLANT_TANK_MODULE_3.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(output);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.COOLANT_TANK_MODULE_3.get()),
+                SizedIngredient.of(Tags.Items.INGOTS_NETHERITE, 4),
+                RecipeCategory.TOOLS,
+                MPSItems.COOLANT_TANK_MODULE_4.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(output);
 
         // Mining Enchantments ------------------------------------------------------------------------
         if(provider != null) {

@@ -5,7 +5,6 @@ import lehjr.numina.client.gui.ExtendedContainerScreen;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrameContainered;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;

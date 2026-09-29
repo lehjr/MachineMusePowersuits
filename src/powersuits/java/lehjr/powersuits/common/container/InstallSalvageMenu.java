@@ -2,8 +2,6 @@ package lehjr.powersuits.common.container;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.base.Numina;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.container.slot.CategoryIconSlotItemHandler;

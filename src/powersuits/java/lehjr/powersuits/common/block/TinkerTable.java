@@ -1,13 +1,9 @@
 package lehjr.powersuits.common.block;
 
 import com.mojang.serialization.MapCodec;
-import lehjr.numina.client.sound.Musique;
-import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.powersuits.client.gui.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -37,8 +33,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
