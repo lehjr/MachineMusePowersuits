@@ -172,17 +172,15 @@ public class NuminaItems {
 
                         // Modules ------------------------------------------------------------------------------------
                         // Energy Storage
+//                        output.accept(getBattery(BATTERY_1.get()));
+//                        output.accept(getBattery(BATTERY_2.get()));
+//                        output.accept(getBattery(BATTERY_3.get()));
+//                        output.accept(getBattery(BATTERY_4.get()));
+
                         output.accept(BATTERY_1.get());
-                        output.accept(getBattery(BATTERY_1.get()));
-
                         output.accept(BATTERY_2.get());
-                        output.accept(getBattery(BATTERY_2.get()));
-
                         output.accept(BATTERY_3.get());
-                        output.accept(getBattery(BATTERY_3.get()));
-
                         output.accept(BATTERY_4.get());
-                        output.accept(getBattery(BATTERY_4.get()));
 
                         // Armor Stand --------------------------------------------------------------------------------
                         output.accept(ARMOR_STAND_ITEM.get());
