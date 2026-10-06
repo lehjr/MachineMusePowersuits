@@ -31,17 +31,9 @@ public interface IPowerModule {
         return TagUtils.getModuleTag(getModule());
     }
 
-    /**
-     * Override for normal implementations. Ignore for adding items from other mods as modules
-     * @return
-     */
-    default boolean isAllowed() {
-        return true;
-    }
+    boolean isAllowed();
 
-    default boolean isModuleOnline() {
-        return true;
-    }
+    boolean isModuleOnline();
 
     default void addUnitLabel(String propertyName, String unit) {
         UnitMap.addUnitLabel(propertyName, unit);

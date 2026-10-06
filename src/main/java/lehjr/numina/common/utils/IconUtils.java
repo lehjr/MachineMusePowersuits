@@ -94,7 +94,7 @@ public enum IconUtils {
     }
 
     static BakedModel getModel(@Nonnull ItemStack itemStack) {
-        return getItemRenderer().getModel(itemStack, null, null, 0);
+        return getItemRenderer().getModel(itemStack, Minecraft.getInstance().level, Minecraft.getInstance().player, 0);
     }
 
     public static void drawModuleAt(GuiGraphics gfx, double x, double y, @Nonnull ItemStack itemStack, boolean active) {

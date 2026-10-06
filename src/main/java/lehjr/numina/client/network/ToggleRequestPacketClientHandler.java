@@ -14,7 +14,7 @@ public class ToggleRequestPacketClientHandler {
             }
 
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
+                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i), player.level());
                 if(iModularItem != null) {
                     iModularItem.toggleModule(registryName, toggleval);
                 }

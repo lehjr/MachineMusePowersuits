@@ -1,6 +1,8 @@
 package lehjr.powersuits.common.registration;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.energy.ModularItemEnergyWrapper;
+import lehjr.numina.common.capabilities.module.externalitems.OtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
@@ -16,6 +18,7 @@ import lehjr.powersuits.common.capabilities.tool.PowerFistHeatWrapper;
 import lehjr.powersuits.common.capabilities.tool.PowerFistModeChangingWrapper;
 import lehjr.powersuits.common.capabilities.tool.PowerFistRenderWrapper;
 import lehjr.powersuits.common.config.PowerFistConfig;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
@@ -61,6 +64,10 @@ import lehjr.powersuits.common.item.module.weapon.LightningModule;
 import lehjr.powersuits.common.item.module.weapon.MeleeAssistModule;
 import lehjr.powersuits.common.item.module.weapon.PlasmaCannonModule;
 import lehjr.powersuits.common.item.module.weapon.RailgunModule;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -295,6 +302,10 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.COMPASS);
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.RECOVERY_COMPASS);
 
+        Item ae2_compass = BuiltInRegistries.ITEM.get(MPSConstants.AE2_METEOR_COMPASS);
+        if(ae2_compass != Items.AIR){
+            event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), ae2_compass);
+        }
         // Cosmetic
 
         // Movement -------------------------------------------------------------------------------
@@ -341,9 +352,6 @@ public class MPSCapabilities {
         // portable crafting table
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PortableCraftingCapability.RightClickie(stack), Items.CRAFTING_TABLE);
 
-
-
-
         // Misc
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlintAndSteelModule.RightClickie(stack), MPSItems.FLINT_AND_STEEL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LeafBlowerModule.Ticker(stack), MPSItems.LEAF_BLOWER_MODULE.get());
@@ -360,5 +368,30 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new MeleeAssistModule.PMCap(stack), MPSItems.MELEE_ASSIST_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PlasmaCannonModule.RightClickie(stack), MPSItems.PLASMA_CANNON_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new RailgunModule.Ticker(stack), MPSItems.RAILGUN_MODULE.get());
+
+        // External Mod Items ---------------------------------------------------------------------
+        final ResourceLocation COPPER_WAND = ResourceLocation.fromNamespaceAndPath("wands", "copper_wand");
+        final ResourceLocation IRON_WAND = ResourceLocation.fromNamespaceAndPath("wands", "iron_wand");
+        final ResourceLocation DIAMOND_WAND = ResourceLocation.fromNamespaceAndPath("wands", "diamond_wand");
+        final ResourceLocation NETHERITE_WAND = ResourceLocation.fromNamespaceAndPath("wands", "netherite_wand");
+
+        Item copper_wand = BuiltInRegistries.ITEM.get(COPPER_WAND);
+        if(copper_wand != Items.AIR) {
+            event.registerItem(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 1, true), copper_wand);
+            Item iron_wand = BuiltInRegistries.ITEM.get(IRON_WAND);
+            if(iron_wand != Items.AIR) {
+                event.registerItem(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 2, true), iron_wand);
+
+                Item diamond_wand = BuiltInRegistries.ITEM.get(DIAMOND_WAND);
+                if(diamond_wand != Items.AIR) {
+                    event.registerItem(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 3, true), diamond_wand);
+
+                    Item netherite_wand = BuiltInRegistries.ITEM.get(NETHERITE_WAND);
+                    if(netherite_wand != Items.AIR) {
+                        event.registerItem(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 4, true), netherite_wand);
+                    }
+                }
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class PowerFistConfig {
     // Tier 1
     private static final ModConfigSpec.Builder POWER_FIST_1__SETTINGS_BUILDER = new ModConfigSpec.Builder().push("Power_Fist").push("Tier_1");
-    private static final ModConfigSpec.IntValue POWER_FIST_1__INVENTORY_SLOTS = POWER_FIST_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 5, 0, 10);
+    private static final ModConfigSpec.IntValue POWER_FIST_1__INVENTORY_SLOTS = POWER_FIST_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 7, 0, 10);
     private static final ModConfigSpec.DoubleValue POWER_FIST_1__MAX_HEAT = POWER_FIST_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
     // Tier 2

@@ -40,7 +40,7 @@ public class ModularItemTabToggleWidget extends Clickable {
         Player player = getMinecraft().player;
         assert player != null;
         ItemStack test = ItemUtils.getItemFromEntitySlot(player, type);
-        IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(test);
+        IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(test, player.level());
         icon = iModularItem != null? test : ItemStack.EMPTY;
     }
 

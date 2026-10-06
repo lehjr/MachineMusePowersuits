@@ -12,7 +12,7 @@ public class TweakRequestDoublePacketClientHander {
     public static void handlePacket(EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
             final Player player = Minecraft.getInstance().player;
             if (moduleRegName != null && tweakName != null) {
-                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, type));
+                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, type), player.level());
                 if(iModularItem != null) {
                     iModularItem.setModuleDouble(moduleRegName, tweakName, tweakValue);
                 }

@@ -2,7 +2,7 @@
     "required" : true,
     "minVersion" : "0.8.5",
     "package" : "lehjr.numina.mixin",
-    "refmap" : "mixins.tinyinv.refmap.json",
+    "refmap" : "mixins.numina.json",
     "compatibilityLevel" : "JAVA_21",
     "injectors" : {
         "defaultRequire" : 1
@@ -10,6 +10,7 @@
     "mixins" : [
         "common.item.MixinRangedWrapper",
         "common.item.MixinUseOnContext",
-        "common.recipe.SmithingMenuMixin"
+        "common.recipe.SmithingMenuMixin",
+        "common.item.ItemStackDamageToEnergyDrainMixin"
     ]
 }

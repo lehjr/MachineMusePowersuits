@@ -139,7 +139,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame<DrawableTile> {
     }
 
     public IModularItem getModularItemCapability () {
-        return NuminaCapabilities.getModularItemOrModeChangingCapability(getModularItemOrEmpty());
+        return NuminaCapabilities.getModularItemOrModeChangingCapability(getModularItemOrEmpty(), Minecraft.getInstance().level);
     }
 
     public boolean playerHasModularItems() {
@@ -147,7 +147,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame<DrawableTile> {
     }
 
     IModularItem getModularItemCapability (EquipmentSlot type) {
-        return NuminaCapabilities.getModularItemOrModeChangingCapability(getStack(type));
+        return NuminaCapabilities.getModularItemOrModeChangingCapability(getStack(type), Minecraft.getInstance().level);
     }
 
     /**

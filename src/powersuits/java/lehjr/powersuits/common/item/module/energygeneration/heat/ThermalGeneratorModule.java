@@ -1,5 +1,6 @@
 package lehjr.powersuits.common.item.module.energygeneration.heat;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
@@ -76,6 +77,7 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
             double maxHeat = HeatUtils.getPlayerHeat(player).maxHeat();
             double steamPowerPercent = 1;
             double coolingAmount = 0;
+            double coolingFactor = 1;
             double generationAmount = 0;
             if (level.getGameTime() % ticksPerAction == 0) {
                 int waterAmount = 0;
@@ -112,19 +114,44 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
 //                    NuminaLogger.logDebug("steamPowerPercent * waterConsumption: " + (steamPowerPercent * waterConsumption));
 
                     fluidHander.drain((int)(steamPowerPercent * waterConsumption), IFluidHandler.FluidAction.EXECUTE);
+
                 } else {
-                    if (player.isOnFire()) {
-                        generationAmount = ElectricItemUtils.givePlayerEnergy(player, (int) ( ticksPerAction * 4 * applyPropertyModifiers(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION)),
-                            true);
-                    } else if (currentHeat >= 200) {
-                        generationAmount = ElectricItemUtils.givePlayerEnergy(player, (int) (ticksPerAction* 2 * applyPropertyModifiers(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION)),
-                            true);
-                    } else if ((currentHeat / maxHeat) >= 0.5) {
-                        generationAmount = ElectricItemUtils.givePlayerEnergy(player, (int) (ticksPerAction * applyPropertyModifiers(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION)), true);
-                    }
+                    coolingFactor = currentHeat/maxHeat;
+                    efficiency = coolingFactor;
+                    generationAmount = ElectricItemUtils.givePlayerEnergy(player, (int) (ticksPerAction *  applyPropertyModifiers(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION)),
+                        true);
+
+//                    if (player.isOnFire()) {
+//                        generationAmount = ElectricItemUtils.givePlayerEnergy(player, (int) ( ticksPerAction * 4 * applyPropertyModifiers(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION)),
+//                            true);
+//                        NuminaLogger.logDebug("cooling on fire");
+//                        coolingFactor = 0.5;
+//                    } else if (currentHeat > maxHeat) {
+//                        generationAmount = ElectricItemUtils.givePlayerEnergy(player, (int) (ticksPerAction* 4 * applyPropertyModifiers(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION)),
+//                            true);
+//                    } else if(currentHeat > maxHeat * 0.75) {
+//
+//                    }
+//
+//
+//
+//
+//                        currentHeat >= 200) {
+//                        generationAmount = ElectricItemUtils.givePlayerEnergy(player, (int) (ticksPerAction* 2 * applyPropertyModifiers(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION)),
+//                            true);
+//
+//                        NuminaLogger.logDebug("cooling heat over 200");
+//                        coolingFactor = 0.6;
+//                    } else if ((currentHeat / maxHeat) >= 0.5) {
+//                        NuminaLogger.logDebug("cooling on fire");
+//
+//                        generationAmount = ElectricItemUtils.givePlayerEnergy(player,
+//                            (int) (ticksPerAction * applyPropertyModifiers(MPSConstants.THERMOELECTRIC_ENERGY_GENERATION)), true);
+//                        coolingFactor = 0.3;
+//                    }
                 }
 
-                coolingAmount = Math.min(generationAmount, currentHeat);
+                coolingAmount = Math.min(generationAmount, currentHeat) * coolingFactor;
                 generationAmount = generationAmount * efficiency;
 
 //                NuminaLogger.logDebug("generation: " + generationAmount);

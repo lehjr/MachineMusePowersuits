@@ -71,6 +71,11 @@ public interface IOtherModItemsAsModules extends IRightClickModule {
         return itemStack;
     }
 
+    default boolean hasHostStack(ItemStack stack) {
+        CompoundTag tag = TagUtils.getModuleTag(stack);
+        return tag.contains(MODE_CHANGING_MODULAR_ITEM);
+    }
+
     default void storeHostStack(HolderLookup.Provider provider, @Nonnull ItemStack hostStack) {
         ItemStack module = getModule();
         CompoundTag tag = TagUtils.getModuleTag(module);
@@ -103,7 +108,7 @@ public interface IOtherModItemsAsModules extends IRightClickModule {
             CompoundTag stackTag = tag.getCompound(MODE_CHANGING_MODULAR_ITEM);
             Optional<ItemStack> optionalStack = ItemStack.parse(provider, stackTag);
             if (optionalStack.isPresent()) {
-                return NuminaCapabilities.getModeChangingModularItem(optionalStack.get());
+                return optionalStack.get().getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
             }
         }
         return null;

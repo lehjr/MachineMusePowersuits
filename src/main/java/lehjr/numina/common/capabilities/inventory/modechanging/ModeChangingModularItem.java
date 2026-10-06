@@ -113,10 +113,6 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
                 module = getStackInSlot(i);
                 if (!module.isEmpty() && Objects.equals(ItemUtils.getRegistryName(module), regName)) {
                     return isModuleOnline(module);
-                } else {
-                    if(module.isEmpty()) {
-                        continue;
-                    }
                 }
             }
         }

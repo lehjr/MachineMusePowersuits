@@ -2,13 +2,14 @@ package lehjr.numina.common.capabilities.module.powermodule;
 
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class PowerModule implements IPowerModule {
-    final ItemStack module;
+    protected ItemStack module;
     final ModuleCategory category;
     final ModuleTarget target;
     final String categoryTitle; // TODO: replace with translation key?
@@ -54,6 +55,11 @@ public class PowerModule implements IPowerModule {
     @Override
     public boolean isAllowed() {
         return isAllowed;
+    }
+
+    @Override
+    public boolean isModuleOnline() {
+        return true;
     }
 
     @Override

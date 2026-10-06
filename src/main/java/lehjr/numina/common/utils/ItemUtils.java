@@ -3,6 +3,7 @@ package lehjr.numina.common.utils;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.registration.NuminaCapabilities;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -73,15 +74,16 @@ public class ItemUtils {
         ItemStack host;
         ItemStack newModule;
         ItemStack stackToSet = ItemStack.EMPTY;
+        HolderLookup.Provider provider = NuminaCapabilities.getProvider(level);
 
         @Nullable
         IOtherModItemsAsModules foreignModuleCap = itemStack.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
-        IModeChangingItem mcmi = NuminaCapabilities.getModeChangingModularItem(itemStack);
+        IModeChangingItem mcmi = NuminaCapabilities.getModeChangingModularItemOrStored(itemStack, provider);
         // held item is item from another mod
 
         if (foreignModuleCap != null) {
             host = foreignModuleCap.retrieveHostStack(NuminaCapabilities.getProvider(level));
-            mcmi = NuminaCapabilities.getModeChangingModularItem(host);
+            mcmi = NuminaCapabilities.getModeChangingModularItemOrStored(host, provider);
             if (mcmi != null) {
                 if (mcmi.returnForeignModuleToModularItem(itemStack)) {
                     mcmi.setActiveMode(mode);

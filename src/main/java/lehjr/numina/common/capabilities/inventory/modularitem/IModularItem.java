@@ -1,6 +1,7 @@
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
 import com.mojang.datafixers.util.Pair;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.registration.NuminaCapabilities;
@@ -171,6 +172,10 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
 
     @Nullable
     default IPowerModule getModuleCapability(ItemStack module) {
+        IOtherModItemsAsModules otherCap = module.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
+        if(otherCap != null) {
+            return otherCap;
+        }
         return module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
     }
 

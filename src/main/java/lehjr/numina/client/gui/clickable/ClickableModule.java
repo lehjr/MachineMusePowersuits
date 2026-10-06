@@ -2,6 +2,9 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.platform.Lighting;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.common.base.Numina;
+import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.math.Color;
@@ -47,9 +50,15 @@ public class ClickableModule extends Clickable {
         this.module = module;
         this.inventorySlot = inventorySlot;
         this.category = category;
-        IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
-        allowed = pm != null && pm.isAllowed();
-        tier = pm == null? -1 : pm.getTier();
+        IOtherModItemsAsModules otherCap = module.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
+        if(otherCap != null) {
+            allowed = otherCap.isAllowed();
+            tier = otherCap.getTier();
+        } else {
+            IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
+            allowed = pm != null && pm.isAllowed();
+            tier = pm == null? -1 : pm.getTier();
+        }
         this.regName = BuiltInRegistries.ITEM.getKey(module.getItem());
     }
 

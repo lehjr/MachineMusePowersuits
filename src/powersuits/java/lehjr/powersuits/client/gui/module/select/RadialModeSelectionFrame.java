@@ -43,7 +43,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {
         this.player = player;
         this.radius = Math.min(width(), height());
         this.zLevel = zLevel;
-        mcmi = NuminaCapabilities.getModeChangingModularItem(player.getMainHandItem());
+        mcmi = NuminaCapabilities.getModeChangingModularItemOrStored(player.getMainHandItem(), player.level());
         loadItems();
         circle = new SwirlyMuseCircle();
     }

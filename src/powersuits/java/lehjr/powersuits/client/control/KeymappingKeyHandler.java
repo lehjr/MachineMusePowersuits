@@ -2,6 +2,7 @@ package lehjr.powersuits.client.control;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
@@ -136,6 +137,9 @@ public class KeymappingKeyHandler {
         Inventory inventory = player.getInventory();
 
         IModeChangingItem mci = getModeChangingItem(player);
+        if (mci != null) {
+
+        }
 
 
 
@@ -273,7 +277,7 @@ public class KeymappingKeyHandler {
 //                }
             } else {
                 if (item == Items.CLOCK ||
-                        item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(ResourceLocation.parse("ae2:meteorite_compass"))) {
+                        item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(MPSConstants.AE2_METEOR_COMPASS)) {
                     registerKeybinding(ItemUtils.getRegistryName(item), false);
                 }
             }
@@ -303,7 +307,19 @@ public class KeymappingKeyHandler {
 
     @Nullable
     static IModeChangingItem getModeChangingItem(Player player) {
-        return NuminaCapabilities.getModeChangingModularItem(player.getMainHandItem());
-    }
+        ItemStack stack = player.getMainHandItem();
+        IModeChangingItem modeChangingItem = NuminaCapabilities.getModeChangingModularItem(stack);
+        if(modeChangingItem != null) {
+            return modeChangingItem;
+        }
 
+        IOtherModItemsAsModules foreignModuleCap = stack.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
+        if(foreignModuleCap != null) {
+            IModeChangingItem storedMCIC = foreignModuleCap.getStoredModeChangingModuleCapInStorage(NuminaCapabilities.getProvider(player.level()));
+            if(storedMCIC != null) {
+                return storedMCIC;
+            }
+        }
+        return null;
+    }
 }

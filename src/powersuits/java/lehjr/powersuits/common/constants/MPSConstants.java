@@ -415,7 +415,8 @@ public class MPSConstants {
 
     // TODO?
     //    public static final ResourceLocation AE2_METEOR_COMPASS = getRegName("meteorite_compass");
-//    public static final ResourceLocation RECOVERY_COMPASS = getRegName("recovery_compass");
+    public static final ResourceLocation AE2_METEOR_COMPASS = ResourceLocation.fromNamespaceAndPath("ae2", "meteorite_compass");
+
 
     // Tools --------------------------------------------------------------------------------------
     // Axe

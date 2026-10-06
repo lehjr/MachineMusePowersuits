@@ -6,6 +6,7 @@ import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
+import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
 import lehjr.numina.common.capabilities.render.color.IColorTag;
 import lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import lehjr.numina.common.config.NuminaCommonConfig;
@@ -42,7 +43,7 @@ public class NuminaCapabilities {
     }
 
     //    public static final ItemCapability<IHighlight, Void> HIGHLIGHT = ItemCapability.createVoid(create("highlight"), IHighlight.class);
-//    public static final ItemCapability<IChameleon, Void> CHAMELEON = ItemCapability.createVoid(create("chameleon"), IChameleon.class);
+    public static final ItemCapability<IChameleon, Void> CHAMELEON = ItemCapability.createVoid(create("chameleon"), IChameleon.class);
 
     public static final ItemCapability<IModelSpec, Void> RENDER = ItemCapability.createVoid(create("render"), IModelSpec.class);
 
@@ -66,6 +67,24 @@ public class NuminaCapabilities {
     }
 
     @Nullable
+    public static IModeChangingItem getModeChangingModularItemOrStored(ItemStack modularItem, Level level) {
+        return getModeChangingModularItemOrStored(modularItem, getProvider(level));
+    }
+
+    @Nullable
+    public static IModeChangingItem getModeChangingModularItemOrStored(ItemStack modularItem, HolderLookup.Provider provider) {
+        IModeChangingItem mcmi = getModeChangingModularItem(modularItem);
+        if(mcmi != null) {
+            return mcmi;
+        }
+        IOtherModItemsAsModules foreignModuleCap = modularItem.getCapability(Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
+        if(foreignModuleCap != null) {
+            return foreignModuleCap.getStoredModeChangingModuleCapInStorage(provider);
+        }
+        return null;
+    }
+
+    @Nullable
     public static IModularItem getModularItem(ItemStack modularItem) {
         return modularItem.getCapability(Inventory.MODULAR_ITEM);
     }
@@ -80,6 +99,15 @@ public class NuminaCapabilities {
 
     public static boolean modeChangingModularItemCapIsPresent(@Nonnull ItemStack modularItem) {
         return getModeChangingModularItem(modularItem) != null;
+    }
+
+    @Nullable
+    public static IModularItem getModularItemOrModeChangingCapability(ItemStack modularItem, Level level) {
+        IModularItem cap = getModeChangingModularItemOrStored(modularItem, level);
+        if (cap != null) {
+            return cap;
+        }
+        return modularItem.getCapability(Inventory.MODULAR_ITEM);
     }
 
     @Nullable

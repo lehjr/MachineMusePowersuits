@@ -63,17 +63,19 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
 
     @Override
     public boolean isModuleValid (IPowerModule pm) {
+        // follow tier requirements
         if(pm.isAllowed() && pm.getTier() <= getTier()) {
             // check module target against item stack type
             switch (pm.getTarget()) {
                 case ALLITEMS-> {
                     return true;
                 }
-                case HANDHELD -> {
-                    return isHandHeld();
-                }
                 case TOOLONLY-> {
                     return isTool();
+                }
+                // this was meant for a shield but never quite got there
+                case HANDHELD -> {
+                    return isHandHeld();
                 }
                 case ARMORONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem;
@@ -104,8 +106,8 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
 
     @Override
     public boolean isModuleValid(ItemStack module) {
-        // empty item is valid
-        if (module.isEmpty()) {
+        // filter out empty or damaged items
+        if (module.isEmpty() || module.isDamaged()) {
             return false;
         }
 
@@ -113,7 +115,6 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         if (cap == null) {
             return false;
         }
-
         return isModuleValid(cap);
     }
 
