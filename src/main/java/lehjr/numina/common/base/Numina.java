@@ -6,6 +6,7 @@ import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.entity.NuminaArmorStand;
+import lehjr.numina.common.event.EnergyItemDisabler;
 import lehjr.numina.common.event.HarvestEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.network.NuminaPackets;
@@ -53,6 +54,8 @@ public class Numina {
 
         NeoForge.EVENT_BUS.addListener(PlayerUpdateHandler::onPlayerUpdate);
         NeoForge.EVENT_BUS.register(PlayerUpdateHandler.class);
+        NeoForge.EVENT_BUS.register(EnergyItemDisabler.class);
+
         RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
         SoundDictionary.NUMINA_SOUND_EVENTS.register(modEventBus);
         modEventBus.addListener(NuminaCapabilities::registerCapabilities);
