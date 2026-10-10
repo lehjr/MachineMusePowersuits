@@ -2,13 +2,12 @@ package lehjr.numina.common.capabilities.module.powermodule;
 
 import net.minecraft.world.item.ItemStack;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class PowerModule implements IPowerModule {
+public abstract class PowerModule implements IPowerModule {
     protected ItemStack module;
     final ModuleCategory category;
     final ModuleTarget target;
@@ -58,15 +57,9 @@ public class PowerModule implements IPowerModule {
     }
 
     @Override
-    public boolean isModuleOnline() {
-        return true;
-    }
-
-    @Override
     public Map<String, List<IPropertyModifier>> getPropertyModifiers() {
         return propertyModifiers;
     }
-
 
     @Override
     public void addBaseProperty(String propertyName, double configValue) {

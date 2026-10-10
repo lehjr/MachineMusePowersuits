@@ -52,6 +52,11 @@ public class BladeLauncherModule extends AbstractPowerModule {
         }
 
         @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
+
+        @Override
         public boolean isAllowed() {
             return WeaponModuleConfig.bladeLauncherIsAllowed;
         }

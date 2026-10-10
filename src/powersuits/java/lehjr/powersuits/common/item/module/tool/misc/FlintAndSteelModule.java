@@ -43,6 +43,11 @@ public class FlintAndSteelModule extends AbstractPowerModule {
             return ToolModuleConfig.flintAndSteelModuleIsAllowed;
         }
 
+        @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
+
         /**
          * Called when this item is used when targeting a Block. Code pretty much same as vanilla
          */

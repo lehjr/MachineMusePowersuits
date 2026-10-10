@@ -17,5 +17,10 @@ public class PiglinPacificationModule extends AbstractPowerModule {
         public boolean isAllowed() {
             return EnvironmentalModuleConfig.piglinPacificationIsAllowed;
         }
+
+        @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
     }
 }

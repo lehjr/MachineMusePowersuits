@@ -4,6 +4,7 @@ import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModul
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
+import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.PickaxeModuleConfig;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 public class PickaxeModule extends AbstractPowerModule {
-    public static class BlockBreaker extends PowerModule implements IBlockBreakingModule {
+    public static class BlockBreaker extends PowerModule implements IBlockBreakingModule, IToggleableModule {
         int tier;
 
         public BlockBreaker(ItemStack module, int tier) {

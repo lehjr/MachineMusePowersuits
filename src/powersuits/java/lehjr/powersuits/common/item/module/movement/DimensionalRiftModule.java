@@ -43,6 +43,11 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         }
 
         @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
+
+        @Override
         public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
             if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions(worldIn, worldIn) && !playerIn.level().isClientSide()) {
                 Level level ;

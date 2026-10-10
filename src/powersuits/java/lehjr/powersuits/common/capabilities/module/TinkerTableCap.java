@@ -27,6 +27,11 @@ public class TinkerTableCap extends RightClickModule {
     }
 
     @Override
+    public boolean isModuleOnline() {
+        return true;
+    }
+
+    @Override
     public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
         if (level.isClientSide) {
             return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide);

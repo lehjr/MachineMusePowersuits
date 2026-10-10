@@ -4,6 +4,8 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import lehjr.numina.client.gui.geometry.DrawableRect;
+import lehjr.numina.common.base.Numina;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Color;
@@ -21,6 +23,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -63,14 +66,21 @@ public class MPSOverlay {
 
     public static void makeKBDisplayList() {
         kbDisplayList.clear();
-        KeymappingKeyHandler.getMPSKeyMappings().stream().filter(kb->!kb.isUnbound()).filter(kb->kb.showOnHud).forEach(kb->{
-            Optional<KBDisplay> kbDisplay = kbDisplayList.stream().filter(kbd->kbd.finalId.equals(kb.getKey())).findFirst();
-            if (kbDisplay.isPresent()) {
-                kbDisplay.map(kbd->kbd.boundKeybinds.add(kb));
-            } else {
-                kbDisplayList.add(new KBDisplay(kb, MPSClientConfig.hud_keybind_x, MPSClientConfig.hud_keybind_y + 16,  MPSClientConfig.hud_keybind_x + (float) 16));
+        for (MPSKeyMapping kb : KeymappingKeyHandler.getMPSKeyMappings()) {
+            if(!kb.isUnbound() && kb.showOnHud) {
+                boolean added = false;
+                for (KBDisplay kbd : kbDisplayList) {
+                    if(kbd.finalId.equals(kb.getKey())) {
+                        kbd.boundKeybinds.add(kb);
+                        added = true;
+                        break;
+                    }
+                }
+                if(!added) {
+                    kbDisplayList.add(new KBDisplay(kb, MPSClientConfig.hud_keybind_x, MPSClientConfig.hud_keybind_y + 16,  MPSClientConfig.hud_keybind_x + (float) 16));
+                }
             }
-        });
+        }
     }
 
     static boolean isModularItemEquipped(LocalPlayer player) {
@@ -109,13 +119,20 @@ public class MPSOverlay {
                 boolean installed = false;
                 boolean active = false;
                 // just using the icon
-                ItemStack module = new ItemStack(Objects.requireNonNull(BuiltInRegistries.ITEM.get(kb.registryName)));
-
+                Item module = BuiltInRegistries.ITEM.get(kb.registryName);
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     ItemStack stack = ItemUtils.getItemFromEntitySlot(getPlayer(), slot);
                     IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(stack);
                     if(iModularItem != null && iModularItem.isModuleInstalled(module)) {
                         installed = true;
+
+
+
+
+                        NuminaLogger.logDebug("isModuleOnline: " + iModularItem.isModuleOnline(kb.registryName));
+
+
+
                         if (iModularItem instanceof IModeChangingItem mci) {
                             if(mci.hasActiveModule(kb.registryName)) {
                                 active = true;

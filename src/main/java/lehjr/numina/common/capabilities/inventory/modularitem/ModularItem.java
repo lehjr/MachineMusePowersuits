@@ -10,12 +10,14 @@ import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import lehjr.numina.imixin.common.item.IMixinRangedWrapper;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ComponentItemHandler;
@@ -201,26 +203,6 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public int findInstalledModule(ItemStack module) {
-        return findInstalledModule(ItemUtils.getRegistryName(module));
-    }
-
-    @Override
-    public boolean isModuleInstalled(ResourceLocation regName) {
-        return findInstalledModule(regName) > -1;
-    }
-
-    @Override
-    public boolean isModuleInstalled(ItemStack module) {
-        return findInstalledModule(module) > -1;
-    }
-
-    @Override
-    public boolean isModuleInstalled(Item item) {
-        return isModuleInstalled(ItemUtils.getRegistryName(item));
-    }
-
-    @Override
     public boolean isModuleOnline(ResourceLocation moduleName) {
         int slot = findInstalledModule(moduleName);
         if (slot > -1) {
@@ -367,18 +349,42 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public int findInstalledModule(ResourceLocation registryName) {
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack testStack = getStackInSlot(i);
-            if (!testStack.isEmpty()) {
-                ResourceLocation registryNameOther = ItemUtils.getRegistryName(testStack);
-                if (registryNameOther.getNamespace().equals(registryName.getNamespace())
-                    && registryNameOther.getPath().equals(registryName.getPath())) {
+    public boolean isModuleInstalled(ResourceLocation regName) {
+        return findInstalledModule(regName) > -1;
+    }
+
+    @Override
+    public boolean isModuleInstalled(ItemStack module) {
+        return findInstalledModule(module.getItem()) > -1;
+    }
+
+    @Override
+    public boolean isModuleInstalled(Item item) {
+        return findInstalledModule(item) > -1;
+    }
+
+    @Override
+    public int findInstalledModule(Item item) {
+        if(item != Items.AIR) {
+            for (int i = 0; i < getSlots(); i++) {
+                if(getStackInSlot(i).is(item)) {
                     return i;
                 }
             }
+
         }
         return -1;
+    }
+
+    @Override
+    public int findInstalledModule(ItemStack module) {
+        return findInstalledModule(module.getItem());
+    }
+
+
+    @Override
+    public int findInstalledModule(ResourceLocation registryName) {
+        return findInstalledModule(BuiltInRegistries.ITEM.get(registryName));
     }
 
     @Override

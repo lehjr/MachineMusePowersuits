@@ -57,6 +57,11 @@ public class BlinkDriveModule extends AbstractPowerModule {
         }
 
         @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
+
+        @Override
         public int getEnergyUsage() {
             return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }

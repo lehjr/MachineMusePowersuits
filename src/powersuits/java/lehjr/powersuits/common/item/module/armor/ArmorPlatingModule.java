@@ -57,5 +57,10 @@ public class ArmorPlatingModule extends AbstractPowerModule {
                 default -> false;
             };
         }
+
+        @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
     }
 }

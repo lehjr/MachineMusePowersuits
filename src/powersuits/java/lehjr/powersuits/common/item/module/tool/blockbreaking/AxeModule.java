@@ -5,6 +5,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.imixin.common.item.IUseOnContextMixn;
@@ -36,7 +37,7 @@ import java.util.Optional;
 
 public class AxeModule extends AbstractPowerModule {
 
-    public static class BlockBreaker extends PowerModule implements IBlockBreakingModule, IRightClickModule {
+    public static class BlockBreaker extends ToggleableModule implements IBlockBreakingModule, IRightClickModule {
         int tier;
         public BlockBreaker(@Nonnull ItemStack module, int tier) {
             super(module, ModuleCategory.AXE, ModuleTarget.TOOLONLY);

@@ -28,6 +28,11 @@ public class Battery extends Item {
         }
 
         @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
+
+        @Override
         public int getTier() {
             return tier;
         }

@@ -4,6 +4,7 @@ import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModul
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.ToolModuleConfig;
@@ -38,7 +39,7 @@ public class ShearsModule extends AbstractPowerModule {
     static final ResourceLocation CABLE_INSULATOR = ResourceLocation.fromNamespaceAndPath("energizedpower","cable_insulator");
     //new ResourceLoITEMS.register(, () -> new CableInsulatorItem(new Item.Properties()));
     
-    public static class BlockBreaker extends RightClickModule implements IBlockBreakingModule {
+    public static class BlockBreaker extends RightClickModule implements IBlockBreakingModule, IToggleableModule {
         public BlockBreaker(ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.shearsModuleEnergyConsumptionBase, "FE");

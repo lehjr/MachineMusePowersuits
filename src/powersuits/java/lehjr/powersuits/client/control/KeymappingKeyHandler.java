@@ -130,7 +130,11 @@ public class KeymappingKeyHandler {
             return;
         }
 
-        getMPSKeyMappings().stream().filter(KeyMapping::isDown).forEach(MPSKeyMapping::toggleModules);
+        for(MPSKeyMapping keyMapping : getMPSKeyMappings()) {
+            if(keyMapping.isDown()) {
+                keyMapping.toggleModules();
+            }
+        }
 
         KeyMapping[] hotbarKeys = minecraft.options.keyHotbarSlots;
         updatePlayerValues(player);
@@ -138,39 +142,33 @@ public class KeymappingKeyHandler {
 
         IModeChangingItem mci = getModeChangingItem(player);
         if (mci != null) {
-
-        }
-
-
-
-
-
-
-        // Mode changinging GUI
-        if (hotbarKeys[inventory.selected].isDown() && minecraft.isWindowActive()) {
-            if(mci != null) {
+            // Mode changinging GUI
+            if (hotbarKeys[inventory.selected].isDown() && minecraft.isWindowActive()) {
                 if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
                     Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
                 }
             }
-        }
 
-        /* cycleToolBackward/cycleToolForward */
-        if (cycleToolBackward.isDown()) {
-            assert minecraft.gameMode != null;
-            minecraft.gameMode.tick();
-            if(mci != null) {
+            /* cycleToolBackward/cycleToolForward */
+            if (cycleToolBackward.isDown()) {
+                assert minecraft.gameMode != null;
+                minecraft.gameMode.tick();
                 mci.cycleMode(player, 1);
             }
-        }
 
-        if (cycleToolForward.isDown()) {
-            assert minecraft.gameMode != null;
-            minecraft.gameMode.tick();
-            if(mci != null) {
+            if (cycleToolForward.isDown()) {
+                assert minecraft.gameMode != null;
+                minecraft.gameMode.tick();
                 mci.cycleMode(player, -1);
             }
         }
+
+
+
+
+
+
+
 
         /**  TODO: server config option to disable these and enforce tinker table requirement */
         /*

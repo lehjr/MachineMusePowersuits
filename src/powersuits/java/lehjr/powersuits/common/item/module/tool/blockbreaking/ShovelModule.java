@@ -5,6 +5,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.ShovelModuleConfig;
@@ -27,7 +28,7 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 public class ShovelModule extends AbstractPowerModule {
-    public static class BlockBreaker extends PowerModule implements IBlockBreakingModule, IRightClickModule {
+    public static class BlockBreaker extends PowerModule implements IBlockBreakingModule, IRightClickModule, IToggleableModule {
         int tier;
 
         public BlockBreaker(ItemStack module, int tier) {

@@ -90,6 +90,8 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
         return 1;
     }
 
+    int findInstalledModule(Item item);
+
     int findInstalledModule(ItemStack module);
 
     int findInstalledModule(ResourceLocation registryName);

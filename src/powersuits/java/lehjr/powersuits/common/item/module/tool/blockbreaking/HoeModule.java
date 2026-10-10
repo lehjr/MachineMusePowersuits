@@ -5,6 +5,7 @@ import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModul
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.HoeModuleConfig;
@@ -34,7 +35,7 @@ import java.util.function.Predicate;
 
 public class HoeModule extends AbstractPowerModule {
     //    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.field_196658_i, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_185774_da, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_150346_d, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_196660_k, Blocks.field_150346_d.defaultBlockState()));
-    public static class RightClickie extends RightClickModule implements IBlockBreakingModule {
+    public static class RightClickie extends RightClickModule implements IBlockBreakingModule, IToggleableModule {
         int tier;
         public RightClickie(@Nonnull ItemStack module, int tier) {
             super(module, ModuleCategory.HOE, ModuleTarget.TOOLONLY);

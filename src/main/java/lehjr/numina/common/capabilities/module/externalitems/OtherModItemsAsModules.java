@@ -28,6 +28,11 @@ public class OtherModItemsAsModules extends RightClickModule implements IOtherMo
     }
 
     @Override
+    public boolean isModuleOnline() {
+        return true;
+    }
+
+    @Override
     public void setModuleStack(@Nonnull ItemStack stack) {
         super.module = stack;
     }

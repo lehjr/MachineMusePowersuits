@@ -61,6 +61,9 @@ public class MPSKeyMapping extends KeyMapping {
             return;
         }
 
+        // flip value before setting
+        toggleVal = !toggleVal;
+
         NuminaPackets.sendToServer(new ToggleRequestPacketServerBound(registryName, toggleVal));
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             IModularItem modularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
@@ -68,6 +71,8 @@ public class MPSKeyMapping extends KeyMapping {
                 modularItem.toggleModule(registryName, toggleVal);
             }
         }
-        toggleVal = !toggleVal;
+
+        // reload after changing to verify changes
+        initToggleVal();
     }
 }

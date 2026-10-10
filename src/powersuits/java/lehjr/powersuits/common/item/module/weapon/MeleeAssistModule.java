@@ -31,5 +31,10 @@ public class MeleeAssistModule extends AbstractPowerModule {
         public boolean isAllowed() {
             return WeaponModuleConfig.meleeAssistIsAllowed;
         }
+
+        @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
     }
 }

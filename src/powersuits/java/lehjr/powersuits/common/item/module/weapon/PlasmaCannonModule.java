@@ -73,6 +73,11 @@ public class PlasmaCannonModule extends AbstractPowerModule {
         }
 
         @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
+
+        @Override
         public int getEnergyUsage() {
             return (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_PER_TICK));
         }

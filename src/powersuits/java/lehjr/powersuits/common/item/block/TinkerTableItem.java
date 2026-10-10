@@ -58,6 +58,11 @@ public class TinkerTableItem extends BlockItem {
         }
 
         @Override
+        public boolean isModuleOnline() {
+            return true;
+        }
+
+        @Override
         public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
             if (!level.isClientSide()) {
                 SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new InstallSalvageMenu(id, inventory, EquipmentSlot.MAINHAND, false, -1, -1), Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE));
