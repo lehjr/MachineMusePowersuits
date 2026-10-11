@@ -2,9 +2,12 @@ package lehjr.powersuits.common.registration;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.energy.ModularItemEnergyWrapper;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.externalitems.OtherModItemsAsModules;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
 import lehjr.numina.common.capabilities.render.hud.HudModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
@@ -69,11 +72,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
+import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MPSCapabilities {
-
+    public static List<ItemLike> toggleableModules = new ArrayList<>();
     /**
      * Note that capabilities load before common config
      * @param event
@@ -82,49 +92,33 @@ public class MPSCapabilities {
         // Block Entity ===============================================================================================
         event.registerBlockEntity(NuminaCapabilities.ColorCap.COLOR_BLOCK, MPSBlocks.LUX_CAP_BLOCK_ENTITY_TYPE.get(), (o, direction)-> new ColorAttachmentStorage(o));
 
-
-        //         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getItemHandler());
-        //        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getEnergyHandler());
-
-
-
-        //        event.registerEntity(NuminaCapabilities.PLAYER_KEYSTATES, EntityType.PLAYER, (player, context)-> player.getData(NuminaCodecs.KEYSTATE_HANDLER));
-
-
-
-
-
-
-
-        // Todo?
-
         // Armor ======================================================================================================
-        event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 1),
+        registerItem(event, NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 1),
             MPSItems.POWER_ARMOR_HELMET_1.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
             MPSItems.POWER_ARMOR_BOOTS_1.get());
 
-        event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 2),
+        registerItem(event, NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 2),
             MPSItems.POWER_ARMOR_HELMET_2.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
             MPSItems.POWER_ARMOR_BOOTS_2.get());
 
-        event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 3),
+        registerItem(event, NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 3),
             MPSItems.POWER_ARMOR_HELMET_3.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
             MPSItems.POWER_ARMOR_BOOTS_3.get());
 
-        event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 4),
+        registerItem(event, NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 4),
             MPSItems.POWER_ARMOR_HELMET_4.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
             MPSItems.POWER_ARMOR_BOOTS_4.get());
 
         // Energy
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ModularItemEnergyWrapper(stack),
+        registerItem(event, Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ModularItemEnergyWrapper(stack),
             MPSItems.POWER_ARMOR_HELMET_1.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
@@ -146,44 +140,44 @@ public class MPSCapabilities {
             MPSItems.POWER_ARMOR_BOOTS_4.get());
 
         // Heat
-        event.registerItem(NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 1),
+        registerItem(event, NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 1),
             MPSItems.POWER_ARMOR_HELMET_1.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
             MPSItems.POWER_ARMOR_BOOTS_1.get());
 
-        event.registerItem(NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 2),
+        registerItem(event, NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 2),
             MPSItems.POWER_ARMOR_HELMET_2.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
             MPSItems.POWER_ARMOR_BOOTS_2.get());
 
-        event.registerItem(NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 3),
+        registerItem(event, NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 3),
             MPSItems.POWER_ARMOR_HELMET_3.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
             MPSItems.POWER_ARMOR_BOOTS_3.get());
 
-        event.registerItem(NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 4),
+        registerItem(event, NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 4),
             MPSItems.POWER_ARMOR_HELMET_4.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
             MPSItems.POWER_ARMOR_BOOTS_4.get());
 
         // Fluid
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) -> new PowerArmorFluidWrapper(stack),
+        registerItem(event, Capabilities.FluidHandler.ITEM, (stack, context) -> new PowerArmorFluidWrapper(stack),
             MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_4.get());
 
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 1), MPSItems.COOLANT_TANK_MODULE_1.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 2), MPSItems.COOLANT_TANK_MODULE_2.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 3), MPSItems.COOLANT_TANK_MODULE_3.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 4), MPSItems.COOLANT_TANK_MODULE_4.get());
+        registerItem(event, Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 1), MPSItems.COOLANT_TANK_MODULE_1.get());
+        registerItem(event, Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 2), MPSItems.COOLANT_TANK_MODULE_2.get());
+        registerItem(event, Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 3), MPSItems.COOLANT_TANK_MODULE_3.get());
+        registerItem(event, Capabilities.FluidHandler.ITEM, (stack, context) ->new CoolantTankModule.FluidHandlerItemStackMPS(stack, 4), MPSItems.COOLANT_TANK_MODULE_4.get());
 
         // Render
-        event.registerItem(NuminaCapabilities.RENDER, (stack, ctx) -> new PowerArmorRenderWrapper(stack),
+        registerItem(event, NuminaCapabilities.RENDER, (stack, ctx) -> new PowerArmorRenderWrapper(stack),
             MPSItems.POWER_ARMOR_HELMET_1.get(),
             MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
             MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
@@ -207,36 +201,34 @@ public class MPSCapabilities {
         // Power Fist =================================================================================================
         // Mode Changing
         if(PowerFistConfig.POWER_FIST_CONFIG_SPEC.isLoaded()) {
-            event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 1, PowerFistConfig.powerFistInventorySlots1), MPSItems.POWER_FIST_1.get());
-            event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 2, PowerFistConfig.powerFistInventorySlots2), MPSItems.POWER_FIST_2.get());
-            event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 3, PowerFistConfig.powerFistInventorySlots3), MPSItems.POWER_FIST_3.get());
-            event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 4, PowerFistConfig.powerFistInventorySlots4), MPSItems.POWER_FIST_4.get());
+            registerItem(event, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 1, PowerFistConfig.powerFistInventorySlots1), MPSItems.POWER_FIST_1.get());
+            registerItem(event, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 2, PowerFistConfig.powerFistInventorySlots2), MPSItems.POWER_FIST_2.get());
+            registerItem(event, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 3, PowerFistConfig.powerFistInventorySlots3), MPSItems.POWER_FIST_3.get());
+            registerItem(event, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 4, PowerFistConfig.powerFistInventorySlots4), MPSItems.POWER_FIST_4.get());
 
             // Energy
-            event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, context) -> new ModularItemEnergyWrapper(stack),
+            registerItem(event, Capabilities.EnergyStorage.ITEM, (stack, context) -> new ModularItemEnergyWrapper(stack),
                 MPSItems.POWER_FIST_1.get(),
                 MPSItems.POWER_FIST_2.get(),
                 MPSItems.POWER_FIST_3.get(),
                 MPSItems.POWER_FIST_4.get());
 
             // Heat
-            event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
+            registerItem(event, NuminaCapabilities.HEAT, (stack, context) ->
                 new PowerFistHeatWrapper(stack, 1), MPSItems.POWER_FIST_1.get());
 
-            event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
+            registerItem(event, NuminaCapabilities.HEAT, (stack, context) ->
                 new PowerFistHeatWrapper(stack, 2), MPSItems.POWER_FIST_2.get());
 
-            event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
+            registerItem(event, NuminaCapabilities.HEAT, (stack, context) ->
                 new PowerFistHeatWrapper(stack, 3), MPSItems.POWER_FIST_3.get());
 
-            event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
+            registerItem(event, NuminaCapabilities.HEAT, (stack, context) ->
                 new PowerFistHeatWrapper(stack, 4), MPSItems.POWER_FIST_4.get());
         }
 
-
-
         // Render
-        event.registerItem(NuminaCapabilities.RENDER, (stack, context) -> new PowerFistRenderWrapper(stack),
+        registerItem(event, NuminaCapabilities.RENDER, (stack, context) -> new PowerFistRenderWrapper(stack),
             MPSItems.POWER_FIST_1.get(),
             MPSItems.POWER_FIST_2.get(),
             MPSItems.POWER_FIST_3.get(),
@@ -244,13 +236,13 @@ public class MPSCapabilities {
 
         // Modules ====================================================================================================
         // Armor ------------------------------------------------------------------------------------------------------
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 1), MPSItems.IRON_PLATING_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 2), MPSItems.DIAMOND_PLATING_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 3), MPSItems.NETHERITE_PLATING_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new EnergyShieldModule.EnergyShieldCapabilityWrapper(stack), MPSItems.ENERGY_SHIELD_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 1), MPSItems.IRON_PLATING_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 2), MPSItems.DIAMOND_PLATING_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 3), MPSItems.NETHERITE_PLATING_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new EnergyShieldModule.EnergyShieldCapabilityWrapper(stack), MPSItems.ENERGY_SHIELD_MODULE.get());
 
         //Cosmetic ----------------------------------------------------------------------------------------------------
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TransparentArmorModule.TransParentArmorCap(stack), MPSItems.TRANSPARENT_ARMOR_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TransparentArmorModule.TransParentArmorCap(stack), MPSItems.TRANSPARENT_ARMOR_MODULE.get());
 
         // Debug ------------------------------------------------------------------------------------------------------
 
@@ -259,115 +251,115 @@ public class MPSCapabilities {
 
         // Thermal
         //FIXME!!!
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 1), MPSItems.THERMAL_GENERATOR_MODULE_1.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 2), MPSItems.THERMAL_GENERATOR_MODULE_2.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 3), MPSItems.THERMAL_GENERATOR_MODULE_3.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 4), MPSItems.THERMAL_GENERATOR_MODULE_4.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 1), MPSItems.THERMAL_GENERATOR_MODULE_1.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 2), MPSItems.THERMAL_GENERATOR_MODULE_2.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 3), MPSItems.THERMAL_GENERATOR_MODULE_3.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ThermalGeneratorModule.ThermalGeneratorTickingCapability(stack, 4), MPSItems.THERMAL_GENERATOR_MODULE_4.get());
 
         // Solar
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 1), MPSItems.SOLAR_GENERATOR_MODULE_1.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 2), MPSItems.SOLAR_GENERATOR_MODULE_2.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 3), MPSItems.SOLAR_GENERATOR_MODULE_3.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 4), MPSItems.SOLAR_GENERATOR_MODULE_4.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 1), MPSItems.SOLAR_GENERATOR_MODULE_1.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 2), MPSItems.SOLAR_GENERATOR_MODULE_2.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 3), MPSItems.SOLAR_GENERATOR_MODULE_3.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 4), MPSItems.SOLAR_GENERATOR_MODULE_4.get());
 
 
         // Environmental ----------------------------------------------------------------------------------------------
         // TODO: COOLING
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AutoFeederModule.Ticker(stack), MPSItems.AUTO_FEEDER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ActiveCamouflageModule.Ticker(stack), MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AutoFeederModule.Ticker(stack), MPSItems.AUTO_FEEDER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ActiveCamouflageModule.Ticker(stack), MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get());
 
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack, 1), MPSItems.COOLANT_TANK_MODULE_1.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack,  2), MPSItems.COOLANT_TANK_MODULE_2.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack, 3), MPSItems.COOLANT_TANK_MODULE_3.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack, 4), MPSItems.COOLANT_TANK_MODULE_4.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack, 1), MPSItems.COOLANT_TANK_MODULE_1.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack,  2), MPSItems.COOLANT_TANK_MODULE_2.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack, 3), MPSItems.COOLANT_TANK_MODULE_3.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolantTankModule.Ticker(stack, 4), MPSItems.COOLANT_TANK_MODULE_4.get());
 
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MagnetModule.Ticker(stack), MPSItems.MAGNET_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new PiglinPacificationModule.PiglinPacificationCap(stack), MPSItems.PIGLIN_PACIFICATION_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new WaterElectrolyzerModule.Ticker(stack), MPSItems.WATER_ELECTROLYZER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MagnetModule.Ticker(stack), MPSItems.MAGNET_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new PiglinPacificationModule.PiglinPacificationCap(stack), MPSItems.PIGLIN_PACIFICATION_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new WaterElectrolyzerModule.Ticker(stack), MPSItems.WATER_ELECTROLYZER_MODULE.get());
 
         // Mining Enchantment -----------------------------------------------------------------------------------------
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AquaAffinityModule.TickingEnchantment(stack), MPSItems.AQUA_AFFINITY_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new FortuneModule.TickingEnchantment(stack), MPSItems.FORTUNE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AquaAffinityModule.TickingEnchantment(stack), MPSItems.AQUA_AFFINITY_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new FortuneModule.TickingEnchantment(stack), MPSItems.FORTUNE_MODULE.get());
 
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SilkTouchModule.TickingEnchantment(stack), MPSItems.SILK_TOUCH_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SilkTouchModule.TickingEnchantment(stack), MPSItems.SILK_TOUCH_MODULE.get());
 
         // Mining Enhancement -----------------------------------------------------------------------------------------
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SelectiveMiner.Enhancement(stack), MPSItems.SELECTIVE_MINER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TunnelBoreModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.VEIN_MINER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SelectiveMiner.Enhancement(stack), MPSItems.SELECTIVE_MINER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TunnelBoreModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.VEIN_MINER_MODULE.get());
 
         // Special
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.CLOCK);
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.COMPASS);
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.RECOVERY_COMPASS);
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.CLOCK);
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.COMPASS);
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.RECOVERY_COMPASS);
 
         Item ae2_compass = BuiltInRegistries.ITEM.get(MPSConstants.AE2_METEOR_COMPASS);
         if(ae2_compass != Items.AIR){
-            event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), ae2_compass);
+            registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), ae2_compass);
         }
         // Cosmetic
 
         // Movement -------------------------------------------------------------------------------
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BlinkDriveModule.RightClickie(stack), MPSItems.BLINK_DRIVE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ClimbAssistModule.ClimbAssistCap(stack), MPSItems.CLIMB_ASSIST_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new DimensionalRiftModule.RightClickie(stack), MPSItems.DIMENSIONAL_RIFT_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlightControlModule.Toggler(stack), MPSItems.FLIGHT_CONTROL_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new GliderModule.Ticker(stack), MPSItems.GLIDER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetBootsModule.Ticker(stack), MPSItems.JET_BOOTS_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetPackModule.Ticker(stack), MPSItems.JETPACK_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JumpAssistModule.Ticker(stack), MPSItems.JUMP_ASSIST_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ParachuteModule.Ticker(stack), MPSItems.PARACHUTE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShockAbsorberModule.Toggler(stack), MPSItems.SHOCK_ABSORBER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SprintAssistModule.Ticker(stack), MPSItems.SPRINT_ASSIST_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SwimAssistModule.Ticker(stack), MPSItems.SWIM_ASSIST_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BlinkDriveModule.RightClickie(stack), MPSItems.BLINK_DRIVE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ClimbAssistModule.ClimbAssistCap(stack), MPSItems.CLIMB_ASSIST_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new DimensionalRiftModule.RightClickie(stack), MPSItems.DIMENSIONAL_RIFT_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlightControlModule.Toggler(stack), MPSItems.FLIGHT_CONTROL_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new GliderModule.Ticker(stack), MPSItems.GLIDER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetBootsModule.Ticker(stack), MPSItems.JET_BOOTS_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetPackModule.Ticker(stack), MPSItems.JETPACK_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JumpAssistModule.Ticker(stack), MPSItems.JUMP_ASSIST_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ParachuteModule.Ticker(stack), MPSItems.PARACHUTE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShockAbsorberModule.Toggler(stack), MPSItems.SHOCK_ABSORBER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SprintAssistModule.Ticker(stack), MPSItems.SPRINT_ASSIST_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SwimAssistModule.Ticker(stack), MPSItems.SWIM_ASSIST_MODULE.get());
 
         // Tools ----------------------------------------------------------------------------------
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new TinkerTableCap(stack), MPSItems.TINKER_TABLE_ITEM.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new TinkerTableCap(stack), MPSItems.TINKER_TABLE_ITEM.get());
 
         // Axe
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 1), MPSItems.STONE_AXE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 2), MPSItems.IRON_AXE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_AXE_MODULE.value());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_AXE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 1), MPSItems.STONE_AXE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 2), MPSItems.IRON_AXE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_AXE_MODULE.value());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_AXE_MODULE.get());
 
         // Pickaxe
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 1), MPSItems.STONE_PICKAXE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 2), MPSItems.IRON_PICKAXE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_PICKAXE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_PICKAXE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 1), MPSItems.STONE_PICKAXE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 2), MPSItems.IRON_PICKAXE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_PICKAXE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_PICKAXE_MODULE.get());
 
         // Rototiller
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 1), MPSItems.STONE_ROTOTILLER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 2), MPSItems.IRON_ROTOTILLER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 3), MPSItems.DIAMOND_ROTOTILLER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 4), MPSItems.NETHERITE_ROTOTILLER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 1), MPSItems.STONE_ROTOTILLER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 2), MPSItems.IRON_ROTOTILLER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 3), MPSItems.DIAMOND_ROTOTILLER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 4), MPSItems.NETHERITE_ROTOTILLER_MODULE.get());
 
         //Shovel
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 1), MPSItems.STONE_SHOVEL_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 2), MPSItems.IRON_SHOVEL_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_SHOVEL_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_SHOVEL_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 1), MPSItems.STONE_SHOVEL_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 2), MPSItems.IRON_SHOVEL_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_SHOVEL_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_SHOVEL_MODULE.get());
 
         // portable crafting table
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PortableCraftingCapability.RightClickie(stack), Items.CRAFTING_TABLE);
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PortableCraftingCapability.RightClickie(stack), Items.CRAFTING_TABLE);
 
         // Misc
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlintAndSteelModule.RightClickie(stack), MPSItems.FLINT_AND_STEEL_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LeafBlowerModule.Ticker(stack), MPSItems.LEAF_BLOWER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LuxCapacitorModule.RightClickie(stack), MPSItems.LUX_CAPACITOR_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShearsModule.BlockBreaker(stack), MPSItems.SHEARS_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlintAndSteelModule.RightClickie(stack), MPSItems.FLINT_AND_STEEL_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LeafBlowerModule.Ticker(stack), MPSItems.LEAF_BLOWER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LuxCapacitorModule.RightClickie(stack), MPSItems.LUX_CAPACITOR_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShearsModule.BlockBreaker(stack), MPSItems.SHEARS_MODULE.get());
 
         // Vision ---------------------------------------------------------------------------------
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BinocularsModule.BinocularCap(stack), MPSItems.BINOCULARS_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new NightVisionModule.Ticker(stack), MPSItems.NIGHTVISION_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BinocularsModule.BinocularCap(stack), MPSItems.BINOCULARS_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new NightVisionModule.Ticker(stack), MPSItems.NIGHTVISION_MODULE.get());
 
         // Weapons --------------------------------------------------------------------------------
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BladeLauncherModule.RightClickie(stack), MPSItems.BLADE_LAUNCHER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LightningModule.RightClickie(stack), MPSItems.LIGHTNING_SUMMONER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new MeleeAssistModule.PMCap(stack), MPSItems.MELEE_ASSIST_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PlasmaCannonModule.RightClickie(stack), MPSItems.PLASMA_CANNON_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new RailgunModule.Ticker(stack), MPSItems.RAILGUN_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BladeLauncherModule.RightClickie(stack), MPSItems.BLADE_LAUNCHER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LightningModule.RightClickie(stack), MPSItems.LIGHTNING_SUMMONER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new MeleeAssistModule.PMCap(stack), MPSItems.MELEE_ASSIST_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PlasmaCannonModule.RightClickie(stack), MPSItems.PLASMA_CANNON_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new RailgunModule.Ticker(stack), MPSItems.RAILGUN_MODULE.get());
 
         // External Mod Items ---------------------------------------------------------------------
         final ResourceLocation COPPER_WAND = ResourceLocation.fromNamespaceAndPath("wands", "copper_wand");
@@ -377,21 +369,42 @@ public class MPSCapabilities {
 
         Item copper_wand = BuiltInRegistries.ITEM.get(COPPER_WAND);
         if(copper_wand != Items.AIR) {
-            event.registerItem(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 1, true), copper_wand);
+            registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 1, true), copper_wand);
             Item iron_wand = BuiltInRegistries.ITEM.get(IRON_WAND);
             if(iron_wand != Items.AIR) {
-                event.registerItem(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 2, true), iron_wand);
+                registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 2, true), iron_wand);
 
                 Item diamond_wand = BuiltInRegistries.ITEM.get(DIAMOND_WAND);
                 if(diamond_wand != Items.AIR) {
-                    event.registerItem(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 3, true), diamond_wand);
+                    registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 3, true), diamond_wand);
 
                     Item netherite_wand = BuiltInRegistries.ITEM.get(NETHERITE_WAND);
                     if(netherite_wand != Items.AIR) {
-                        event.registerItem(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 4, true), netherite_wand);
+                        registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 4, true), netherite_wand);
                     }
                 }
             }
+        }
+
+        NuminaLogger.logDebug("finished with " + toggleableModules.size() + " modules");
+    }
+
+    static <T, C extends @Nullable Object> void registerItem(RegisterCapabilitiesEvent event, ItemCapability<T, C> capability, ICapabilityProvider<ItemStack, C, T> provider, ItemLike... items){
+        event.registerItem(capability, provider, items);
+
+        for (ItemLike item : items){
+            ItemStack stack = new ItemStack(item);
+            IPowerModule cap = stack.getCapability(NuminaCapabilities.Module.POWER_MODULE);
+            if(cap instanceof IToggleableModule) {
+                addToggleableModule(item);
+            }
+        }
+    }
+
+    public static void addToggleableModule(ItemLike item){
+        if(item != Items.AIR && !toggleableModules.contains(item)) {
+            NuminaLogger.logDebug("adding toggleable module: " + item);
+            toggleableModules.add(item);
         }
     }
 }

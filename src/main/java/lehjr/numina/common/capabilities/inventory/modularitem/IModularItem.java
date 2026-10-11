@@ -102,6 +102,8 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
 
     boolean isModuleInstalled(Item item);
 
+    boolean isModuleOnline(int slot);
+
     boolean isModuleOnline(ResourceLocation moduleName);
 
     /**

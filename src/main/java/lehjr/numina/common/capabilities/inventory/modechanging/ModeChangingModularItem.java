@@ -15,12 +15,14 @@ import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -100,23 +102,36 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     @Override
-    public boolean hasActiveModule(ResourceLocation regName) {
+    public boolean hasActiveModule(Item item) {
         final int activeModeIndex = getActiveMode();
 
-        ItemStack module = activeModeIndex != -1 ? getStackInSlot(activeModeIndex) : ItemStack.EMPTY;
-        if (Objects.equals(regName, ItemUtils.getRegistryName(module))) {
-            return isModuleOnline(module);
-        }
-
-        for (int i = 0; i < getSlots(); i++) {
-            if (i != activeModeIndex) {
-                module = getStackInSlot(i);
-                if (!module.isEmpty() && Objects.equals(ItemUtils.getRegistryName(module), regName)) {
-                    return isModuleOnline(module);
-                }
+        if(activeModeIndex >=0 && activeModeIndex < getSlots()) {
+            ItemStack module = getStackInSlot(activeModeIndex);
+            if(module.is(item)) {
+                return isModuleOnline(module);
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean hasActiveModule(int index, Item item) {
+        final int activeModeIndex = getActiveMode();
+
+        if(activeModeIndex >=0 && activeModeIndex < getSlots()  && index == activeModeIndex) {
+            ItemStack module = getStackInSlot(activeModeIndex);
+            if(module.is(item)) {
+                return isModuleOnline(module);
+            }
+        }
+        return false;
+    }
+
+
+
+    @Override
+    public boolean hasActiveModule(ResourceLocation regName) {
+        return hasActiveModule(BuiltInRegistries.ITEM.get(regName));
     }
 
     @Override
@@ -155,13 +170,21 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         return (selection > 0) ? (selection % modesSize) : ((selection + modesSize * -selection) % modesSize);
     }
 
-    @Override
-    public boolean isModuleActiveAndOnline(ResourceLocation moduleName) {
-        if (hasActiveModule(moduleName)) {
-            IPowerModule pm = getModuleCapability(getActiveModule());
-            return pm != null && pm.isModuleOnline();
+    public boolean isModuleActiveAndOnline(Item module) {
+        int activeModeIndex = getActiveMode();
+        if(activeModeIndex >= 0 && activeModeIndex < getSlots()) {
+            ItemStack activeModule = getStackInSlot(activeModeIndex);
+            if(!activeModule.isEmpty() && activeModule.is(module)) {
+                IPowerModule pm = getModuleCapability(getActiveModule());
+                return pm != null && pm.isModuleOnline();
+            }
         }
         return false;
+    }
+
+    @Override
+    public boolean isModuleActiveAndOnline(ResourceLocation moduleName) {
+        return isModuleActiveAndOnline(BuiltInRegistries.ITEM.get(moduleName));
     }
 
     @Override

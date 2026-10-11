@@ -57,7 +57,7 @@ public class TinkerKeymapGui extends ContainerlessGui {
         this.player = player;
         this./*xSize*/imageWidth = 352 /*340 */;
         this./*ySize*/imageHeight = 217;
-        KeymappingKeyHandler.loadKeyModuleBindings();
+        KeymappingKeyHandler.checkCapabitiesForMoreModules();
     }
 
     /**

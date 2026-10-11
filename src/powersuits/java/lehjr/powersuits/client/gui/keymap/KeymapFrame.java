@@ -155,7 +155,6 @@ public class KeymapFrame extends ScrollableFrame {
                 kb.showOnHud = this.checkbox.isChecked();
                 KeyMappingReaderWriter.INSTANCE.writeOutKeybindSetings();
                 MPSOverlay.makeKBDisplayList();
-//                RenderEventHandler.INSTANCE.makeKBDisplayList();
             });
 
             this.button = new VanillaButton(right() - 97, top() + 1, 95, kb.getKey().getDisplayName(), true);

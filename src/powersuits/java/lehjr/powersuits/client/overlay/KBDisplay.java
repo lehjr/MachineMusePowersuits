@@ -49,34 +49,41 @@ public class KBDisplay extends DrawableRect {
     }
 
     void refreshKBList() {
-        boundKeybinds.stream().filter(kb ->kb.showOnHud).forEach(kb ->{
-            boolean installed = false;
-            boolean active = false;
-            // just using the icon
-            Item module = BuiltInRegistries.ITEM.get(kb.registryName);
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                ItemStack stack = ItemUtils.getItemFromEntitySlot(getPlayer(), slot);
-                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(stack);
-                if(iModularItem != null && iModularItem.isModuleInstalled(module)) {
-                    installed = true;
-                    if (iModularItem instanceof IModeChangingItem mci) {
-                        if(mci.hasActiveModule(kb.registryName)) {
-                            active = true;
+        // clear the map first...
+        keybindsToRender.clear();
+
+        // ...then filter and repopulate it
+        for (MPSKeyMapping  kb : boundKeybinds) {
+            if(kb.showOnHud) {
+                boolean installed = false;
+                boolean active = false;
+                // just using the icon
+                Item module = BuiltInRegistries.ITEM.get(kb.registryName);
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
+                    ItemStack stack = ItemUtils.getItemFromEntitySlot(getPlayer(), slot);
+                    IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(stack);
+                    if(iModularItem != null) {
+                        int index = iModularItem.findInstalledModule(module);
+                        if (index != -1) {
+                            installed = true;
+                            if (iModularItem instanceof IModeChangingItem mci) {
+                                active = mci.hasActiveModule(index, module);
+                            } else if (slot.isArmor() && iModularItem.isModuleOnline(index)) {
+                                active = true;
+                            }
                         }
-                    } else if (slot.isArmor() && iModularItem.isModuleOnline(kb.registryName)) {
-                        active = true;
+                    }
+
+                    // stop at the first active instance
+                    if(active) {
+                        break;
                     }
                 }
-
-                // stop at the first active instance
-                if(active) {
-                    break;
+                if (installed) {
+                    keybindsToRender.put(kb, active);
                 }
             }
-            if (installed) {
-                keybindsToRender.put(kb, active);
-            }
-        });
+        }
     }
 
     LocalPlayer getPlayer() {

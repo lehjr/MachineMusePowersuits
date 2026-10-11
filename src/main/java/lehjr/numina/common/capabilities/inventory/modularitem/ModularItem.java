@@ -203,6 +203,14 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
+    public boolean isModuleOnline(int slot) {
+        if(slot >=0 && slot < getSlots()) {
+            return isModuleOnline(getStackInSlot(slot));
+        }
+        return false;
+    }
+
+    @Override
     public boolean isModuleOnline(ResourceLocation moduleName) {
         int slot = findInstalledModule(moduleName);
         if (slot > -1) {

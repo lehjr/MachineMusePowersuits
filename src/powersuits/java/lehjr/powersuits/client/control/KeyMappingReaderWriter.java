@@ -187,7 +187,6 @@ public enum KeyMappingReaderWriter {
             NuminaLogger.logException("Problem reading in keyconfig :(", e);
         }
         MPSOverlay.makeKBDisplayList();
-//        RenderEventHandler.INSTANCE.makeKBDisplayList();
     }
 
     public void readLegacyKeybinds() {

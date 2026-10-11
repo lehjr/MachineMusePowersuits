@@ -3,8 +3,6 @@ package lehjr.powersuits.client.control;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.serverbound.PlayerUpdatePacketServerBound;
@@ -13,10 +11,10 @@ import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.MathUtils;
 import lehjr.powersuits.client.gui.module.select.GuiModeSelector;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.registration.MPSCapabilities;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -196,89 +195,11 @@ public class KeymappingKeyHandler {
 
     // FIXME: move away from dynamic loading, just create a static list and be done with it.
 
-    public static void loadKeyModuleBindings() {
-        // Armor ----------------------------------------------------------------------------------
-        registerKeybinding(MPSConstants.ENERGY_SHIELD_MODULE, false);
+    public static void checkCapabitiesForMoreModules() {
+        NuminaLogger.logDebug("Loading KeyModuleBindings for : " + MPSCapabilities.toggleableModules.size() + " modules");
 
-        // Cosmetic -------------------------------------------------------------------------------
-        registerKeybinding(MPSConstants.TRANSPARENT_ARMOR_MODULE, false);
-
-        // Energy Generation ----------------------------------------------------------------------
-        // TODO/FIXME
-
-        // Environmental --------------------------------------------------------------------------
-        // FIXME/TODO cooling modules
-
-        registerKeybinding(MPSConstants.AUTO_FEEDER_MODULE, false);
-        registerKeybinding(MPSConstants.MOB_REPULSOR_MODULE, false);
-        registerKeybinding(MPSConstants.WATER_ELECTROLYZER_MODULE, false);
-
-        // Mining Enchantment ---------------------------------------------------------------------
-        registerKeybinding(MPSConstants.AQUA_AFFINITY_MODULE, false);
-        registerKeybinding(MPSConstants.FORTUNE_MODULE, false);
-        registerKeybinding(MPSConstants.SILK_TOUCH_MODULE, false);
-
-        // Mining Enhancement ---------------------------------------------------------------------
-        registerKeybinding(MPSConstants.SELECTIVE_MINER_MODULE, false);
-        registerKeybinding(MPSConstants.TUNNEL_BORE_MODULE, false);
-        registerKeybinding(MPSConstants.VEIN_MINER_MODULE, false);
-
-        // Movement -------------------------------------------------------------------------------
-        registerKeybinding(MPSConstants.CLIMB_ASSIST_MODULE, false);
-        registerKeybinding(MPSConstants.FLIGHT_CONTROL_MODULE, false);
-        registerKeybinding(MPSConstants.GLIDER_MODULE, false);
-        registerKeybinding(MPSConstants.JETBOOTS_MODULE, false);
-        registerKeybinding(MPSConstants.JETPACK_MODULE, false);
-        registerKeybinding(MPSConstants.PARACHUTE_MODULE, false);
-        registerKeybinding(MPSConstants.SHOCK_ABSORBER_MODULE, false);
-        registerKeybinding(MPSConstants.SPRINT_ASSIST_MODULE, false);
-        registerKeybinding(MPSConstants.SWIM_BOOST_MODULE, false);
-
-        // TODO!!! FINISH!!!
-
-
-
-
-
-        for (Item item : BuiltInRegistries.ITEM.stream().toList()) {
-            ItemStack module = new ItemStack(item);
-            IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
-//            if(pm != null) {
-//                NuminaLogger.logDebug("power module cap found for : " + module + ", pm class: " + pm.getClass());
-//                NuminaLogger.logDebug("is instanceof IToggleableModule: " + (pm instanceof IToggleableModule));
-//
-//            } else {
-//                NuminaLogger.logDebug("not a valid module: " + module +", pm: " + pm);
-//            }
-
-            if(pm instanceof IToggleableModule) {
-//                // Tool settings are a bit odd
-//                if (pm.getTarget() == ModuleTarget.TOOLONLY) {
-//                    NuminaLogger.logDebug("moduleName " + ItemUtils.getRegistryName(item));
-//
-//                    // Mining Enhancement
-//                    if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
-//                        NuminaLogger.logDebug("registering kb for mining enhancement: " + ItemUtils.getRegistryName(item));
-//                        registerKeybinding(ItemUtils.getRegistryName(item), false);
-//                    } else if(pm.getCategory() == ModuleCategory.MINING_ENCHANTMENT) {
-//                        NuminaLogger.logDebug("registering kb for mining enchantment: " + ItemUtils.getRegistryName(item));
-//                        registerKeybinding(ItemUtils.getRegistryName(item), false);
-//                    } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
-//                        registerKeybinding(ItemUtils.getRegistryName(item), false);
-//                        NuminaLogger.logDebug("registering kb for some other module: " + ItemUtils.getRegistryName(item));
-//                    } else {
-//                        NuminaLogger.logDebug("NOT registering kb for module: " + ItemUtils.getRegistryName(item));
-//                    }
-//                } else {
-//                NuminaLogger.logDebug("registering kb for armor module: " + ItemUtils.getRegistryName(item));
-                registerKeybinding(ItemUtils.getRegistryName(item), false);
-//                }
-            } else {
-                if (item == Items.CLOCK ||
-                        item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(MPSConstants.AE2_METEOR_COMPASS)) {
-                    registerKeybinding(ItemUtils.getRegistryName(item), false);
-                }
-            }
+        for (ItemLike item : MPSCapabilities.toggleableModules) {
+            registerKeybinding(item);
         }
     }
 
@@ -287,6 +208,12 @@ public class KeymappingKeyHandler {
     }
 
     public static Map<String, MPSKeyMapping> keyMappings = new HashMap<>();
+
+    public static void registerKeybinding(ItemLike itemLike) {
+        if(itemLike instanceof Item item && item != Items.AIR) {
+            registerKeybinding(ItemUtils.getRegistryName(item), false);
+        }
+    }
 
     public static void registerKeybinding(ResourceLocation registryName, boolean showOnHud) {
         NuminaLogger.logDebug("trying to register kb for : " + registryName);

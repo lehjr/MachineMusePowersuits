@@ -17,6 +17,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -108,6 +109,10 @@ public interface IModeChangingItem extends IModularItem {
     ItemStack getActiveModule();
 
     void setActiveMode(int newMode);
+
+    boolean hasActiveModule(Item item);
+
+    boolean hasActiveModule(int index, Item item);
 
     boolean hasActiveModule(ResourceLocation regName);
 

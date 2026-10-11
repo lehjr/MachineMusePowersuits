@@ -75,16 +75,14 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void registerKeyBinding(RegisterKeyMappingsEvent event) {
-        //        NuminaLogger.logDebug("keymappingevent loaded");s
-        KeyMappingReaderWriter.INSTANCE.readInKeybinds(); // read existing keybindings
-
-
-        KeymappingKeyHandler.loadKeyModuleBindings(); // check for possible additional
-        KeymappingKeyHandler.keyMappings.values().forEach(event::register); // register keybinds
+        // Register the keybindings we already know about
         Arrays.stream(KeymappingKeyHandler.keybindArray).forEach(event::register);
 
+        // read existing keybindings
+        KeyMappingReaderWriter.INSTANCE.readInKeybinds();
 
-        MPSOverlay.makeKBDisplayList();
+        // this only works if the keybinds are already loaded
+        KeymappingKeyHandler.keyMappings.values().forEach(event::register); // register keybinds
     }
 
 

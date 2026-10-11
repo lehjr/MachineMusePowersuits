@@ -40,6 +40,10 @@ public class MPSOverlay {
     public static final LayeredDraw.Layer MPS_KEYBIND_OVERLAY = ((gfx, deltaTracker) -> {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
+        if(player == null)  {
+            return;
+        }
+
         Window screen = mc.getWindow();
         float guiScale = (float) screen.getGuiScale();
         float scaledWidth = screen.getWidth()/guiScale;
@@ -47,8 +51,8 @@ public class MPSOverlay {
         MPSMeterOverlay.render(player, gfx, deltaTracker, scaledWidth, scaledHeight);
 
         AtomicDouble top = new AtomicDouble(MPSClientConfig.hud_keybind_y);
-        if (MPSClientConfig.hud_display_keybindings_hud && isModularItemEquipped(player)) {
-            kbDisplayList.forEach(kbDisplay -> {
+        if (MPSClientConfig.hud_display_keybindings_hud) {// && isModularItemEquipped(player)) {
+            for(KBDisplay kbDisplay : kbDisplayList) {
                 kbDisplay.refreshKBList();
 
                 if (!kbDisplay.keybindsToRender.isEmpty()) {
@@ -58,12 +62,16 @@ public class MPSOverlay {
                     kbDisplay.render(gfx, 0, 0, 0);
                     top.getAndAdd(16);
                 }
-            });
+            }
         }
+
         top.getAndAdd(4);
         MPSHUD.render(player, gfx, (float)top.get(), (float)MPSClientConfig.hud_keybind_x);
     });
 
+    /**
+     * This is now only called when the list needs to be initialized or changes.
+     */
     public static void makeKBDisplayList() {
         kbDisplayList.clear();
         for (MPSKeyMapping kb : KeymappingKeyHandler.getMPSKeyMappings()) {
@@ -81,15 +89,5 @@ public class MPSOverlay {
                 }
             }
         }
-    }
-
-    static boolean isModularItemEquipped(LocalPlayer player) {
-        for(EquipmentSlot slot: EquipmentSlot.values()) {
-            ItemStack stack = ItemUtils.getItemFromEntitySlot(player, slot);
-            if(NuminaCapabilities.getModularItemOrModeChangingCapability(stack) != null) {
-                return true;
-            }
-        }
-        return false;
     }
 }
