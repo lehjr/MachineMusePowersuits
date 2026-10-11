@@ -371,7 +371,6 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
                     return i;
                 }
             }
-
         }
         return -1;
     }

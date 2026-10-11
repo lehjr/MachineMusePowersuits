@@ -1,6 +1,7 @@
 package lehjr.powersuits.common.item.electric.armor;
 
 import com.mojang.datafixers.util.Pair;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -232,10 +233,26 @@ public class AbstractElectricArmor extends ArmorItem {
         return builder.build();
     }
 
+    @Override
+    public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
+        IModularItem iModularItem =  stack.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
+        if(iModularItem != null) {
+            return iModularItem.isModuleOnline(MPSConstants.GLIDER_MODULE);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
+        NuminaLogger.logDebug("ElytraFlightTicks: " + flightTicks);
+
+        return super.elytraFlightTick(stack, entity, flightTicks);
+    }
+
     /*
-            returning a value higher than 0 is applied damage to the armor, even if the armor is not setup to take damage.
-            TODO: does this even work???? Is this even needed?
-        */
+                    returning a value higher than 0 is applied damage to the armor, even if the armor is not setup to take damage.
+                    TODO: does this even work???? Is this even needed?
+                */
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
         // FIXME: this should probably factor in the damage value

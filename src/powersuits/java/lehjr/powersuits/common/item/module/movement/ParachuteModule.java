@@ -1,10 +1,13 @@
 package lehjr.powersuits.common.item.module.movement;
 
 import lehjr.numina.client.control.PlayerMovementInputWrapper;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.PlayerUtils;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,9 +23,14 @@ public class ParachuteModule extends AbstractPowerModule {
         }
 
         @Override
-        public boolean onPlayerTickActive (Player player, Level level, ItemStack itemStack, int moduleIndex){
+        public boolean onPlayerTickActive (Player player, Level level, ItemStack chestPlate, int moduleIndex){
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-            boolean hasGlider = false; // fixme!!!
+            boolean hasGlider = false;
+            IModularItem iModularItem = chestPlate.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
+            if(iModularItem != null) {
+                hasGlider = iModularItem.isModuleOnline(MPSConstants.GLIDER_MODULE);
+            }
+
             PlayerUtils.resetFloatKickTicks(player);
             if (player.isCrouching() && player.getDeltaMovement().y < -0.1 && (!hasGlider || !playerInput.forwardKey)) {
                 double totalVelocity = Math.sqrt(player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z + player.getDeltaMovement().y * player.getDeltaMovement().y);

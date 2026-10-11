@@ -37,7 +37,22 @@ public class GliderModule extends AbstractPowerModule {
                     hasParachute = iModularItem.isModuleOnline(MPSConstants.PARACHUTE_MODULE);
                 }
 
-                if (player.isCrouching() && player.getDeltaMovement().y < 0 && (!hasParachute || playerInput.forwardKey)) {
+                if(player.onGround()) {
+                    player.stopFallFlying();
+                }
+
+
+                if (!hasParachute && playerInput.jumpKey && playerInput.forwardKey && player.getDeltaMovement().y < 0 ) {
+                    if(!player.isFallFlying()) {
+                        player.tryToStartFallFlying();
+                    }
+
+
+////                    // fixme: method triggered when player is jumping but this code does not trigger it
+////                    player.isCrouching() && player.getDeltaMovement().y < 0 && (!hasParachute || playerInput.forwardKey)) {
+
+                /*
+                // FIXME: move to movement manager?
                     Vec3 motion = player.getDeltaMovement();
                     if (motion.y < -0.1) {
                         double motionYchange = Math.min(0.08, -0.1 - motion.y);
@@ -52,6 +67,9 @@ public class GliderModule extends AbstractPowerModule {
                         float flySpeed = player.getAbilities().getFlyingSpeed() + 0.03f;
                         player.getAbilities().setFlyingSpeed(flySpeed);
                     }
+
+                 */
+//                } else {
                 }
                 return false;
             }
@@ -61,6 +79,4 @@ public class GliderModule extends AbstractPowerModule {
                 return MovementModuleConfig.gliderModuleIsAllowed;
             }
         }
-
-
 }
