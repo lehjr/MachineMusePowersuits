@@ -176,7 +176,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             ItemStack activeModule = getStackInSlot(activeModeIndex);
             if(!activeModule.isEmpty() && activeModule.is(module)) {
                 IPowerModule pm = getModuleCapability(getActiveModule());
-                return pm != null && pm.isModuleOnline();
+                return pm != null && pm.isModuleOnline() && pm.isAllowed();
             }
         }
         return false;
@@ -201,7 +201,9 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, InteractionResultHolder<ItemStack> fallback) {
         IPowerModule pm = getModuleCapability(getActiveModule());
         ItemStack fist = player.getItemInHand(hand);
-        if(pm instanceof IRightClickModule clickie) {
+        if(pm instanceof IRightClickModule clickie &&
+            pm.isAllowed() &&
+            pm.isModuleOnline()) {
             return clickie.use(fist, level, player, hand);
         }
         return fallback;
@@ -210,7 +212,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context, InteractionResult fallback) {
         IPowerModule pm = getModuleCapability(getActiveModule());
-        if(pm instanceof IRightClickModule clickie) {
+        if(pm instanceof IRightClickModule clickie && pm.isAllowed() && pm.isModuleOnline()) {
             return clickie.onItemUseFirst(itemStack, context);
         }
         return fallback;
@@ -219,7 +221,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public InteractionResult useOn(UseOnContext context, InteractionResult fallback) {
         IPowerModule pm = getModuleCapability(getActiveModule());
-        if(pm instanceof IRightClickModule clickie) {
+        if(pm instanceof IRightClickModule clickie && pm.isAllowed() && pm.isModuleOnline()) {
             return clickie.useOn(context);
         } else {
 //            NuminaLogger.logDebug("not right click item? ");
@@ -265,7 +267,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, BlockHitResult hitResult, Player player, Level level) {
         IPowerModule pm = getModuleCapability(getActiveModule());
-        if(pm instanceof IMiningEnhancementModule me) {
+        if(pm instanceof IMiningEnhancementModule me && me.isAllowed() && me.isModuleOnline()) {
             return me.onBlockStartBreak(itemstack, hitResult,player, level);
         }
         return false;
@@ -276,7 +278,10 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         double playerEnergy = ElectricItemUtils.getPlayerEnergy(entityLiving);
         for(int i = 0;i < getSlots(); i++) {
             IPowerModule pm = getModuleCapability(getStackInSlot(i));
-            if (pm instanceof IBlockBreakingModule bb && bb.mineBlock(powerFist, worldIn, state, pos, entityLiving, playerEnergy)) {
+            if (pm instanceof IBlockBreakingModule bb &&
+                bb.isAllowed() &&
+                bb.isModuleOnline() &&
+                bb.mineBlock(powerFist, worldIn, state, pos, entityLiving, playerEnergy)) {
                 return true;
             }
         }
@@ -288,7 +293,9 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         float highest = 1.0F;
         for(int i = 0;i < getSlots(); i++) {
             IPowerModule pm = getModuleCapability(getStackInSlot(i));
-            if (pm instanceof IBlockBreakingModule bb) {
+            if (pm instanceof IBlockBreakingModule bb &&
+                bb.isAllowed() &&
+                bb.isModuleOnline()) {
                 float speed = bb.getEmulatedTool().getDestroySpeed(state);
                 if(speed > highest) {
                     highest = speed;

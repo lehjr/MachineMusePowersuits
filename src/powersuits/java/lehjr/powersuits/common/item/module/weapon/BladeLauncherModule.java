@@ -41,7 +41,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
         @Override
         public void releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
             if (!levelIn.isClientSide) {
-                int energyConsumption = getEnergyUsage();
+                double energyConsumption = getEnergyUsage();
 
                 if (ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption) {
                     ElectricItemUtils.drainPlayerEnergy(entityLiving, energyConsumption, false);
@@ -62,8 +62,8 @@ public class BladeLauncherModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
         @Override

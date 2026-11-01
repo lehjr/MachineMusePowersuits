@@ -48,7 +48,7 @@ public class LeafBlowerModule extends AbstractPowerModule {
 
         @Override
         public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn, int moduleIndex) {
-            int energyUsage = getEnergyUsage();
+            double energyUsage = getEnergyUsage();
             if(getPlayerEnergy(player) < energyUsage) {
                 toggleModule(false);
                 player.stopUsingItem();
@@ -153,8 +153,8 @@ public class LeafBlowerModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
     }
 

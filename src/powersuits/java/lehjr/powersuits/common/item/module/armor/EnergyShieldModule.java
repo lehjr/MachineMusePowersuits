@@ -53,8 +53,8 @@ public class EnergyShieldModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
     }
 }

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.client.gui.geometry.DrawableRect;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.IconUtils;
@@ -67,7 +68,23 @@ public class KBDisplay extends DrawableRect {
                         if (index != -1) {
                             installed = true;
                             if (iModularItem instanceof IModeChangingItem mci) {
-                                active = mci.hasActiveModule(index, module);
+                                if(index >= 0 && index < mci.getSlots()) {
+                                    // check if selected module is the module and if it's online and allowed
+                                    if(index == mci.getActiveMode()) {
+                                        active = mci.hasActiveModule(index, module);
+                                    } else {
+                                        // see if the module in question is a block breaking module that doesn't need to be selected to works
+                                        IPowerModule pm = mci.getModuleCapability(mci.getStackInSlot(index));
+                                        if(pm != null && pm.isAllowed() && pm.isModuleOnline()) {
+                                            for (String group : List.of("shovel", "axe", "pickaxe", "hoe", "shears")) {
+                                                if(pm.isGroup(group)) {
+                                                    active = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             } else if (slot.isArmor() && iModularItem.isModuleOnline(index)) {
                                 active = true;
                             }

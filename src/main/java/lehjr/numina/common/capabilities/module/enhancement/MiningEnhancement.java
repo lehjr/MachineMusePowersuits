@@ -25,7 +25,7 @@ public class MiningEnhancement extends ToggleableModule implements IRightClickMo
     }
 
     @Override
-    public int getEnergyUsage() {
+    public double getEnergyUsage() {
         return 0;
     }
 

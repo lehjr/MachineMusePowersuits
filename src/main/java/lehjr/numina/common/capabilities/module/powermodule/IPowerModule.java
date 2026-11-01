@@ -23,6 +23,10 @@ public interface IPowerModule {
         return "";
     }
 
+    default boolean isGroup(String group) {
+        return group.equalsIgnoreCase(getModuleGroup());
+    }
+
     default ItemStack getModule() {
         return ItemStack.EMPTY;
     }
@@ -41,7 +45,7 @@ public interface IPowerModule {
 
     Map<String, List<IPropertyModifier>> getPropertyModifiers();
 
-    default int getEnergyUsage() {
+    default double getEnergyUsage() {
         return 0;
     }
 

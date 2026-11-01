@@ -39,7 +39,7 @@ public class LightningModule extends AbstractPowerModule {
         @Override
         public InteractionResultHolder<ItemStack> use(@NonNull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
             if (hand == InteractionHand.MAIN_HAND) {
-                int energyConsumption = getEnergyUsage();
+                double energyConsumption = getEnergyUsage();
                 if (energyConsumption < ElectricItemUtils.getPlayerEnergy(playerIn)) {
                     if (!level.isClientSide()) {
                         double range = 64;
@@ -78,8 +78,8 @@ public class LightningModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
         @Override

@@ -168,6 +168,11 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
         }
 
         @Override
+        public String getModuleGroup() {
+            return "thermal generators";
+        }
+
+        @Override
         public boolean isAllowed() {
             return switch (tier) {
                 case 1-> EnergyGenerationModuleConfig.thermalEnergyGenerator_1_isAllowed;

@@ -2,6 +2,7 @@ package lehjr.numina.common.event;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.registration.NuminaCodecs;
@@ -113,24 +114,41 @@ public class PlayerUpdateHandler {
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
-        if (event.isWasDeath() && event.getEntity() instanceof ServerPlayer newPlayer && NuminaCommonConfig.keepModularItemsOnDeath) {
-            ServerPlayer oldPlayer = (ServerPlayer) event.getOriginal();
-            if (oldPlayer.hasData(NuminaCodecs.INVENTORY_BACKUP.get())) {
-                CompoundTag data = oldPlayer.getData(NuminaCodecs.INVENTORY_BACKUP.get());
-                if (data.contains("FilteredInventory", 9)) { // 9 is ListTag ID
-                    ListTag listTag = data.getList("FilteredInventory", 10); // 10 is CompoundTag ID
-                    for (int i = 0; i < listTag.size(); i++) {
-                        CompoundTag itemTag = listTag.getCompound(i);
-                        int slot = itemTag.getByte("Slot") & 255; // Decode raw byte slot index
+        if (event.isWasDeath() && event.getEntity() instanceof ServerPlayer newPlayer) {
+            IPlayerKeyStates keyStates = newPlayer.getCapability(NuminaCapabilities.PLAYER_KEYSTATES);
+            if(keyStates != null) {
+                keyStates.setStates((byte) 0); // Explicitly wipe bitmask
+            }
 
-                        // Reconstruct the ItemStack using the server's registry context
-                        ItemStack restoredStack = ItemStack.parse(newPlayer.registryAccess(), itemTag).orElse(ItemStack.EMPTY);
+            if(NuminaCommonConfig.keepModularItemsOnDeath) {
+                ServerPlayer oldPlayer = (ServerPlayer) event.getOriginal();
+                if (oldPlayer.hasData(NuminaCodecs.INVENTORY_BACKUP.get())) {
+                    CompoundTag data = oldPlayer.getData(NuminaCodecs.INVENTORY_BACKUP.get());
+                    if (data.contains("FilteredInventory", 9)) { // 9 is ListTag ID
+                        ListTag listTag = data.getList("FilteredInventory", 10); // 10 is CompoundTag ID
+                        for (int i = 0; i < listTag.size(); i++) {
+                            CompoundTag itemTag = listTag.getCompound(i);
+                            int slot = itemTag.getByte("Slot") & 255; // Decode raw byte slot index
 
-                        if (!restoredStack.isEmpty() && slot < newPlayer.getInventory().getContainerSize()) {
-                            newPlayer.getInventory().setItem(slot, restoredStack);
+                            // Reconstruct the ItemStack using the server's registry context
+                            ItemStack restoredStack = ItemStack.parse(newPlayer.registryAccess(), itemTag).orElse(ItemStack.EMPTY);
+
+                            if (!restoredStack.isEmpty() && slot < newPlayer.getInventory().getContainerSize()) {
+                                newPlayer.getInventory().setItem(slot, restoredStack);
+                            }
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            IPlayerKeyStates keyStates = serverPlayer.getCapability(NuminaCapabilities.PLAYER_KEYSTATES);
+            if(keyStates != null) {
+                keyStates.setStates((byte) 0); // Explicitly wipe bitmask
             }
         }
     }

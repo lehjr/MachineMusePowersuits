@@ -18,11 +18,9 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 
-import javax.annotation.Nonnull;
-
 public class BlinkDriveModule extends AbstractPowerModule {
     public static class RightClickie extends RightClickModule {
-        public RightClickie(@Nonnull ItemStack module) {
+        public RightClickie(ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.blinkDriveModuleRangeBase, "FE");
             addBaseProperty(MPSConstants.RANGE, MovementModuleConfig.blinkDriveModuleRangeBase, "m");
@@ -31,9 +29,9 @@ public class BlinkDriveModule extends AbstractPowerModule {
         }
 
         @Override
-        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+        public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
             int range = (int) applyPropertyModifiers(MPSConstants.RANGE);
-            int energyConsumption = getEnergyUsage();
+            double energyConsumption = getEnergyUsage();
             HitResult hitRayTrace = rayTrace(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY, range);
             if (hitRayTrace != null && hitRayTrace.getType() == HitResult.Type.BLOCK) {
                 double distance = hitRayTrace.getLocation().distanceTo(playerIn.position());
@@ -62,8 +60,8 @@ public class BlinkDriveModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
     }
 }

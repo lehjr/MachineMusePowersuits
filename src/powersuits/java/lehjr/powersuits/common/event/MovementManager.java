@@ -73,6 +73,15 @@ public enum MovementManager {
         return movementResistance;
     }
 
+
+
+
+
+
+
+
+
+    // Horizontal ground based movement
     // moved here so it is still accessible if sprint assist module isn't installed.
     public void setMovementModifier(ItemStack itemStack, double multiplier, Player player, Holder<Attribute> attribute) {
         // reduce player speed according to Kinetic Energy Generator setting
@@ -191,6 +200,42 @@ public enum MovementManager {
     static double boolToVal(boolean boolIn) {
         return boolIn ? 1.0D : 0.0D;
     }
+
+
+
+
+
+
+
+
+
+    /*
+        Fixme: rename: this is actually handling flight and swimming movement
+        Fixme: parachute should provide negative velocity when used (mostly in the vertical sense)
+
+        playerInput inpulse:
+
+        this.leftImpulse = 0.0F;
+this.forwardImpulse = 0.0F;
+
+if (this.options.keyUp.isDown()) {
+    this.forwardImpulse += 1.0F; // Moving Forward
+}
+if (this.options.keyDown.isDown()) {
+    this.forwardImpulse -= 1.0F; // Moving Backward
+}
+if (this.options.keyLeft.isDown()) {
+    this.leftImpulse += 1.0F;    // Moving Left
+}
+if (this.options.keyRight.isDown()) {
+    this.leftImpulse -= 1.0F;   // Moving Right
+}
+
+
+
+
+     */
+
 
     public static double thrust(Player player, double thrust, boolean flightControl) {
         PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);

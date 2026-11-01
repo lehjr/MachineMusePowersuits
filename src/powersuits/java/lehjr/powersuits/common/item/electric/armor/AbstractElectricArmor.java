@@ -234,6 +234,13 @@ public class AbstractElectricArmor extends ArmorItem {
     }
 
     @Override
+    public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+        // FIXME: module? also address frostbite
+
+        return super.canWalkOnPowderedSnow(stack, wearer);
+    }
+
+    @Override
     public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
         IModularItem iModularItem =  stack.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
         if(iModularItem != null) {

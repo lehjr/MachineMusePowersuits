@@ -92,6 +92,9 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
 
     int findInstalledModule(Item item);
 
+    @Nullable
+    IPowerModule getModuleCapabilityOnlineOrNull(ResourceLocation moduleName);
+
     int findInstalledModule(ItemStack module);
 
     int findInstalledModule(ResourceLocation registryName);
@@ -163,6 +166,10 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
             }
         }
         return modules;
+    }
+
+    default boolean isSlotValid(int slot) {
+        return slot >= 0 && slot < getSlots();
     }
 
     /**

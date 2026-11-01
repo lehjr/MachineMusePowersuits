@@ -46,6 +46,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class LuxCapacitorModule extends AbstractPowerModule {
     public static class RightClickie extends PlayerTickModule implements IRightClickModule {
@@ -85,7 +86,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
 
         @Override
         public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
-            float energyConsumption = getEnergyUsage();
+            double energyConsumption = getEnergyUsage();
             double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
 
             if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption && timer == 0) {
@@ -96,7 +97,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                     float blue = (float) applyPropertyModifiers(MPSConstants.BLUE_HUE);
                     float alpha = (float) applyPropertyModifiers(MPSConstants.OPACITY);
 
-                    level.getServer().execute(()-> {
+                    Objects.requireNonNull(level.getServer()).execute(()-> {
                         LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(level, playerIn, new Color(red, green, blue, alpha));
 //                        NuminaLogger.logDebug("Lux Capacitor Entity is Null?: " + (Objects.isNull(luxCapacitor)));
 
@@ -121,8 +122,8 @@ public class LuxCapacitorModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
         @Override

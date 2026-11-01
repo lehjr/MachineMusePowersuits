@@ -53,7 +53,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
          */
         @Override
         public InteractionResult useOn(UseOnContext context) {
-            int energyConsumption = getEnergyUsage();
+            double energyConsumption = getEnergyUsage();
             Player player = context.getPlayer();
 
             if (player == null) {
@@ -92,8 +92,8 @@ public class FlintAndSteelModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
     }
 }

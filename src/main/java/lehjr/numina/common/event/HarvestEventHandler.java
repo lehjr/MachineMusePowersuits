@@ -55,7 +55,7 @@ public class HarvestEventHandler {
             double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
             for (int i = 0; i < mci.getSlots(); i++) {
                 IPowerModule pm = mci.getModuleCapability(mci.getStackInSlot(i));
-                if (pm instanceof IBlockBreakingModule bbm && bbm.canHarvestBlock(mci.getModularItemStack(), state, player, pos, playerEnergy)) {
+                if (pm instanceof IBlockBreakingModule bbm && bbm.isModuleOnline() && bbm.canHarvestBlock(mci.getModularItemStack(), state, player, pos, playerEnergy)) {
                     event.setCanHarvest(true);
                     return;
                 }
@@ -158,7 +158,7 @@ public class HarvestEventHandler {
                 // Reuse this list instead of making a new one
                 for (int i = 0; i < mci.getSlots(); i++) {
                     IPowerModule pm = mci.getModuleCapability(mci.getStackInSlot(i));
-                    if (pm instanceof IBlockBreakingModule bbm) {
+                    if (pm instanceof IBlockBreakingModule bbm && bbm.isModuleOnline()) {
                         modules.add(bbm);
                     }
                 }

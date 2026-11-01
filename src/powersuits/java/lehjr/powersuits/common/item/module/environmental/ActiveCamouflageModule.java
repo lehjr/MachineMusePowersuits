@@ -36,7 +36,7 @@ public class ActiveCamouflageModule extends AbstractPowerModule {
             if (player.hasEffect(invisibility)) {
                 invis = player.getEffect(invisibility);
             }
-            int energyUsage = getEnergyUsage();
+            double energyUsage = getEnergyUsage();
             if (energyUsage < totalEnergy) {
                 if (invis == null || invis.getDuration() < 210) {
                     player.addEffect(new MobEffectInstance(invisibility, 500, -3, false, false));
@@ -65,8 +65,8 @@ public class ActiveCamouflageModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int)applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
     }
 }

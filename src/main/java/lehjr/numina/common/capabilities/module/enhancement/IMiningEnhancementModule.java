@@ -15,5 +15,6 @@ import net.minecraft.world.phys.BlockHitResult;
 public interface IMiningEnhancementModule extends IRightClickModule, IToggleableModule, IHighlight {
     boolean onBlockStartBreak(ItemStack itemStack, BlockHitResult hitResult, Player player, Level level);
 
-    int getEnergyUsage();
+    @Override
+    double getEnergyUsage();
 }

@@ -95,5 +95,10 @@ public class SolarGeneratorModule extends AbstractPowerModule {
             }
             return false;
         }
+
+        @Override
+        public String getModuleGroup() {
+            return "solar generators";
+        }
     }
 }

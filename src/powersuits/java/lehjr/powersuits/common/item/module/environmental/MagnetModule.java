@@ -38,7 +38,7 @@ public class MagnetModule extends AbstractPowerModule {
 
         @Override
         public boolean onPlayerTickActive(Player player, Level level, ItemStack stack, int moduleIndex) {
-            int energyUSage = getEnergyUsage();
+            double energyUSage = getEnergyUsage();
             if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
                 boolean isServerSide = !level.isClientSide;
 
@@ -92,8 +92,8 @@ public class MagnetModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int)applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
     }
 }

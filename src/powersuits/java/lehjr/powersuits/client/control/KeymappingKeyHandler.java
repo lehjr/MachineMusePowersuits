@@ -57,10 +57,6 @@ public class KeymappingKeyHandler {
     }
 
     void updatePlayerValues(LocalPlayer clientPlayer) {
-        if (clientPlayer == null) {
-            return;
-        }
-
         IPlayerKeyStates keyStates = clientPlayer.getCapability(NuminaCapabilities.PLAYER_KEYSTATES);
         if (keyStates != null) {
             boolean markForSync = false;

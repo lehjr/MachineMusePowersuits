@@ -28,7 +28,8 @@ public interface IBlockBreakingModule extends IPowerModule {
 
     void handleBreakSpeed(PlayerEvent.BreakSpeed event);
 
-    int getEnergyUsage();
+    @Override
+    double getEnergyUsage();
 
     @Nonnull
     ItemStack getEmulatedTool();

@@ -6,8 +6,11 @@ import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
 import lehjr.numina.common.capabilities.render.highlight.IHighlight;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.network.NuminaPackets;
+import lehjr.numina.common.network.serverbound.PlayerUpdatePacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
@@ -47,6 +50,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
@@ -64,14 +68,12 @@ import java.util.HashMap;
 
 @EventBusSubscriber(modid = MPSConstants.MOD_ID, value = Dist.CLIENT)
 public class ClientEventBusSubscriber {
-
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         NeoForge.EVENT_BUS.addListener(ClientEventBusSubscriber::onFOVUpdate);
         NeoForge.EVENT_BUS.addListener(ClientEventBusSubscriber::renderBlockHighlight);
         NeoForge.EVENT_BUS.register(new KeymappingKeyHandler());
     }
-
 
     @SubscribeEvent
     public static void registerKeyBinding(RegisterKeyMappingsEvent event) {
@@ -83,6 +85,25 @@ public class ClientEventBusSubscriber {
 
         // this only works if the keybinds are already loaded
         KeymappingKeyHandler.keyMappings.values().forEach(event::register); // register keybinds
+    }
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+
+        // Check if the player is in-game but a screen is open OR window is unfocused
+        if (mc.player != null && (mc.screen != null || !mc.isWindowActive())) {
+            IPlayerKeyStates keyStates = mc.player.getCapability(NuminaCapabilities.PLAYER_KEYSTATES);
+
+            // If your local cache thinks keys are pressed, force a release
+            if (keyStates != null && keyStates.getStates() > 0) {
+                keyStates.setStates((byte)0);
+
+                // Pack your cleared byte (0) and send to server
+                byte clearedByte = 0;
+                NuminaPackets.sendToServer(new PlayerUpdatePacketServerBound(clearedByte));
+            }
+        }
     }
 
 
@@ -117,7 +138,6 @@ public class ClientEventBusSubscriber {
     public static void onAddAdditional(ModelEvent.RegisterAdditional e) {
         ModelBakeEventHandler.onAddAdditional(e);
     }
-
 
     @OnlyIn(Dist.CLIENT)
     //    @SubscribeEvent

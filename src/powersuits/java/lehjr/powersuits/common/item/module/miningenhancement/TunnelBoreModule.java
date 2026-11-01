@@ -123,8 +123,8 @@ public class TunnelBoreModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
         @Override
@@ -174,7 +174,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                 return retMap;
             }
 
-            final int energyUsage = getEnergyUsage();
+            final double energyUsage = getEnergyUsage();
             if (energyUsage <= energyRemaining.get()) {
                 HashMap<BlockPostionData, Integer> retMap2 = new HashMap<>();
                 retMap.forEach((key, value) -> {

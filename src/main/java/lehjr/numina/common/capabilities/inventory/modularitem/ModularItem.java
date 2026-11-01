@@ -149,7 +149,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
             // checking if module is already installed somewhere. This is because this method will be called
             // on loading to check if the module is valid for the given slot.
             int isInstalled = findInstalledModule(module);
-            if (isInstalled != -1 && isInstalled != slot) {
+            if (isSlotValid(isInstalled) && isInstalled != slot) {
 //                NuminaLogger.logDebug("module already installed in slot: " + isInstalled);
                 return 0;
             }
@@ -204,7 +204,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
 
     @Override
     public boolean isModuleOnline(int slot) {
-        if(slot >=0 && slot < getSlots()) {
+        if(isSlotValid(slot)) {
             return isModuleOnline(getStackInSlot(slot));
         }
         return false;
@@ -213,7 +213,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public boolean isModuleOnline(ResourceLocation moduleName) {
         int slot = findInstalledModule(moduleName);
-        if (slot > -1) {
+        if (isSlotValid(slot)) {
             return isModuleOnline(getStackInSlot(slot));
         }
         return false;
@@ -232,7 +232,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public ItemStack getOnlineModuleOrEmpty(ResourceLocation moduleName) {
         int i = findInstalledModule(moduleName);
-        if (i > -1) {
+        if (isSlotValid(i)) {
             ItemStack module = getStackInSlot(i);
             if(isModuleOnline(module)) {
                 return module;
@@ -243,7 +243,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
 
     @Override
     public void toggleModule(boolean online, int moduleIndex) {
-        if (moduleIndex > -1) {
+        if (isSlotValid(moduleIndex)) {
             ItemStack module = getStackInSlot(moduleIndex);
             IPowerModule pm = getModuleCapability(module);
             if (pm instanceof IToggleableModule tm) {
@@ -262,7 +262,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public void setModuleBoolean(ResourceLocation moduleName, String key, boolean value) {
         int slot = findInstalledModule(moduleName);
-        if (slot > -1) {
+        if (isSlotValid(slot)) {
             ItemStack module = getStackInSlot(slot);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
@@ -274,7 +274,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
 
     @Override
     public boolean setModuleDouble(int index, String key, double value) {
-        if(index > -1 && index < getSlots()) {
+        if(isSlotValid(index)) {
             ItemStack module = getStackInSlot(index);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
@@ -320,7 +320,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public void setModuleFloat(ResourceLocation moduleName, String key, float value) {
         int i = findInstalledModule(moduleName);
-        if(i > -1) {
+        if(isSlotValid(i)) {
             ItemStack module = getStackInSlot(i);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
@@ -333,7 +333,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public void setModuleBlockState(ResourceLocation moduleName, BlockState state) {
         int i = findInstalledModule(moduleName);
-        if(i > -1) {
+        if(isSlotValid(i)) {
             ItemStack module = getStackInSlot(i);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
@@ -346,7 +346,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public void setModuleString(ResourceLocation moduleName, String key, String value) {
         int i = findInstalledModule(moduleName);
-        if(i > -1) {
+        if(isSlotValid(i)) {
             ItemStack module = getStackInSlot(i);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
@@ -381,6 +381,19 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
             }
         }
         return -1;
+    }
+
+    @Nullable
+    @Override
+    public IPowerModule getModuleCapabilityOnlineOrNull(ResourceLocation moduleName) {
+        int slot = findInstalledModule(moduleName);
+        if(isSlotValid(slot)) {
+            IPowerModule pm = getModuleCapability(getStackInSlot(slot));
+            if (pm != null && pm.isAllowed() && pm.isModuleOnline()) {
+                return pm;
+            }
+        }
+        return null;
     }
 
     @Override

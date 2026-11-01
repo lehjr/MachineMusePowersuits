@@ -32,7 +32,7 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
         }
 
         double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-        int energyUsage = getEnergyUsage();
+        double energyUsage = getEnergyUsage();
 
         if (playerEnergy > energyUsage) {
             addEnchantment(item, level);

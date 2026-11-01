@@ -78,8 +78,8 @@ public class PlasmaCannonModule extends AbstractPowerModule {
         }
 
         @Override
-        public int getEnergyUsage() {
-            return (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_PER_TICK));
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_PER_TICK);
         }
     }
 }
