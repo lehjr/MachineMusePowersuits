@@ -3,6 +3,7 @@ package lehjr.powersuits.common.item.module.movement;
 import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import lehjr.numina.client.sound.Musique;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nonnull;
 
 public class JetBootsModule extends AbstractPowerModule {
-    public static class Ticker extends PlayerTickModule {
+    public static class Ticker extends PlayerTickModule implements IThruster {
         public Ticker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.FEETONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jetBootsModuleEnergyConsumptionBase, "RF/t");
@@ -49,33 +50,76 @@ public class JetBootsModule extends AbstractPowerModule {
                 hasFlightControl = modularItem.isModuleOnline(MPSConstants.FLIGHT_CONTROL_MODULE);
             }
 
-            double jetEnergy = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-            double thrust = applyPropertyModifiers(MPSConstants.JETBOOTS_THRUST);
+            double jetEnergy = getEnergyUsage();
+            double jetbootsThrust = getDesiredThrust();
+            double thrust = 0;
+
+            NuminaLogger.logDebug("---------------------------------------------------------------------------------------");
 
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
             // if player has enough energy to fly
             if (jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) {
-                if (hasFlightControl && thrust > 0) {
-                    thrust = MovementManager.thrust(player, thrust, true);
-                    if ((level.isClientSide) && NuminaClientConfig.useSounds) {
-                        Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
-                    }
-                    ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy), false);
-                } else if (playerInput.jumpKey && player.getDeltaMovement().y < 0.5) {
-                    thrust = MovementManager.thrust(player, thrust, false);
-                    if ((level.isClientSide) && NuminaClientConfig.useSounds) {
-                        Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
-                    }
-                    ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy), false);
+
+
+
+                // hover if flight control installed and thrust setting more than 0
+                if (hasFlightControl && jetbootsThrust > 0) {
+                    // handle this in movemement manager... check for glider being active and
+
+
+                    // does playerInput.forwardKey && player.isFlyFalling() fit here?
+
+
+                    thrust = MovementManager.thrust(player, jetbootsThrust, true);
+
+                    NuminaLogger.logDebug("jetboots already active or jump active");
+
+                    NuminaLogger.logDebug("jetbootsThrust: " +  jetbootsThrust);
+                    NuminaLogger.logDebug("actual thrust to apply: " + thrust);
+
+                // if jumping
+                } else if (playerInput.jumpKey /*&& player.getDeltaMovement().y < 0.5 */) {
+                    // max thrust here seems to be 0.8
+                    thrust = MovementManager.thrust(player, jetbootsThrust, false);
+
+                    NuminaLogger.logDebug("jetboots jump activation ");
+
+                    NuminaLogger.logDebug("jetbootsThrust: " +  jetbootsThrust);
+                    NuminaLogger.logDebug("actual thrust to apply: " + thrust);
+
+
+//                } else if(playerInput.jumpKey) {
+                    NuminaLogger.logDebug("jumpkey is true, player.getDeltaMovement().y: " + player.getDeltaMovement().y);
                 } else {
-                    if ((level.isClientSide) && NuminaClientConfig.useSounds) {
-                        Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
-                    }
+                    NuminaLogger.logDebug("jetboots no activation ");
                 }
-            } else {
-                if (level.isClientSide && NuminaClientConfig.useSounds) {
+            }
+
+            if(level.isClientSide && NuminaClientConfig.useSounds) {
+                NuminaLogger.logDebug("jetboots thrust client side: " +  thrust);
+
+                if(thrust > 0 ) {
+                    NuminaLogger.logDebug("should PLAY sound");
+                    Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
+                } else {
+                    NuminaLogger.logDebug("should STOP sound");
+
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                 }
+            } else {
+                if(thrust > 0 ) {
+                    ElectricItemUtils.drainPlayerEnergy(player, jetEnergy * getDesiredThrust()/thrust, false);
+                }
+            }
+
+            NuminaLogger.logDebug("====================================================================================");
+            return false;
+        }
+
+        @Override
+        public boolean onPlayerTickInactive(Player player, Level level, ItemStack item, int moduleIndex) {
+            if (level.isClientSide && NuminaClientConfig.useSounds) {
+                Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
             }
             return false;
         }
@@ -86,11 +130,8 @@ public class JetBootsModule extends AbstractPowerModule {
         }
 
         @Override
-        public boolean onPlayerTickInactive(Player player, Level level, ItemStack item, int moduleIndex) {
-            if (level.isClientSide && NuminaClientConfig.useSounds) {
-                Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
-            }
-            return false;
+        public double getDesiredThrust() {
+            return applyPropertyModifiers(MPSConstants.JETBOOTS_THRUST);
         }
     }
 }

@@ -37,17 +37,17 @@ public class MovementModuleConfig {
     private static final ModConfigSpec.Builder JETBOOTS_MODULE__SETTINGS_BUILDER = GLIDER_MODULE__SETTINGS_BUILDER.pop().push("JetBoots");
     private static final ModConfigSpec.BooleanValue JETBOOTS_MODULE__IS_ALLOWED = JETBOOTS_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__ENERGY_CONSUMPTION_BASE = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 0, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__THRUST_BASE = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__THRUST_BASE = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST, 0, 0, 0.01);
     private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__ENERGY_CONSUMPTION_THRUST_MULTIPLIER = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_THRUST_MULTIPLIER, 750, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__THRUST_MULTIPLIER = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST_MULTIPLIER, 0.08, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__THRUST_MULTIPLIER = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST_MULTIPLIER, 0.04, 0, 0.06);
 
     // JetPack
     private static final ModConfigSpec.Builder JETPACK_MODULE__SETTINGS_BUILDER = JETBOOTS_MODULE__SETTINGS_BUILDER.pop().push("JetPack");
     private static final ModConfigSpec.BooleanValue JETPACK_MODULE__IS_ALLOWED = JETPACK_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.DoubleValue JETPACK_MODULE__ENERGY_CONSUMPTION_BASE = JETPACK_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 0, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue JETPACK_MODULE__THRUST_BASE = JETPACK_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JETPACK_MODULE__THRUST_BASE = JETPACK_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST, 0, 0, 0.01);
     private static final ModConfigSpec.DoubleValue JETPACK_MODULE__ENERGY_CONSUMPTION_THRUST_MULTIPLIER = JETPACK_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_THRUST_MULTIPLIER, 15000, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue JETPACK_MODULE__THRUST_MULTIPLIER = JETPACK_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST_MULTIPLIER, 0.16, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JETPACK_MODULE__THRUST_MULTIPLIER = JETPACK_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST_MULTIPLIER, 0.08, 0, 0.16);
 
     // Jump Assist
     private static final ModConfigSpec.Builder JUMP_ASSIST_MODULE__SETTINGS_BUILDER = JETPACK_MODULE__SETTINGS_BUILDER.pop().push("Jump_Assist");

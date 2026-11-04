@@ -3,6 +3,7 @@ package lehjr.powersuits.common.item.module.movement;
 import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import lehjr.numina.client.sound.Musique;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
@@ -25,12 +26,11 @@ public class SwimAssistModule extends AbstractPowerModule {
     // NeoForgeMod.SWIM_SPEED
 
 
-    public static class Ticker extends PlayerTickModule {
+    public static class Ticker extends PlayerTickModule implements IThruster {
         public Ticker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY);
             addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.swimAssistModuleEnergyConsumptionThrustMultiplier, "FE");
             addTradeoffProperty(MPSConstants.THRUST, MPSConstants.SWIM_BOOST_AMOUNT, MovementModuleConfig.swimAssistModuleThrustBoostMultiplier, "m/s");
-
         }
 
         @Override
@@ -42,7 +42,13 @@ public class SwimAssistModule extends AbstractPowerModule {
         public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStack, int moduleIndex) {
 //                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-            if((player.isInWater() && !player.isPassenger()) && (playerInput.strafeLeftKey || playerInput.strafeRightKey || playerInput.forwardKey || playerInput.reverseKey || playerInput.jumpKey || player.isCrouching())) {
+            if((player.isInLiquid() && !player.isPassenger())) {
+//                && (playerInput.strafeLeftKey ||
+//                playerInput.strafeRightKey ||
+//                playerInput.forwardKey ||
+//                playerInput.reverseKey ||
+//                playerInput.jumpKey ||
+//                player.isCrouching())) {
                 double moveRatio = 0;
                 if (playerInput.forwardKey) {
                     moveRatio += 1.0;
@@ -53,22 +59,30 @@ public class SwimAssistModule extends AbstractPowerModule {
                 if (playerInput.jumpKey || player.isCrouching()) {
                     moveRatio += 0.2 * 0.2;
                 }
-                double swimAssistRate = applyPropertyModifiers(MPSConstants.SWIM_BOOST_AMOUNT) * 0.05 * moveRatio;
-                double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
 
-                double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                if(moveRatio > 0) {
+                    double swimAssistRate = getDesiredThrust() * 0.05 * moveRatio;
+                    double swimEnergyConsumption = getEnergyUsage();
 
-                if (swimEnergyConsumption < playerEnergy) {
-                    if (level.isClientSide && NuminaClientConfig.useSounds) {
-                        Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get(), SoundSource.PLAYERS, 1.0f, 1.0f, true);
-                        // every 20 ticks
-                    } else if ((level.getGameTime() % 5) == 0) {
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) (swimEnergyConsumption) * 5, false);
+                    double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+
+                    if (swimEnergyConsumption < playerEnergy) {
+                        if (level.isClientSide && NuminaClientConfig.useSounds) {
+                            Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get(), SoundSource.PLAYERS, 1.0f, 1.0f, true);
+                            // every 20 ticks
+                        } else if ((level.getGameTime() % 5) == 0) {
+                            ElectricItemUtils.drainPlayerEnergy(player, (int) (swimEnergyConsumption) * 5, false);
+                        }
+                        double thrust = MovementManager.thrust(player, swimAssistRate, true);
+
+                        NuminaLogger.logDebug("swim Thrust: " +  getDesiredThrust());
+                        NuminaLogger.logDebug("swim assist rate calcuated: " +  swimAssistRate);
+                        NuminaLogger.logDebug("actual swim thrust to apply: " + thrust);
+
+  //                    SprintAssistModule.setMovementModifier(itemStack, getModule(), swimAssistRate * 100000, MPSConstants.SWIM_SPEED);
+                    } else {
+                        onPlayerTickInactive(player, level, itemStack, moduleIndex);
                     }
-                    MovementManager.thrust(player, swimAssistRate, true);
-//                    SprintAssistModule.setMovementModifier(itemStack, getModule(), swimAssistRate * 100000, MPSConstants.SWIM_SPEED);
-                } else {
-                    onPlayerTickInactive(player, level, itemStack, moduleIndex);
                 }
             } else {
                 onPlayerTickInactive(player, level, itemStack, moduleIndex);
@@ -83,6 +97,16 @@ public class SwimAssistModule extends AbstractPowerModule {
             }
 //            SprintAssistModule.setMovementModifier(itemStack, getModule(), 0, MPSConstants.SWIM_SPEED);
             return false;
+        }
+
+        @Override
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        }
+
+        @Override
+        public double getDesiredThrust() {
+            return applyPropertyModifiers(MPSConstants.SWIM_BOOST_AMOUNT);
         }
     }
 }

@@ -3,6 +3,7 @@ package lehjr.powersuits.common.item.module.movement;
 import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import lehjr.numina.client.sound.Musique;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nonnull;
 
 public class JetPackModule extends AbstractPowerModule {
-    public static class Ticker extends PlayerTickModule {
+    public static class Ticker extends PlayerTickModule implements IThruster {
         public Ticker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.TORSOONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jetPackModuleEnergyConsumptionBase, "RF/t");
@@ -39,40 +40,104 @@ public class JetPackModule extends AbstractPowerModule {
         }
 
         @Override
-        public boolean onPlayerTickActive(Player player, Level level, ItemStack torso, int moduleIndex) {
-            if (player.isInWater()) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
+            if (player.isInWater())
                 return false;
-            }
 
-            PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
             boolean hasFlightControl = false;
-            ItemStack helmet = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD);
-            IModularItem modularItem = helmet.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
-            if(modularItem != null) {
+            IModularItem modularItem = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
+            if (modularItem != null) {
                 hasFlightControl = modularItem.isModuleOnline(MPSConstants.FLIGHT_CONTROL_MODULE);
             }
 
-            double jetEnergy = 0;
+            double jetEnergy = getEnergyUsage();
+            double jetPackThrust = applyPropertyModifiers(MPSConstants.JETPACK_THRUST);
             double thrust = 0;
-            jetEnergy += applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-            thrust += applyPropertyModifiers(MPSConstants.JETPACK_THRUST);
 
-            if ((jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) &&
-                    ((hasFlightControl && thrust > 0) || (playerInput.jumpKey))) {
-                thrust = MovementManager.thrust(player, thrust, hasFlightControl);
+            PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
+            // if player has enough energy to fly
+            if (jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) {
 
-                if(!level.isClientSide()) {
-                    if ((level.getGameTime() % 5) == 0) {
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy * 5), false);
+                // if already hovering, or if player has flight control installed
+                if (hasFlightControl && jetPackThrust > 0) {
+                    thrust = MovementManager.thrust(player, jetPackThrust, true);
+                    ElectricItemUtils.drainPlayerEnergy(player, (thrust * jetEnergy), false);
+
+                    NuminaLogger.logDebug("jetPack already active");
+
+                    NuminaLogger.logDebug("jetPackThrust: " +  jetPackThrust);
+                    NuminaLogger.logDebug("actual thrust to apply: " + thrust);
+
+                    if ((level.isClientSide) && NuminaClientConfig.useSounds) {
+                        Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
                     }
-                } else if (NuminaClientConfig.useSounds) {
-                    Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get(), SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
+
+                // initiate thrust
+                } else if (playerInput.jumpKey && player.getDeltaMovement().y < 0.5) {
+                    // max 0.16
+
+                    thrust = MovementManager.thrust(player, jetPackThrust, false);
+                    ElectricItemUtils.drainPlayerEnergy(player, (thrust * jetEnergy), false);
+
+                    NuminaLogger.logDebug("jetpacks jump activation ");
+
+                    NuminaLogger.logDebug("jetPackThrust: " +  jetPackThrust);
+                    NuminaLogger.logDebug("actual thrust to apply: " + thrust);
+
+                    if ((level.isClientSide) && NuminaClientConfig.useSounds) {
+                        Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
+                    }
+
+                } else {
+                    if ((level.isClientSide) && NuminaClientConfig.useSounds) {
+                        Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
+                    }
                 }
+
             } else {
-                onPlayerTickInactive(player, level, torso,  moduleIndex);
+                if (level.isClientSide && NuminaClientConfig.useSounds) {
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
+                }
             }
             return false;
         }
+
+//        @Override
+//        public boolean onPlayerTickActive(Player player, Level level, ItemStack torso, int moduleIndex) {
+
+//
+//            PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
+//            boolean hasFlightControl = false;
+//            ItemStack helmet = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD);
+//            IModularItem modularItem = helmet.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
+//            if(modularItem != null) {
+//                hasFlightControl = modularItem.isModuleOnline(MPSConstants.FLIGHT_CONTROL_MODULE);
+//            }
+//
+//            double jetEnergy = 0;
+//            double thrust = 0;
+//            jetEnergy += applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+//            double jetpackThrust = applyPropertyModifiers(MPSConstants.JETPACK_THRUST);
+//
+//            // todo: change trigger from just jumping to if flyfalling then forwardkey else jump
+//
+//            if ((jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) &&
+//                    ((hasFlightControl && jetpackThrust > 0) || (playerInput.jumpKey))) {
+//
+//
+//                thrust = MovementManager.thrust(player, jetpackThrust, hasFlightControl);
+//                ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy), false);
+//
+//                if(level.isClientSide() && NuminaClientConfig.useSounds) {
+//                    Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get(), SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
+//                }
+//
+//
+//            } else {
+//                onPlayerTickInactive(player, level, torso,  moduleIndex);
+//            }
+//            return false;
+//        }
 
         @Override
         public boolean onPlayerTickInactive(Player player, Level level, ItemStack item,  int moduleIndex) {
@@ -80,6 +145,16 @@ public class JetPackModule extends AbstractPowerModule {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
             }
             return false;
+        }
+
+        @Override
+        public double getEnergyUsage() {
+            return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        }
+
+        @Override
+        public double getDesiredThrust() {
+            return applyPropertyModifiers(MPSConstants.JETPACK_THRUST);
         }
     }
 }

@@ -59,6 +59,7 @@ public class KeymappingKeyHandler {
     void updatePlayerValues(LocalPlayer clientPlayer) {
         IPlayerKeyStates keyStates = clientPlayer.getCapability(NuminaCapabilities.PLAYER_KEYSTATES);
         if (keyStates != null) {
+            minecraft = Minecraft.getInstance();
             boolean markForSync = false;
 
             // minecraft.player.input
@@ -101,14 +102,14 @@ public class KeymappingKeyHandler {
             }
 
             boolean[] boolArray = new boolean[]{
-                    forwardKeyState,
-                    reverseKeyState,
-                    strafeLeftKeyState,
-                    strafeRightKeyState,
-                    downKeyState,
-                    jumpKeyState,
-                    false,
-                    false
+                forwardKeyState,
+                reverseKeyState,
+                strafeLeftKeyState,
+                strafeRightKeyState,
+                downKeyState,
+                jumpKeyState,
+                false,
+                false
             };
             byte byteOut = MathUtils.boolArrayToByte(boolArray);
 
@@ -124,48 +125,44 @@ public class KeymappingKeyHandler {
         if (player == null) {
             return;
         }
+        minecraft = Minecraft.getInstance();
 
-        for(MPSKeyMapping keyMapping : getMPSKeyMappings()) {
-            if(keyMapping.isDown()) {
-                keyMapping.toggleModules();
-            }
-        }
+        if(minecraft.isWindowActive()) {
+            updatePlayerValues(player);
 
-        KeyMapping[] hotbarKeys = minecraft.options.keyHotbarSlots;
-        updatePlayerValues(player);
-        Inventory inventory = player.getInventory();
-
-        IModeChangingItem mci = getModeChangingItem(player);
-        if (mci != null) {
-            // Mode changinging GUI
-            if (hotbarKeys[inventory.selected].isDown() && minecraft.isWindowActive()) {
-                if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
-                    Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
+            for(MPSKeyMapping keyMapping : getMPSKeyMappings()) {
+                if(keyMapping.isDown()) {
+                    keyMapping.toggleModules();
                 }
             }
 
-            /* cycleToolBackward/cycleToolForward */
-            if (cycleToolBackward.isDown()) {
-                assert minecraft.gameMode != null;
-                minecraft.gameMode.tick();
-                mci.cycleMode(player, 1);
+            KeyMapping[] hotbarKeys = minecraft.options.keyHotbarSlots;
+            IModeChangingItem mci = getModeChangingItem(player);
+            if (mci != null) {
+                Inventory inventory = player.getInventory();
+
+                // Mode changinging GUI
+                if (hotbarKeys[inventory.selected].isDown()) {
+                    if (!(minecraft.screen instanceof GuiModeSelector)) {
+                        minecraft.tell(() -> minecraft.setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
+                    }
+                }
+
+                /* cycleToolBackward/cycleToolForward */
+                if (cycleToolBackward.isDown()) {
+                    assert minecraft.gameMode != null;
+                    minecraft.gameMode.tick();
+                    mci.cycleMode(player, 1);
+                }
+
+                if (cycleToolForward.isDown()) {
+                    assert minecraft.gameMode != null;
+                    minecraft.gameMode.tick();
+                    mci.cycleMode(player, -1);
+                }
             }
 
-            if (cycleToolForward.isDown()) {
-                assert minecraft.gameMode != null;
-                minecraft.gameMode.tick();
-                mci.cycleMode(player, -1);
-            }
-        }
-
-
-
-
-
-
-
-
-        /**  TODO: server config option to disable these and enforce tinker table requirement */
+            /**  TODO: server config option to disable these and enforce tinker table requirement */
         /*
         if (openKeybindGUI.isDown()) {
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
@@ -187,6 +184,7 @@ public class KeymappingKeyHandler {
             MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.MAINHAND));
         }
         */
+        }
     }
 
     // FIXME: move away from dynamic loading, just create a static list and be done with it.

@@ -1,6 +1,7 @@
 package lehjr.powersuits.common.item.module.movement;
 
 import lehjr.numina.client.control.PlayerMovementInputWrapper;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -39,37 +40,12 @@ public class GliderModule extends AbstractPowerModule {
 
                 if(player.onGround()) {
                     player.stopFallFlying();
-                }
-
-
-                if (!hasParachute && playerInput.jumpKey && playerInput.forwardKey && player.getDeltaMovement().y < 0 ) {
-                    if(!player.isFallFlying()) {
-                        player.tryToStartFallFlying();
+                } else {
+                    if (!hasParachute) {
+                            if(playerInput.forwardKey) {
+                            player.tryToStartFallFlying();
+                        }
                     }
-
-
-////                    // fixme: method triggered when player is jumping but this code does not trigger it
-////                    player.isCrouching() && player.getDeltaMovement().y < 0 && (!hasParachute || playerInput.forwardKey)) {
-
-                /*
-                // FIXME: move to movement manager?
-                    Vec3 motion = player.getDeltaMovement();
-                    if (motion.y < -0.1) {
-                        double motionYchange = Math.min(0.08, -0.1 - motion.y);
-
-                        player.setDeltaMovement(motion.add(
-                                playerHorzFacing.x * motionYchange,
-                                motionYchange,
-                                playerHorzFacing.z * motionYchange
-                        ));
-
-                        // sprinting speed
-                        float flySpeed = player.getAbilities().getFlyingSpeed() + 0.03f;
-                        player.getAbilities().setFlyingSpeed(flySpeed);
-                    }
-
-                 */
-//                } else {
                 }
                 return false;
             }

@@ -4,6 +4,7 @@ import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
@@ -229,14 +230,17 @@ if (this.options.keyLeft.isDown()) {
 }
 if (this.options.keyRight.isDown()) {
     this.leftImpulse -= 1.0F;   // Moving Right
-}
+}     */
 
-
-
-
+    /**
+     * Calculates actual thrust to apply, applies it and returns the applied amount.
+     * Todo: move flight + swim code here so this is only called on once instead of multiple calls,
+     * or figure out some other way of unifying thrust requests and energy drain
+     * @param player
+     * @param thrust desireed thrust
+     * @param flightControl not always if the player has flight control just if the thrust should be applied differently
+     * @return
      */
-
-
     public static double thrust(Player player, double thrust, boolean flightControl) {
         PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
         double thrustUsed = 0;
@@ -245,23 +249,44 @@ if (this.options.keyRight.isDown()) {
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
 
+            // check for flight control module to set vertical flight adjustments
             double flightVerticality = 0D;
             IModularItem iModularItem = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
             if (iModularItem != null) {
-                ItemStack flightControlModule = iModularItem.getOnlineModuleOrEmpty(MPSConstants.FLIGHT_CONTROL_MODULE);
-                IPowerModule pm = flightControlModule.getCapability(NuminaCapabilities.Module.POWER_MODULE);
+                IPowerModule pm = iModularItem.getModuleCapabilityOnlineOrNull(MPSConstants.FLIGHT_CONTROL_MODULE);
                 if (pm != null) {
                     flightVerticality = pm.applyPropertyModifiers(MPSConstants.FLIGHT_VERTICALITY);
                 }
             }
 
-            int strafeState = ((playerInput.strafeRightKey ? -1 : 0) + (playerInput.strafeLeftKey ? 1 : 0));
-            double forwardReverse = ((playerInput.reverseKey ? -1D : 0) + (playerInput.forwardKey ? 1D : 0));
+            // similar to what is seen on client side
+            int leftImpulse = ((playerInput.strafeRightKey ? -1 : 0) + (playerInput.strafeLeftKey ? 1 : 0));
+            double forwardImpuse = ((playerInput.reverseKey ? -1D : 0) + (playerInput.forwardKey ? 1D : 0));
+
+            /*
+            this.leftImpulse = 0.0F;
+            this.forwardImpulse = 0.0F;
+
+            if (this.options.keyUp.isDown()) {
+                this.forwardImpulse += 1.0F; // Moving Forward
+            }
+            if (this.options.keyDown.isDown()) {
+                this.forwardImpulse -= 1.0F; // Moving Backward
+            }
+            if (this.options.keyLeft.isDown()) {
+                this.leftImpulse += 1.0F;    // Moving Left
+            }
+            if (this.options.keyRight.isDown()) {
+                this.leftImpulse -= 1.0F;   // Moving Right
+            }
+             */
+
+
 
             desiredDirection = new Vec3(
-                (desiredDirection.x * Math.signum(forwardReverse) + strafeX * Math.signum(strafeState)),
-                (flightVerticality * desiredDirection.y * Math.signum(forwardReverse) + (playerInput.jumpKey ? 1 : 0) - (playerInput.downKey ? 1 : 0)),
-                (desiredDirection.z * Math.signum(forwardReverse) + strafeZ * Math.signum(strafeState)));
+                (desiredDirection.x * Math.signum(forwardImpuse) + strafeX * Math.signum(leftImpulse)),
+                (flightVerticality * desiredDirection.y * Math.signum(forwardImpuse) + (playerInput.jumpKey ? 1 : 0) - (playerInput.downKey ? 1 : 0)),
+                (desiredDirection.z * Math.signum(forwardImpuse) + strafeZ * Math.signum(leftImpulse)));
 
             desiredDirection = desiredDirection.normalize();
 
@@ -358,6 +383,9 @@ if (this.options.keyRight.isDown()) {
         }
 
         PlayerUtils.resetFloatKickTicks(player);
+
+        NuminaLogger.logDebug("returning thrust: " + thrustUsed);
+
         return thrustUsed;
     }
 
