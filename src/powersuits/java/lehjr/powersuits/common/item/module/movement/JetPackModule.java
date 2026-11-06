@@ -141,9 +141,7 @@ public class JetPackModule extends AbstractPowerModule {
 
         @Override
         public boolean onPlayerTickInactive(Player player, Level level, ItemStack item,  int moduleIndex) {
-            if (level.isClientSide && NuminaClientConfig.useSounds) {
-                Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
-            }
+            stopSound(player, level);
             return false;
         }
 
@@ -155,6 +153,20 @@ public class JetPackModule extends AbstractPowerModule {
         @Override
         public double getDesiredThrust() {
             return applyPropertyModifiers(MPSConstants.JETPACK_THRUST);
+        }
+
+        @Override
+        public void stopSound(Player player, Level level) {
+            if (level.isClientSide && NuminaClientConfig.useSounds) {
+                Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
+            }
+        }
+
+        @Override
+        public void playSound(Player player, Level level, double percentDesiredThrust) {
+            if (level.isClientSide && NuminaClientConfig.useSounds) {
+
+            }
         }
     }
 }

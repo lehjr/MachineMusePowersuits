@@ -19,40 +19,37 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nonnull;
 
 public class GliderModule extends AbstractPowerModule {
-        public static class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module) {
-                super(module, ModuleCategory.MOVEMENT, ModuleTarget.TORSOONLY);
+    public static class Ticker extends PlayerTickModule {
+        public Ticker(@Nonnull ItemStack module) {
+            super(module, ModuleCategory.MOVEMENT, ModuleTarget.TORSOONLY);
+        }
+
+        @Override
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack chestPlate, int moduleIndex) {
+            PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
+
+            PlayerUtils.resetFloatKickTicks(player);
+            boolean hasParachute = false;
+            IModularItem iModularItem = chestPlate.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
+            if(iModularItem != null) {
+                hasParachute = iModularItem.isModuleOnline(MPSConstants.PARACHUTE_MODULE);
             }
 
-            @Override
-            public boolean onPlayerTickActive(Player player, Level level, ItemStack chestPlate, int moduleIndex) {
-                Vec3 playerHorzFacing = player.getLookAngle();
-                playerHorzFacing = new Vec3(playerHorzFacing.x, 0, playerHorzFacing.z);
-                playerHorzFacing.normalize();
-                PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-
-                PlayerUtils.resetFloatKickTicks(player);
-                boolean hasParachute = false;
-                IModularItem iModularItem = chestPlate.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
-                if(iModularItem != null) {
-                    hasParachute = iModularItem.isModuleOnline(MPSConstants.PARACHUTE_MODULE);
-                }
-
-                if(player.onGround()) {
-                    player.stopFallFlying();
-                } else {
-                    if (!hasParachute) {
-                            if(playerInput.forwardKey) {
-                            player.tryToStartFallFlying();
-                        }
+            if(player.onGround()) {
+                player.stopFallFlying();
+            } else {
+                if (!hasParachute) {
+                    if(playerInput.forwardKey) {
+                        player.tryToStartFallFlying();
                     }
                 }
-                return false;
             }
-
-            @Override
-            public boolean isAllowed() {
-                return MovementModuleConfig.gliderModuleIsAllowed;
-            }
+            return false;
         }
+
+        @Override
+        public boolean isAllowed() {
+            return MovementModuleConfig.gliderModuleIsAllowed;
+        }
+    }
 }
