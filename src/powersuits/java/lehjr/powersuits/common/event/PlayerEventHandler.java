@@ -14,6 +14,7 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class PlayerEventHandler {
     @SubscribeEvent(priority = EventPriority.NORMAL)
@@ -38,5 +39,10 @@ public class PlayerEventHandler {
         if(!moduleNames.isEmpty()) {
             MPSPackets.sendToPlayer(new ToggleableModuleListClientBound(moduleNames), (ServerPlayer) player);
         }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void onPlayerUpdate(PlayerTickEvent.Post event) {
+        MovementManager.playerMovementTick(event.getEntity(), event.getEntity().level());
     }
 }

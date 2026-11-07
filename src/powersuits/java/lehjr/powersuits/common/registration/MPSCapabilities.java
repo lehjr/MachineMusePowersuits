@@ -2,7 +2,6 @@ package lehjr.powersuits.common.registration;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.energy.ModularItemEnergyWrapper;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.externalitems.OtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -305,14 +304,14 @@ public class MPSCapabilities {
         registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ClimbAssistModule.ClimbAssistCap(stack), MPSItems.CLIMB_ASSIST_MODULE.get());
         registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new DimensionalRiftModule.RightClickie(stack), MPSItems.DIMENSIONAL_RIFT_MODULE.get());
         registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlightControlModule.Toggler(stack), MPSItems.FLIGHT_CONTROL_MODULE.get());
-        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new GliderModule.Ticker(stack), MPSItems.GLIDER_MODULE.get());
-        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetBootsModule.Ticker(stack), MPSItems.JET_BOOTS_MODULE.get());
-        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetPackModule.Ticker(stack), MPSItems.JETPACK_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new GliderModule.Toggler(stack), MPSItems.GLIDER_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetBootsModule.Toggler(stack), MPSItems.JET_BOOTS_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetPackModule.Toggler(stack), MPSItems.JETPACK_MODULE.get());
         registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JumpAssistModule.Ticker(stack), MPSItems.JUMP_ASSIST_MODULE.get());
-        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ParachuteModule.Ticker(stack), MPSItems.PARACHUTE_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ParachuteModule.Toggler(stack), MPSItems.PARACHUTE_MODULE.get());
         registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShockAbsorberModule.Toggler(stack), MPSItems.SHOCK_ABSORBER_MODULE.get());
         registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SprintAssistModule.Ticker(stack), MPSItems.SPRINT_ASSIST_MODULE.get());
-        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SwimAssistModule.Ticker(stack), MPSItems.SWIM_ASSIST_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SwimAssistModule.Toggler(stack), MPSItems.SWIM_ASSIST_MODULE.get());
 
         // Tools ----------------------------------------------------------------------------------
         registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new TinkerTableCap(stack), MPSItems.TINKER_TABLE_ITEM.get());

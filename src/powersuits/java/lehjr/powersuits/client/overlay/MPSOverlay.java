@@ -1,38 +1,16 @@
 package lehjr.powersuits.client.overlay;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
-import lehjr.numina.client.gui.geometry.DrawableRect;
-import lehjr.numina.common.base.Numina;
-import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.math.Color;
-import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.numina.common.utils.IconUtils;
-import lehjr.numina.common.utils.ItemUtils;
-import lehjr.numina.common.utils.StringUtils;
 import lehjr.powersuits.client.config.MPSClientConfig;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.control.MPSKeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MPSOverlay {
     static List<KBDisplay> kbDisplayList = new ArrayList<>();

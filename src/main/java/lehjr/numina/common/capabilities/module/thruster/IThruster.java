@@ -1,6 +1,5 @@
-package lehjr.powersuits.common.item.module.movement;
+package lehjr.numina.common.capabilities.module.thruster;
 
-import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 

@@ -67,32 +67,30 @@ public class MathUtils {
 //    }
 
     /**
-     * Used for packing a set of up to boolean values in to a single byte. This is used for sending
-     * key press tracking for modifying movement because keys are client side, but movement functions
-     * are server side.
-     *
-     * @param boolArray
-     * @return
+     * Used for packing a set of up to 8 boolean values into a single byte.
+     * Handles short arrays safely by leaving missing bits as 0.
      */
     public static byte boolArrayToByte(boolean[] boolArray) {
         byte keysOut = 0;
-        for(int i = 0; i < 8; i++ ) {
-            if (boolArray.length > i) {
-                keysOut = (byte) (keysOut | (byte) (((boolArray[i] ? 1 : 0) <<  i)));
+        // Limit the loop to the shorter of 8 or the actual array length
+        int limit = Math.min(8, boolArray.length);
+        for (int i = 0; i < limit; i++) {
+            if (boolArray[i]) {
+                keysOut |= (1 << i);
             }
         }
         return keysOut;
     }
 
     /**
-     * Used for unpacking a byte into a set of 8 boolean values
-     * @param byteVal
-     * @return
+     * Used for unpacking a byte into a set of 8 boolean values.
+     * Safely handles Java's signed bytes using a bitmask.
      */
     public static boolean[] byteToBooleanArray(byte byteVal) {
         boolean[] boolArray = new boolean[8];
-        for (int i=0; i< 8; i++) {
-            boolArray[i] = byteVal >> i > 0;
+        for (int i = 0; i < 8; i++) {
+            // Shift 1 to the bit position and check if that bit is set
+            boolArray[i] = (byteVal & (1 << i)) != 0;
         }
         return boolArray;
     }

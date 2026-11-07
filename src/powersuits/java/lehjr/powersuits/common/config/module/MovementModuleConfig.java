@@ -64,14 +64,15 @@ public class MovementModuleConfig {
 
     // Pararachute
     private static final ModConfigSpec.Builder PARACHUTE_MODULE__SETTINGS_BUILDER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.pop().push("Parachute");
+    private static final ModConfigSpec.BooleanValue PARACHUTE_MODULE__IS_ALLOWED = PARACHUTE_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
     // Shock Absorber
     private static final ModConfigSpec.Builder SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER = PARACHUTE_MODULE__SETTINGS_BUILDER.pop().push("Shock_Absorber");
-    private static final ModConfigSpec.BooleanValue SHOCK_ABSORBER_MODULE__IS_ALLOWED = PARACHUTE_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
-    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__ENERGY_CONSUMPTION_BASE = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION + MPSConstants.BASE, 0, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__ENERGY_CONSUMPTION_POWER_MULTIPLIER = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_POWER_MULTIPLIER, 100, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_BASE = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.DISTANCE_REDUCTION + MPSConstants.BASE, 0, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_POWER_MULTIPLIER = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.DISTANCE_REDUCTION + StringUtils.capitalize(MPSConstants.POWER) + MPSConstants.MULTIPLIER, 10, 0, 10000000.0D);
+    private static final ModConfigSpec.BooleanValue SHOCK_ABSORBER_MODULE__IS_ALLOWED = SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__ENERGY_CONSUMPTION_BASE = SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION + MPSConstants.BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__ENERGY_CONSUMPTION_POWER_MULTIPLIER = SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_POWER_MULTIPLIER, 100, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_BASE = SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.DISTANCE_REDUCTION + MPSConstants.BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_POWER_MULTIPLIER = SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.DISTANCE_REDUCTION + StringUtils.capitalize(MPSConstants.POWER) + MPSConstants.MULTIPLIER, 10, 0, 10000000.0D);
 
     // Sprint Assist
     private static final ModConfigSpec.Builder SPRINT_ASSIST_MODULE__SETTINGS_BUILDER = SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER.pop().push("Sprint_Assist");
@@ -138,6 +139,9 @@ public class MovementModuleConfig {
     public static double jumpAssistModuleEnergyConsumptionCompensationMultiplier;
     public static double jumpAssistModuleExhaustionCompensationBase;
     public static double jumpAssistModuleExhaustionCompensationCompensationMultiplier;
+
+    // Parachute
+    public static boolean parachuteModuleIsAllowed;
 
     // Shock Absorber
     public static boolean shockAbsorberModuleIsAllowed;
@@ -215,6 +219,9 @@ public class MovementModuleConfig {
             jumpAssistModuleExhaustionCompensationCompensationMultiplier = JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER.get();
             sprintAssistModuleWalkingSpeedMultiplierBase = SPRINT_ASSIST_MODULE__WALKING_SPEED_MULTIPLIER_BASE.get();
             sprintAssistModuleWalkingSpeedMultiplierWalkingAssistMultiplier = SPRINT_ASSIST_MODULE__WALKING_SPEED_MULTIPLIER_WALKING_ASSISTANCE_MULTIPLIER.get();
+
+            // Parachute
+            shockAbsorberModuleIsAllowed = PARACHUTE_MODULE__IS_ALLOWED.get();
 
             // Shock Absorber
             shockAbsorberModuleIsAllowed = SHOCK_ABSORBER_MODULE__IS_ALLOWED.get();

@@ -7,6 +7,8 @@ import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.thruster.IThruster;
+import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
@@ -16,7 +18,6 @@ import lehjr.numina.common.utils.TagUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.MPSCommonConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.item.module.movement.IThruster;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
@@ -208,9 +209,9 @@ public enum MovementManager {
      * @param player
      * @param level
      */
-    public void playerMovementTick(Player player, Level level) {
-        PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-        if (playerInput == null) {
+    public static void playerMovementTick(Player player, Level level) {
+        IPlayerKeyStates playerKeyStates = player.getCapability(NuminaCapabilities.PLAYER_KEYSTATES);
+        if (playerKeyStates == null || player.isPassenger()) {
             return;
         }
 
@@ -246,10 +247,19 @@ public enum MovementManager {
                 parachuteCap = chestCap.getModuleCapabilityOnlineOrNull(MPSConstants.PARACHUTE_MODULE);
                 if (parachuteCap == null) {
                     gliderCap = chestCap.getModuleCapabilityOnlineOrNull(MPSConstants.GLIDER_MODULE);
-                    if (gliderCap == null) {
-                        if (playerInput.forwardKey && !player.onGround()) {
-                            player.tryToStartFallFlying();
+                    if (gliderCap != null) {
+                        // 100000 // 32
+                        // 1000000 // 64
+
+                        NuminaLogger.logDebug("keystates: " + playerKeyStates.getStates());
+
+
+                        if (playerKeyStates.getForwardKeyState() && !player.onGround()) {
+                            NuminaLogger.logDebug("trying to elytraFly");
+
+                            player.startFallFlying();
                         } else {
+                            NuminaLogger.logDebug("trying NOT elytraFly");
                             player.stopFallFlying();
                         }
                     }
@@ -263,6 +273,8 @@ public enum MovementManager {
             }
             // try swimming
         } else {
+            NuminaLogger.logDebug("trying to swim and NOT elytraFly");
+
             player.stopFallFlying();
             legsCap = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
             if (legsCap != null) {
@@ -272,7 +284,7 @@ public enum MovementManager {
 
         if (parachuteCap != null) {
             PlayerUtils.resetFloatKickTicks(player);
-            if (player.isCrouching() && player.getDeltaMovement().y < -0.1 && (!playerInput.forwardKey)) {
+            if (player.isCrouching() && player.getDeltaMovement().y < -0.1 && (!playerKeyStates.getForwardKeyState())) {
                 double totalVelocity = Math.sqrt(
                     player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z
                         + player.getDeltaMovement().y * player.getDeltaMovement().y);
@@ -294,7 +306,7 @@ public enum MovementManager {
                         // in this case, there will be some thrust applied
                         if (flightControlCap != null) {
                             // calculate how much thrust can be applied and apply it
-                            double appliedThrust = thrust(player, desiredThrust, playerInput, true, flightControlCap);
+                            double appliedThrust = thrust(player, desiredThrust, playerKeyStates, true, flightControlCap);
 
                             // calculate percentage of desired thrust applied
                             double percentApplied = appliedThrust / desiredThrust;
@@ -304,14 +316,14 @@ public enum MovementManager {
                             thruster.playSound(player, level, percentApplied);
 
                         // here thrust is a bit more constrained since throtting thrust actually shows on in the sound
-                        } else if (playerInput.jumpKey) {
+                        } else if (playerKeyStates.getJumpKeyState()) {
                             if(level.isClientSide && NuminaClientConfig.useSounds || player.getDeltaMovement().y < 0.5) {
                                 // calculate how much thrust can be applied and apply it
-                                double appliedThrust = thrust(player, desiredThrust, playerInput, false, flightControlCap);
+                                double appliedThrust = thrust(player, desiredThrust, playerKeyStates, false, flightControlCap);
                                 // calculate percentage of desired thrust applied
                                 double percentApplied = appliedThrust / desiredThrust;
 
-                                remainingEnergy -= percentApplied * pm.getEnergyUsage();
+                                remainingEnergy -= (percentApplied * pm.getEnergyUsage());
 
                                 thruster.playSound(player, level, percentApplied);
                             }
@@ -324,43 +336,59 @@ public enum MovementManager {
                 }
             }
 
-        } else if (swimboostCap != null) {
+        } else if (swimboostCap != null && swimboostCap instanceof IThruster thruster) {
+            //                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
 
+            if((player.isInLiquid() && !player.isPassenger())) {
+                //                && (playerInput.strafeLeftKey ||
+                //                playerInput.strafeRightKey ||
+                //                playerInput.forwardKey ||
+                //                playerInput.reverseKey ||
+                //                playerInput.jumpKey ||
+                //                player.isCrouching())) {
+                double moveRatio = 0;
+                if (playerKeyStates.getForwardKeyState() || playerKeyStates.getReverseKeyState()) {
+                    moveRatio += 1.0;
+                }
+                if (playerKeyStates.getLeftStrafeKeyState() || playerKeyStates.getRightStrafeKeyState()) {
+                    moveRatio += 1.0;
+                }
+                if (playerKeyStates.getJumpKeyState() || player.isCrouching()) {
+                    moveRatio += 0.2 * 0.2;
+                }
+
+                if(moveRatio > 0) {
+                    double swimAssistRate = thruster.getDesiredThrust() * 0.05 * moveRatio;
+                    double swimEnergyConsumption = swimboostCap.getEnergyUsage();
+
+                    if (swimEnergyConsumption <= remainingEnergy) {
+                        double thrust = thrust(player, swimAssistRate, playerKeyStates, true, flightControlCap);
+                        double percentApplied = thrust / swimAssistRate;
+
+                        if(thrust > 0) {
+                            thruster.playSound(player, level, percentApplied);
+                            remainingEnergy -= (percentApplied * swimEnergyConsumption);
+                        }
+
+                        NuminaLogger.logDebug("swim Thrust: " +  thruster.getDesiredThrust());
+                        NuminaLogger.logDebug("swim assist rate calcuated: " +  swimAssistRate);
+                        NuminaLogger.logDebug("actual swim thrust to apply: " + thrust);
+
+                        //                    SprintAssistModule.setMovementModifier(itemStack, getModule(), swimAssistRate * 100000, MPSConstants.SWIM_SPEED);
+                    } else {
+                        thruster.stopSound(player, level);
+                    }
+                }
+            }
+        }
+
+        if(remainingEnergy != playerEnergy && !level.isClientSide()) {
+            double energyUsed = (remainingEnergy - playerEnergy) * -1.0;
+            ElectricItemUtils.drainPlayerEnergy(player, energyUsed, true);
         }
     }
 
-
-
-
-
-    //        IPowerModule gliderCap = null;
-    //        IPowerModule jetpackCap = null;
-    //
-    //        // legs
-    //        IModularItem legsCap = null;
-    //        IPowerModule swimboostCap = null;
-    //
-    //        // feet
-    //        IModularItem feetCap = null;
-    //        IPowerModule jetBootsCap = null;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public static double thrust(Player player, double thrust, PlayerMovementInputWrapper.PlayerMovementInput playerInput, boolean verticleAdust, IPowerModule flightControlCap) {
+    public static double thrust(Player player, double thrust, IPlayerKeyStates playerInput, boolean verticleAdust, IPowerModule flightControlCap) {
         double thrustUsed = 0;
         if (verticleAdust) {
             Vec3 desiredDirection = player.getLookAngle().normalize();
@@ -376,8 +404,8 @@ public enum MovementManager {
             }
 
             // similar to what is seen on client side
-            int leftImpulse = ((playerInput.strafeRightKey ? -1 : 0) + (playerInput.strafeLeftKey ? 1 : 0));
-            double forwardImpuse = ((playerInput.reverseKey ? -1D : 0) + (playerInput.forwardKey ? 1D : 0));
+            int leftImpulse = ((playerInput.getRightStrafeKeyState() ? -1 : 0) + (playerInput.getLeftStrafeKeyState() ? 1 : 0));
+            double forwardImpuse = ((playerInput.getReverseKeyState() ? -1D : 0) + (playerInput.getForwardKeyState() ? 1D : 0));
 
             /*
             this.leftImpulse = 0.0F;
@@ -401,7 +429,7 @@ public enum MovementManager {
 
             desiredDirection = new Vec3(
                 (desiredDirection.x * Math.signum(forwardImpuse) + strafeX * Math.signum(leftImpulse)),
-                (flightVerticality * desiredDirection.y * Math.signum(forwardImpuse) + (playerInput.jumpKey ? 1 : 0) - (playerInput.downKey ? 1 : 0)),
+                (flightVerticality * desiredDirection.y * Math.signum(forwardImpuse) + (playerInput.getJumpKeyState() ? 1 : 0) - (playerInput.getDownKeyState() ? 1 : 0)),
                 (desiredDirection.z * Math.signum(forwardImpuse) + strafeZ * Math.signum(leftImpulse)));
 
             desiredDirection = desiredDirection.normalize();
@@ -466,14 +494,14 @@ public enum MovementManager {
             Vec3 desiredDirection = player.getLookAngle().normalize();
             desiredDirection = new Vec3(desiredDirection.x, 0, desiredDirection.z);
             desiredDirection.normalize();
-            if (!playerInput.forwardKey) {
+            if (!playerInput.getForwardKeyState()) {
                 player.setDeltaMovement(player.getDeltaMovement().add(0, thrust, 0));
             } else {
 
                 //                NuminaLogger.logDebug("thrust: " + thrust +", thrust * root2: " + (thrust * root2) );
 
                 player.setDeltaMovement(player.getDeltaMovement().add(
-                    desiredDirection.x * thrust * root2 * boolToVal(playerInput.forwardKey),
+                    desiredDirection.x * thrust * root2 * boolToVal(playerInput.getForwardKeyState()),
                     thrust * root2,
                     desiredDirection.z * thrust * root2// * Math.signum(playerInput.forwardKey)
                 ));

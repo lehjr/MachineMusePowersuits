@@ -3,6 +3,7 @@ package lehjr.numina.common.capabilities.inventory.modularitem;
 import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.thruster.IThruster;
 import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
@@ -421,6 +422,10 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
                         updateModuleInSlot(i, ticker.getModule());
                     }
                 }
+            }
+
+            if(pm instanceof IThruster thruster && !pm.isModuleOnline()) {
+                thruster.stopSound(player, level);
             }
         }
     }
