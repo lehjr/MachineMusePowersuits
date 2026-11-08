@@ -249,11 +249,12 @@ public class AbstractElectricArmor extends ArmorItem {
         return false;
     }
 
+    /*
+     * Always return true here prevents elytra reset on server
+     */
     @Override
     public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
-        NuminaLogger.logDebug("ElytraFlightTicks: " + flightTicks);
-
-        return super.elytraFlightTick(stack, entity, flightTicks);
+        return true;
     }
 
     /*

@@ -51,7 +51,9 @@ public class JetBootsModule extends AbstractPowerModule {
 
         @Override
         public void playSound(Player player, Level level, double percentDesiredThrust) {
-            Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (percentDesiredThrust * 6.25), 1.0f, true);
+            if (level.isClientSide && NuminaClientConfig.useSounds) {
+                Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (percentDesiredThrust * 6.25), 1.0f, true);
+            }
         }
     }
 }

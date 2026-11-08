@@ -2,7 +2,6 @@
     "required" : true,
     "minVersion" : "0.8.5",
     "package" : "lehjr.numina.mixin",
-    "refmap" : "mixins.numina.json",
     "compatibilityLevel" : "JAVA_21",
     "injectors" : {
         "defaultRequire" : 1

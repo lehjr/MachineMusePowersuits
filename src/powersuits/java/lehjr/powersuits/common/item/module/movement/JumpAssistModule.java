@@ -1,9 +1,10 @@
 package lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.PlayerUtils;
 import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -36,8 +37,8 @@ public class JumpAssistModule extends AbstractPowerModule {
 
         @Override
         public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
-            PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-            if (playerInput.jumpKey) {
+            IPlayerKeyStates keyStates = player.getCapability(NuminaCapabilities.PLAYER_KEYSTATES);
+            if (keyStates != null && keyStates.getJumpKeyState()) {
                 double multiplier = MovementManager.INSTANCE.getPlayerJumpMultiplier(player);
                 if (multiplier > 0) {
                     player.setDeltaMovement(player.getDeltaMovement().add(0, 0.15 * Math.min(multiplier, 1), 0));

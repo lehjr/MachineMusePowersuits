@@ -18,6 +18,9 @@ license="${mod_license}"
 [[accessTransformers]]
     file="META-INF/accesstransformer.cfg"
 
+[[mixins]]
+    config="powersuits.mixins.json"
+
 [[dependencies.powersuits]]
     modId="neoforge"
     type="required"
