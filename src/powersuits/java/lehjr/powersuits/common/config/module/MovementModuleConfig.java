@@ -39,7 +39,7 @@ public class MovementModuleConfig {
     private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__ENERGY_CONSUMPTION_BASE = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 0, 0, 10000000.0D);
     private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__THRUST_BASE = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST, 0, 0, 0.01);
     private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__ENERGY_CONSUMPTION_THRUST_MULTIPLIER = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_THRUST_MULTIPLIER, 750, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__THRUST_MULTIPLIER = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST_MULTIPLIER, 0.04, 0, 0.06);
+    private static final ModConfigSpec.DoubleValue JETBOOTS_MODULE__THRUST_MULTIPLIER = JETBOOTS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST_MULTIPLIER, 0.06, 0, 0.4);
 
     // JetPack
     private static final ModConfigSpec.Builder JETPACK_MODULE__SETTINGS_BUILDER = JETBOOTS_MODULE__SETTINGS_BUILDER.pop().push("JetPack");
