@@ -2,6 +2,8 @@ package lehjr.powersuits.client.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.client.sound.Musique;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
@@ -64,6 +66,7 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -247,6 +250,11 @@ public class ClientEventBusSubscriber {
                 event.setCanceled(true);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        Musique.stopAllPlayerSounds();
     }
 
     @SubscribeEvent

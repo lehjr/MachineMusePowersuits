@@ -14,7 +14,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Claire on 8/27/2015.
@@ -23,13 +24,14 @@ import java.util.HashMap;
  */
 @OnlyIn(Dist.CLIENT)
 public class Musique {
-    private static HashMap<String, MovingSoundPlayer> soundMap = new HashMap<>();
+    // ConcurrentHashMap handles thread-safety between the game thread and audio thread with zero locking overhead
+    private static final Map<String, MovingSoundPlayer> soundMap = new ConcurrentHashMap<>();
 
     public static SoundManager mcsound() {
         return Minecraft.getInstance().getSoundManager();
     }
 
-    public static void playClientSound(SoundEvent soundEvt, float volumeIn) {
+    public static void playClientUISound(SoundEvent soundEvt, float volumeIn) {
         if (NuminaClientConfig.useSounds) {
             mcsound().play(SimpleSoundInstance.forUI(soundEvt, volumeIn));
         }
@@ -46,6 +48,7 @@ public class Musique {
     public static void playerSound(Player player, SoundEvent soundEvt, SoundSource categoryIn, float volume, @Nullable Float pitch, @Nullable Boolean continuous) {
         pitch = (pitch != null) ? pitch : 1.0F;
         continuous = continuous == null || continuous;
+
         if (NuminaClientConfig.useSounds) {
             String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);
@@ -54,34 +57,37 @@ public class Musique {
                 stopPlayerSound(soundID);
                 sound = null;
             }
+
             if (sound != null) {
                 sound.updateVolume(volume).updatePitch(pitch).updateRepeat(continuous);
             } else {
-                MovingSoundPlayer newsound = new MovingSoundPlayer(soundEvt, categoryIn, player, volume * 2.0f, pitch, continuous);
-                mcsound().play(newsound);
+                // Pass a lambda callback () -> soundMap.remove(soundID) directly into the sound instance
+                MovingSoundPlayer newsound = new MovingSoundPlayer(soundEvt, categoryIn, player, volume * 2.0f, pitch, continuous, () -> soundMap.remove(soundID));
                 soundMap.put(soundID, newsound);
+                mcsound().play(newsound);
             }
         }
     }
 
     static void stopPlayerSound(String soundID) {
-        if (NuminaClientConfig.useSounds) {
-            MovingSoundPlayer sound = soundMap.get(soundID);
-            if (sound != null) {
-                sound.stopPlaying();
-                mcsound().stop(sound);
-            }
-            soundMap.remove(soundID);
+        MovingSoundPlayer sound = soundMap.get(soundID);
+        if (sound != null) {
+            sound.stopPlaying();
+            mcsound().stop(sound);
         }
-//             NuminaLogger.logDebug("Sound stopped: " + soundEvt.getLocation());
+        soundMap.remove(soundID);
     }
-
 
     public static void stopPlayerSound(Player player, SoundEvent soundEvt) {
         if (NuminaClientConfig.useSounds) {
             String soundID = makeSoundString(player, soundEvt);
             stopPlayerSound(soundID);
-//             NuminaLogger.logDebug("Sound stopped: " + soundEvt.getLocation());
+        }
+    }
+
+    public static void stopAllPlayerSounds() {
+        for(String soundID : soundMap.keySet()) {
+            stopPlayerSound(soundID);
         }
     }
 }

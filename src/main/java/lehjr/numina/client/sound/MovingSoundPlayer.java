@@ -11,30 +11,34 @@ import net.neoforged.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class MovingSoundPlayer extends AbstractTickableSoundInstance {
     private final Player player;
+    private final Runnable onStopCallback; // The cleanup reference
 
-    /*
-     * Important porting note:
-     * Sounds are now event based instead of resource location.
-     */
     public MovingSoundPlayer(SoundEvent soundIn,
-                             SoundSource categoryIn,
-                             Player playerIn,
-                             float newvolume,
-                             float pitchIn,
-                             boolean loopingIn) {
-
+        SoundSource categoryIn,
+        Player playerIn,
+        float newvolume,
+        float pitchIn,
+        boolean loopingIn,
+        Runnable onStopCallback) {
         super(soundIn, categoryIn, RandomSource.create());
         this.player = playerIn;
         this.pitch = pitchIn;
         this.volume = newvolume;
         this.looping = loopingIn;
+        this.onStopCallback = onStopCallback;
     }
 
     @Override
     public void tick() {
-        this.x = (float) this.player().getX();
-        this.y = (float) this.player().getY();
-        this.z = (float) this.player().getZ();
+        // Prevent memory leaks: if the player logs out, dies, or leaves tracking range, kill the sound
+        if (this.player == null || !this.player.isAlive() || this.player.isRemoved()) {
+            this.stopPlaying();
+            return;
+        }
+
+        this.x = (float) this.player.getX();
+        this.y = (float) this.player.getY();
+        this.z = (float) this.player.getZ();
     }
 
     public Player player() {
@@ -63,5 +67,8 @@ public class MovingSoundPlayer extends AbstractTickableSoundInstance {
 
     public void stopPlaying() {
         this.stop();
+        if (this.onStopCallback != null) {
+            this.onStopCallback.run(); // Fires the lambda to wipe this sound out of Musique's map instantly
+        }
     }
 }

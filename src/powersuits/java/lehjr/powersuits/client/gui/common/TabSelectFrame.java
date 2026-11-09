@@ -39,7 +39,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
         /** Install Salvage GUI (the only AbstractContainerMenued GUI)*/
         button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.install.salvage"), active != 0);
         button.setOnPressed(onPressed->{
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+            Musique.playClientUISound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
             MPSPackets.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.MAINHAND, false, -1, -1));
         });
         buttons.add(button);
@@ -47,7 +47,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
         /** Module Tweak Gui */
         button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.module.tweak"), active != 1);
         button.setOnPressed(onPressed->{
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+            Musique.playClientUISound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
             Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(Component.translatable("gui.tinkertable"))));
         });
         buttons.add(button);
@@ -55,7 +55,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
         /** Keybind Gui */
         button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.keybinds"), active !=2);
         button.setOnPressed(onPressed->{
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+            Musique.playClientUISound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
             Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeymapGui(player, Component.translatable("gui.powersuits.tab.keybinds.toggle"))));
         });
         buttons.add(button);
@@ -63,7 +63,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
         /** Cosmetic Tweak Frame */
         button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.visual"), active !=3);
         button.setOnPressed(onPressed->{
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+            Musique.playClientUISound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
             Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.getInventory(), Component.translatable("gui.tinkertable"))));
         });
         buttons.add(button);

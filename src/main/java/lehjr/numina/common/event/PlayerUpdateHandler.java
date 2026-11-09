@@ -26,7 +26,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class PlayerUpdateHandler {
-
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void onPlayerUpdate(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
@@ -68,6 +67,8 @@ public class PlayerUpdateHandler {
         }
     }
 
+
+
     @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof ServerPlayer player && NuminaCommonConfig.keepModularItemsOnDeath) {
@@ -81,21 +82,13 @@ public class PlayerUpdateHandler {
             for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
                 ItemStack stack = inventory.getItem(slot);
 
-                if (!stack.isEmpty()) {
-                    if (shouldPreserveItem(stack)) {
-                        // CRITICAL FIX: stack.saveOptional() creates and returns the valid 1.21 NBT data structure
-                        // Tag is returned as a generic Tag interface, so we cast it to CompoundTag
-                        CompoundTag itemTag = (CompoundTag) stack.saveOptional(player.registryAccess());
+                if (!stack.isEmpty() && shouldPreserveItem(stack)) {
+                    CompoundTag itemTag = (CompoundTag) stack.saveOptional(player.registryAccess());
+                    itemTag.putByte("Slot", (byte) slot);
+                    savedItemsList.add(itemTag);
 
-                        // Inject the explicit slot tracker into the newly generated item NBT structure
-                        itemTag.putByte("Slot", (byte) slot);
-
-                        savedItemsList.add(itemTag);
-
-                        // Clear the stack from the player inventory right here so that vanilla
-                        // Minecraft doesn't drop it into the world when player death drops process next!
-                        inventory.setItem(slot, ItemStack.EMPTY);
-                    }
+                    // Clear immediately so vanilla doesn't drop it on the ground
+                    inventory.setItem(slot, ItemStack.EMPTY);
                 }
             }
 
@@ -107,49 +100,54 @@ public class PlayerUpdateHandler {
         }
     }
 
-    // Example Filtering Logic
-    private static boolean shouldPreserveItem(ItemStack stack) {
-        return NuminaCapabilities.getModularItemOrModeChangingCapability(stack) != null;
-    }
-
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
+        // Only trigger on real death respawns, ignoring standard dimension swaps
         if (event.isWasDeath() && event.getEntity() instanceof ServerPlayer newPlayer) {
+
+            // Clean up unrelated capabilities on the alive player entity
             IPlayerKeyStates keyStates = newPlayer.getCapability(NuminaCapabilities.PLAYER_KEYSTATES);
-            if(keyStates != null) {
-                keyStates.setStates((byte) 0); // Explicitly wipe bitmask
+            if (keyStates != null) {
+                keyStates.setStates((byte) 0);
             }
 
-            if(NuminaCommonConfig.keepModularItemsOnDeath) {
+            if (NuminaCommonConfig.keepModularItemsOnDeath) {
                 ServerPlayer oldPlayer = (ServerPlayer) event.getOriginal();
-                if (oldPlayer.hasData(NuminaCodecs.INVENTORY_BACKUP.get())) {
-                    CompoundTag data = oldPlayer.getData(NuminaCodecs.INVENTORY_BACKUP.get());
-                    if (data.contains("FilteredInventory", 9)) { // 9 is ListTag ID
-                        ListTag listTag = data.getList("FilteredInventory", 10); // 10 is CompoundTag ID
-                        for (int i = 0; i < listTag.size(); i++) {
-                            CompoundTag itemTag = listTag.getCompound(i);
-                            int slot = itemTag.getByte("Slot") & 255; // Decode raw byte slot index
+                CompoundTag backupData = null;
 
-                            // Reconstruct the ItemStack using the server's registry context
-                            ItemStack restoredStack = ItemStack.parse(newPlayer.registryAccess(), itemTag).orElse(ItemStack.EMPTY);
+                // 1. Check if copyOnDeath() successfully migrated it to the new player object
+                if (newPlayer.hasData(NuminaCodecs.INVENTORY_BACKUP.get())) {
+                    backupData = newPlayer.getData(NuminaCodecs.INVENTORY_BACKUP.get());
+                }
+                // 2. Fallback: Check if it remained stranded on the old loaded-from-disk dead entity
+                else if (oldPlayer.hasData(NuminaCodecs.INVENTORY_BACKUP.get())) {
+                    backupData = oldPlayer.getData(NuminaCodecs.INVENTORY_BACKUP.get());
+                }
 
-                            if (!restoredStack.isEmpty() && slot < newPlayer.getInventory().getContainerSize()) {
-                                newPlayer.getInventory().setItem(slot, restoredStack);
-                            }
+                // If backup data exists in either state, safely process the restoration
+                if (backupData != null && backupData.contains("FilteredInventory", 9)) {
+                    ListTag listTag = backupData.getList("FilteredInventory", 10);
+
+                    for (int i = 0; i < listTag.size(); i++) {
+                        CompoundTag itemTag = listTag.getCompound(i);
+                        int slot = itemTag.getByte("Slot") & 255;
+
+                        ItemStack restoredStack = ItemStack.parse(newPlayer.registryAccess(), itemTag).orElse(ItemStack.EMPTY);
+
+                        if (!restoredStack.isEmpty() && slot < newPlayer.getInventory().getContainerSize()) {
+                            newPlayer.getInventory().setItem(slot, restoredStack);
                         }
                     }
                 }
+
+                // Definitive cleanup to prevent duplication exploits across any subsequent cloning
+                newPlayer.removeData(NuminaCodecs.INVENTORY_BACKUP.get());
+                oldPlayer.removeData(NuminaCodecs.INVENTORY_BACKUP.get());
             }
         }
     }
 
-    @SubscribeEvent
-    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            IPlayerKeyStates keyStates = serverPlayer.getCapability(NuminaCapabilities.PLAYER_KEYSTATES);
-            if(keyStates != null) {
-                keyStates.setStates((byte) 0); // Explicitly wipe bitmask
-            }
-        }
+    private static boolean shouldPreserveItem(ItemStack stack) {
+        return NuminaCapabilities.getModularItemOrModeChangingCapability(stack) != null;
     }
 }

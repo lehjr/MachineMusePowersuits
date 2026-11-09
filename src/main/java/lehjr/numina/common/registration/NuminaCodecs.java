@@ -49,7 +49,6 @@ public class NuminaCodecs {
     public static DataComponentType<SimpleFluidContent> ITEM_FLUID_CODEC = register("item_fluid",
             builder -> builder.persistent(SimpleFluidContent.CODEC).networkSynchronized(SimpleFluidContent.STREAM_CODEC));
 
-
     private static <T> DataComponentType<T> register(String name, Consumer<DataComponentType.Builder<T>> customizer) {
         var builder = DataComponentType.<T>builder();
         customizer.accept(builder);
@@ -85,6 +84,8 @@ public class NuminaCodecs {
     }
 
     public static final Supplier<AttachmentType<CompoundTag>> INVENTORY_BACKUP =
-        ATTACHMENT_TYPES.register("inventory_backup", () -> AttachmentType.builder(() -> new CompoundTag()).build());
-
+        ATTACHMENT_TYPES.register("inventory_backup", () -> AttachmentType.builder(() -> new CompoundTag())
+            .serialize(CompoundTag.CODEC)
+            .copyOnDeath() // Automatically copies data from old dead entity to new alive entity
+            .build());
 }
