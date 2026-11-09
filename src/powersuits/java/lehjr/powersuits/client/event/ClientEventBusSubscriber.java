@@ -28,6 +28,7 @@ import lehjr.powersuits.common.registration.MPSBlocks;
 import lehjr.powersuits.common.registration.MPSEntities;
 import lehjr.powersuits.common.registration.MPSItems;
 import lehjr.powersuits.common.registration.MPSMenuTypes;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -45,6 +46,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -159,7 +161,6 @@ public class ClientEventBusSubscriber {
      * @param event
      */
     @OnlyIn(Dist.CLIENT)
-    //    @SubscribeEvent
     public static void renderBlockHighlight(RenderHighlightEvent.Block event) {
         Color.WHITE.setShaderColor();
         Level level = Minecraft.getInstance().level;
@@ -176,12 +177,12 @@ public class ClientEventBusSubscriber {
             ItemStack module = mci.getActiveModule();
             IPowerModule pm = mci.getModuleCapability(module);
 
-            if(pm instanceof IHighlight highlight && pm.isModuleOnline()) {
+            if (pm instanceof IHighlight highlight && pm.isModuleOnline()) {
                 playerEnergy = playerEnergy - pm.getEnergyUsage();
                 NonNullList<IBlockBreakingModule> modules = NonNullList.create();
-                for (int i=0; i< mci.getSlots(); i++) {
+                for (int i = 0; i < mci.getSlots(); i++) {
                     IPowerModule pm1 = mci.getModuleCapability(mci.getStackInSlot(i));
-                    if(pm1 instanceof IBlockBreakingModule bbm && pm1 != pm) {
+                    if (pm1 instanceof IBlockBreakingModule bbm && pm1 != pm) {
                         modules.add(bbm);
                     }
                 }
@@ -196,7 +197,7 @@ public class ClientEventBusSubscriber {
                         playerEnergy
                     );
 
-                if(blockPositions.isEmpty()) {
+                if (blockPositions.isEmpty()) {
                     return;
                 }
 
@@ -204,29 +205,34 @@ public class ClientEventBusSubscriber {
                 MultiBufferSource buffer = event.getMultiBufferSource();
                 VertexConsumer lineBuilder = buffer.getBuffer(RenderType.LINES);
 
-                double partialTicks = event.getDeltaTracker().getGameTimeDeltaPartialTick(true); //  FIXME: IS this correct
+                // FIX 1: Extract the true camera position vector.
+                // This accurately shifts the matrix origin regardless of first or third-person views.
+                Camera camera = event.getCamera();
+                Vec3 cameraPos = camera.getPosition();
+                double camX = cameraPos.x();
+                double camY = cameraPos.y();
+                double camZ = cameraPos.z();
 
-                double x = player.xOld + (player.getX() - player.xOld) * partialTicks;
-                double y = player.yOld + player.getEyeHeight() + (player.getY() - player.yOld) * partialTicks;
-                double z = player.zOld + (player.getZ() - player.zOld) * partialTicks;
                 matrixStack.pushPose();
 
                 blockPositions.forEach((blockPostionData, miningLevel) -> {
                     BlockPos blockPos = blockPostionData.pos();
-                    AABB aabb = new AABB(blockPos).move(-x, -y, -z);
 
-                    float r=0F;
-                    float g=0F;
-                    float b=0;
-                    float a=0.2F;
+                    // FIX 2: Move the bounding box relative to the true camera position
+                    AABB aabb = new AABB(blockPos).move(-camX, -camY, -camZ);
+
+                    float r = 0F;
+                    float g = 0F;
+                    float b = 0;
+                    float a = 0.2F;
 
                     // Render the targeted block at full brightness to distinguish it from others
                     if (blockPos.compareTo(result.getBlockPos()) == 0) {
-                        a=1;
+                        a = 1;
                     }
 
                     if (blockPostionData.canHarvest()) {
-                        if(miningLevel == 1) {
+                        if (miningLevel == 1) {
                             g = 0.8F;
                         } else {
                             g = 1F;

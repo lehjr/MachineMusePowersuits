@@ -10,6 +10,9 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class MPSCommonConfig {
 
     private static final ModConfigSpec.Builder builder = new ModConfigSpec.Builder().comment("General settings").push("General");
+
+
+    // 20 ticks per second...
     private static final ModConfigSpec.DoubleValue GENERAL_MAX_FLYING_SPEED = builder.comment("Maximum flight speed (in m/s)").translation(MPSConstants.CONFIG_GENERAL_MAX_FLYING_SPEED).defineInRange("maximumFlyingSpeedmps", 25.0, 0, Float.MAX_VALUE);
 
     public static final ModConfigSpec MPS_GENERAL_SPEC = builder.build();

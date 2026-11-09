@@ -543,31 +543,27 @@ public enum MovementManager {
             thrustUsed += thrust;
         }
 
-        double horzm1 = player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z;
-
-        NuminaLogger.logDebug("player speed: " + computePlayerVelocity(player) + ", horzm2: " + horzm1);
-
-
         // Slow the player if they are going too fast
-        if(!player.isFallFlying() && !player.isSwimming()) {
 
-            double horizontalMovementSquared = player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z;
+        double horizontalMovementSquared = player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z;
 
-            // currently comes out to 0.0625 // fIxmE: actually comes out to 1.5625... and why are we even manipulating this value. Just set a real range, 0 - 2 with a default of 1.5 or so
-            double horizontalLimit = MPSCommonConfig.maxFlyingSpeed * MPSCommonConfig.maxFlyingSpeed / 400;
+        // currently comes out to 0.0625 // fIxmE: actually comes out to 1.5625... and why are we even manipulating this value. Just set a real range, 0 - 2 with a default of 1.5 or so
+        double horizontalLimit = MPSCommonConfig.maxFlyingSpeed * MPSCommonConfig.maxFlyingSpeed * 0.05; // speed squared * 1/20 because 20 ticks per second
 
-            if (player.isCrouching() && horizontalLimit > 0.05) {
-                horizontalLimit = 0.05;
-            }
+        NuminaLogger.logDebug("horizontalMovementSquared: " + horizontalMovementSquared + ", horizontalLimit: " + horizontalLimit);
 
-            if (horizontalMovementSquared > horizontalLimit) {
-                double ratio = Math.sqrt(horizontalLimit / horizontalMovementSquared);
-                player.setDeltaMovement(
-                    player.getDeltaMovement().x * ratio,
-                    player.getDeltaMovement().y,
-                    player.getDeltaMovement().z * ratio);
-            }
+        if (player.isCrouching() && horizontalLimit > 0.05) {
+            horizontalLimit = 0.05;
         }
+
+        if (horizontalMovementSquared > horizontalLimit) {
+            double ratio = Math.sqrt(horizontalLimit / horizontalMovementSquared);
+            player.setDeltaMovement(
+                player.getDeltaMovement().x * ratio,
+                player.getDeltaMovement().y,
+                player.getDeltaMovement().z * ratio);
+        }
+
 
         PlayerUtils.resetFloatKickTicks(player);
 
