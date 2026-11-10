@@ -126,6 +126,8 @@ public class ModuleTweakFrame extends ScrollableFrame {
                 NuminaLogger.logDebug("missing translation: " + translationString);
             }
 
+//            NuminaLogger.logDebug("translation: " + translation.getString());
+
             List<Component> namesList = StringUtils.wrapComponentToLength(translation, (int)allowedNameWidth);
 
             for (int i = 0; i < namesList.size(); i++) {

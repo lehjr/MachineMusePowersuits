@@ -16,16 +16,18 @@ Modular Powersuits is a Minecraft mod based around the idea of an inventor who t
 [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modular-powersuits)
 [Modrinth](https://modrinth.com/mod/modularpowersuits)
 
-Alpha 3 Todo: 
+Alpha 4 Todo: 
 - finalize default config settings for thermal energy generation modules. 
 - finalize config settings for solar energy modules
 
-Beta 1 Todo:
-- revisit flight and swimming code and make more unified. 
+~~Beta 1 Todo:~~
+~~- revisit flight and swimming code and make more unified.~~ 
 
-Beta 2 Todo:
+~~Beta 2 Todo:~~
+- Release 1 Todo:
 - revisit blockbreaking module code and find better way to more accurately control speed. Current code emulates different tiered tools but seems to lack refined speed control (may be due to target hardness vs tool material). 
 
-Release 1 Todo:
-finalize code refinements and testing. 
+Release 3 Todo:
+~~finalize code refinements and testing.~~
+- bugfixes as needed
 

@@ -18,7 +18,7 @@ public class EnergyShieldModule extends AbstractPowerModule {
     public static class EnergyShieldCapabilityWrapper extends PlayerTickModule {
         public EnergyShieldCapabilityWrapper(ItemStack module) {
             super(module, ModuleCategory.ARMOR, ModuleTarget.ARMORONLY);
-            addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_VALUE_ENERGY, ArmorModuleConfig.energyShieldFieldStrengthMultiplier, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
+            addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_VALUE_ENERGY, ArmorModuleConfig.energyShieldFieldStrengthMultiplier, "pts");
             addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ENERGY_CONSUMPTION, ArmorModuleConfig.energyShieldEnergyConsumptionMultiplier, "FE");
             addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, NuminaConstants.MAXIMUM_HEAT, ArmorModuleConfig.energyShieldMaxHeatMultiplier);
             addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_TOUGHNESS, ArmorModuleConfig.energyShieldToughnessMultiplier);
