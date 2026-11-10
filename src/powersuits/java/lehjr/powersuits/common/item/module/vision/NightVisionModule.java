@@ -36,7 +36,7 @@ public class NightVisionModule extends AbstractPowerModule {
             removed = TagUtils.getModuleBoolean(module, REMOVED);
         }
 
-//        int tick = 0; // cooldown timer because firing too quickly will crash things and this doesn't need to fire that rapidly anyway
+        //        int tick = 0; // cooldown timer because firing too quickly will crash things and this doesn't need to fire that rapidly anyway
 
         @Override
         public boolean isAllowed() {
@@ -54,16 +54,14 @@ public class NightVisionModule extends AbstractPowerModule {
             MobEffectInstance nightVisionEffect = player.hasEffect(MobEffects.NIGHT_VISION) ? player.getEffect(MobEffects.NIGHT_VISION) : null;
             if (totalEnergy > powerDrain) {
                 if (nightVisionEffect == null || nightVisionEffect.getDuration() < 500) {
-                    MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0, false, false);
-                    if (CommonHooks.canMobEffectBeApplied(player, mobEffectInstance, (Entity)null)) { // is this check needed?
-                        if (player.addEffect(mobEffectInstance)) {
-                            IModularItem modularItem = NuminaCapabilities.getModularItem(item);
-                            if (modularItem != null) {
-                                modularItem.setModuleBoolean(MPSConstants.NIGHT_VISION_MODULE, ADDED, true);
-                                modularItem.setModuleBoolean(MPSConstants.NIGHT_VISION_MODULE, REMOVED, false);
-                            }
-                            ElectricItemUtils.drainPlayerEnergy(player, powerDrain, false);
+                    MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.NIGHT_VISION, 800, 0, false, false);
+                    if (player.addEffect(mobEffectInstance)) {
+                        IModularItem modularItem = NuminaCapabilities.getModularItem(item);
+                        if (modularItem != null) {
+                            modularItem.setModuleBoolean(MPSConstants.NIGHT_VISION_MODULE, ADDED, true);
+                            modularItem.setModuleBoolean(MPSConstants.NIGHT_VISION_MODULE, REMOVED, false);
                         }
+                        ElectricItemUtils.drainPlayerEnergy(player, powerDrain, false);
                     }
                 }
             } else {
