@@ -55,14 +55,13 @@ public class MPSKeyMapping extends KeyMapping {
         }
     }
 
-    public void toggleModules() {
+    public void syncModules(boolean online) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }
 
-        // flip value before setting
-        toggleVal = !toggleVal;
+        toggleVal = online;
 
         NuminaPackets.sendToServer(new ToggleRequestPacketServerBound(registryName, toggleVal));
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
@@ -74,5 +73,10 @@ public class MPSKeyMapping extends KeyMapping {
 
         // reload after changing to verify changes
         initToggleVal();
+    }
+
+
+    public void toggleModules() {
+        syncModules(!toggleVal);
     }
 }

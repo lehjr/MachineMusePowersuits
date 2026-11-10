@@ -53,6 +53,8 @@ public class KBDisplay extends DrawableRect {
         // clear the map first...
         keybindsToRender.clear();
 
+        List<MPSKeyMapping> syncKBList = new ArrayList<>();
+
         // ...then filter and repopulate it
         for (MPSKeyMapping  kb : boundKeybinds) {
             if(kb.showOnHud) {
@@ -61,8 +63,7 @@ public class KBDisplay extends DrawableRect {
                 // just using the icon
                 Item module = BuiltInRegistries.ITEM.get(kb.registryName);
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
-                    ItemStack stack = ItemUtils.getItemFromEntitySlot(getPlayer(), slot);
-                    IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(stack);
+                    IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(getPlayer().getItemBySlot(slot));
                     if(iModularItem != null) {
                         int index = iModularItem.findInstalledModule(module);
                         if (index != -1) {
@@ -73,7 +74,7 @@ public class KBDisplay extends DrawableRect {
                                     if(index == mci.getActiveMode()) {
                                         active = mci.hasActiveModule(index, module);
                                     } else {
-                                        // see if the module in question is a block breaking module that doesn't need to be selected to works
+                                        // see if the module in question is a block breaking module that doesn't need to be selected to work
                                         IPowerModule pm = mci.getModuleCapability(mci.getStackInSlot(index));
                                         if(pm != null && pm.isAllowed() && pm.isModuleOnline()) {
                                             for (String group : List.of("shovel", "axe", "pickaxe", "hoe", "shears")) {
@@ -91,14 +92,24 @@ public class KBDisplay extends DrawableRect {
                         }
                     }
 
-                    // stop at the first active instance
-                    if(active) {
-                        break;
-                    }
+//                    // stop at the first active instance // keep going anyway so we can sync
+//                    if(active) {
+//                        break;
+//                    }
                 }
                 if (installed) {
-                    keybindsToRender.put(kb, active);
+                    if(keybindsToRender.containsKey(kb) && keybindsToRender.get(kb) != active) {
+                        syncKBList.add(kb);
+                    } else {
+                        keybindsToRender.put(kb, active);
+                    }
                 }
+            }
+        }
+
+        if(!syncKBList.isEmpty()) {
+            for(MPSKeyMapping kb : syncKBList) {
+                kb.syncModules(true);
             }
         }
     }
