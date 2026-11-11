@@ -190,7 +190,7 @@ public class KeymappingKeyHandler {
     // FIXME: move away from dynamic loading, just create a static list and be done with it.
 
     public static void checkCapabitiesForMoreModules() {
-        NuminaLogger.logDebug("Loading KeyModuleBindings for : " + MPSCapabilities.toggleableModules.size() + " modules");
+//        NuminaLogger.logDebug("Loading KeyModuleBindings for : " + MPSCapabilities.toggleableModules.size() + " modules");
 
         for (ItemLike item : MPSCapabilities.toggleableModules) {
             registerKeybinding(item);
@@ -210,17 +210,17 @@ public class KeymappingKeyHandler {
     }
 
     public static void registerKeybinding(ResourceLocation registryName, boolean showOnHud) {
-        NuminaLogger.logDebug("trying to register kb for : " + registryName);
+//        NuminaLogger.logDebug("trying to register kb for : " + registryName);
         String keybindingName = "keybinding." + registryName.getNamespace() + "." + registryName.getPath();
         registerKeyBinding(registryName, keybindingName, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP, showOnHud, false);
     }
 
     public static void registerKeyBinding(ResourceLocation registryName, String  keybindingName, int keyIn, String category, boolean showOnHud, boolean overwrite) {
         if (overwrite || !keyMappings.containsKey(keybindingName) ) {
-            NuminaLogger.logDebug("actually registering kb for : " + registryName);
+//            NuminaLogger.logDebug("actually registering kb for : " + registryName);
             keyMappings.put(keybindingName, new MPSKeyMapping(registryName, keybindingName, keyIn, category, showOnHud));
         } else {
-            NuminaLogger.logDebug("keymap handler did not register kb for " + registryName + ", overwrite: " + overwrite + "keymapping already registered: " + keyMappings.containsKey(keybindingName));
+//            NuminaLogger.logDebug("keymap handler did not register kb for " + registryName + ", overwrite: " + overwrite + "keymapping already registered: " + keyMappings.containsKey(keybindingName));
         }
     }
 

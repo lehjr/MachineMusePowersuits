@@ -7,9 +7,9 @@
         "defaultRequire" : 1
     },
     "mixins" : [
+        "common.item.ItemStackDamageToEnergyDrainMixin",
         "common.item.MixinRangedWrapper",
         "common.item.MixinUseOnContext",
-        "common.recipe.SmithingMenuMixin",
-        "common.item.ItemStackDamageToEnergyDrainMixin"
+        "common.recipe.SmithingMenuMixin"
     ]
 }

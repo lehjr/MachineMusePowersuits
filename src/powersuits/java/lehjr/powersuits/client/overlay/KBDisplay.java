@@ -9,7 +9,6 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.IconUtils;
-import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.StringUtils;
 import lehjr.powersuits.client.control.MPSKeyMapping;
 import net.minecraft.client.Minecraft;

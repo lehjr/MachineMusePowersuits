@@ -83,7 +83,7 @@ public enum KeyMappingReaderWriter {
             if (!file.exists()) {
                 Files.createDirectories(file.toPath().getParent());
                 if(file.createNewFile()) {
-                    NuminaLogger.logDebug("created new keybinding file");
+//                    NuminaLogger.logDebug("created new keybinding file");
                 }
             }
             JsonObject kbSettings = new JsonObject();
@@ -93,8 +93,6 @@ public enum KeyMappingReaderWriter {
             getMPSKeyBinds().forEach(keyBinding->{
                 JsonObject jsonKBSetting = new JsonObject();
                 jsonKBSetting.addProperty(registryNameKey, keyBinding.registryName.toString());
-                NuminaLogger.logDebug("KeyBinding name: " + keyBinding.registryName);
-
                 jsonKBSetting.addProperty(showOnHudKey, keyBinding.showOnHud);
                 jsonKBSetting.addProperty(defaultKeyKey, keyBinding.getKey().getValue());
                 kbSettings.add(keyBinding.getName(), jsonKBSetting);

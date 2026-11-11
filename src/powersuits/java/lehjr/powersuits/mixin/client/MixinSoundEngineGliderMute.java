@@ -1,6 +1,5 @@
 package lehjr.powersuits.mixin.client;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.common.constants.MPSConstants;

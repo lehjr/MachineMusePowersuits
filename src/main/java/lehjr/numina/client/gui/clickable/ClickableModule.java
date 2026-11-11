@@ -2,8 +2,6 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.platform.Lighting;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.common.base.Numina;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;

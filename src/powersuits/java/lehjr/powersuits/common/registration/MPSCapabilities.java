@@ -385,7 +385,7 @@ public class MPSCapabilities {
             }
         }
 
-        NuminaLogger.logDebug("finished with " + toggleableModules.size() + " modules");
+//        NuminaLogger.logDebug("finished with " + toggleableModules.size() + " modules");
     }
 
     static <T, C extends @Nullable Object> void registerItem(RegisterCapabilitiesEvent event, ItemCapability<T, C> capability, ICapabilityProvider<ItemStack, C, T> provider, ItemLike... items){
@@ -402,7 +402,7 @@ public class MPSCapabilities {
 
     public static void addToggleableModule(ItemLike item){
         if(item != Items.AIR && !toggleableModules.contains(item)) {
-            NuminaLogger.logDebug("adding toggleable module: " + item);
+//            NuminaLogger.logDebug("adding toggleable module: " + item);
             toggleableModules.add(item);
         }
     }

@@ -40,7 +40,7 @@ public class ModelLayerHelper {
                         break;
                     }
                 } else {
-                    NuminaLogger.getLogger().debug("Armor layer to add other than humanoid layer {} Layer to entity of type: {}", layerClass, layerClass.getCanonicalName());
+//                    NuminaLogger.getLogger().debug("Armor layer to add other than humanoid layer {} Layer to entity of type: {}", layerClass, layerClass.getCanonicalName());
 
 
                 }

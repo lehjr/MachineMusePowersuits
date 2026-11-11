@@ -345,6 +345,8 @@ dependencies {
     localRuntime "blank:architectury-13.0.11-neoforge"
 
     localRuntime "blank:observable-5.4.4"
+
+    localRuntime "blank:geckolib-neoforge-1.21.1-4.9.3"
 }
 
 def getManifestAttributes(String title) {

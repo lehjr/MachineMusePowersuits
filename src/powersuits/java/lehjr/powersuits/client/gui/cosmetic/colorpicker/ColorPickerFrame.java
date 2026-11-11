@@ -343,7 +343,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                 if (colorCol >= 0 && colorCol < colors.size()) {
                     onSelectColor(colorCol);
                 } else if (colorCol == colors.size()) {
-                    NuminaLogger.logger.debug("Adding color");
+//                    NuminaLogger.logger.debug("Adding color");
                     List<Integer> copy = new ArrayList<>(colors);
                     copy.add(Color.WHITE.getARGBInt());
                     sendColorPacket(copy);

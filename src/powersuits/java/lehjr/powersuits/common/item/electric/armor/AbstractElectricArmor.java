@@ -1,7 +1,6 @@
 package lehjr.powersuits.common.item.electric.armor;
 
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;

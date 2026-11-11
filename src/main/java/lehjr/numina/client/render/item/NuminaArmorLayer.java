@@ -173,7 +173,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                                     poseStack.popPose();
                                 }
                             } else {
-                                NuminaLogger.logDebug("partSpec: " + partSpec);
+//                                NuminaLogger.logDebug("partSpec: " + partSpec);
                             }
                         } else {
                             // colorindex ends up here
