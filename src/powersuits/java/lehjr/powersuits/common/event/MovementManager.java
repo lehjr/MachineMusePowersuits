@@ -550,7 +550,7 @@ public enum MovementManager {
         // currently comes out to 0.0625 // fIxmE: actually comes out to 1.5625... and why are we even manipulating this value. Just set a real range, 0 - 2 with a default of 1.5 or so
         double horizontalLimit = MPSCommonConfig.maxFlyingSpeed * MPSCommonConfig.maxFlyingSpeed * 0.05; // speed squared * 1/20 because 20 ticks per second
 //
-        NuminaLogger.logDebug("horizontalMovementSquared: " + horizontalMovementSquared + ", horizontalLimit: " + horizontalLimit);
+//        NuminaLogger.logDebug("horizontalMovementSquared: " + horizontalMovementSquared + ", horizontalLimit: " + horizontalLimit);
 
         if (player.isCrouching() && horizontalLimit > 0.05) {
             horizontalLimit = 0.05;
