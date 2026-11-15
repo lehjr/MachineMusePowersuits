@@ -87,7 +87,7 @@ public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
         RenderOBJPart part = mpToRp.get(partSpec.getBinding().getTarget().apply(this));
         if (part != null ) {
             poseStack.pushPose();
-            part.render(partSpec, tag, poseStack, pBuffer, packedLight, packedOverlay, color);
+            part.render(partSpec, tag, poseStack, pBuffer, packedLight, packedOverlay, color, partSpec.getGlow());
             poseStack.popPose();
         } else {
             NuminaLogger.logError("cannot render null part");

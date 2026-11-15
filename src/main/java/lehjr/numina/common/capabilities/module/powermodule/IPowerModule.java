@@ -27,9 +27,7 @@ public interface IPowerModule {
         return group.equalsIgnoreCase(getModuleGroup());
     }
 
-    default ItemStack getModule() {
-        return ItemStack.EMPTY;
-    }
+    ItemStack getModule();
 
     default CompoundTag getModuleTag() {
         return TagUtils.getModuleTag(getModule());

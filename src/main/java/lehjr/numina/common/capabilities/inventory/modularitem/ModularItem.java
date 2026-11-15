@@ -384,13 +384,33 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         return -1;
     }
 
+    /**
+     * returns the module capability only if the module is present and online
+     * @param moduleName
+     * @return
+     */
     @Nullable
     @Override
     public IPowerModule getModuleCapabilityOnlineOrNull(ResourceLocation moduleName) {
+        IPowerModule pm = getModuleCapability(moduleName);
+        if(pm != null && pm.isModuleOnline()) {
+            return pm;
+        }
+        return null;
+    }
+
+    /**
+     * returns the module capability if the module is present even if offline
+     * @param moduleName
+     * @return
+     */
+    @Nullable
+    @Override
+    public  IPowerModule getModuleCapability(ResourceLocation moduleName) {
         int slot = findInstalledModule(moduleName);
         if(isSlotValid(slot)) {
             IPowerModule pm = getModuleCapability(getStackInSlot(slot));
-            if (pm != null && pm.isAllowed() && pm.isModuleOnline()) {
+            if (pm != null && pm.isAllowed()) {
                 return pm;
             }
         }

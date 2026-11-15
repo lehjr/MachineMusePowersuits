@@ -95,6 +95,9 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
     @Nullable
     IPowerModule getModuleCapabilityOnlineOrNull(ResourceLocation moduleName);
 
+    @Nullable
+    IPowerModule getModuleCapability(ResourceLocation moduleName);
+
     int findInstalledModule(ItemStack module);
 
     int findInstalledModule(ResourceLocation registryName);

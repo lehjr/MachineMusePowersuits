@@ -3,7 +3,6 @@ package lehjr.powersuits.common.event;
 import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.thruster.IThruster;
@@ -23,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.thread.BlockableEventLoop;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +35,10 @@ import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -210,200 +213,162 @@ public enum MovementManager {
 
         double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
         double remainingEnergy = playerEnergy;
-        double percentJetPackThrust = 0;
+        double percentJetThrust = 0;
         double percentJetBootsThrust = 0;
-
 
         // head
         IModularItem helmetCap = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
         IPowerModule flightControlCap = null;
         if (helmetCap != null) {
+            //only need this if online
             flightControlCap = helmetCap.getModuleCapabilityOnlineOrNull(MPSConstants.FLIGHT_CONTROL_MODULE);
         }
 
         // chest
-        IModularItem chestCap = null;
+        IModularItem chestCap = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
         IPowerModule parachuteCap = null;
         IPowerModule gliderCap = null;
         IPowerModule jetpackCap = null;
 
+        if (chestCap != null) {
+            // no sound to cancel for parachute
+            parachuteCap = chestCap.getModuleCapabilityOnlineOrNull(MPSConstants.PARACHUTE_MODULE);
+
+            // need these even if offline to cancel sound
+            gliderCap = chestCap.getModuleCapability(MPSConstants.GLIDER_MODULE);
+            jetpackCap = chestCap.getModuleCapability(MPSConstants.JETPACK_MODULE);
+        }
+
         // legs
-        IModularItem legsCap = null;
+        IModularItem legsCap = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
         IPowerModule swimboostCap = null;
+        if (legsCap != null) {
+            // need this even if offline to cancel sound
+            swimboostCap = legsCap.getModuleCapability(MPSConstants.SWIM_BOOST_MODULE);
+        }
 
         // feet
-        IModularItem feetCap = null;
+        IModularItem feetCap = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.FEET).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
         IPowerModule jetBootsCap = null;
+        if(feetCap != null) {
+            // need this even if offline to cancel sound
+            jetBootsCap = feetCap.getModuleCapabilityOnlineOrNull(MPSConstants.JETBOOTS_MODULE);
+        }
 
-        // can't fly/glide in liquid
-        if (!player.isInLiquid()) {
-            chestCap = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
-            if (chestCap != null) {
-                // active parachute prevents other movement modules from being used
-                parachuteCap = chestCap.getModuleCapabilityOnlineOrNull(MPSConstants.PARACHUTE_MODULE);
-                if (parachuteCap == null) {
-                    gliderCap = chestCap.getModuleCapabilityOnlineOrNull(MPSConstants.GLIDER_MODULE);
-                    if (gliderCap != null) {
-                        if (playerKeyStates.getForwardKeyState() && !player.onGround()) {
-                            if(!player.isFallFlying()) {
-                                player.startFallFlying();
-                            }
-                        } else if (player.isFallFlying()) {
-                            player.stopFallFlying();
-                        }
-                    }
+        List<IPowerModule> inactiveModules = new ArrayList<>(Arrays.asList(jetpackCap, jetBootsCap, gliderCap, swimboostCap));
 
-                    if (gliderCap != null) {
-                        if (playerKeyStates.getForwardKeyState() && !player.onGround()) {
-                            // FIX: Check if we are ALREADY flying.
-                            // If we are, do not call startFallFlying() again, let it ride!
-                            if (!player.isFallFlying()) {
-                                player.tryToStartFallFlying();
-//                                player.startFallFlying();
-                            }
-                        } else {
-                            // FIX: Only kill flight if the player is active in the air
-                            if (player.isFallFlying()) {
-                                player.stopFallFlying();
-                            }
-                        }
-                    }
-
-                    jetpackCap = chestCap.getModuleCapabilityOnlineOrNull(MPSConstants.JETPACK_MODULE);
-                }
-            }
-            feetCap = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.FEET).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
-            if (feetCap != null) {
-                jetBootsCap = feetCap.getModuleCapabilityOnlineOrNull(MPSConstants.JETBOOTS_MODULE);
-            }
-            // try swimming
-        } else {
+        // try swimming
+        if (player.isInLiquid()) {
             player.stopFallFlying();
-            legsCap = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
-            if (legsCap != null) {
-                swimboostCap = legsCap.getModuleCapabilityOnlineOrNull(MPSConstants.SWIM_BOOST_MODULE);
-            }
-        }
+            if (swimboostCap instanceof IThruster thruster && swimboostCap.isModuleOnline()) {
+                inactiveModules.remove(swimboostCap);
+                //                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
 
-        if (parachuteCap != null) {
-            PlayerUtils.resetFloatKickTicks(player);
-            if (player.isCrouching() && player.getDeltaMovement().y < -0.1 && (!playerKeyStates.getForwardKeyState())) {
-                double totalVelocity = Math.sqrt(
-                    player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z
-                        + player.getDeltaMovement().y * player.getDeltaMovement().y);
-                if (totalVelocity > 0) {
-                    Vec3 motion = player.getDeltaMovement();
-                    player.setDeltaMovement(motion.x * 0.1 / totalVelocity, motion.y * 0.1 / totalVelocity, motion.z * 0.1 / totalVelocity);
-                }
-            }
-        }
+                if((player.isInLiquid() && !player.isPassenger())) {
+                    double moveRatio = 0;
+                    if (playerKeyStates.getForwardKeyState() || playerKeyStates.getReverseKeyState()) {
+                        moveRatio += 1.0;
+                    }
+                    if (playerKeyStates.getLeftStrafeKeyState() || playerKeyStates.getRightStrafeKeyState()) {
+                        moveRatio += 1.0;
+                    }
+                    if (playerKeyStates.getJumpKeyState() || player.isCrouching()) {
+                        moveRatio += 0.2 * 0.2;
+                    }
 
-        // These basically operate the same way, just different amounds of thrust
-        if (jetpackCap != null || jetBootsCap != null) {
-            for (IPowerModule pm : new IPowerModule[] {jetpackCap, jetBootsCap}) {
-                if(pm instanceof IThruster thruster) {
-                    double desiredThrust = thruster.getDesiredThrust();
-                    if(pm.getEnergyUsage() <= remainingEnergy && desiredThrust > 0) {
+                    if(moveRatio > 0) {
+                        double swimAssistRate = thruster.getDesiredThrust() * 0.05 * moveRatio;
+                        double swimEnergyConsumption = swimboostCap.getEnergyUsage();
 
-                        // in this case, there will be some thrust applied
-                        if (flightControlCap != null) {
-                            // calculate how much thrust can be applied and apply it
-                            double appliedThrust = thrust(player, desiredThrust, playerKeyStates, true, flightControlCap);
+                        if (swimEnergyConsumption <= remainingEnergy) {
+                            double thrust = thrust(player, swimAssistRate, playerKeyStates, true, flightControlCap);
+                            double percentApplied = thrust / swimAssistRate;
 
-                            // calculate percentage of desired thrust applied
-                            percentJetPackThrust = appliedThrust / desiredThrust;
-
-                            remainingEnergy -= percentJetPackThrust * pm.getEnergyUsage();
-
-                            thruster.playSound(player, level, percentJetPackThrust);
-
-                        // here thrust is a bit more constrained since throtting thrust actually shows on in the sound
-                        } else if (playerKeyStates.getJumpKeyState()) {
-                            if(level.isClientSide && NuminaClientConfig.useSounds || player.getDeltaMovement().y < 0.5) {
-                                // calculate how much thrust can be applied and apply it
-                                double appliedThrust = thrust(player, desiredThrust, playerKeyStates, false, flightControlCap);
-                                // calculate percentage of desired thrust applied
-                                percentJetBootsThrust = appliedThrust / desiredThrust;
-
-                                remainingEnergy -= (percentJetBootsThrust * pm.getEnergyUsage());
-
-                                thruster.playSound(player, level, percentJetBootsThrust);
+                            if(thrust > 0) {
+                                thruster.playSound(player, level, percentApplied);
+                                remainingEnergy -= (percentApplied * swimEnergyConsumption);
                             }
                         } else {
                             thruster.stopSound(player, level);
                         }
-                    } else {
-                        thruster.stopSound(player, level);
                     }
                 }
             }
-
-        } else if (swimboostCap != null && swimboostCap instanceof IThruster thruster) {
-            //                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
-
-            if((player.isInLiquid() && !player.isPassenger())) {
-                double moveRatio = 0;
-                if (playerKeyStates.getForwardKeyState() || playerKeyStates.getReverseKeyState()) {
-                    moveRatio += 1.0;
+            // can't fly/glide in liquid
+        } else {
+            if (parachuteCap != null) {
+                PlayerUtils.resetFloatKickTicks(player);
+                if (player.isCrouching() && player.getDeltaMovement().y < -0.1 && (!playerKeyStates.getForwardKeyState())) {
+                    double totalVelocity = Math.sqrt(
+                        player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z
+                            + player.getDeltaMovement().y * player.getDeltaMovement().y);
+                    if (totalVelocity > 0) {
+                        Vec3 motion = player.getDeltaMovement();
+                        player.setDeltaMovement(motion.x * 0.1 / totalVelocity, motion.y * 0.1 / totalVelocity, motion.z * 0.1 / totalVelocity);
+                    }
                 }
-                if (playerKeyStates.getLeftStrafeKeyState() || playerKeyStates.getRightStrafeKeyState()) {
-                    moveRatio += 1.0;
-                }
-                if (playerKeyStates.getJumpKeyState() || player.isCrouching()) {
-                    moveRatio += 0.2 * 0.2;
-                }
-
-                if(moveRatio > 0) {
-                    double swimAssistRate = thruster.getDesiredThrust() * 0.05 * moveRatio;
-                    double swimEnergyConsumption = swimboostCap.getEnergyUsage();
-
-                    if (swimEnergyConsumption <= remainingEnergy) {
-                        double thrust = thrust(player, swimAssistRate, playerKeyStates, true, flightControlCap);
-                        double percentApplied = thrust / swimAssistRate;
-
-                        if(thrust > 0) {
-                            thruster.playSound(player, level, percentApplied);
-                            remainingEnergy -= (percentApplied * swimEnergyConsumption);
+            } else {
+                if (gliderCap != null) {
+                    if (playerKeyStates.getForwardKeyState() && !player.onGround()) {
+                        // FIX: Check if we are ALREADY flying.
+                        // If we are, do not call startFallFlying() again, let it ride!
+                        if (!player.isFallFlying()) {
+                            player.tryToStartFallFlying();
+                            //player.startFallFlying();
                         }
+                        inactiveModules.remove(gliderCap);
                     } else {
-                        thruster.stopSound(player, level);
+                        // FIX: Only kill flight if the player is active in the air
+                        if (player.isFallFlying()) {
+                            player.stopFallFlying();
+                        }
+                    }
+                }
+
+                // These basically operate the same way, just different amounds of thrust
+                if (jetpackCap != null || jetBootsCap != null) {
+                    for (IPowerModule pm : new IPowerModule[] {jetpackCap, jetBootsCap}) {
+                        if(pm instanceof IThruster thruster && pm.isModuleOnline()) {
+                            double desiredThrust = thruster.getDesiredThrust();
+                            if(pm.getEnergyUsage() <= remainingEnergy && desiredThrust > 0) {
+                                // in this case, there will be some thrust applied
+                                if (flightControlCap != null) {
+                                    // calculate how much thrust can be applied and apply it
+                                    double appliedThrust = thrust(player, desiredThrust, playerKeyStates, true, flightControlCap);
+
+                                    // calculate percentage of desired thrust applied
+                                    percentJetThrust = appliedThrust / desiredThrust;
+
+                                    remainingEnergy -= percentJetThrust * pm.getEnergyUsage();
+
+                                    thruster.playSound(player, level, percentJetThrust);
+                                    inactiveModules.remove(pm);
+
+                                    // here thrust is a bit more constrained since throtting thrust actually shows on in the sound
+                                } else if (playerKeyStates.getJumpKeyState()) {
+                                    // needed for sound on the client side even if not actually providing thrust.
+                                    if((level.isClientSide && NuminaClientConfig.useSounds) || player.getDeltaMovement().y < 0.5) {
+                                        // calculate how much thrust can be applied and apply it
+                                        double appliedThrust = thrust(player, desiredThrust, playerKeyStates, false, flightControlCap);
+                                        // calculate percentage of desired thrust applied
+                                        percentJetBootsThrust = appliedThrust / desiredThrust;
+
+                                        remainingEnergy -= (percentJetBootsThrust * pm.getEnergyUsage());
+
+                                        thruster.playSound(player, level, percentJetBootsThrust);
+                                        inactiveModules.remove(pm);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
         if(level.isClientSide && NuminaClientConfig.useSounds) {
-// the elytra flight sound code just in case
-//        public void tick() {
-//            ++this.time;
-//            if (!this.player.isRemoved() && (this.time <= 20 || this.player.isFallFlying())) {
-//                this.x = (double)((float)this.player.getX());
-//                this.y = (double)((float)this.player.getY());
-//                this.z = (double)((float)this.player.getZ());
-//                float f = (float)this.player.getDeltaMovement().lengthSqr();
-//                if ((double)f >= 1.0E-7) {
-//                    this.volume = Mth.clamp(f / 4.0F, 0.0F, 1.0F);
-//                } else {
-//                    this.volume = 0.0F;
-//                }
-//
-//                if (this.time < 20) {
-//                    this.volume = 0.0F;
-//                } else if (this.time < 40) {
-//                    this.volume *= (float)(this.time - 20) / 20.0F;
-//                }
-//
-//                float f1 = 0.8F;
-//                if (this.volume > 0.8F) {
-//                    this.pitch = 1.0F + (this.volume - 0.8F);
-//                } else {
-//                    this.pitch = 1.0F;
-//                }
-//            } else {
-//                this.stop();
-//            }
-//
-//        }
+            stopPlaying(player, level, inactiveModules);
+
             if( gliderCap != null && player.isFallFlying()) {
                 double volume = 0;
                 double pitch = 0;
@@ -414,8 +379,8 @@ public enum MovementManager {
                     volume = 0.0F;
                 }
 
-                if(percentJetBootsThrust > 0 || percentJetPackThrust > 0) {
-                    volume = volume * (percentJetBootsThrust + percentJetPackThrust) * 0.5;
+                if(percentJetBootsThrust > 0 || percentJetThrust > 0) {
+                    volume = volume * (percentJetBootsThrust + percentJetThrust) * 0.5;
                 }
 
                 float f1 = 0.8F;
@@ -437,6 +402,15 @@ public enum MovementManager {
             ElectricItemUtils.drainPlayerEnergy(player, energyUsed, true);
         }
     }
+
+    static void stopPlaying(Player player, Level level, List<IPowerModule> modules) {
+        for(IPowerModule module : modules) {
+            if(module instanceof IThruster thruster) {
+                thruster.stopSound(player, level);
+            }
+        }
+    }
+
 
     public static double thrust(Player player, double thrust, IPlayerKeyStates playerInput, boolean verticleAdust, IPowerModule flightControlCap) {
         double thrustUsed = 0;
@@ -460,7 +434,7 @@ public enum MovementManager {
                 desiredDirection = new Vec3((desiredDirection.x * forwardImpuse + strafeX * leftImpulse),
                     (flightVerticality * desiredDirection.y * forwardImpuse),
                     (desiredDirection.z * forwardImpuse + strafeZ * leftImpulse));
-            // This is just for normal hovering
+                // This is just for normal hovering
             } else {
                 desiredDirection = new Vec3((desiredDirection.x * forwardImpuse + strafeX * leftImpulse),
                     (flightVerticality * desiredDirection.y * forwardImpuse + (playerInput.getJumpKeyState() ? 1 : 0)
@@ -549,8 +523,8 @@ public enum MovementManager {
 
         // currently comes out to 0.0625 // fIxmE: actually comes out to 1.5625... and why are we even manipulating this value. Just set a real range, 0 - 2 with a default of 1.5 or so
         double horizontalLimit = MPSCommonConfig.maxFlyingSpeed * MPSCommonConfig.maxFlyingSpeed * 0.05; // speed squared * 1/20 because 20 ticks per second
-//
-//        NuminaLogger.logDebug("horizontalMovementSquared: " + horizontalMovementSquared + ", horizontalLimit: " + horizontalLimit);
+        //
+        //        NuminaLogger.logDebug("horizontalMovementSquared: " + horizontalMovementSquared + ", horizontalLimit: " + horizontalLimit);
 
         if (player.isCrouching() && horizontalLimit > 0.05) {
             horizontalLimit = 0.05;
