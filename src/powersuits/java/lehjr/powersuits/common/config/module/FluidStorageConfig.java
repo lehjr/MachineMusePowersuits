@@ -19,7 +19,7 @@ public class FluidStorageConfig {
 
     private static final ModConfigSpec.Builder COOLANT_TANK_MODULE_2__BUILDER = COOLANT_TANK_MODULE_1__BUILDER.pop().push("Coolant_Tank_2");
     private static final ModConfigSpec.BooleanValue COOLANT_TANK_MODULE_2__IS_ALLOWED = COOLANT_TANK_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
-    private static final ModConfigSpec.IntValue COOLANT_TANK_MODULE_2_CAPACITY = COOLANT_TANK_MODULE_2__BUILDER.defineInRange(MPSConstants.FLUID_TANK_SIZE, 2000, 1000, 100000);
+    private static final ModConfigSpec.IntValue COOLANT_TANK_MODULE_2_CAPACITY = COOLANT_TANK_MODULE_2__BUILDER.defineInRange(MPSConstants.FLUID_TANK_SIZE, 5000, 1000, 100000);
     private static final ModConfigSpec.DoubleValue COOLANT_TANK_MODULE_2__HEAT_ACTIVATION_PERCENT_BASE  = COOLANT_TANK_MODULE_2__BUILDER.defineInRange(MPSConstants.HEAT_ACTIVATION_PERCENT_BASE , 0.5, 0, 1000000D);
     private static final ModConfigSpec.DoubleValue COOLANT_TANK_MODULE_2__HEAT_ACTIVATION_PERCENT_MULTIPLIER  = COOLANT_TANK_MODULE_2__BUILDER.defineInRange(MPSConstants.HEAT_ACTIVATION_PERCENT_MULTIPLIER , 0.5, 0, 1000000D);
     private static final ModConfigSpec.DoubleValue COOLANT_TANK_MODULE_2__ENERGY_CONSUMPTION_COOLANT_BONUS_MULTIPLIER = COOLANT_TANK_MODULE_2__BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_COOLING_BONUS_MULTIPLIER , 1, 0, 1000000D);
@@ -27,7 +27,7 @@ public class FluidStorageConfig {
 
     private static final ModConfigSpec.Builder COOLANT_TANK_MODULE_3__BUILDER = COOLANT_TANK_MODULE_2__BUILDER.pop().push("Coolant_Tank_3");
     private static final ModConfigSpec.BooleanValue COOLANT_TANK_MODULE_3__IS_ALLOWED = COOLANT_TANK_MODULE_3__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
-    private static final ModConfigSpec.IntValue COOLANT_TANK_MODULE_3_CAPACITY = COOLANT_TANK_MODULE_3__BUILDER.defineInRange(MPSConstants.FLUID_TANK_SIZE, 3000, 1000, 100000);
+    private static final ModConfigSpec.IntValue COOLANT_TANK_MODULE_3_CAPACITY = COOLANT_TANK_MODULE_3__BUILDER.defineInRange(MPSConstants.FLUID_TANK_SIZE, 10000, 1000, 100000);
     private static final ModConfigSpec.DoubleValue COOLANT_TANK_MODULE_3__HEAT_ACTIVATION_PERCENT_BASE  = COOLANT_TANK_MODULE_3__BUILDER.defineInRange(MPSConstants.HEAT_ACTIVATION_PERCENT_BASE , 0.5, 0, 1000000D);
     private static final ModConfigSpec.DoubleValue COOLANT_TANK_MODULE_3__HEAT_ACTIVATION_PERCENT_MULTIPLIER  = COOLANT_TANK_MODULE_3__BUILDER.defineInRange(MPSConstants.HEAT_ACTIVATION_PERCENT_MULTIPLIER , 0.5, 0, 1000000D);
     private static final ModConfigSpec.DoubleValue COOLANT_TANK_MODULE_3__ENERGY_CONSUMPTION_COOLANT_BONUS_MULTIPLIER = COOLANT_TANK_MODULE_3__BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_COOLING_BONUS_MULTIPLIER , 1, 0, 1000000D);
@@ -35,7 +35,7 @@ public class FluidStorageConfig {
 
     private static final ModConfigSpec.Builder COOLANT_TANK_MODULE_4__BUILDER = COOLANT_TANK_MODULE_3__BUILDER.pop().push("Coolant_Tank_4");
     private static final ModConfigSpec.BooleanValue COOLANT_TANK_MODULE_4__IS_ALLOWED = COOLANT_TANK_MODULE_4__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
-    private static final ModConfigSpec.IntValue COOLANT_TANK_MODULE_4_CAPACITY = COOLANT_TANK_MODULE_4__BUILDER.defineInRange(MPSConstants.FLUID_TANK_SIZE, 4000, 1000, 100000);
+    private static final ModConfigSpec.IntValue COOLANT_TANK_MODULE_4_CAPACITY = COOLANT_TANK_MODULE_4__BUILDER.defineInRange(MPSConstants.FLUID_TANK_SIZE, 20000, 1000, 100000);
     private static final ModConfigSpec.DoubleValue COOLANT_TANK_MODULE_4__HEAT_ACTIVATION_PERCENT_BASE  = COOLANT_TANK_MODULE_4__BUILDER.defineInRange(MPSConstants.HEAT_ACTIVATION_PERCENT_BASE , 0.5, 0, 1000000D);
     private static final ModConfigSpec.DoubleValue COOLANT_TANK_MODULE_4__HEAT_ACTIVATION_PERCENT_MULTIPLIER  = COOLANT_TANK_MODULE_4__BUILDER.defineInRange(MPSConstants.HEAT_ACTIVATION_PERCENT_MULTIPLIER , 0.5, 0, 1000000D);
     private static final ModConfigSpec.DoubleValue COOLANT_TANK_MODULE_4__ENERGY_CONSUMPTION_COOLANT_BONUS_MULTIPLIER = COOLANT_TANK_MODULE_4__BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_COOLING_BONUS_MULTIPLIER , 1, 0, 1000000D);
