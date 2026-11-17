@@ -51,7 +51,7 @@ ext {
             "loader_version": loader_version_range,
             "jei_version": jei_version_range]
     jsonPatterns = ["**/*.json", "**/*.mcmeta"]
-    secondaryModules = ['powersuits', 'mpsrecipecreator', 'mpswhatever']
+    secondaryModules = ['powersuits']
     extraTypes = ['datagen']
 }
 
@@ -438,8 +438,6 @@ def secondaryJar(SourceSet sourceSet, String title) {
 }
 
 def powersuitsJar = secondaryJar(sourceSets.powersuits, 'ModularPowersuits')
-def mpsrecipecreatorJar = secondaryJar(sourceSets.mpsrecipecreator, 'MPSRecipeCreator')
-def mpswhateverJar = secondaryJar(sourceSets.mpswhatever, 'MPSWhatever')
 
 clean {
     //TODO: Try to come up with a slightly better solution to this that deletes more,
@@ -474,8 +472,6 @@ tasks.withType(Javadoc).configureEach({
 artifacts {
     archives jar
     archives powersuitsJar
-    archives mpsrecipecreatorJar
-    archives mpswhateverJar
 }
 
 //createReobf(sourceSets.api)
@@ -520,7 +516,7 @@ tasks.register('optimizePng').configure {
         //Ensure the logo is minimized (we add this file to each jar)
         minimizePNGFile(file("${projectDir}/logo.png"))
         //Minimize any PNGs in the source sets
-        def sourceSets = [sourceSets.main, sourceSets.powersuits, sourceSets.mpsrecipecreator, sourceSets.mpswhatever]
+        def sourceSets = [sourceSets.main, sourceSets.powersuits]
         for (def sourceSet : sourceSets) {
             for (dir in sourceSet.resources.srcDirs) {
                 fileTree(dir: dir, includes: pngPatterns).each { minimizePNGFile(it) }
@@ -594,7 +590,7 @@ tasks.register('outputChangelog') {
     }
 }
 
-def mainCfUpload, powersuitsCfUpload, mpswhateverCfUpload, mpsrecipecreatprCfUpload;
+def mainCfUpload, powersuitsCfUpload;
 
 if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKey')) {
     println "Enabling Curseforge config"
@@ -620,14 +616,10 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
 
         //Secondary modules/projects
         powersuitsCfUpload = uploadSecondaryCurseProject(task, 235442, changelog, powersuitsJar)
-//        mpsrecipecreatorCfUpload = uploadSecondaryCurseProject(task, 0, changelog, mpsrecipecreatorJar)
-//        mpswhateverCfUpload = uploadSecondaryCurseProject(task, 0, changelog, mpswhateverJar)
 
         doLast {
             println("https://www.curseforge.com/minecraft/mc-mods/numina/files/${mainCfUpload.curseFileId}")
             println("https://www.curseforge.com/minecraft/mc-mods/modular-powersuits/files/${powersuitsCfUpload.curseFileId}")
-//            println("https://www.curseforge.com/minecraft/mc-mods/mpswhatever/files/${mpswhateverCfUpload.curseFileId}")
-//            println("https://www.curseforge.com/minecraft/mc-mods/mpsrecipecreator/files/${mpsrecipecreatorCfUpload.curseFileId}")
         }
     })
 }
@@ -650,11 +642,9 @@ UploadArtifact uploadSecondaryCurseProject(TaskPublishCurseForge task, long proj
 if (System.getenv("MODRINTH_TOKEN") != null || project.hasProperty('modrinthToken')) {
     println "Enabling Modrinth config"
     def powersuitsModrinth = createSecondaryModrinthUpload("powersuits", "mBO0J08x", powersuitsJar)
-//    def mpsrecipecreatorModrinth = createSecondaryModrinthUpload("mpsrecipecreator", "", mpsrecipecreatorJar)
-//    def mpswhateverModrinth = createSecondaryModrinthUpload("mpswhatever", "", mpswhateverJar)
     tasks.named('modrinth').configure {
         dependsOn(jar)
-        finalizedBy(powersuitsModrinth, mpsrecipecreatorModrinth, mpswhateverModrinth)
+        finalizedBy(powersuitsModrinth)
     }
 
     modrinth {
