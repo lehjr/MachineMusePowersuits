@@ -22,6 +22,16 @@ public class TinkerTableCap extends RightClickModule {
     }
 
     @Override
+    public int getTier() {
+        return -1;
+    }
+
+    @Override
+    public String getModuleGroup() {
+        return "";
+    }
+
+    @Override
     public boolean isAllowed() {
         return ToolModuleConfig.tinkerTableIsAllowed;
     }

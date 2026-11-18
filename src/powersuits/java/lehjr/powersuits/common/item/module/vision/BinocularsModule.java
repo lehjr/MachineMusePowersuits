@@ -32,5 +32,10 @@ public class BinocularsModule extends AbstractPowerModule {
         public int getTier() {
             return 2;
         }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
     }
 }

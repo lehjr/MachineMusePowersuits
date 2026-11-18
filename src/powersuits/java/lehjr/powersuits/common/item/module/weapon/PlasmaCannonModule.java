@@ -68,6 +68,16 @@ public class PlasmaCannonModule extends AbstractPowerModule {
         }
 
         @Override
+        public int getTier() {
+            return 3;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return WeaponModuleConfig.plasmaCannonIsAllowed;
         }

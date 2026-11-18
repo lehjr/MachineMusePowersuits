@@ -15,6 +15,16 @@ public class GliderModule extends AbstractPowerModule {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.TORSOONLY);
         }
 
+        @Override
+        public int getTier() {
+            return 1;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
         public boolean isAllowed() {
             return MovementModuleConfig.gliderModuleIsAllowed;
         }

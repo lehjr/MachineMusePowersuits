@@ -86,5 +86,10 @@ public class LightningModule extends AbstractPowerModule {
         public int getTier() {
             return 2;
         }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
     }
 }

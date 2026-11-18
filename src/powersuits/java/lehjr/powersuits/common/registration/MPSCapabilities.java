@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.registration;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.energy.ModularItemEnergyWrapper;
 import lehjr.numina.common.capabilities.module.externalitems.OtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
@@ -241,7 +240,7 @@ public class MPSCapabilities {
         registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new EnergyShieldModule.EnergyShieldCapabilityWrapper(stack), MPSItems.ENERGY_SHIELD_MODULE.get());
 
         //Cosmetic ----------------------------------------------------------------------------------------------------
-        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TransparentArmorModule.TransParentArmorCap(stack), MPSItems.TRANSPARENT_ARMOR_MODULE.get());
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TransparentArmorModule.TransparentArmorCap(stack), MPSItems.TRANSPARENT_ARMOR_MODULE.get());
 
         // Debug ------------------------------------------------------------------------------------------------------
 
@@ -289,13 +288,33 @@ public class MPSCapabilities {
         registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.VEIN_MINER_MODULE.get());
 
         // Special
-        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.CLOCK);
-        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.COMPASS);
-        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.RECOVERY_COMPASS);
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY) {
+            @Override
+            public boolean isAllowed() {
+                return true; // FIXME!! setup config value
+            }
+        }, Items.CLOCK);
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY) {
+            @Override
+            public boolean isAllowed() {
+                return true; // FIXME!! setup config value
+            }
+        }, Items.COMPASS);
+        registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY) {
+            @Override
+            public boolean isAllowed() {
+                return true; // FIXME!! setup config value
+            }
+        }, Items.RECOVERY_COMPASS);
 
         Item ae2_compass = BuiltInRegistries.ITEM.get(MPSConstants.AE2_METEOR_COMPASS);
         if(ae2_compass != Items.AIR){
-            registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), ae2_compass);
+            registerItem(event, NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY) {
+                @Override
+                public boolean isAllowed() {
+                    return true; // FIXME!! setup config value
+                }
+            }, ae2_compass);
         }
         // Cosmetic
 
@@ -368,18 +387,62 @@ public class MPSCapabilities {
 
         Item copper_wand = BuiltInRegistries.ITEM.get(COPPER_WAND);
         if(copper_wand != Items.AIR) {
-            registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 1, true), copper_wand);
+            registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack,
+                ModuleTarget.TOOLONLY, ModuleCategory.TOOL, 1) {
+                @Override
+                public String getModuleGroup() {
+                    return "wand";
+                }
+
+                @Override
+                public boolean isAllowed() {
+                    return true;
+                }
+            }, copper_wand);
             Item iron_wand = BuiltInRegistries.ITEM.get(IRON_WAND);
             if(iron_wand != Items.AIR) {
-                registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 2, true), iron_wand);
+                registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack,
+                    ModuleTarget.TOOLONLY, ModuleCategory.TOOL, 2) {
+                    @Override
+                    public String getModuleGroup() {
+                        return "wand";
+                    }
+
+                    @Override
+                    public boolean isAllowed() {
+                        return true;
+                    }
+                }, iron_wand);
 
                 Item diamond_wand = BuiltInRegistries.ITEM.get(DIAMOND_WAND);
                 if(diamond_wand != Items.AIR) {
-                    registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 3, true), diamond_wand);
+                    registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack,
+                        ModuleTarget.TOOLONLY, ModuleCategory.TOOL, 3) {
+                        @Override
+                        public String getModuleGroup() {
+                            return "wand";
+                        }
+
+                        @Override
+                        public boolean isAllowed() {
+                            return true;
+                        }
+                    }, diamond_wand);
 
                     Item netherite_wand = BuiltInRegistries.ITEM.get(NETHERITE_WAND);
                     if(netherite_wand != Items.AIR) {
-                        registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack, ModuleCategory.TOOL, 4, true), netherite_wand);
+                        registerItem(event, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES, (stack, ctx) -> new OtherModItemsAsModules(stack,
+                            ModuleTarget.TOOLONLY, ModuleCategory.TOOL, 4) {
+                            @Override
+                            public String getModuleGroup() {
+                                return "wand";
+                            }
+
+                            @Override
+                            public boolean isAllowed() {
+                                return true;
+                            }
+                        }, netherite_wand);
                     }
                 }
             }

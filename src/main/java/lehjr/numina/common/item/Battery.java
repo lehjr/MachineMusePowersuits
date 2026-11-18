@@ -38,6 +38,11 @@ public class Battery extends Item {
         }
 
         @Override
+        public String getModuleGroup() {
+            return "batteries";
+        }
+
+        @Override
         public boolean isAllowed() {
             return switch (tier) {
                 case 1 -> NuminaCommonConfig.batteryIsAllowed1;

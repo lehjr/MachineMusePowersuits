@@ -91,6 +91,16 @@ public class SelectiveMiner extends AbstractPowerModule {
         }
 
         @Override
+        public int getTier() {
+            return 2;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return MiningEnhancementModuleConfig.selectiveMinerModuleIsAllowed;
         }

@@ -24,6 +24,7 @@ import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -35,6 +36,16 @@ public class DimensionalRiftModule extends AbstractPowerModule {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.HEAT_GENERATION, MovementModuleConfig.dimensionalRiftModuleHeatGenerationBase);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.dimensionalRiftModuleEnergyConsumptionBase);
+        }
+
+        @Override
+        public int getTier() {
+            return 1;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
         }
 
         @Override
@@ -50,11 +61,11 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         @Override
         public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
             if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions(worldIn, worldIn) && !playerIn.level().isClientSide()) {
-                Level level ;
-                if (playerIn.level().dimension().location().equals(Level.NETHER.location())) {
-                    level = playerIn.getServer().getLevel(Level.OVERWORLD);
-                } else if (playerIn.level().dimension().location().equals(Level.OVERWORLD.location())) {
-                    level = playerIn.getServer().getLevel(Level.NETHER);
+                ServerLevel level ;
+                if (worldIn.dimension().location().equals(Level.NETHER.location())) {
+                    level = Objects.requireNonNull(playerIn.getServer()).getLevel(Level.OVERWORLD);
+                } else if (worldIn.dimension().location().equals(Level.OVERWORLD.location())) {
+                    level = Objects.requireNonNull(playerIn.getServer()).getLevel(Level.NETHER);
                 } else {
                     level = null;
                 }
@@ -64,10 +75,10 @@ public class DimensionalRiftModule extends AbstractPowerModule {
                     double energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                     double playerEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
                     if (playerEnergy >= energyConsumption) {
-                        Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, (ServerLevel) level, playerIn);
+                        Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, level, playerIn);
                         if (targetPos.isPresent()) {
 
-                            DimensionTransition transition = new DimensionTransition((ServerLevel) level,
+                            DimensionTransition transition = new DimensionTransition(level,
                                 targetPos.get().getBottomCenter(),
                                 Vec3.ZERO,
                                 playerIn.yRotO,

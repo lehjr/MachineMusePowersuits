@@ -53,7 +53,12 @@ public class ShearsModule extends AbstractPowerModule {
 
         @Override
         public int getTier() {
-            return super.getTier();
+            return 1;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
         }
 
         @Override

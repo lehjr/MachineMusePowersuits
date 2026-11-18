@@ -9,14 +9,19 @@ import net.minecraft.world.item.ItemStack;
 
 public class TransparentArmorModule extends AbstractPowerModule {
 
-    public static class TransParentArmorCap extends ToggleableModule {
-        public TransParentArmorCap(ItemStack module) {
+    public static class TransparentArmorCap extends ToggleableModule {
+        public TransparentArmorCap(ItemStack module) {
             super(module, ModuleCategory.COSMETIC, ModuleTarget.ARMORONLY);
         }
 
         @Override
         public int getTier() {
             return 2;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
         }
 
         @Override

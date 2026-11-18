@@ -25,6 +25,16 @@ public class ActiveCamouflageModule extends AbstractPowerModule {
         }
 
         @Override
+        public int getTier() {
+            return 2;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return EnvironmentalModuleConfig.activeCamouflageModuleIsAllowed;
         }

@@ -13,15 +13,11 @@ public interface IPowerModule {
 
     ModuleCategory getCategory();
 
-    default int getTier() {
-        return -1;
-    }
+    int getTier();
 
     ModuleTarget getTarget();
 
-    default String getModuleGroup() {
-        return "";
-    }
+    String getModuleGroup();
 
     default boolean isGroup(String group) {
         return group.equalsIgnoreCase(getModuleGroup());

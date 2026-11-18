@@ -97,6 +97,11 @@ public class SolarGeneratorModule extends AbstractPowerModule {
         }
 
         @Override
+        public int getTier() {
+            return tier;
+        }
+
+        @Override
         public String getModuleGroup() {
             return "solar generators";
         }

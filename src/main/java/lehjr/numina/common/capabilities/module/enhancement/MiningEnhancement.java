@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class MiningEnhancement extends ToggleableModule implements IRightClickModule, IMiningEnhancementModule {
+public abstract class MiningEnhancement extends ToggleableModule implements IRightClickModule, IMiningEnhancementModule {
     public MiningEnhancement(ItemStack module, ModuleCategory category, ModuleTarget target) {
         super(module, category, target);
     }

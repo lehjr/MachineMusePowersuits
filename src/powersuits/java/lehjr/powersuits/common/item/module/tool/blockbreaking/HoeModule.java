@@ -175,6 +175,11 @@ public class HoeModule extends AbstractPowerModule {
         }
 
         @Override
+        public String getModuleGroup() {
+            return "hoe";
+        }
+
+        @Override
         public boolean isAllowed() {
             return switch (tier) {
                 case 1 -> HoeModuleConfig.stoneRototillerModuleIsAllowed;

@@ -9,10 +9,4 @@ public abstract class RightClickModule extends PowerModule implements IRightClic
     public RightClickModule(ItemStack module ,ModuleCategory category, ModuleTarget target) {
         super(module, category, target);
     }
-
-    public RightClickModule(ItemStack module ,ModuleCategory category, ModuleTarget target, boolean isAllowed) {
-        super(module, category, target, isAllowed);
-    }
-
-
 }

@@ -28,6 +28,11 @@ public class MeleeAssistModule extends AbstractPowerModule {
         }
 
         @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return WeaponModuleConfig.meleeAssistIsAllowed;
         }

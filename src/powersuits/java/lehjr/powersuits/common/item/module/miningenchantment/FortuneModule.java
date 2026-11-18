@@ -47,6 +47,16 @@ public class FortuneModule extends AbstractPowerModule {
         }
 
         @Override
+        public int getTier() {
+            return 3;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return MiningEnchantmentModuleConfig.fortuneModuleIsAllowed;
         }

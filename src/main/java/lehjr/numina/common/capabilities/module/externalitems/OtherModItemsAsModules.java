@@ -7,23 +7,23 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class OtherModItemsAsModules extends RightClickModule implements IOtherModItemsAsModules {
+public abstract class OtherModItemsAsModules extends RightClickModule implements IOtherModItemsAsModules {
     final int tier;
-    public OtherModItemsAsModules(ItemStack module, ModuleCategory category, boolean allowed) {
-        this(module, category, 1, allowed);
+    public OtherModItemsAsModules(ItemStack module, ModuleCategory category) {
+        this(module, category, 1);
     }
 
-    public OtherModItemsAsModules(ItemStack module, ModuleTarget target, ModuleCategory category, boolean allowed) {
-        this(module, target, category, 1, allowed);
+    public OtherModItemsAsModules(ItemStack module, ModuleTarget target, ModuleCategory category) {
+        this(module, target, category, 1);
     }
 
-    public OtherModItemsAsModules(ItemStack module, ModuleTarget target, ModuleCategory category, int tier, boolean allowed) {
-        super(module, category, target, allowed);
+    public OtherModItemsAsModules(ItemStack module, ModuleTarget target, ModuleCategory category, int tier) {
+        super(module, category, target);
         this.tier = tier;
     }
 
-    public OtherModItemsAsModules(ItemStack module, ModuleCategory category, int tier, boolean allowed) {
-        super(module, category, ModuleTarget.TOOLONLY,  allowed);
+    public OtherModItemsAsModules(ItemStack module, ModuleCategory category, int tier) {
+        super(module, category, ModuleTarget.TOOLONLY);
         this.tier = tier;
     }
 

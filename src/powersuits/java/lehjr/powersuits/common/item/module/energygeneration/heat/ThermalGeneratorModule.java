@@ -167,6 +167,11 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
         }
 
         @Override
+        public int getTier() {
+            return tier;
+        }
+
+        @Override
         public String getModuleGroup() {
             return "thermal generators";
         }

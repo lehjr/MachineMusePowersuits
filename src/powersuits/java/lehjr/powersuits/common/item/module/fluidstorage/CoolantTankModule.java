@@ -93,6 +93,16 @@ public class CoolantTankModule extends AbstractPowerModule {
         }
 
         @Override
+        public int getTier() {
+            return tier;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return switch (this.tier) {
                 case 1 -> FluidStorageConfig.coolantTankModuleIsAllowed1;

@@ -48,6 +48,16 @@ public class VeinMinerModule extends AbstractPowerModule {
         }
 
         @Override
+        public int getTier() {
+            return 1;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return MiningEnhancementModuleConfig.veinMinerModuleIsAllowed;
         }

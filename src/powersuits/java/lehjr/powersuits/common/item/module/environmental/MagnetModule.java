@@ -32,6 +32,16 @@ public class MagnetModule extends AbstractPowerModule {
         }
 
         @Override
+        public int getTier() {
+            return 1;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return EnvironmentalModuleConfig.magnetModuleIsAllowed;
         }

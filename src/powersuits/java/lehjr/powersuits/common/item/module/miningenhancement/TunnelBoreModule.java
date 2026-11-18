@@ -47,6 +47,11 @@ public class TunnelBoreModule extends AbstractPowerModule {
         }
 
         @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return MiningEnhancementModuleConfig.tunnelBoreModuleIsAllowed;
         }

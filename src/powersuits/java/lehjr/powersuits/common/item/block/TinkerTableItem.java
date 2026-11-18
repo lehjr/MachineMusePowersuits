@@ -71,5 +71,20 @@ public class TinkerTableItem extends BlockItem {
             }
             return super.use(itemStackIn, level, playerIn, hand);
         }
+
+        @Override
+        public int getTier() {
+            return -1;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return true;
+        }
     }
 }

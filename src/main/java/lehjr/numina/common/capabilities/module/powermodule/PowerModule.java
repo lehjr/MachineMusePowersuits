@@ -13,23 +13,15 @@ public abstract class PowerModule implements IPowerModule {
     final ModuleTarget target;
     final String categoryTitle; // TODO: replace with translation key?
     Map<String, List<IPropertyModifier>> propertyModifiers;
-    boolean isAllowed;
 
     public PowerModule(ItemStack module,
                        ModuleCategory category,
                        ModuleTarget target) {
-        this(module, category, target, false);
-    }
-
-    public PowerModule(ItemStack module,
-                       ModuleCategory category,
-                       ModuleTarget target, boolean isAllowed) {
         this.module = module;
         this.category = category;
         this.target = target;
         this.categoryTitle = category.getConfigTitle().trim().replaceAll(" ", "_");
         this.propertyModifiers = new HashMap<>();
-        this.isAllowed = isAllowed;
     }
 
     @Override
@@ -52,9 +44,7 @@ public abstract class PowerModule implements IPowerModule {
      * @return if module is allowed to be used
      */
     @Override
-    public boolean isAllowed() {
-        return isAllowed;
-    }
+    public abstract boolean isAllowed();
 
     @Override
     public Map<String, List<IPropertyModifier>> getPropertyModifiers() {

@@ -70,5 +70,10 @@ public class BladeLauncherModule extends AbstractPowerModule {
         public int getTier() {
             return 1;
         }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
     }
 }

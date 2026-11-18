@@ -89,13 +89,32 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
             if (modularItemCap != null) {
                 itemSelectFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
                 NonNullList<ItemStack> compatibleModules = getCompatibleModuleList();
+                int modularItemTier = modularItemCap.getTier();
+
                 for(ItemStack module : compatibleModules) {
                     IPowerModule powerModule = modularItemCap.getModuleCapability(module);
                     if (powerModule != null) {
-                        ModuleCategory category = powerModule.getCategory();
                         int tier = powerModule.getTier();
-                        if(tier == -1 || (tier >= 4 &&(category == ModuleCategory.ARMOR || category == ModuleCategory.ENERGY_STORAGE))) {
+
+                        // tier -1 is just no tier.
+                        if(tier == -1 ||
+                            // already the highest tier the modular item will support
+                            tier == modularItemTier) {
                             MPSPackets.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(module)));
+
+
+                         } else if (tier < modularItemTier) {
+                            NonNullList<ItemStack> otherModules = NonNullList.create();
+                            ModuleCategory category = powerModule.getCategory();
+                            if(category != null) {}
+
+                            // FIXME: get highest tier matching item group if not blank
+
+
+
+
+                            String group = powerModule.getModuleGroup();
+
                         }
                     }
                 }

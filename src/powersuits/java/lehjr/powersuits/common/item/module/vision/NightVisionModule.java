@@ -39,6 +39,16 @@ public class NightVisionModule extends AbstractPowerModule {
         //        int tick = 0; // cooldown timer because firing too quickly will crash things and this doesn't need to fire that rapidly anyway
 
         @Override
+        public int getTier() {
+            return 1;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "";
+        }
+
+        @Override
         public boolean isAllowed() {
             return VisionModuleConfig.nightVisionModuleIsAllowed;
         }
