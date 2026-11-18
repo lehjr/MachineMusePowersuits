@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.item.module.cosmetic;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;

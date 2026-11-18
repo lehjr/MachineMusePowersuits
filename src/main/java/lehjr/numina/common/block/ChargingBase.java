@@ -31,6 +31,8 @@ import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ChargingBaseMenu;
 import lehjr.numina.common.entity.NuminaArmorStand;
+import lehjr.numina.common.registration.NuminaBlockEntities;
+import lehjr.numina.common.registration.NuminaEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -161,6 +163,6 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> type) {
-        return type == NuminaObjects.CHARGING_BASE_BLOCK_ENTITY.get() ? ChargingBaseBlockEntity::tick : null;
+        return type == NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get() ? ChargingBaseBlockEntity::tick : null;
     }
 }

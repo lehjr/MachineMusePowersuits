@@ -40,7 +40,8 @@ public enum ModuleTarget {
     TORSOONLY(EquipmentSlot.Type.ARMOR),
     LEGSONLY(EquipmentSlot.Type.ARMOR),
     FEETONLY(EquipmentSlot.Type.ARMOR),
-    TOOLONLY(EquipmentSlot.Type.HAND);
+    TOOLONLY(EquipmentSlot.Type.HAND),
+    HANDHELD(EquipmentSlot.Type.HAND);
 
     private final EquipmentSlot.Type type;
 

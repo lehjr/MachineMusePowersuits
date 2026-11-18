@@ -31,6 +31,7 @@ import lehjr.numina.common.capabilities.energy.BlockEnergyStorage;
 import lehjr.numina.common.capabilities.energy.BlockEnergyWrapper;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.registration.NuminaBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +56,7 @@ import java.util.List;
 
 public class ChargingBaseBlockEntity extends BlockEntity {
     public ChargingBaseBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(NuminaObjects.CHARGING_BASE_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
+        super(NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
     }
 
     /*

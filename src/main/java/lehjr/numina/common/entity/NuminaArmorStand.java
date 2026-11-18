@@ -29,6 +29,7 @@ package lehjr.numina.common.entity;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.container.ArmorStandMenu;
+import lehjr.numina.common.registration.NuminaItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -71,7 +72,7 @@ public class NuminaArmorStand extends ArmorStand {
 
     @Override
     public void brokenByPlayer(DamageSource source) {
-        Block.popResource(this.level(), this.blockPosition(), new ItemStack(NuminaObjects.ARMOR_STAND_ITEM.get()));
+        Block.popResource(this.level(), this.blockPosition(), new ItemStack(NuminaItems.ARMOR_STAND_ITEM.get()));
         this.brokenByAnything(source);
     }
 

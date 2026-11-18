@@ -1,7 +1,7 @@
 package lehjr.powersuits.client.gui.overlay;
 
 import lehjr.numina.client.render.NuminaRenderer;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.hud.IHudModule;
 import lehjr.numina.common.item.ItemUtils;

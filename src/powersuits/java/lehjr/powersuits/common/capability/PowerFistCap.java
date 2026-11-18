@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.capability;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.capabilities.inventory.modechanging.ModeChangingModularItem;

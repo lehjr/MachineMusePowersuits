@@ -1,6 +1,6 @@
 package lehjr.numina.common.recipe;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;

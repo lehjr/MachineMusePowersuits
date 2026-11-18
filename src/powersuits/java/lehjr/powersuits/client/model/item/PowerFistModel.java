@@ -30,7 +30,7 @@
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.math.Transformation;
 //import lehjr.numina.client.model.helper.ModelHelper;
-//import lehjr.numina.common.capabilities.NuminaCapabilities;
+//import lehjr.numina.common.registration.NuminaCapabilities;
 //import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 //import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 //import lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;

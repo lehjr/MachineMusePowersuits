@@ -27,7 +27,6 @@
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
 import lehjr.numina.client.render.NuminaRenderer;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
@@ -38,6 +37,7 @@ import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;

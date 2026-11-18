@@ -26,7 +26,6 @@
 
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
@@ -35,6 +34,7 @@ import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;

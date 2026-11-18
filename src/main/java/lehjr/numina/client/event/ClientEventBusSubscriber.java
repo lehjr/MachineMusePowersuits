@@ -38,6 +38,8 @@ import lehjr.numina.client.screen.ChargingBaseScreen;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.registration.NuminaEntities;
+import lehjr.numina.common.registration.NuminaMenus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
@@ -68,7 +70,7 @@ import java.util.Objects;
 public class ClientEventBusSubscriber {
     @SubscribeEvent
     public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStandRenderer::new);
+        event.registerEntityRenderer(NuminaEntities.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStandRenderer::new);
     }
 
     @SubscribeEvent
@@ -158,8 +160,8 @@ public class ClientEventBusSubscriber {
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
         MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
         event.enqueueWork(() -> {
-            MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
-            MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
+            MenuScreens.register(NuminaMenus.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
+            MenuScreens.register(NuminaMenus.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
             //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
         });
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

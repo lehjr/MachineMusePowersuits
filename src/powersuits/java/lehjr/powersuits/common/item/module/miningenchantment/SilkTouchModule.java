@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.item.module.miningenchantment;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.enchantment.EnchantmentModule;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;

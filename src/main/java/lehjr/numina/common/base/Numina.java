@@ -44,6 +44,7 @@ import lehjr.numina.common.event.LogoutEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.recipe.RecipeSerializersRegistry;
+import lehjr.numina.common.registration.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -79,15 +80,15 @@ public class Numina {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         SoundDictionary.NUMINA_SOUND_EVENTS.register(modEventBus);
-        NuminaObjects.NUMINA_ITEMS.register(modEventBus);
+        NuminaItems.NUMINA_ITEMS.register(modEventBus);
 
         // item group
-        NuminaObjects.register(modEventBus);
+        NuminaItems.register(modEventBus);
 
-        NuminaObjects.NUMINA_BLOCKS.register(modEventBus);
-        NuminaObjects.TILE_TYPES.register(modEventBus);
-        NuminaObjects.ENTITY_TYPES.register(modEventBus);
-        NuminaObjects.MENU_TYPES.register(modEventBus);
+        NuminaBlocks.NUMINA_BLOCKS.register(modEventBus);
+        NuminaBlockEntities.TILE_TYPES.register(modEventBus);
+        NuminaEntities.ENTITY_TYPES.register(modEventBus);
+        NuminaMenus.MENU_TYPES.register(modEventBus);
         RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
@@ -108,7 +109,7 @@ public class Numina {
 
     //    @SubscribeEvent
     public void addEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStand.createAttributes().build());
+        event.put(NuminaEntities.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStand.createAttributes().build());
     }
 
 //    @SubscribeEvent

@@ -28,6 +28,7 @@ package lehjr.numina.common.energy;
 
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.registration.NuminaItems;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -172,6 +173,6 @@ public class ElectricItemUtils {
      */
     static double getMaxEnergyForComparison() {
 //        return 0;
-        return (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored() ).orElse(0));
+        return (0.8 * new ItemStack(NuminaItems.BASIC_BATTERY.get()).getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored() ).orElse(0));
     }
 }

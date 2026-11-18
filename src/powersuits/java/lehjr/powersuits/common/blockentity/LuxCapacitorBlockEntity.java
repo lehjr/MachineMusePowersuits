@@ -27,7 +27,7 @@
 package lehjr.powersuits.common.blockentity;
 
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.color.ColorStorage;
 import lehjr.numina.common.capabilities.render.color.IColorTag;
 import lehjr.numina.common.constants.TagConstants;

@@ -30,7 +30,7 @@ import com.mojang.blaze3d.platform.Lighting;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaRenderer;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.AdditionalInfo;

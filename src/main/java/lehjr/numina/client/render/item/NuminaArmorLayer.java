@@ -32,7 +32,7 @@ import com.mojang.math.Transformation;
 import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.client.model.item.armor.ArmorModelInstance;
 import lehjr.numina.client.model.item.armor.HighPolyArmor;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.JavaPartSpec;

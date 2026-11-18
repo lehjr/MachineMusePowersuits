@@ -33,6 +33,8 @@ import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import lehjr.numina.common.capabilities.energy.BlockEnergyStorage;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.registration.NuminaBlocks;
+import lehjr.numina.common.registration.NuminaMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +56,7 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
     private IItemHandler playerInventory;
 
     public ChargingBaseMenu(int windowID, BlockPos pos, Inventory playerInventory) { // (int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player)
-        super(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), windowID);
+        super(NuminaMenus.CHARGING_BASE_CONTAINER_TYPE.get(), windowID);
         this.player = playerInventory.player;
         this.blockEntity = player.level().getBlockEntity(pos);
 
@@ -193,6 +195,6 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player playerIn) {
-        return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), player, NuminaObjects.CHARGING_BASE_BLOCK.get());
+        return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), player, NuminaBlocks.CHARGING_BASE_BLOCK.get());
     }
 }

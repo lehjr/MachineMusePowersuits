@@ -26,85 +26,249 @@
 
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import com.mojang.datafixers.util.Pair;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraftforge.items.wrapper.RangedWrapper;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Map;
 
 /**
- *
- *
+ * Important: changes made to a module do not automatically get applied, even with a codec. So
+ * all changes require the module to be updated in the inventory
  */
-public interface IModularItem extends IItemHandler, IItemHandlerModifiable {
-    void setRangedWrapperMap(Map<ModuleCategory, NuminaRangedWrapper> rangedWrappers);
-
-    boolean isModuleValid(@Nonnull ItemStack module);
-
-    boolean isModuleInstalled(ResourceLocation regName);
-
-    default boolean isModuleInstalled(@Nonnull ItemStack module) {
-        return module.getCapability(NuminaCapabilities.POWER_MODULE).isPresent() && isModuleInstalled(ItemUtils.getRegistryName(module));
-    }
-
-    default boolean isModuleInstalled(Item item) {
-        return isModuleInstalled(ItemUtils.getRegistryName(item));
-    }
-
-    boolean isModuleOnline(ResourceLocation moduleName);
-
-    void toggleModule(ResourceLocation moduleName, boolean online);
-
-    @Nullable
-    Pair<Integer, Integer> getRangeForCategory(ModuleCategory category);
-
-    List<ResourceLocation> getInstalledModuleNames();
-
-    NonNullList<ItemStack> getInstalledModules();
-
-    NonNullList<ItemStack> getInstalledModulesOfType(Class<? extends IPowerModule> type);
-
-    @Nonnull
-    ItemStack getOnlineModuleOrEmpty(ResourceLocation regName);
-
+public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
+    /**
+     * This is the "Modular Item" (weapon, armor, shield?) that has the inventory for modules.
+     * @return host item
+     */
     @Nonnull
     ItemStack getModularItemStack();
 
-    void tick(Player player);
+    /**
+     * Any handheld item, tool, shield, crayon, whatever
+     * @return is handheld item. No would generally be armor
+     */
+    default boolean isHandHeld() {
+        return isTool();
+    }
+
+    /**
+     * A handheld item that is specifically a tool or weapon
+     * @return is tool
+     */
+    default boolean isTool() {
+        return false;
+    }
+
+    /**
+     * Tiers help improve a sense of progression.
+     * @return actual tier
+     */
+    int getTier();
+
+    void setRangedWrapperMap(Map<ModuleCategory, RangedWrapper> rangedWrappers);
+
+    /**
+     * Ranged wrappers are used as a way of partitioning the storage so that some special purpose modules have a specific slot.
+     * This is done as a way of mitigating performance issues of parsing the entire storage while having to perform related calculations
+     * based on the presence of certain modules.
+     * @return ranged wrapper
+     */
+    Map<ModuleCategory, RangedWrapper> getRangedWrappers();
+
+    boolean isModuleValidForPlacement(int slot, ItemStack module);
+
+    boolean isModuleValid (LazyOptional<IPowerModule> pm);
+
+    boolean isModuleValid(ItemStack module);
+
+    /**
+     * Returns a range of slots (partition) for a given module category, or null if there is none
+     *
+     * @param category
+     * @return
+     */
+    Pair getRangeForCategory(ModuleCategory category);
+
+    int getStackLimit(final int slot, final ItemStack module);
+
+    @Override
+    default int getSlotLimit(int slot) {
+        return 1;
+    }
+
+    int findInstalledModule(Item item);
+
+    @Nullable
+    LazyOptional<IPowerModule> getModuleCapabilityOnlineOrNull(ResourceLocation moduleName);
+
+    @Nullable
+    LazyOptional<IPowerModule> getModuleCapability(ResourceLocation moduleName);
+
+    int findInstalledModule(ItemStack module);
+
+    int findInstalledModule(ResourceLocation registryName);
+
+    boolean isModuleInstalled(ResourceLocation regName);
+
+    boolean isModuleInstalled(ItemStack module);
+
+    boolean isModuleInstalled(Item item);
+
+    boolean isModuleOnline(int slot);
+
+    boolean isModuleOnline(ResourceLocation moduleName);
+
+    /**
+     * return true for a module is allowed and either can't be turned off or is on, otherwise return false
+     */
+    boolean isModuleOnline(ItemStack module);
+
+    ItemStack getOnlineModuleOrEmpty(ResourceLocation moduleName);
+
+    void toggleModule(boolean online, int moduleIndex);
+
+    void toggleModule(ResourceLocation moduleName, boolean online);
+
+    void setModuleBoolean(ResourceLocation moduleName, String key, boolean value);
+
+    /**
+     * TODO: WIP!! Still assessing what changes actually need to be made for things to work
+     *
+     * @param moduleName
+     * @param key
+     * @param value
+     */
+    void setModuleDouble(ResourceLocation moduleName, String key, double value);
+
+    void setModuleDouble(int index, String key, double value);
+
+    double getModuleDouble(ResourceLocation moduleName, String key);
+
+    double getModuleDouble(int index, String key);
+
+    void setModuleFloat(ResourceLocation moduleName, String key, float value);
+
+    void setModuleBlockState(ResourceLocation moduleName, BlockState state);
+
+    void setModuleString(ResourceLocation moduleName, String key, String value);
+
+    default NonNullList<ItemStack> getInstalledModules() {
+        NonNullList<ItemStack> modules = NonNullList.create();
+
+        for (int i = 0; i < getSlots(); i++) {
+            ItemStack module = getStackInSlot(i);
+            if (!module.isEmpty()) {
+                modules.add(module);
+            }
+        }
+        return modules;
+    }
+
+    default boolean isSlotValid(int slot) {
+        return slot >= 0 && slot < getSlots();
+    }
+
+    /**
+     * Can be used as port of a movement restrictive system like weight.
+     *
+     * @return total movement resistance of all online modules installed in this modular item
+     */
+    double getMovementResistance();
+
+    void tick(Player player, Level level, ItemStack host);
+
+    default @NotNull LazyOptional<IPowerModule> getModuleCapability(ItemStack module) {
+        LazyOptional<IOtherModItemsAsModules> cap = module.getCapability(NuminaCapabilities.EXTERNAL_MOD_ITEMS_AS_MODULES);
+        if(cap.isPresent()) {
+            return cap;
+        }
+        return module.getCapability(NuminaCapabilities.POWER_MODULE);
+    }
 
     default String formatInfo(String string, double value) {
         return string + '\t' + StringUtils.formatNumberShort(value);
     }
-
-    boolean setModuleTweakDouble(ResourceLocation moduleName, String key, double value);
-
-    default int findInstalledModule(@Nonnull ItemStack module) {
-        ResourceLocation registryName = ItemUtils.getRegistryName(module);
-        return findInstalledModule(registryName);
-    }
-
-    default int findInstalledModule(ResourceLocation registryName) {
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack testStack = getStackInSlot(i);
-            if (!testStack.isEmpty()) {
-                if (ItemUtils.getRegistryName(testStack).equals(registryName)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
 }
+
+
+///**
+// *
+// *
+// */
+//public interface IModularItem extends IItemHandler, IItemHandlerModifiable {
+//    void setRangedWrapperMap(Map<ModuleCategory, RangedWrapper> rangedWrappers);
+//
+//    boolean isModuleValid(@Nonnull ItemStack module);
+//
+//    boolean isModuleInstalled(ResourceLocation regName);
+//
+//    default boolean isModuleInstalled(@Nonnull ItemStack module) {
+//        return module.getCapability(NuminaCapabilities.POWER_MODULE).isPresent() && isModuleInstalled(ItemUtils.getRegistryName(module));
+//    }
+//
+//    default boolean isModuleInstalled(Item item) {
+//        return isModuleInstalled(ItemUtils.getRegistryName(item));
+//    }
+//
+//    boolean isModuleOnline(ResourceLocation moduleName);
+//
+//    void toggleModule(ResourceLocation moduleName, boolean online);
+//
+//    @Nullable
+//    Pair<Integer, Integer> getRangeForCategory(ModuleCategory category);
+//
+//    List<ResourceLocation> getInstalledModuleNames();
+//
+//    NonNullList<ItemStack> getInstalledModules();
+//
+//    NonNullList<ItemStack> getInstalledModulesOfType(Class<? extends IPowerModule> type);
+//
+//    @Nonnull
+//    ItemStack getOnlineModuleOrEmpty(ResourceLocation regName);
+//
+//    @Nonnull
+//    ItemStack getModularItemStack();
+//
+//    void tick(Player player);
+//
+//    default String formatInfo(String string, double value) {
+//        return string + '\t' + StringUtils.formatNumberShort(value);
+//    }
+//
+//    boolean setModuleTweakDouble(ResourceLocation moduleName, String key, double value);
+//
+//    default int findInstalledModule(@Nonnull ItemStack module) {
+//        ResourceLocation registryName = ItemUtils.getRegistryName(module);
+//        return findInstalledModule(registryName);
+//    }
+//
+//    default int findInstalledModule(ResourceLocation registryName) {
+//        for (int i = 0; i < getSlots(); i++) {
+//            ItemStack testStack = getStackInSlot(i);
+//            if (!testStack.isEmpty()) {
+//                if (ItemUtils.getRegistryName(testStack).equals(registryName)) {
+//                    return i;
+//                }
+//            }
+//        }
+//        return -1;
+//    }
+//}

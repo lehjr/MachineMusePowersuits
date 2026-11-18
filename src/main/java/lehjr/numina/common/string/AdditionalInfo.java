@@ -27,10 +27,10 @@
 package lehjr.numina.common.string;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;

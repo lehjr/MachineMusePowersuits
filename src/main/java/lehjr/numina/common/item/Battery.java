@@ -26,7 +26,11 @@
 
 package lehjr.numina.common.item;
 
-import lehjr.numina.common.capabilities.BatteryCapabilityProvider;
+import lehjr.numina.common.capabilities.providers.BatteryCapabilityProvider;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
+import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.string.AdditionalInfo;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -43,23 +47,31 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class Battery extends Item {
-    /**
-     * these values are only used during initialization to set up the config.
-     * They can be overridden in the config.
-     */
-    protected int maxEnergy;
-    protected int maxTransfer;
-    protected final int tier;
-
-    public Battery(int maxEnergy, int maxTransfer, int tier) {
+    public Battery() {
         super(new Item.Properties()
                 .stacksTo(1)
                 .defaultDurability(-1)
                 .setNoRepair());
-        this.maxEnergy = maxEnergy;
-        this.maxTransfer = maxTransfer;
-        this.tier = tier;
     }
+
+
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new BatteryCapabilityProvider(stack);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level worldIn, List<Component> tooltips, TooltipFlag flagIn) {
@@ -67,12 +79,6 @@ public class Battery extends Item {
             super.appendHoverText(itemStack, worldIn, tooltips, flagIn);
             AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);
         }
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new BatteryCapabilityProvider(stack, tier, maxEnergy, maxTransfer);
     }
 
     @Override

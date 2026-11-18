@@ -29,6 +29,7 @@ package lehjr.numina.common.item;
 import lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.entity.NuminaArmorStand;
+import lehjr.numina.common.registration.NuminaEntities;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -80,7 +81,7 @@ public class NuminaArmorStandItem extends ArmorStandItem {
                 if (level instanceof ServerLevel) {
                     ServerLevel serverlevel = (ServerLevel)level;
                     Consumer<NuminaArmorStand> consumer = EntityType.createDefaultStackConfig(serverlevel, itemstack, pContext.getPlayer());
-                    NuminaArmorStand armorstand = NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get().create(serverlevel, itemstack.getTag(), consumer, blockpos, MobSpawnType.SPAWN_EGG, true, true);
+                    NuminaArmorStand armorstand = NuminaEntities.ARMOR_STAND__ENTITY_TYPE.get().create(serverlevel, itemstack.getTag(), consumer, blockpos, MobSpawnType.SPAWN_EGG, true, true);
                     if (armorstand == null) {
                         return InteractionResult.FAIL;
                     }

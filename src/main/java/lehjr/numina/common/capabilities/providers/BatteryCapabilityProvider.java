@@ -1,10 +1,14 @@
-package lehjr.numina.common.capabilities;
+package lehjr.numina.common.capabilities.providers;
 
+import lehjr.numina.common.capabilities.CapabilityUpdate;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
+import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.registration.NuminaItems;
 import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -28,9 +32,17 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
 
     private final LazyOptional<IPowerModule> powerModuleHolder;
     private final LazyOptional<IEnergyStorage> energyStorageHolder;
+    final int maxEnergy;
+    final int tier;
+    final int maxTransfer;
 
-    public BatteryCapabilityProvider(final ItemStack module, int tier, int maxEnergy, int maxTransfer) {
-        powerModule = new PowerModule(module, ModuleCategory.ENERGY_STORAGE, ModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig) {
+    public BatteryCapabilityProvider(final ItemStack module) {//, int tier, int maxEnergy, int maxTransfer) {
+        tier = getTier(module);
+        maxEnergy = getMaxEnergy(module);
+        maxTransfer = getMaxTransfer(module);
+
+        powerModule = new PowerModule(module, ModuleCategory.ENERGY_STORAGE, ModuleTarget.ALLITEMS) {
+
             @Override
             public int getTier() {
                 return tier;
@@ -38,26 +50,86 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
 
             @Override
             public String getModuleGroup() {
-                return "Battery";
+                return "batteries";
             }
 
-            {
-                addBaseProperty(TagConstants.MAX_ENERGY, maxEnergy, "FE");
-                addBaseProperty(TagConstants.MAX_TRAMSFER, maxTransfer, "FE");
-            }};
+            @Override
+            public boolean isModuleOnline() {
+                return true;
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return switch (tier) {
+                    case 1 -> NuminaCommonConfig.batteryIsAllowed1;
+                    case 2 -> NuminaCommonConfig.batteryIsAllowed2;
+                    case 3 -> NuminaCommonConfig.batteryIsAllowed3;
+                    case 4 -> NuminaCommonConfig.batteryIsAllowed4;
+                    default -> false;
+                };
+            }
+        };
 
         powerModuleHolder = LazyOptional.of(() -> powerModule);
 
         this.energyStorage = new ModuleEnergyWrapper(
                 module,
-                (int) powerModule.applyPropertyModifiers(TagConstants.MAX_ENERGY),
-                (int) powerModule.applyPropertyModifiers(TagConstants.MAX_TRAMSFER)
+                maxEnergy,
+                maxTransfer
         );
 
         energyStorageHolder = LazyOptional.of(() -> {
             energyStorage.loadCapValues();
             return energyStorage;
         });
+    }
+
+    static int getTier(ItemStack module) {
+        if(module.is(NuminaItems.BASIC_BATTERY.get())) {
+            return 1;
+        }
+        if(module.is(NuminaItems.ADVANCED_BATTERY.get())) {
+            return 2;
+        }
+        if(module.is(NuminaItems.ELITE_BATTERY.get())) {
+            return 3;
+        }
+        if(module.is(NuminaItems.ULTIMATE_BATTERY.get())) {
+            return 4;
+        }
+        return 0;
+    }
+
+    static int getMaxEnergy(ItemStack module) {
+        if(module.is(NuminaItems.BASIC_BATTERY.get())) {
+            return NuminaCommonConfig.batteryMaxEnergy1;
+        }
+        if(module.is(NuminaItems.ADVANCED_BATTERY.get())) {
+            return NuminaCommonConfig.batteryMaxEnergy2;
+        }
+        if(module.is(NuminaItems.ELITE_BATTERY.get())) {
+            return NuminaCommonConfig.batteryMaxEnergy3;
+        }
+        if(module.is(NuminaItems.ULTIMATE_BATTERY.get())) {
+            return NuminaCommonConfig.batteryMaxEnergy4;
+        }
+        return 0;
+    }
+
+    static int getMaxTransfer(ItemStack module) {
+        if(module.is(NuminaItems.BASIC_BATTERY.get())) {
+            return NuminaCommonConfig.batteryMaxTransfer1;
+        }
+        if(module.is(NuminaItems.ADVANCED_BATTERY.get())) {
+            return NuminaCommonConfig.batteryMaxTransfer2;
+        }
+        if(module.is(NuminaItems.ELITE_BATTERY.get())) {
+            return NuminaCommonConfig.batteryMaxTransfer3;
+        }
+        if(module.is(NuminaItems.ULTIMATE_BATTERY.get())) {
+            return NuminaCommonConfig.batteryMaxTransfer4;
+        }
+        return 0;
     }
 
     /** ICapabilityProvider ----------------------------------------------------------------------- */
@@ -77,7 +149,7 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
     }
 
     public void setMaxEnergy(){
-        energyStorage.deserializeNBT(IntTag.valueOf(energyStorage.getMaxEnergyStored()));
+        energyStorage.deserializeNBT(IntTag.valueOf(maxEnergy));
         energyStorage.onValueChanged();
     }
 
@@ -112,12 +184,7 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
          */
         @Override
         public int receiveEnergy(final int maxReceive, final boolean simulate) {
-            if (!canReceive()) {
-                return 0;
-            }
-            final int energyReceived = (int)Math.min(getMaxEnergyStored() - energy,
-                    Math.min(powerModuleHolder.map(pm->pm.applyPropertyModifiers(TagConstants.MAX_TRAMSFER)).orElse(0D), maxReceive));
-
+            final int energyReceived = super.receiveEnergy(maxReceive, simulate);
             if (!simulate && energyReceived != 0) {
                 energy += energyReceived;
                 onValueChanged();
@@ -127,12 +194,7 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
 
         @Override
         public int extractEnergy(final int maxExtract, final boolean simulate) {
-            if (!canExtract()) {
-                return 0;
-            }
-
-            final int energyExtracted = Math.min(energy, Math.min((int) powerModule.applyPropertyModifiers(TagConstants.MAX_TRAMSFER), maxExtract));
-
+            final int energyExtracted = super.extractEnergy(maxExtract, simulate);
             if (!simulate && energyExtracted != 0) {
                 energy -= energyExtracted;
                 onValueChanged();
@@ -142,18 +204,7 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
 
         @Override
         public int getMaxEnergyStored() {
-            double ret = powerModuleHolder.map(pm->pm.applyPropertyModifiers(TagConstants.MAX_ENERGY)).orElse(0D);
-            return (int)ret;
-        }
-
-        @Override
-        public boolean canExtract() {
-            return (int) powerModule.applyPropertyModifiers(TagConstants.MAX_TRAMSFER) > 0;
-        }
-
-        @Override
-        public boolean canReceive() {
-            return (int) powerModule.applyPropertyModifiers(TagConstants.MAX_TRAMSFER) > 0;
+            return maxEnergy;
         }
     }
 }

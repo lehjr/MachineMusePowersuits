@@ -32,6 +32,7 @@ import lehjr.numina.client.gui.slot.IconSlot;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.registration.NuminaMenus;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -54,7 +55,7 @@ public class ArmorStandMenu extends AbstractContainerMenu {
     private final ArmorStand armorStandEntity;
 
     public ArmorStandMenu(int windowID, Inventory playerInventory, final ArmorStand armorStand) {
-        super(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), windowID);
+        super(NuminaMenus.ARMOR_STAND_CONTAINER_TYPE.get(), windowID);
         this.player = playerInventory.player;
         this.armorStandEntity = armorStand;
         armorStandInventory = new SimpleContainer(
