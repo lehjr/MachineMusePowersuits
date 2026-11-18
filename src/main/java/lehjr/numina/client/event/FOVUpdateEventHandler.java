@@ -26,7 +26,7 @@
 
 package lehjr.numina.client.event;
 
-import lehjr.numina.common.config.NuminaSettings;
+import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -58,7 +58,7 @@ public class FOVUpdateEventHandler {
 
     public static final Lazy<KeyMapping> fovToggleKey = Lazy.of(()-> new KeyMapping("key..numina.fovfixtoggle", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + NuminaConstants.MOD_ID));
 
-    public boolean fovIsActive = NuminaSettings.fovFixDefaultState();
+    public boolean fovIsActive = NuminaClientConfig.fovFixDefaultState;
 
 
 
@@ -66,7 +66,7 @@ public class FOVUpdateEventHandler {
 
     @SubscribeEvent
     public void onFOVUpdate(ComputeFovModifierEvent e) {
-        if (NuminaSettings.useFovFix()) {
+        if (NuminaClientConfig.useFovFix) {
             LocalPlayer player = Minecraft.getInstance().player;
             if (fovToggleKey.get().consumeClick()) {
                 fovIsActive = !fovIsActive;
@@ -79,7 +79,7 @@ public class FOVUpdateEventHandler {
 
             if (fovIsActive) {
                 AttributeInstance attributeinstance = e.getPlayer().getAttribute(Attributes.MOVEMENT_SPEED);
-                e.setNewFovModifier((float) (e.getNewFovModifier() / ((attributeinstance.getValue() / e.getPlayer().getAbilities().getWalkingSpeed() + 1.0) / 2.0)));if (NuminaSettings.useFovNormalize()) {
+                e.setNewFovModifier((float) (e.getNewFovModifier() / ((attributeinstance.getValue() / e.getPlayer().getAbilities().getWalkingSpeed() + 1.0) / 2.0)));if (NuminaClientConfig.useFovNormalize) {
                     if (e.getPlayer().isSprinting()) {
                         e.setNewFovModifier(e.getNewFovModifier() + 0.15F);
                     }

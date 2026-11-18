@@ -26,7 +26,7 @@
 
 package lehjr.numina.common.base;
 
-import lehjr.numina.client.event.ClientEventBusSubscriber;
+import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
@@ -37,7 +37,7 @@ import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
 import lehjr.numina.common.capabilities.render.color.IColorTag;
 import lehjr.numina.common.capabilities.render.highlight.IHighlight;
 import lehjr.numina.common.config.ConfigHelper;
-import lehjr.numina.common.config.NuminaSettings;
+import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.entity.NuminaArmorStand;
 import lehjr.numina.common.event.LogoutEventHandler;
@@ -56,15 +56,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(NuminaConstants.MOD_ID)
 public class Numina {
     public Numina() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, NuminaSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("numina-client-only.toml", NuminaConstants.MOD_ID).getAbsolutePath());
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, NuminaSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config
+        ModLoadingContext modContainer = ModLoadingContext.get();
+
+        modContainer.registerConfig(ModConfig.Type.CLIENT, NuminaClientConfig.CLIENT_SPEC, ConfigHelper.setupConfigFile("numina-client-only.toml", NuminaConstants.MOD_ID).getAbsolutePath());
+        modContainer.registerConfig(ModConfig.Type.COMMON, NuminaCommonConfig.COMMON_SPEC, ConfigHelper.setupConfigFile("numina-common.toml", NuminaConstants.MOD_ID).getAbsolutePath());
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -90,17 +91,17 @@ public class Numina {
         RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
-        // TODO? reload recipes on config change?
-        // [14:33:10] [Thread-1/DEBUG] [ne.mi.fm.co.ConfigFileTypeHandler/CONFIG]: Config file numina-server.toml changed, sending notifies
-        // handles loading and reloading event
-        modEventBus.addListener((ModConfigEvent event) -> {
-            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
-
-            final ModConfig config = event.getConfig();
-            if (config.getSpec() == NuminaSettings.SERVER_SPEC) {
-                NuminaSettings.getModuleConfig().setServerConfig(config);
-            }
-        });
+//        // TODO? reload recipes on config change?
+//        // [14:33:10] [Thread-1/DEBUG] [ne.mi.fm.co.ConfigFileTypeHandler/CONFIG]: Config file numina-server.toml changed, sending notifies
+//        // handles loading and reloading event
+//        modEventBus.addListener((ModConfigEvent event) -> {
+//            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
+//
+//            final ModConfig config = event.getConfig();
+//            if (config.getSpec() == NuminaSettings.SERVER_SPEC) {
+//                NuminaSettings.getModuleConfig().setServerConfig(config);
+//            }
+//        });
     }
 
 

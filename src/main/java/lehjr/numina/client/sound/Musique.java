@@ -26,8 +26,8 @@
 
 package lehjr.numina.client.sound;
 
+import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.config.NuminaSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
@@ -54,7 +54,7 @@ public class Musique {
     }
 
     public static void playClientSound(SoundEvent soundEvt, float volumeIn) {
-        if (NuminaSettings.useSounds()) {
+        if (NuminaClientConfig.useSounds) {
             mcsound().play(SimpleSoundInstance.forUI(soundEvt, volumeIn));
         }
     }
@@ -70,7 +70,7 @@ public class Musique {
     public static void playerSound(Player player, SoundEvent soundEvt, SoundSource categoryIn, float volume, Float pitch, Boolean continuous) {
         pitch = (pitch != null) ? pitch : 1.0F;
         continuous = (continuous != null) ? continuous : true;
-        if (NuminaSettings.useSounds() && soundEvt != null) {
+        if (NuminaClientConfig.useSounds && soundEvt != null) {
             String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);
 
@@ -90,7 +90,7 @@ public class Musique {
     }
 
     public static void stopPlayerSound(Player player, SoundEvent soundEvt) {
-        if (NuminaSettings.useSounds()) {
+        if (NuminaClientConfig.useSounds) {
             String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);
             if (sound != null) {

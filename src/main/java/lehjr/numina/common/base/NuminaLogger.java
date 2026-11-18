@@ -26,7 +26,7 @@
 
 package lehjr.numina.common.base;
 
-import lehjr.numina.common.config.NuminaSettings;
+import lehjr.numina.client.config.NuminaClientConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,7 +45,7 @@ public final class NuminaLogger {
     public static void logDebug(String string) {
         boolean debugging = true;
         try {
-            if (!NuminaSettings.enableDebugging()) {
+            if (!NuminaClientConfig.enableDebugging()) {
                 debugging = false;
             }
         } catch (Exception ignored) {

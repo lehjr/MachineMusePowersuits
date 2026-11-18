@@ -27,8 +27,8 @@
 package lehjr.numina.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.gui.meter.EnergyMeter;
-import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ChargingBaseMenu;
 import lehjr.numina.common.string.StringUtils;
@@ -46,7 +46,7 @@ public class ChargingBaseScreen extends AbstractContainerScreen<ChargingBaseMenu
 
     public ChargingBaseScreen(ChargingBaseMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
-        energyMeter = new EnergyMeter(NuminaSettings::getEnergyMeterConfig);
+        energyMeter = new EnergyMeter(NuminaClientConfig::getEnergyMeterConfig);
     }
 
     @Override

@@ -27,8 +27,6 @@
 package lehjr.numina.common.event;
 
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
-import lehjr.numina.common.config.ModuleConfig;
-import lehjr.numina.common.config.NuminaSettings;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;

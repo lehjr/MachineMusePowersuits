@@ -29,7 +29,7 @@ package lehjr.numina.common.blockentity;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.energy.BlockEnergyStorage;
 import lehjr.numina.common.capabilities.energy.BlockEnergyWrapper;
-import lehjr.numina.common.config.NuminaSettings;
+import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -164,7 +164,7 @@ public class ChargingBaseBlockEntity extends BlockEntity {
     }
 
     private BlockEnergyStorage createEnergy() {
-        return new BlockEnergyStorage(NuminaSettings.chargingBaseMaxPower(), NuminaSettings.chargingBaseMaxPower()) {
+        return new BlockEnergyStorage(NuminaCommonConfig.chargingBaseMaxEnergy, NuminaCommonConfig.chargingBaseMaxTransfer) {
             @Override
             public void onValueChanged() {
                 setChanged();
