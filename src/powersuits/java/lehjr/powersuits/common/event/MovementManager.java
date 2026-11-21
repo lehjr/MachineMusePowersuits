@@ -26,18 +26,14 @@
 
 package lehjr.powersuits.common.event;
 
-import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.MathUtils;
 import lehjr.numina.common.player.PlayerUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
-import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.sounds.SoundSource;

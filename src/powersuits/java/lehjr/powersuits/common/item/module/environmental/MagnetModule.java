@@ -26,14 +26,13 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
@@ -53,10 +52,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class MagnetModule extends AbstractPowerModule {
 
@@ -66,19 +63,14 @@ public class MagnetModule extends AbstractPowerModule {
         return new CapProvider(stack);
     }
 
-    public class CapProvider implements ICapabilityProvider {
+    public static class CapProvider implements ICapabilityProvider {
         ItemStack module;
         private final Ticker ticker;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
-        public CapProvider(@Nonnull ItemStack module) {
+        public CapProvider(ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.SPECIAL, ModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.RADIUS, 1, "m");
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 5, "FE");
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 2000);
-                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 9, "m", 1, 0);
-            }};
+            this.ticker = new Ticker(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
@@ -86,39 +78,57 @@ public class MagnetModule extends AbstractPowerModule {
             });
         }
 
-        class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, false);
+        public static class Ticker extends PlayerTickModule {
+            public Ticker(ItemStack module) {
+                super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY);
+                addBaseProperty(MPSConstants.RADIUS, EnvironmentalModuleConfig.magnetModuleRadiusBase, "m");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.magnetModuleEnergyConsumptionBase, "FE");
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.magnetModuleEnergyConsumptionRadiusMultiplier);
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, EnvironmentalModuleConfig.magnetModuleRadiusMultiplier, "m", 1, 0);
             }
 
             @Override
-            public void onPlayerTickActive(Player player, ItemStack stack) {
-                int energyUSage = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-                if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
-                    boolean isServerSide = !player.level().isClientSide;
+            public int getTier() {
+                return 1;
+            }
 
-                    if ((player.level().getGameTime() % 20) == 0 && isServerSide) {
-                        ElectricItemUtils.drainPlayerEnergy(player, energyUSage);
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return EnvironmentalModuleConfig.magnetModuleIsAllowed;
+            }
+
+            @Override
+            public boolean onPlayerTickActive(Player player, Level level, ItemStack stack, int moduleIndex) {
+                double energyUSage = getEnergyUsage();
+                if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
+                    boolean isServerSide = !level.isClientSide;
+
+                    if ((level.getGameTime() % 20) == 0 && isServerSide) {
+                        ElectricItemUtils.drainPlayerEnergy(player, energyUSage, false);
                     }
                     int range = (int) applyPropertyModifiers(MPSConstants.RADIUS);
-                    Level world = player.level();
                     AABB bounds = player.getBoundingBox().inflate(range);
 
                     if (isServerSide) {
                         bounds.expandTowards(0.2000000029802322D, 0.2000000029802322D, 0.2000000029802322D);
                         if (stack.getDamageValue() >> 1 >= 7) {
-                            List<Arrow> arrows = world.getEntitiesOfClass(Arrow.class, bounds);
+                            List<Arrow> arrows = level.getEntitiesOfClass(Arrow.class, bounds);
                             for (Arrow arrow : arrows) {
-                                if ((arrow.pickup == AbstractArrow.Pickup.ALLOWED) && (world.random.nextInt(6) == 0)) {
-                                    ItemEntity replacement = new ItemEntity(world, arrow.getX(), arrow.getY(), arrow.getZ(), new ItemStack(Items.ARROW));
-                                    world.addFreshEntity(replacement);
+                                if ((arrow.pickup == AbstractArrow.Pickup.ALLOWED) && (level.random.nextInt(6) == 0)) {
+                                    ItemEntity replacement = new ItemEntity(level, arrow.getX(), arrow.getY(), arrow.getZ(), new ItemStack(Items.ARROW));
+                                    level.addFreshEntity(replacement);
                                 }
                                 arrow.remove(Entity.RemovalReason.DISCARDED);
                             }
                         }
                     }
 
-                    for (ItemEntity e : world.getEntitiesOfClass(ItemEntity.class, bounds)) {
+                    for (ItemEntity e : level.getEntitiesOfClass(ItemEntity.class, bounds)) {
                         if (e.isAlive() && !e.getItem().isEmpty() && !e.hasPickUpDelay()) {
                             if (isServerSide) {
                                 double x = player.getX() - e.getX();
@@ -137,21 +147,26 @@ public class MagnetModule extends AbstractPowerModule {
                                 if (e.horizontalCollision) {
                                     e.setDeltaMovement(e.getDeltaMovement().add(0, 1, 0));
                                 }
-                            } else if (world.random.nextInt(20) == 0) {
-                                float pitch = 0.85F - world.random.nextFloat() * 3.0F / 10.0F;
-                                world.playLocalSound(e.getX(), e.getY(), e.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.6F, pitch, true);
+                            } else if (level.random.nextInt(20) == 0) {
+                                float pitch = 0.85F - level.random.nextFloat() * 3.0F / 10.0F;
+                                level.playLocalSound(e.getX(), e.getY(), e.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.6F, pitch, true);
                             }
                         }
                     }
                 }
+                return false;
+            }
+
+            @Override
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
         }
 
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        @Nonnull
-        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

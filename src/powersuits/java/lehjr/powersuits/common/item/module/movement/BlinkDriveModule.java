@@ -26,15 +26,14 @@
 
 package lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.player.PlayerUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
@@ -51,11 +50,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class BlinkDriveModule extends AbstractPowerModule {
     @Nullable
@@ -71,25 +68,24 @@ public class BlinkDriveModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClickie = new RightClickie(module, ModuleCategory.MOVEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
-                addBaseProperty(MPSConstants.BLINK_DRIVE_RANGE, 5, "m");
-                addTradeoffProperty(MPSConstants.RANGE, MPSConstants.ENERGY_CONSUMPTION, 140000);
-                addTradeoffProperty(MPSConstants.RANGE, MPSConstants.BLINK_DRIVE_RANGE, 95);
-            }};
+            this.rightClickie = new RightClickie(module);
 
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
-        class RightClickie extends RightClickModule {
-            public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
+        public static class RightClickie extends RightClickModule {
+            public RightClickie(ItemStack module) {
+                super(module, ModuleCategory.MOVEMENT, ModuleTarget.TOOLONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.blinkDriveModuleRangeBase, "FE");
+                addBaseProperty(MPSConstants.RANGE, MovementModuleConfig.blinkDriveModuleRangeBase, "m");
+                addTradeoffProperty(MPSConstants.RANGE, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.blinkDriveModuleEnergyConsumptionRangeMultiplier);
+                addTradeoffProperty(MPSConstants.RANGE, MPSConstants.RANGE, MovementModuleConfig.blinkDriveModuleRangeMultiplier);
             }
 
             @Override
-            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
-                int range = (int) applyPropertyModifiers(MPSConstants.BLINK_DRIVE_RANGE);
-                int energyConsumption = getEnergyUsage();
+            public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+                int range = (int) applyPropertyModifiers(MPSConstants.RANGE);
+                double energyConsumption = getEnergyUsage();
                 HitResult hitRayTrace = rayTrace(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY, range);
                 if (hitRayTrace != null && hitRayTrace.getType() == HitResult.Type.BLOCK) {
                     double distance = hitRayTrace.getLocation().distanceTo(playerIn.position());
@@ -108,8 +104,28 @@ public class BlinkDriveModule extends AbstractPowerModule {
             }
 
             @Override
-            public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            public int getTier() {
+                return 2;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return MovementModuleConfig.blinkDriveModuleIsAllowed;
+            }
+
+            @Override
+            public boolean isModuleOnline() {
+                return true;
+            }
+
+            @Override
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
         }
 
@@ -117,7 +133,7 @@ public class BlinkDriveModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

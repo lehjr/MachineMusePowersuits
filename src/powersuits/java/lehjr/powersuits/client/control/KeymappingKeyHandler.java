@@ -27,6 +27,7 @@
 package lehjr.powersuits.client.control;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -48,6 +49,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
@@ -55,6 +57,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -150,40 +153,43 @@ public class KeymappingKeyHandler {
             return;
         }
 
-        getMPSKeyMappings().stream().filter(KeyMapping::isDown).forEach(MPSKeyMapping::toggleModules);
+        if(minecraft.isWindowActive()) {
+            updatePlayerValues(player);
 
-        KeyMapping[] hotbarKeys = minecraft.options.keyHotbarSlots;
-        updatePlayerValues(player);
-        Inventory inventory = player.getInventory();
+            for(MPSKeyMapping keyMapping : getMPSKeyMappings()) {
+                if(keyMapping.isDown()) {
+                    keyMapping.toggleModules();
+                }
+            }
 
+            KeyMapping[] hotbarKeys = minecraft.options.keyHotbarSlots;
 
+            IModeChangingItem mci = getModeChangingItem(player);
+            if (mci != null) {
+                Inventory inventory = player.getInventory();
 
-
-        // Mode changinging GUI
-        if (hotbarKeys[inventory.selected].isDown() && minecraft.isWindowActive()) {
-            getMCItemCap(player).ifPresent(iModeChanging->{
-                if(player.level().isClientSide) {
-                    if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
-                        Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
+                // Mode changinging GUI
+                if (hotbarKeys[inventory.selected].isDown()) {
+                    if (!(minecraft.screen instanceof GuiModeSelector)) {
+                        minecraft.tell(() -> minecraft.setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
                     }
                 }
-            });
-        }
 
-        /* cycleToolBackward/cycleToolForward */
-        if (cycleToolBackward.isDown()) {
-            assert minecraft.gameMode != null;
-            minecraft.gameMode.tick();
-            getMCItemCap(player).map(IModeChangingItem.class::cast).ifPresent(handler-> handler.cycleMode(player, 1));
-        }
+                /* cycleToolBackward/cycleToolForward */
+                if (cycleToolBackward.isDown()) {
+                    assert minecraft.gameMode != null;
+                    minecraft.gameMode.tick();
+                    mci.cycleMode(player, 1);
+                }
 
-        if (cycleToolForward.isDown()) {
-            assert minecraft.gameMode != null;
-            minecraft.gameMode.tick();
-            getMCItemCap(player).ifPresent(handler-> handler.cycleMode(player, -1));
-        }
+                if (cycleToolForward.isDown()) {
+                    assert minecraft.gameMode != null;
+                    minecraft.gameMode.tick();
+                    mci.cycleMode(player, -1);
+                }
+            }
 
-        /**  TODO: server config option to disable these and enforce tinker table requirement */
+                /**  TODO: server config option to disable these and enforce tinker table requirement */
         /*
         if (openKeybindGUI.isDown()) {
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
@@ -205,6 +211,8 @@ public class KeymappingKeyHandler {
             MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.MAINHAND));
         }
         */
+
+        }
     }
 
     public static void loadKeyBindings() {
@@ -237,6 +245,12 @@ public class KeymappingKeyHandler {
 
     public static Map<String, MPSKeyMapping> keyMappings = new HashMap<>();
 
+    public static void registerKeybinding(ItemLike itemLike) {
+        if(itemLike instanceof Item item && item != Items.AIR) {
+            registerKeybinding(ItemUtils.getRegistryName(item), false);
+        }
+    }
+
     public static void registerKeybinding(ResourceLocation registryName, boolean showOnHud) {
         String keybindingName = "keybinding." + registryName.getNamespace() + "." + registryName.getPath();
         registerKeyBinding(registryName, keybindingName, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP, showOnHud, false);
@@ -248,12 +262,21 @@ public class KeymappingKeyHandler {
         }
     }
 
-    static Optional<IModeChangingItem> getMCItemCap(Player player) {
-        try {
-             return ItemUtils.getModeChangingModularItemCapability(player);
-        } catch(Exception e) {
-            e.printStackTrace();
+    @Nullable
+    static IModeChangingItem getModeChangingItem(Player player) {
+        ItemStack stack = player.getMainHandItem();
+        IModeChangingItem modeChangingItem = NuminaCapabilities.getModeChangingModularItem(stack);
+        if(modeChangingItem != null) {
+            return modeChangingItem;
         }
-        return Optional.empty();
+
+        IOtherModItemsAsModules foreignModuleCap = stack.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES).resolve().orElse(null);
+        if(foreignModuleCap != null) {
+            IModeChangingItem storedMCIC = foreignModuleCap.getStoredModeChangingModuleCapInStorage();
+            if(storedMCIC != null) {
+                return storedMCIC;
+            }
+        }
+        return null;
     }
 }

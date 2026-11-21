@@ -26,29 +26,28 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.config.NuminaSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class WaterElectrolyzerModule extends AbstractPowerModule {
 
@@ -65,31 +64,48 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
-            }};
+            this.ticker = new Ticker(module);
+
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
                 return ticker;
             });
         }
 
-        class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, false);
+        public static class Ticker extends PlayerTickModule {
+
+            public Ticker(ItemStack module) {
+                super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.waterElectrolyzerEnergyConsumptionBase, "FE");
             }
 
             @Override
-            public void onPlayerTickActive(Player player, ItemStack item) {
+            public int getTier() {
+                return -1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return EnvironmentalModuleConfig.waterElectrolyzerIsAllowed;
+            }
+
+            @Override
+            public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
                 double energy = ElectricItemUtils.getPlayerEnergy(player);
                 double energyConsumption = Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
                 if (energy > energyConsumption && player.getAirSupply() < 10) {
-                    if ((player.level().isClientSide()) && NuminaSettings.useSounds()) {
+                    if ((level.isClientSide()) && NuminaClientConfig.useSounds) {
                         player.playSound(MPSSoundDictionary.SOUND_EVENT_ELECTROLYZER.get(), 1.0f, 1.0f);
                     }
-                    ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
+                    ElectricItemUtils.drainPlayerEnergy(player, energyConsumption, false);
                     player.setAirSupply(300);
                 }
+                return false;
             }
         }
 
@@ -97,7 +113,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

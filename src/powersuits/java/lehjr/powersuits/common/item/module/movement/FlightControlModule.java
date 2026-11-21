@@ -31,7 +31,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
@@ -60,14 +60,12 @@ public class FlightControlModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final ToggleableModule moduleToggle;
+        private final Toggler moduleToggle;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, ModuleCategory.MOVEMENT, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, false) {{
-                addTradeoffProperty(MPSConstants.VERTICALITY, MPSConstants.FLIGHT_VERTICALITY, 1.0F, "%");
-            }};
+            this.moduleToggle = new Toggler(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 moduleToggle.loadCapValues();
@@ -75,11 +73,33 @@ public class FlightControlModule extends AbstractPowerModule {
             });
         }
 
+        public static class Toggler extends ToggleableModule {
+            public Toggler(@Nonnull ItemStack module) {
+                super(module, ModuleCategory.MOVEMENT, ModuleTarget.HEADONLY);
+                addTradeoffProperty(MPSConstants.VERTICALITY, MPSConstants.FLIGHT_VERTICALITY, 1.0F, "%");
+            }
+
+            @Override
+            public int getTier() {
+                return 1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return MovementModuleConfig.flightControlModuleIsAllowed;
+            }
+        }
+
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

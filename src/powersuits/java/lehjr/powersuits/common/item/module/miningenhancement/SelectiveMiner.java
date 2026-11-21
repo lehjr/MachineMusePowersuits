@@ -27,8 +27,6 @@
 package lehjr.powersuits.common.item.module.miningenhancement;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.enhancement.MiningEnhancement;
@@ -36,9 +34,10 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
-import lehjr.numina.common.capabilities.render.chameleon.Chameleon;
 import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
 import lehjr.numina.common.capabilities.render.highlight.IHighlight;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import lehjr.numina.common.utils.block.CheckBlocksFrom;
@@ -46,7 +45,6 @@ import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.common.config.module.MiningEnhancementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -65,10 +63,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import org.lwjgl.glfw.GLFW;
@@ -76,9 +71,6 @@ import org.lwjgl.glfw.GLFW;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**

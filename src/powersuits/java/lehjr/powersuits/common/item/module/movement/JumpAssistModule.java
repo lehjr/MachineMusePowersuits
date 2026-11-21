@@ -26,15 +26,14 @@
 
 package lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.client.control.PlayerMovementInputWrapper;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
 import lehjr.numina.common.player.PlayerUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.event.MovementManager;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -42,6 +41,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -65,10 +65,7 @@ public class JumpAssistModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
-                addSimpleTradeoff(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, "FE", 0, 250, MPSConstants.MULTIPLIER, "%", 1, 4);
-                addSimpleTradeoff(MPSConstants.COMPENSATION, MPSConstants.ENERGY_CONSUMPTION, "FE", 0, 50, MPSConstants.FOOD_COMPENSATION, "%", 0, 1);
-            }};
+            this.ticker = new Ticker(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
@@ -77,24 +74,49 @@ public class JumpAssistModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, true);
+            public Ticker(@Nonnull ItemStack module) {
+                super(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jumpAssistModuleEnergyConsumptionBase, "FE");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jumpAssistModuleEnergyConsumptionPowerMultiplier);
+                addBaseProperty(MPSConstants.JUMP_BOOST, MovementModuleConfig.jumpAssistModuleJumpBoostBase, "%");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.JUMP_BOOST, MovementModuleConfig.jumpAssistModuleJumpBoostPowerMultiplier);
+                addTradeoffProperty(MPSConstants.COMPENSATION, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jumpAssistModuleEnergyConsumptionCompensationMultiplier);
+                addBaseProperty(MPSConstants.EXHAUSTION_COMPENSATION, MovementModuleConfig.jumpAssistModuleExhaustionCompensationBase, "%");
+                addTradeoffProperty(MPSConstants.COMPENSATION, MPSConstants.EXHAUSTION_COMPENSATION, MovementModuleConfig.jumpAssistModuleExhaustionCompensationCompensationMultiplier);
             }
 
             @Override
-            public void onPlayerTickActive(Player player, ItemStack item) {
-                PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-                if (playerInput.jumpKey) {
+            public int getTier() {
+                return 1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return MovementModuleConfig.jumpAssistModuleIsAllowed;
+            }
+
+
+            @Override
+            public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
+                IPlayerKeyStates keyStates = player.getCapability(NuminaCapabilities.PLAYER_KEYSTATES).resolve().orElse(null);
+                if (keyStates != null && keyStates.getJumpKeyState()) {
                     double multiplier = MovementManager.INSTANCE.getPlayerJumpMultiplier(player);
                     if (multiplier > 0) {
                         player.setDeltaMovement(player.getDeltaMovement().add(0, 0.15 * Math.min(multiplier, 1), 0));
                         MovementManager.INSTANCE.setPlayerJumpTicks(player, multiplier - 1);
                     }
-                    player.getAbilities().setFlyingSpeed(player.getSpeed() * .2f);
+                    PlayerUtils.resetFloatKickTicks(player);
+//                player.getAbilities().setFlyingSpeed(player.getSpeed() * .2f); // FixMe? What was this for?
                 } else {
                     MovementManager.INSTANCE.setPlayerJumpTicks(player, 0);
                 }
                 PlayerUtils.resetFloatKickTicks(player);
+                return false;
             }
         }
 
@@ -102,7 +124,7 @@ public class JumpAssistModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

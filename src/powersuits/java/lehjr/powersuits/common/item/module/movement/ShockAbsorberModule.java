@@ -26,12 +26,12 @@
 
 package lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
@@ -41,7 +41,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ShockAbsorberModule extends AbstractPowerModule {
@@ -52,19 +51,14 @@ public class ShockAbsorberModule extends AbstractPowerModule {
         return new CapProvider(stack);
     }
 
-    public class CapProvider implements ICapabilityProvider {
+    public static class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final ToggleableModule moduleToggle;
+        private final Toggler moduleToggle;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
-        public CapProvider(@Nonnull ItemStack module) {
+        public CapProvider(ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, ModuleCategory.MOVEMENT, ModuleTarget.FEETONLY, MPSSettings::getModuleConfig, true) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE/m");
-                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 100);
-                addBaseProperty(MPSConstants.MULTIPLIER, 0, "%");
-                addTradeoffProperty(MPSConstants.POWER, MPSConstants.MULTIPLIER, 10);
-            }};
+            this.moduleToggle = new Toggler(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 moduleToggle.loadCapValues();
@@ -72,11 +66,35 @@ public class ShockAbsorberModule extends AbstractPowerModule {
             });
         }
 
+        static class Toggler extends ToggleableModule {
+            public Toggler(ItemStack module) {
+                super(module, ModuleCategory.MOVEMENT, ModuleTarget.FEETONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.shockAbsorberEnergyConsumptionBase, "FE/m");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.shockAbsorberEnergyConsumptionPowerMultiplier);
+                addBaseProperty(MPSConstants.DISTANCE_REDUCTION, MovementModuleConfig.shockAbsorberDistanceReductionBase, "%");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.DISTANCE_REDUCTION, MovementModuleConfig.shockAbsorberDistanceReductionPowerMultiplier);
+            }
+
+            @Override
+            public int getTier() {
+                return 1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return MovementModuleConfig.shockAbsorberModuleIsAllowed;
+            }
+        }
+
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        @Nonnull
-        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

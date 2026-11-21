@@ -79,7 +79,7 @@ public class TinkerTableItem extends BlockItem {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClick = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
+            this.rightClick = new RightClickie(module);
         }
 
         @Nonnull
@@ -89,8 +89,8 @@ public class TinkerTableItem extends BlockItem {
         }
 
         class RightClickie extends RightClickModule {
-            public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
+            public RightClickie(@Nonnull ItemStack module) {
+                super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
             }
 
             @Override
@@ -100,6 +100,25 @@ public class TinkerTableItem extends BlockItem {
                     NetworkHooks.openScreen((ServerPlayer) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlot.MAINHAND));
                 }
                 return super.use(itemStackIn, worldIn, playerIn, hand);
+            }
+
+            @Override
+            public boolean isModuleOnline() {
+                return true;
+            }
+
+            public int getTier() {
+                return -1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return true;
             }
         }
     }

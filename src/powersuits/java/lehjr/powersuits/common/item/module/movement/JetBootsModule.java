@@ -26,20 +26,20 @@
 
 package lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.client.control.PlayerMovementInputWrapper;
+import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.sound.Musique;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.thruster.IThruster;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.config.NuminaSettings;
+import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.event.MovementManager;
@@ -50,6 +50,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -69,17 +70,12 @@ public class JetBootsModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final Ticker ticker;
+        private final Toggler ticker;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.FEETONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0);
-                addBaseProperty(MPSConstants.JETBOOTS_THRUST, 0);
-                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 750, "FE");
-                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETBOOTS_THRUST, 0.08F);
-            }};
+            this.ticker = new Toggler(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
@@ -87,55 +83,51 @@ public class JetBootsModule extends AbstractPowerModule {
             });
         }
 
-        class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, false);
+        public static class Toggler extends ToggleableModule implements IThruster {
+            public Toggler(@Nonnull ItemStack module) {
+                super(module, ModuleCategory.MOVEMENT, ModuleTarget.FEETONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jetBootsModuleEnergyConsumptionBase, "RF/t");
+                addBaseProperty(MPSConstants.JETBOOTS_THRUST, MovementModuleConfig.jetBootsThrustBase, "N");
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jetBootsEnergyConsumptionThrustMultiplier, "FE");
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETBOOTS_THRUST, MovementModuleConfig.jetBootsThrustMultiplier);
             }
 
             @Override
-            public void onPlayerTickActive(Player player, ItemStack item) {
-                if (player.isInWater())
-                    return;
+            public int getTier() {
+                return 1;
+            }
 
-                boolean hasFlightControl = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                        .filter(IModularItem.class::isInstance)
-                        .map(IModularItem.class::cast)
-                        .map(m-> m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false);
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
 
-                double jetEnergy = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-                double thrust = applyPropertyModifiers(MPSConstants.JETBOOTS_THRUST);
+            @Override
+            public boolean isAllowed() {
+                return MovementModuleConfig.jetBootsModuleIsAllowed;
+            }
 
-                PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-                // if player has enough energy to fly
-                if (jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) {
-                    if (hasFlightControl && thrust > 0) {
-                        thrust = MovementManager.INSTANCE.thrust(player, thrust, true);
-                        if ((player.level().isClientSide) && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
-                        }
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
-                    } else if (playerInput.jumpKey && player.getDeltaMovement().y < 0.5) {
-                        thrust = MovementManager.INSTANCE.thrust(player, thrust, false);
-                        if ((player.level().isClientSide) && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
-                        }
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
-                    } else {
-                        if ((player.level().isClientSide) && NuminaSettings.useSounds()) {
-                            Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
-                        }
-                    }
-                } else {
-                    if (player.level().isClientSide && NuminaSettings.useSounds()) {
-                        Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
-                    }
+            @Override
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            }
+
+            @Override
+            public double getDesiredThrust() {
+                return applyPropertyModifiers(MPSConstants.JETBOOTS_THRUST);
+            }
+
+            @Override
+            public void stopSound(Player player, Level level) {
+                if (level.isClientSide && NuminaClientConfig.useSounds) {
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                 }
             }
 
             @Override
-            public void onPlayerTickInactive(Player player, ItemStack item) {
-                if (player.level().isClientSide && NuminaSettings.useSounds()) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
+            public void playSound(Player player, Level level, double percentDesiredThrust) {
+                if (level.isClientSide && NuminaClientConfig.useSounds) {
+                    Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (percentDesiredThrust * 6.25), 1.0f, true);
                 }
             }
         }
@@ -144,7 +136,7 @@ public class JetBootsModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

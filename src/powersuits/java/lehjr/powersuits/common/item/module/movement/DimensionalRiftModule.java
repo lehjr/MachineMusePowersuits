@@ -26,16 +26,14 @@
 
 package lehjr.powersuits.common.item.module.movement;
 
-
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -56,12 +54,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 import java.util.function.Function;
 
 /**
@@ -79,29 +75,48 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         private final RightClickie rightClickie;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
-        public CapProvider(@Nonnull ItemStack module) {
+        public CapProvider(ItemStack module) {
             this.module = module;
-            this.rightClickie = new RightClickie(module, ModuleCategory.MOVEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.HEAT_GENERATION, 55);
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 200000);
-            }};
+            this.rightClickie = new RightClickie(module);
 
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
         class RightClickie extends RightClickModule {
-            public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
+            public RightClickie(ItemStack module) {
+                super(module, ModuleCategory.MOVEMENT, ModuleTarget.TOOLONLY);
+                addBaseProperty(MPSConstants.HEAT_GENERATION, MovementModuleConfig.dimensionalRiftModuleHeatGenerationBase);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.dimensionalRiftModuleEnergyConsumptionBase);
             }
 
             @Override
-            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+            public int getTier() {
+                return 1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return MovementModuleConfig.dimensionalRiftModuleIsAllowed;
+            }
+
+            @Override
+            public boolean isModuleOnline() {
+                return true;
+            }
+
+            @Override
+            public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
                 if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions() && !playerIn.level().isClientSide()) {
-                    Level level ;
-                    if (playerIn.level().dimension().location().equals(Level.NETHER.location())) {
-                        level = playerIn.getServer().getLevel(Level.OVERWORLD);
-                    } else if (playerIn.level().dimension().location().equals(Level.OVERWORLD.location())) {
-                        level = playerIn.getServer().getLevel(Level.NETHER);
+                    ServerLevel level ;
+                    if (worldIn.dimension().location().equals(Level.NETHER.location())) {
+                        level = Objects.requireNonNull(playerIn.getServer()).getLevel(Level.OVERWORLD);
+                    } else if (worldIn.dimension().location().equals(Level.OVERWORLD.location())) {
+                        level = Objects.requireNonNull(playerIn.getServer()).getLevel(Level.NETHER);
                     } else {
                         level = null;
                     }
@@ -111,12 +126,14 @@ public class DimensionalRiftModule extends AbstractPowerModule {
                         double energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         double playerEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
                         if (playerEnergy >= energyConsumption) {
-                            Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, (ServerLevel) level, playerIn);
+                            Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, level, playerIn);
                             if (targetPos.isPresent()) {
+
                                 playerIn.changeDimension((ServerLevel) level, new CommandTeleporter(targetPos.get()));
-                                ElectricItemUtils.drainPlayerEnergy(playerIn, getEnergyUsage());
+                                ElectricItemUtils.drainPlayerEnergy(playerIn, getEnergyUsage(), false);
                                 HeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.HEAT_GENERATION));
                                 return InteractionResultHolder.success(itemStackIn);
+
                             }
                         }
                     }
@@ -125,18 +142,16 @@ public class DimensionalRiftModule extends AbstractPowerModule {
                 return InteractionResultHolder.pass(itemStackIn);
             }
 
-
             @Override
-            public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
         }
 
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        @Nonnull
-        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }
@@ -144,7 +159,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         }
     }
 
-    private class CommandTeleporter implements ITeleporter {
+    private static class CommandTeleporter implements ITeleporter {
         private final BlockPos targetPos;
 
         private CommandTeleporter(BlockPos targetPos) {

@@ -28,7 +28,6 @@ package lehjr.powersuits.common.event;
 
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.MathUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;

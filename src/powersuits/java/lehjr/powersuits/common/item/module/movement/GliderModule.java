@@ -26,31 +26,21 @@
 
 package lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.client.control.PlayerMovementInputWrapper;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.player.PlayerUtils;
-import lehjr.powersuits.common.config.MPSSettings;
-import lehjr.powersuits.common.constants.MPSRegistryNames;
+import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class GliderModule extends AbstractPowerModule {
 
@@ -62,13 +52,13 @@ public class GliderModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final Ticker ticker;
+        private final Toggler ticker;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
 
-        public CapProvider(@Nonnull ItemStack module) {
+        public CapProvider(ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.TORSOONLY, MPSSettings::getModuleConfig);
+            this.ticker = new Toggler(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
@@ -76,48 +66,30 @@ public class GliderModule extends AbstractPowerModule {
             });
         }
 
-        class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, false);
+        public static class Toggler extends ToggleableModule {
+            public Toggler(ItemStack module) {
+                super(module, ModuleCategory.MOVEMENT, ModuleTarget.TORSOONLY);
             }
 
             @Override
-            public void onPlayerTickActive(Player player, ItemStack chestPlate) {
-                Vec3 playerHorzFacing = player.getLookAngle();
-                playerHorzFacing = new Vec3(playerHorzFacing.x, 0, playerHorzFacing.z);
-                playerHorzFacing.normalize();
-                PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
+            public int getTier() {
+                return 1;
+            }
 
-                PlayerUtils.resetFloatKickTicks(player);
-                boolean hasParachute = chestPlate.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                        .filter(IModularItem.class::isInstance)
-                        .map(IModularItem.class::cast)
-                        .map(m-> m.isModuleOnline(MPSRegistryNames.PARACHUTE_MODULE)).orElse(false);
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
 
-                if (player.isCrouching() && player.getDeltaMovement().y < 0 && (!hasParachute || playerInput.forwardKey)) {
-                    Vec3 motion = player.getDeltaMovement();
-                    if (motion.y < -0.1) {
-                        double motionYchange = Math.min(0.08, -0.1 - motion.y);
-
-                        player.setDeltaMovement(motion.add(
-                                playerHorzFacing.x * motionYchange,
-                                motionYchange,
-                                playerHorzFacing.z * motionYchange
-                        ));
-
-                        // sprinting speed
-                        float flySpeed = player.getAbilities().getFlyingSpeed() + 0.03f;
-                        player.getAbilities().setFlyingSpeed(flySpeed);
-                    }
-                }
+            public boolean isAllowed() {
+                return MovementModuleConfig.gliderModuleIsAllowed;
             }
         }
 
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        @Nonnull
-        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

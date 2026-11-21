@@ -26,14 +26,13 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -54,9 +53,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 /**
  * Created by User: Andrew2448
@@ -69,16 +66,14 @@ public class MobRepulsorModule extends AbstractPowerModule {
         return new CapProvider(stack);
     }
 
-    public class CapProvider implements ICapabilityProvider {
+    public static class CapProvider implements ICapabilityProvider {
         ItemStack module;
         private final Ticker ticker;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
-        public CapProvider(@Nonnull ItemStack module) {
+        public CapProvider(ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 2500, "FE");
-            }};
+            this.ticker = new Ticker(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
@@ -86,20 +81,37 @@ public class MobRepulsorModule extends AbstractPowerModule {
             });
         }
 
-        class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, false);
+        static class Ticker extends PlayerTickModule {
+            public Ticker(ItemStack module) {
+                super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.mobReulsorModuleEnergyConsumptionBase, "FE");
             }
 
             @Override
-            public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
+            public int getTier() {
+                return 1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return EnvironmentalModuleConfig.mobRepulsorModuleIsAllowed;
+            }
+
+            @Override
+            public boolean onPlayerTickActive(Player player, Level level, ItemStack item, int moduleIndex) {
                 int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
-                    if (player.level().getGameTime() % 20 == 0) {
-                        ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
+                    if (level.getGameTime() % 20 == 0) {
+                        ElectricItemUtils.drainPlayerEnergy(player, energyConsumption, false);
                     }
-                    repulse(player.level(), player.blockPosition());
+                    repulse(level, player.blockPosition());
                 }
+                return false;
             }
 
             // FIXME: check for instances instead of direct references
@@ -163,9 +175,8 @@ public class MobRepulsorModule extends AbstractPowerModule {
 
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        @Nonnull
-        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

@@ -84,7 +84,7 @@ public class TagUtils {
      * Bouncer for succinctness. Checks the itemStack's modular properties and
      * returns the getValue if it exists, otherwise 0.
      */
-    public static float getModuleFloatOrZero(@Nonnull ItemStack stack, String string) {
+    public static float getModuleFloat(@Nonnull ItemStack stack, String string) {
         return getFloatOrZero(getModuleTag(stack), string);
     }
 

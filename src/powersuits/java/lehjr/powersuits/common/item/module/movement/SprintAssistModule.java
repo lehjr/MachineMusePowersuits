@@ -26,14 +26,12 @@
 
 package lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
@@ -74,14 +72,7 @@ public class SprintAssistModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
-                // Sprinting
-                addSimpleTradeoff(MPSConstants.SPRINT_ASSIST, MPSConstants.SPRINT_ENERGY_CONSUMPTION, "RF", 0, 5000, MPSConstants.SPRINT_SPEED_MULTIPLIER, "%", 0.1, 2.49);
-                // Sprinting Food Compensation
-                addSimpleTradeoff(MPSConstants.COMPENSATION, MPSConstants.SPRINT_ENERGY_CONSUMPTION, "RF", 0, 2000, MPSConstants.FOOD_COMPENSATION, "%", 0, 1);
-                // Walking
-                addSimpleTradeoff(MPSConstants.WALKING_ASSISTANCE, MPSConstants.WALKING_ENERGY_CONSUMPTION, "RF", 0, 5000, MPSConstants.WALKING_SPEED_MULTIPLIER, "%", 0.01, 1.99);
-            }};
+            this.ticker = new Ticker(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
@@ -90,9 +81,50 @@ public class SprintAssistModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, true);
+            public Ticker(@Nonnull ItemStack module) {
+                super(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY);
+                // Sprinting ------------------------------------------------------------------------------------------------------------------
+                addBaseProperty(MPSConstants.SPRINT_ENERGY_CONSUMPTION, MovementModuleConfig.sprintAssistModuleSprintEnergyConsumptionBase, "RF");
+                addTradeoffProperty(MPSConstants.SPRINT_ASSIST, MPSConstants.SPRINT_ENERGY_CONSUMPTION, MovementModuleConfig.sprintAssistModuleSprintEnergyConsumptionAssistMultiplier);
+                addBaseProperty(MPSConstants.SPRINT_SPEED_MULTIPLIER, MovementModuleConfig.sprintAssistModuleSprintSpeedBase, "%");
+                addTradeoffProperty(MPSConstants.SPRINT_ASSIST, MPSConstants.SPRINT_SPEED_MULTIPLIER, MovementModuleConfig.sprintAssistModuleSprintSpeedAssistMultiplier);
+
+                // Sprint Food Compensation -------------------------------------------------------------------------------
+                addBaseProperty(MPSConstants.EXHAUSTION_COMPENSATION, MovementModuleConfig.sprintAssistModuleExhaustionCompensationBase, "%");
+                addTradeoffProperty(MPSConstants.COMPENSATION, MPSConstants.SPRINT_ENERGY_CONSUMPTION, MovementModuleConfig.sprintAssistExhaustionCompensationEnergyConsumptionMultiplier);
+                addTradeoffProperty(MPSConstants.COMPENSATION, MPSConstants.EXHAUSTION_COMPENSATION, MovementModuleConfig.sprintAssistExhaustionCompensationCompensationMultiplier);
+
+
+                // Walking --------------------------------------------------------------------------------------------------------------------
+                addBaseProperty(MPSConstants.WALKING_ENERGY_CONSUMPTION, MovementModuleConfig.sprintAssistModuleWalkingEnergyBase, "RF");
+                addTradeoffProperty(MPSConstants.WALKING_ASSISTANCE, MPSConstants.WALKING_ENERGY_CONSUMPTION, MovementModuleConfig.sprintAssistModuleWalkingEnergyWalkingAssistanceMultiplier);
+                addBaseProperty(MPSConstants.WALKING_SPEED_MULTIPLIER, MovementModuleConfig.sprintAssistModuleWalkingSpeedMultiplierBase, "%");
+                addTradeoffProperty(MPSConstants.WALKING_ASSISTANCE, MPSConstants.WALKING_SPEED_MULTIPLIER, MovementModuleConfig.sprintAssistModuleWalkingSpeedMultiplierWalkingAssistMultiplier);
             }
+
+            @Override
+            public int getTier() {
+                return 1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return MovementModuleConfig.sprintAssistModuleIsAllowed;
+            }
+
+
+
+
+
+
+
+
+
 
             @Override
             public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStack) {
