@@ -2,8 +2,8 @@ package lehjr.powersuits.common.config.module;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.constants.MPSConstants;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class EnvironmentalModuleConfig {
     private static final ForgeConfigSpec.Builder ENVIRONMENTAL_MODULE_BUILDER = new ForgeConfigSpec.Builder().push("Environmental");

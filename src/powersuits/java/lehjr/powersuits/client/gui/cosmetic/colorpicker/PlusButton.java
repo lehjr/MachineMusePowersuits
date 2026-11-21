@@ -2,8 +2,8 @@ package lehjr.powersuits.client.gui.cosmetic.colorpicker;
 
 import lehjr.numina.client.gui.clickable.RadioButton;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class PlusButton extends RadioButton {

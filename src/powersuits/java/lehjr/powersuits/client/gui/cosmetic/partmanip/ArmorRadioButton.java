@@ -2,8 +2,8 @@ package lehjr.powersuits.client.gui.cosmetic.partmanip;
 
 import lehjr.numina.client.gui.clickable.RadioButton;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.IconUtils;
 
 public class ArmorRadioButton extends RadioButton {
     public ArmorRadioButton(double leftPos, double topPos, Color color) {

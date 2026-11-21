@@ -1,8 +1,8 @@
 package lehjr.powersuits.common.config.module;
 
 import lehjr.numina.common.constants.NuminaConstants;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class CosmeticModuleConfig {
     // Transparent Armor

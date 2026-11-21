@@ -1,10 +1,10 @@
 package lehjr.numina.common.recipe;
 
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;

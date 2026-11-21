@@ -35,8 +35,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.function.Supplier;
-
 @Mod.EventBusSubscriber(modid = MPSConstants.MOD_ID, value = Dist.CLIENT)
 public class MPSSoundDictionary {
     public static final DeferredRegister<SoundEvent> MPS_SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MPSConstants.MOD_ID);

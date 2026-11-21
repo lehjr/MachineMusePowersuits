@@ -26,10 +26,10 @@
 
 package lehjr.numina.common.utils;
 
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -46,7 +46,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ItemUtils {
     public static EquipmentSlot getEquipmentSlotForItem(ItemStack stack) {

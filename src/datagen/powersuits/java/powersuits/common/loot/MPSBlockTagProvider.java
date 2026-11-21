@@ -1,7 +1,7 @@
 package powersuits.common.loot;
 
-import lehjr.powersuits.common.registration.MPSBlocks;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.registration.MPSBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;

@@ -28,37 +28,28 @@ package lehjr.powersuits.common.item.module.movement;
 
 import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.sound.Musique;
-import lehjr.numina.common.capabilities.module.thruster.IThruster;
-import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
-import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.numina.common.utils.ItemUtils;
+import lehjr.numina.common.capabilities.module.thruster.IThruster;
+import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.constants.MPSRegistryNames;
-import lehjr.powersuits.common.event.MovementManager;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class JetPackModule extends AbstractPowerModule {
 

@@ -36,7 +36,6 @@ import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import lehjr.numina.imixin.common.item.IMixinRangedWrapper;
@@ -61,7 +60,6 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 public class ModularItem extends ItemStackHandler implements IModularItem, CapabilityUpdate {
     final boolean isTool;

@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.common.capability;
 
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.capabilities.inventory.modechanging.ModeChangingModularItem;
@@ -34,6 +33,7 @@ import lehjr.numina.common.capabilities.inventory.modularitem.NuminaRangedWrappe
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.ModelSpecStorage;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.client.render.PowerFistSpecNBT;
 import lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.core.Direction;
@@ -49,7 +49,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-
 
 
 public class PowerFistCap implements ICapabilityProvider {

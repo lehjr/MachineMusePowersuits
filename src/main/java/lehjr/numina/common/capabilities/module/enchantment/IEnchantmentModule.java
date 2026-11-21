@@ -31,7 +31,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
-import javax.annotation.Nonnull;
 import java.util.Map;
 
 public interface IEnchantmentModule extends IPlayerTickModule {

@@ -27,14 +27,14 @@
 package lehjr.powersuits.common.blockentity;
 
 
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.color.ColorStorage;
 import lehjr.numina.common.capabilities.render.color.IColorTag;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
-import lehjr.powersuits.common.registration.MPSBlocks;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
+import lehjr.powersuits.common.registration.MPSBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

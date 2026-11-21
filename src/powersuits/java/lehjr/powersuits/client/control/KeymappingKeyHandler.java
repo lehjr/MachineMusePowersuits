@@ -32,11 +32,11 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import lehjr.numina.common.network.NuminaPackets;
+import lehjr.numina.common.network.packets.serverbound.PlayerUpdatePacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.MathUtils;
-import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.serverbound.PlayerUpdatePacketServerBound;
 import lehjr.powersuits.client.gui.module.select.GuiModeSelector;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.KeyMapping;
@@ -58,7 +58,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)

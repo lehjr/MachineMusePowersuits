@@ -3,7 +3,6 @@ package lehjr.numina.common.capabilities.module.externalitems;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.imixin.common.item.IUseOnContextMixn;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 public interface IOtherModItemsAsModules extends IRightClickModule {
     String MODE_CHANGING_MODULAR_ITEM = "modeChangingModularItem";

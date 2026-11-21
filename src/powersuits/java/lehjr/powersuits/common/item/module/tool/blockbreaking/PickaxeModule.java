@@ -27,7 +27,9 @@
 package lehjr.powersuits.common.item.module.tool.blockbreaking;
 
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaCapabilities;

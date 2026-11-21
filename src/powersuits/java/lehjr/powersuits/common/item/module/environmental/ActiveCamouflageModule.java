@@ -49,7 +49,6 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class ActiveCamouflageModule extends AbstractPowerModule {
     private final MobEffect invisibility = MobEffects.INVISIBILITY;

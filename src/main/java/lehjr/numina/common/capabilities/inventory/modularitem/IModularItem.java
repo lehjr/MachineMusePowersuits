@@ -27,7 +27,6 @@
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.registration.NuminaCapabilities;
@@ -45,8 +44,6 @@ import net.minecraftforge.items.wrapper.RangedWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**

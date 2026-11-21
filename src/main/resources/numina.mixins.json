@@ -6,8 +6,8 @@
   "client": [
   ],
   "mixins": [
-    "common.item.MixinUseOnContext",
-    "common.item.MixinRangedWrapper"
+    "common.item.MixinRangedWrapper",
+    "common.item.MixinUseOnContext"
   ],
   "injectors": {
     "defaultRequire": 1

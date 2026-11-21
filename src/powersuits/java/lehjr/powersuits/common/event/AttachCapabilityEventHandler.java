@@ -1,13 +1,13 @@
 package lehjr.powersuits.common.event;
 
 import lehjr.numina.common.capabilities.module.externalitems.OtherModItemsAsModules;
-import lehjr.numina.common.capabilities.render.hud.HudModule;
-import lehjr.numina.common.capabilities.render.hud.IHudModule;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import lehjr.numina.common.capabilities.render.hud.HudModule;
+import lehjr.numina.common.capabilities.render.hud.IHudModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;

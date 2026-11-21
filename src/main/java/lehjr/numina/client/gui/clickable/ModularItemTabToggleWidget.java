@@ -2,9 +2,9 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.container.slot.SlotBackgrounds;
+import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

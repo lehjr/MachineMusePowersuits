@@ -1,7 +1,6 @@
 package lehjr.numina.common.capabilities.module.powermodule;
 
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nonnull;

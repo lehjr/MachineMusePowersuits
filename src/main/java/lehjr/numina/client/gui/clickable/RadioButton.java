@@ -2,8 +2,8 @@ package lehjr.numina.client.gui.clickable;
 
 import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class RadioButton extends AbstractIconButton {

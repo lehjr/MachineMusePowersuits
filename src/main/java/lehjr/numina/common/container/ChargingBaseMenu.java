@@ -27,13 +27,13 @@
 package lehjr.numina.common.container;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.container.slot.CategoryIconSlotItemHandler;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.registration.NuminaBlocks;
 import lehjr.numina.common.registration.NuminaMenus;
+import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

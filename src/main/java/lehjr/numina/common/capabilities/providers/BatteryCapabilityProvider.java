@@ -1,13 +1,13 @@
 package lehjr.numina.common.capabilities.providers;
 
 import lehjr.numina.common.capabilities.CapabilityUpdate;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.registration.NuminaItems;
 import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.core.Direction;

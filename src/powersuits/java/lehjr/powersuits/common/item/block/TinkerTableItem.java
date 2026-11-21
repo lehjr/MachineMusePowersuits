@@ -56,7 +56,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 public class TinkerTableItem extends BlockItem {

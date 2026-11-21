@@ -1,11 +1,7 @@
 package lehjr.numina.client.gui.meter;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import lehjr.numina.client.config.IMeterConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.IconUtils;

@@ -27,7 +27,6 @@
 package lehjr.numina.common.item;
 
 import lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.entity.NuminaArmorStand;
 import lehjr.numina.common.registration.NuminaEntities;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;

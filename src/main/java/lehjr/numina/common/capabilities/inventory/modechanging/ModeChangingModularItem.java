@@ -28,15 +28,15 @@ package lehjr.numina.common.capabilities.inventory.modechanging;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.enhancement.IMiningEnhancementModule;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

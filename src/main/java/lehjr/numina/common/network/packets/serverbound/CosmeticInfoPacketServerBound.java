@@ -1,9 +1,9 @@
 package lehjr.numina.common.network.packets.serverbound;
 
-import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.clientbound.CosmeticInfoPacketClientBound;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;

@@ -2,8 +2,8 @@ package lehjr.numina.client.gui.clickable.slider;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;

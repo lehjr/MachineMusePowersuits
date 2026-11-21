@@ -1,8 +1,8 @@
 package lehjr.numina.common.network.packets.clienthandlers;
 
-import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.network.packets.clientbound.CosmeticInfoPacketClientBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;

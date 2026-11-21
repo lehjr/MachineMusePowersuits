@@ -33,7 +33,10 @@ import lehjr.powersuits.client.event.RenderEventHandler;
 import lehjr.powersuits.client.gui.module.install_salvage.InstallSalvageGui;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.event.*;
+import lehjr.powersuits.common.event.AttachCapabilityEventHandler;
+import lehjr.powersuits.common.event.EntityDamageEvent;
+import lehjr.powersuits.common.event.MovementManager;
+import lehjr.powersuits.common.event.PlayerUpdateHandler;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.registration.*;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -80,11 +83,9 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
         MinecraftForge.EVENT_BUS.register(MovementManager.INSTANCE);
 ////
-        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
-        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
+
         MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
 
-        MinecraftForge.EVENT_BUS.register(new LoginLogoutEventHandler());
 
         // handles loading and reloading event
         modEventBus.addListener((ModConfigEvent event) -> {

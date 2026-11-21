@@ -28,10 +28,10 @@ package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.IconUtils;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.common.entity.PlasmaBallEntity;
 import net.minecraft.client.renderer.MultiBufferSource;

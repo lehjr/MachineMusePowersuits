@@ -1,16 +1,15 @@
 package lehjr.powersuits.client.overlay;
 
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.render.hud.IHudModule;
+import lehjr.numina.common.math.Color;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.ItemUtils;
-import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.StringUtils;
 import lehjr.powersuits.client.config.MPSClientConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,9 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
-import javax.swing.*;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 

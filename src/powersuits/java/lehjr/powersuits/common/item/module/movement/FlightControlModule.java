@@ -26,11 +26,11 @@
 
 package lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;

@@ -1,13 +1,13 @@
 package lehjr.powersuits.common.container;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import lehjr.numina.common.container.slot.HideableSlotItemHandler;
-import lehjr.numina.common.container.slot.IIConProvider;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.utils.ItemUtils;
+import lehjr.numina.common.container.slot.HideableSlotItemHandler;
+import lehjr.numina.common.container.slot.IIConProvider;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.IconUtils;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.MathUtils;
 import lehjr.powersuits.common.registration.MPSMenuTypes;
 import net.minecraft.resources.ResourceLocation;

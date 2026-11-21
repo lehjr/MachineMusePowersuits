@@ -1,8 +1,8 @@
 package lehjr.numina.common.network.packets.clienthandlers;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.network.packets.clientbound.TweakRequestDoublePacketClientBound;
+import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;

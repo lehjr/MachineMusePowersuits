@@ -27,7 +27,6 @@
 package lehjr.numina.common.container;
 
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.container.slot.SlotBackgrounds;
 import lehjr.numina.common.registration.NuminaMenus;
 import net.minecraft.resources.ResourceLocation;

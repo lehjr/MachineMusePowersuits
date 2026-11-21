@@ -60,7 +60,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ShovelModule extends AbstractPowerModule {

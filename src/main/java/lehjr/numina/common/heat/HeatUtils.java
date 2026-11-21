@@ -27,8 +27,8 @@
 package lehjr.numina.common.heat;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
