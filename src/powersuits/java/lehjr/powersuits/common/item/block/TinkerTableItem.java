@@ -26,14 +26,12 @@
 
 package lehjr.powersuits.common.item.block;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
-import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Direction;
@@ -87,7 +85,7 @@ public class TinkerTableItem extends BlockItem {
         @Nonnull
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return NuminaCapabilities.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
+            return NuminaCapabilities.Module.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
         }
 
         class RightClickie extends RightClickModule {

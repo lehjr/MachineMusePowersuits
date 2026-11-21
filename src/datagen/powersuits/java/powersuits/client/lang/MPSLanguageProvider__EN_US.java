@@ -1,7 +1,7 @@
 package powersuits.client.lang;
 
-import lehjr.powersuits.common.base.MPSBlocks;
-import lehjr.powersuits.common.base.MPSItems;
+import lehjr.powersuits.common.registration.MPSBlocks;
+import lehjr.powersuits.common.registration.MPSItems;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;

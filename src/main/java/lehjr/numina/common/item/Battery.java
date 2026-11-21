@@ -27,11 +27,7 @@
 package lehjr.numina.common.item;
 
 import lehjr.numina.common.capabilities.providers.BatteryCapabilityProvider;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
-import lehjr.numina.common.config.NuminaCommonConfig;
-import lehjr.numina.common.string.AdditionalInfo;
+import lehjr.numina.common.utils.AdditionalInfo;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;

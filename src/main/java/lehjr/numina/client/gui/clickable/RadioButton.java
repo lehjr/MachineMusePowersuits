@@ -2,7 +2,7 @@ package lehjr.numina.client.gui.clickable;
 
 import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.gui.GuiGraphics;
 

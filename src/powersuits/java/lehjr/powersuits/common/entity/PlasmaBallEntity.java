@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.entity;
 
-import lehjr.powersuits.common.base.MPSEntities;
+import lehjr.powersuits.common.registration.MPSEntities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;

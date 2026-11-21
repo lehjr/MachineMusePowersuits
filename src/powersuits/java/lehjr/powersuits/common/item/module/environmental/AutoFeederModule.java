@@ -33,8 +33,8 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.energy.ElectricItemUtils;
-import lehjr.numina.common.tags.TagUtils;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.numina.common.utils.TagUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -66,7 +66,7 @@ public class AutoFeederModule extends AbstractPowerModule {
     }
 
     public static void setFoodLevel(@Nonnull ItemStack stack, float saturation) {
-        TagUtils.setModuleFloatOrRemove(stack,TAG_FOOD, saturation);
+        TagUtils.setModuleFloat(stack,TAG_FOOD, saturation);
     }
 
     public static float getSaturationLevel(@Nonnull ItemStack stack) {
@@ -74,7 +74,7 @@ public class AutoFeederModule extends AbstractPowerModule {
     }
 
     public static void setSaturationLevel(@Nonnull ItemStack stack, float saturation) {
-        TagUtils.setModuleFloatOrRemove(stack, TAG_SATURATION, saturation);
+        TagUtils.setModuleFloat(stack, TAG_SATURATION, saturation);
     }
 
     public static class CapProvider implements ICapabilityProvider {

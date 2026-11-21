@@ -9,7 +9,7 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.registration.NuminaItems;
-import lehjr.numina.common.tags.TagUtils;
+import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
@@ -136,7 +136,7 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
     @Override
     @Nonnull
     public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-        final LazyOptional<T> capabilityPowerModule = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        final LazyOptional<T> capabilityPowerModule = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
         if (capabilityPowerModule.isPresent()) {
             return capabilityPowerModule;
         }

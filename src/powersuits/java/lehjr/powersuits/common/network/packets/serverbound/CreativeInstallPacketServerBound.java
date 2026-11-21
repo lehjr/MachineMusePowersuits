@@ -1,7 +1,7 @@
 package lehjr.powersuits.common.network.packets.serverbound;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
 import net.minecraft.network.FriendlyByteBuf;

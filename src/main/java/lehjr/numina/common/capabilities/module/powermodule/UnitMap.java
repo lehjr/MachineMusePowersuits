@@ -1,5 +1,6 @@
 package lehjr.numina.common.capabilities.module.powermodule;
 
+import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.network.chat.Component;
 
@@ -14,21 +15,21 @@ import java.util.Map;
  */
 public enum UnitMap {
     MAP;
-    protected static Map<String, String> units = new HashMap<>();
+    protected Map<String, String> units = new HashMap<>();
 
-    public void addUnitLabel(@Nonnull String propertyName, String unit) {
+    public static void addUnitLabel(@Nonnull String propertyName, String unit) {
         if (unit != null && !unit.isEmpty()) {
-            if (!units.containsKey(propertyName)) {
-                if (unit.startsWith(TagConstants.MODULE_TRADEOFF_PREFIX)) {
-                    units.put(propertyName, Component.translatable(unit).getString());
+            if (!MAP.units.containsKey(propertyName)) {
+                if (unit.startsWith(NuminaConstants.MODULE_TRADEOFF_PREFIX)) {
+                    MAP.units.put(propertyName, Component.translatable(unit).getString());
                 } else {
-                   units.put(propertyName, unit);
+                   MAP.units.put(propertyName, unit);
                 }
             }
         }
     }
 
-    public String getUnit(@Nonnull String propertyName) {
-        return units.getOrDefault(propertyName, "");
+    public static String getUnit(@Nonnull String propertyName) {
+        return MAP.units.getOrDefault(propertyName, "");
     }
 }

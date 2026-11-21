@@ -26,7 +26,6 @@
 
 package lehjr.numina.common.capabilities.module.powermodule;
 
-
 import net.minecraft.network.chat.Component;
 
 /**
@@ -35,10 +34,19 @@ import net.minecraft.network.chat.Component;
 public enum ModuleCategory {
     NONE("none", "None"),
     DEBUG("debug", "Debug"),
-    ARMOR("armor", "Armor"),
-    ENERGY_STORAGE("energystorage", "Energy_Storage"),
-    ENERGY_GENERATION("energygeneration", "Energy_Generation"),
+    ARMOR("armor", "Armor", true, false),
+    ENERGY_STORAGE("energystorage", "Energy_Storage", true, true),
+    ENERGY_GENERATION("energygeneration", "Energy_Generation", true, true),
+    FLUID_STORAGE("fluidstorage", "Fluid_Storage", true, true),
     TOOL("tool", "Tool"),
+
+    // FIXME/TODO finish:
+    PICKAXE("pickaxe", "PickAxe", true, false),
+    SHOVEL("shovel", "Shovel", true, false),
+    AXE("axe", "Axe", true, false),
+    HOE("hoe", "Hoe", true, false),
+//    SHEARS("shears", "Shears"), // maybe?
+
     WEAPON("weapon", "Weapon"),
     MOVEMENT("movement", "Movement"),
     COSMETIC("cosmetic", "Cosmetic"),
@@ -50,21 +58,37 @@ public enum ModuleCategory {
 
     private final String configTitle;
     private final String translationKey;
+    private final boolean hasContainerIcon;
+    private final boolean usesNuminaGuiIcons;
 
     ModuleCategory(String translationString, String configTitle) {
-        this.translationKey = new StringBuilder("numina.module.category.").append(translationString).toString();
+        this(translationString, configTitle, false, false);
+    }
+
+    ModuleCategory(String translationString, String configTitle, boolean hasContainerIcon, boolean usesNuminaGuiIcons) {
+        this.translationKey = "numina.module.category." + translationString;
         this.configTitle = configTitle;
+        this.hasContainerIcon = hasContainerIcon;
+        this.usesNuminaGuiIcons = usesNuminaGuiIcons;
     }
 
     public Component getTranslation() {
         return Component.translatable(translationKey);
     }
-    
+
     public String getTranslationKey() {
         return translationKey;
     }
 
     public String getConfigTitle() {
         return configTitle;
+    }
+
+    public boolean hasContainerIcon() {
+        return hasContainerIcon;
+    }
+
+    public boolean usesNuminaGuiIcons() {
+        return usesNuminaGuiIcons;
     }
 }

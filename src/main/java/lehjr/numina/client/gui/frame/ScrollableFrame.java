@@ -1,7 +1,7 @@
 package lehjr.numina.client.gui.frame;
 
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.utils.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
 
 import javax.annotation.Nonnull;

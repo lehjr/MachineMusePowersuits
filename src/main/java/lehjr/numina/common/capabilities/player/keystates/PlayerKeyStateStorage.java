@@ -27,7 +27,7 @@
 package lehjr.numina.common.capabilities.player.keystates;
 
 import lehjr.numina.common.capabilities.CapabilityUpdate;
-import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.utils.MathUtils;
 import net.minecraft.nbt.ByteTag;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;

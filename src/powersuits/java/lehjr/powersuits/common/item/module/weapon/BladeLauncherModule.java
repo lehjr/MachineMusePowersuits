@@ -26,14 +26,13 @@
 
 package lehjr.powersuits.common.item.module.weapon;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.energy.ElectricItemUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.powersuits.common.config.module.WeaponModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.SpinningBladeEntity;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -49,14 +48,10 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class BladeLauncherModule extends AbstractPowerModule {
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
@@ -68,62 +63,73 @@ public class BladeLauncherModule extends AbstractPowerModule {
         private final RightClickie rightClickie;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
-        public CapProvider(@Nonnull ItemStack module) {
+        public CapProvider(ItemStack module) {
             this.module = module;
-            this.rightClickie = new RightClickie(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 5000, "FE");
-                addBaseProperty(MPSConstants.BLADE_DAMAGE, 6, "pt");
-            }};
+            this.rightClickie = new RightClickie(module);
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
-        class RightClickie extends RightClickModule {
-            public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
+        public static class RightClickie extends RightClickModule {
+            public RightClickie(ItemStack module) {
+                super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, WeaponModuleConfig.bladeLauncherEnergyConsumption, "FE");
+                addBaseProperty(MPSConstants.BLADE_DAMAGE, WeaponModuleConfig.bladeLauncherSpinningBladeDamage, "pt");
             }
 
             @Override
-            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+            public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
                 if (hand == InteractionHand.MAIN_HAND) {
                     if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION)) {
                         playerIn.startUsingItem(hand);
-
-//                        NuminaLogger.logDebug("use success");
-
-                        return new InteractionResultHolder(InteractionResult.SUCCESS, itemStackIn);
+                        return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemStackIn);
                     }
                 }
-//                NuminaLogger.logDebug("use pass");
-
-                return new InteractionResultHolder(InteractionResult.PASS, itemStackIn);
+                return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
             }
 
             @Override
-            public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-//                NuminaLogger.logDebug("release using");
-
-                if (!worldIn.isClientSide) {
-                    int energyConsumption = getEnergyUsage();
+            public void releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
+                if (!levelIn.isClientSide) {
+                    double energyConsumption = getEnergyUsage();
 
                     if (ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption) {
-                        ElectricItemUtils.drainPlayerEnergy(entityLiving, energyConsumption);
-                        SpinningBladeEntity blade = new SpinningBladeEntity(worldIn, entityLiving);
-                        worldIn.addFreshEntity(blade);
+                        ElectricItemUtils.drainPlayerEnergy(entityLiving, energyConsumption, false);
+                        SpinningBladeEntity blade = new SpinningBladeEntity(levelIn, entityLiving);
+                        levelIn.addFreshEntity(blade);
                     }
                 }
             }
 
             @Override
-            public int getEnergyUsage() {
-                return (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
+            public boolean isModuleOnline() {
+                return true;
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return WeaponModuleConfig.bladeLauncherIsAllowed;
+            }
+
+            @Override
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            }
+
+            @Override
+            public int getTier() {
+                return 1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
             }
         }
 
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        @Nonnull
-        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

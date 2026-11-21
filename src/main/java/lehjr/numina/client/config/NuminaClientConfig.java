@@ -28,7 +28,7 @@ package lehjr.numina.client.config;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.utils.MathUtils;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

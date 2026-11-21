@@ -26,50 +26,32 @@
 
 package lehjr.numina.common.capabilities.module.powermodule;
 
-import com.google.common.collect.ImmutableList;
-import lehjr.numina.common.tags.TagUtils;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
-public class PowerModule implements IPowerModule {
+public abstract class PowerModule implements IPowerModule {
     protected ItemStack module;
     protected final ModuleCategory category;
     protected final ModuleTarget target;
     protected Map<String, List<IPropertyModifier>> propertyModifiers;
-    Callable<IConfig> moduleConfigGetter;
-    ImmutableList<String> isAllowedConfigKey;
-    final String moduleName;
     final String categoryTitle;
 
-    public PowerModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target,
-                       Callable<IConfig> moduleConfigGetterIn) {
+    public PowerModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target){
         propertyModifiers = new HashMap<>();
         this.module = module;
         this.category = category;
         this.target = target;
-        this.moduleConfigGetter = moduleConfigGetterIn;
-        moduleName = itemTranslationKeyToConfigKey();
         categoryTitle = category.getConfigTitle().trim().replaceAll(" ", "_");
-        isAllowedConfigKey = getConfigKey("isAllowed");
     }
 
     @Override
-    public ItemStack getModuleStack() {
+    public ItemStack getModule() {
         return module;
-    }
-
-    @Override
-    public ModuleTarget getTarget() {
-        return target;
     }
 
     @Override
@@ -77,124 +59,58 @@ public class PowerModule implements IPowerModule {
         return category;
     }
 
-    /** Double ------------------------------------------------------------------------------------- */
-    /**
-     * Adds a base key and multiplierValue to the map based on the config setting.
-     */
     @Override
-    public void addTradeoffProperty(String tradeoffName, String propertyName, double defaultMultiplier) {
-        ImmutableList<String> configKey = getConfigKey(new StringBuilder(propertyName).append("_").append(tradeoffName).append("_multiplier").toString());
-        addPropertyModifier(propertyName, new PropertyModifierLinearAdditive(configKey, moduleConfigGetter, tradeoffName, defaultMultiplier));
-    }
-
-    @Override
-    public void addPropertyModifier(String propertyName, IPropertyModifier modifier) {
-        List<IPropertyModifier> modifiers = propertyModifiers.get(propertyName);
-        if (modifiers == null) {
-            modifiers = new LinkedList();
-        }
-        modifiers.add(modifier);
-        propertyModifiers.put(propertyName, modifiers);
+    public ModuleTarget getTarget() {
+        return target;
     }
 
     /**
-     * Adds a base key and getValue to the map based on the config setting.
-     * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
+     * Override with proper config key
+     * @return if module is allowed to be used
      */
     @Override
-    public void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier, String unit) {
-        addUnitLabel(propertyName, unit);
-        addTradeoffProperty(tradeoffName, propertyName, multiplier);
-    }
-
-    public void addSimpleTradeoff(String tradeoffName,
-                                  String firstPropertyName,
-                                  String firstUnits,
-                                  double firstPropertyBase,
-                                  double firstPropertyMultiplier,
-                                  String secondPropertyName,
-                                  String secondUnits,
-                                  double secondPropertyBase,
-                                  double secondPropertyMultiplier) {
-        this.addBaseProperty(firstPropertyName, firstPropertyBase, firstUnits);
-        this.addTradeoffProperty(tradeoffName, firstPropertyName, firstPropertyMultiplier);
-        this.addBaseProperty(secondPropertyName, secondPropertyBase, secondUnits);
-        this.addTradeoffProperty(tradeoffName, secondPropertyName, secondPropertyMultiplier);
-    }
-
-    /**
-     * Adds a base key and getValue to the map based on the config setting.
-     */
-    @Override
-    public void addBaseProperty(String propertyName, double baseVal) {
-        ImmutableList<String> configKey = getConfigKey(new StringBuilder("base_").append(propertyName).toString());
-        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configKey, moduleConfigGetter, baseVal));
-    }
-
-    /**
-     * Adds a base key and getValue to the map based on the config setting.
-     * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
-     */
-    @Override
-    public void addBaseProperty(String propertyName, double baseVal, String unit) {
-        addUnitLabel(propertyName, unit);
-        addBaseProperty(propertyName, baseVal);
-    }
-
-    @Override
-    public double applyPropertyModifiers(String propertyName) {
-        return applyPropertyModifiers(propertyName, TagUtils.getModuleTag(module));
-    }
-
-    @Override
-    public double applyPropertyModifiers(String propertyName, CompoundTag moduleTag) {
-        double propertyValue = 0;
-        if (propertyModifiers.containsKey(propertyName)) {
-            Iterable<IPropertyModifier> propertyModifiersIterable = propertyModifiers.get(propertyName);
-            for (IPropertyModifier modifier : propertyModifiersIterable) {
-                propertyValue = modifier.applyModifier(moduleTag, propertyValue);
-            }
-        }
-        return propertyValue;
-    }
+    public abstract boolean isAllowed();
 
     @Override
     public Map<String, List<IPropertyModifier>> getPropertyModifiers() {
         return propertyModifiers;
     }
 
-    /**
-     * Integer -----------------------------------------------------------------------------------
-     */
-    // This is the only one of these that will give an integer using the double system
-    public void addIntTradeoffProperty(String tradeoffName, String propertyName, int defaultMultiplier, String unit, int roundTo, int offset) {
-        ImmutableList<String> configKey = getConfigKey(new StringBuilder(propertyName).append("_").append(tradeoffName).append("_multiplier").toString());
-        addUnitLabel(propertyName, unit);
-        addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(
-                configKey, moduleConfigGetter, tradeoffName, defaultMultiplier, roundTo, offset));
+    @Override
+    public void addBaseProperty(String propertyName, double configValue) {
+        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configValue));
     }
 
     @Override
-    public boolean isAllowed() {
-        return getConfig(moduleConfigGetter).map(config-> config.isModuleAllowed(isAllowedConfigKey)).orElse(true);
+    public void addBaseProperty(String propertyName, double configValue, String unit) {
+        UnitMap.addUnitLabel(propertyName, unit);
+        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configValue));
     }
 
-    public ImmutableList<String> getConfigKey(String entry) {
-        return ImmutableList.of(
-                "Modules",
-                categoryTitle,
-                moduleName,
-                entry);
+    @Override
+    public void addTradeoffProperty(String tradeoffName, String propertyName, double multiplierConfigValue) {
+        addPropertyModifier(propertyName, new PropertyModifierLinearAdditive(multiplierConfigValue, tradeoffName));
     }
 
-    String itemTranslationKeyToConfigKey() {
-        String translationKey = module.getItem().getDescriptionId();
-        ResourceLocation regName = ForgeRegistries.ITEMS.getKey(module.getItem());
-        // drop the prefix for MPS modules and replace "dots" with underscores
-        final String itemPrefix = "item." + regName.getNamespace() + ".";
-        if (translationKey.startsWith(itemPrefix )){
-            translationKey = translationKey.substring(itemPrefix .length());
+    @Override
+    public void addTradeoffProperty(String tradeoffName, String propertyName, double mulitiplierConfigValue, String unit) {
+        addUnitLabel(propertyName, unit);
+        addTradeoffProperty(tradeoffName, propertyName, mulitiplierConfigValue);
+    }
+
+    @Override
+    public void addPropertyModifier(String propertyName, IPropertyModifier modifier) {
+        List<IPropertyModifier> modifiers = propertyModifiers.get(propertyName);
+        if (modifiers == null) {
+            modifiers = new LinkedList<>();
         }
-        return translationKey.replace(".", "_");
+        modifiers.add(modifier);
+        propertyModifiers.put(propertyName, modifiers);
+    }
+
+    @Override
+    public void addIntTradeoffProperty(String tradeoffName, String propertyName, int mulitiplierConfigValue, String unit, int roundTo, int offset) {
+        addUnitLabel(propertyName, unit);
+        addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(mulitiplierConfigValue, tradeoffName, roundTo, offset));
     }
 }

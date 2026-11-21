@@ -30,7 +30,7 @@ import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.string.StringUtils;
+import lehjr.numina.common.utils.StringUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 

@@ -31,7 +31,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.config.module.WeaponModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
@@ -54,28 +54,51 @@ public class MeleeAssistModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final PowerModule moduleCap;
+        private final PMCap moduleCap;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleCap = new PowerModule(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10, "FE");
-                addBaseProperty(MPSConstants.PUNCH_DAMAGE, 2, "pt");
-                addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
-                addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_DAMAGE, 8, "pt");
-                addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.ENERGY_CONSUMPTION, 200, "FE");
-                addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_KNOCKBACK, 1, "P");
-            }};
-
+            this.moduleCap = new PMCap(module);
             powerModuleHolder = LazyOptional.of(() -> moduleCap);
+        }
+
+        public static class PMCap extends PowerModule {
+            public PMCap(ItemStack module) {
+                super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, WeaponModuleConfig.meleeAssistEnergyConsumptionBase, "FE");
+                addBaseProperty(MPSConstants.PUNCH_DAMAGE, WeaponModuleConfig.meleeAssistPunchDamageBase, "pt");
+                addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.ENERGY_CONSUMPTION, WeaponModuleConfig.meleeAssistEnergyConsumptionImpactMultiplier, "FE");
+                addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_DAMAGE, WeaponModuleConfig.meleeAssistPunchDamageImpactMultiplier, "pt");
+                addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.ENERGY_CONSUMPTION, WeaponModuleConfig.meleeAssistEnergyConsumptionCarryThroughMultiplier, "FE");
+                addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_KNOCKBACK,  WeaponModuleConfig.meleeAssistPunchKnockBackCarryThroughMultiplier, "P");
+            }
+
+            @Override
+            public int getTier() {
+                return 2;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return WeaponModuleConfig.meleeAssistIsAllowed;
+            }
+
+            @Override
+            public boolean isModuleOnline() {
+                return true;
+            }
         }
 
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        @Nonnull
-        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

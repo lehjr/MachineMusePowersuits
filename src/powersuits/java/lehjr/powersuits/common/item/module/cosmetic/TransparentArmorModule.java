@@ -26,12 +26,12 @@
 
 package lehjr.powersuits.common.item.module.cosmetic;
 
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.config.module.CosmeticModuleConfig;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -53,23 +53,45 @@ public class TransparentArmorModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final ToggleableModule moduleToggle;
+        private final TransparentArmorCap moduleToggle;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, ModuleCategory.COSMETIC, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true);
+            this.moduleToggle = new TransparentArmorCap(module);
+
             powerModuleHolder = LazyOptional.of(() -> {
                 moduleToggle.loadCapValues();
                 return moduleToggle;
             });
         }
 
+        public static class TransparentArmorCap extends ToggleableModule {
+            public TransparentArmorCap(ItemStack module) {
+                super(module, ModuleCategory.COSMETIC, ModuleTarget.ARMORONLY);
+            }
+
+            @Override
+            public int getTier() {
+                return 2;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return CosmeticModuleConfig.isTransparentArmorAllowed;
+            }
+        }
+
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

@@ -37,55 +37,40 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.IForgeShearable;
+import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import javax.annotation.Nonnull;
 
 public interface IBlockBreakingModule extends IPowerModule {
     default boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, Player player, BlockPos pos, double playerEnergy) {
-        return (playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level(), pos, getEmulatedTool()));
+        return (playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level(), pos));
     }
 
     boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy);
 
     void handleBreakSpeed(PlayerEvent.BreakSpeed event);
 
-    int getEnergyUsage();
+    @Override
+    double getEnergyUsage();
 
     @Nonnull
     ItemStack getEmulatedTool();
 
-
-    default boolean isToolEffective(BlockGetter world, BlockPos pos, @Nonnull ItemStack emulatedTool) {
+    default boolean isToolEffective(BlockGetter world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-
-        if(emulatedTool.isCorrectToolForDrops(state)) {
-            return true;
-        }
 
         if (Float.compare(state.getDestroySpeed(world, pos), -1.0F) <= 0 ) {// unbreakable
             return false;
         }
 
-        if (emulatedTool.getItem().isCorrectToolForDrops(state)) {
+        if(getEmulatedTool().isCorrectToolForDrops(state)) {
             return true;
         }
-
         return false;
     }
 
-    default boolean blockCheckAndHarvest(Player player, Level world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-
-        if (block == null || world.isEmptyBlock(pos) || block == Blocks.BEDROCK)
-            return false;
-        if ((block instanceof IForgeShearable || block instanceof FlowerBlock || block instanceof BushBlock || block instanceof LeavesBlock)
-                && block.canHarvestBlock(state, world, pos, player) || block == Blocks.SNOW || block == Blocks.SNOW_BLOCK) {
-            block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.IRON_SHOVEL));
-            world.removeBlock(pos, false);
-            return true;
-        }
-        return false;
+    default boolean canPerformAction(ToolAction toolAction) {
+        return getEmulatedTool().canPerformAction(toolAction);
     }
 }

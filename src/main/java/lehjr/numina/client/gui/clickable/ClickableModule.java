@@ -28,13 +28,12 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.platform.Lighting;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.render.IconUtils;
-import lehjr.numina.client.render.NuminaRenderer;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.string.AdditionalInfo;
-import lehjr.numina.common.string.StringUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.AdditionalInfo;
+import lehjr.numina.common.utils.IconUtils;
+import lehjr.numina.common.utils.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -72,8 +71,8 @@ public class ClickableModule extends Clickable {
         this.module = module;
         this.inventorySlot = inventorySlot;
         this.category = category;
-        allowed = module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm->pm.isAllowed()).orElse(false);
-        tier = module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> pm.getTier()).orElse(null);
+        allowed = module.getCapability(NuminaCapabilities.Module.POWER_MODULE).map(pm->pm.isAllowed()).orElse(false);
+        tier = module.getCapability(NuminaCapabilities.Module.POWER_MODULE).map(pm-> pm.getTier()).orElse(null);
         this.regName = ForgeRegistries.ITEMS.getKey(module.getItem());
     }
 
@@ -126,7 +125,7 @@ public class ClickableModule extends Clickable {
         // TODO: extra text and options to disable if player doesn't have the module available
 
         if (!getModule().isEmpty()) {
-            NuminaRenderer.drawModuleAt(gfx, left(), top(), getModule(), true);
+            IconUtils.drawModuleAt(gfx, left(), top(), getModule(), true);
             Lighting.setupForFlatItems();
             if (!allowed) {
                 gfx.pose().pushPose();

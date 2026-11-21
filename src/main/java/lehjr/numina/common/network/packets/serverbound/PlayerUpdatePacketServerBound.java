@@ -27,7 +27,7 @@
 package lehjr.numina.common.network.packets.serverbound;
 
 import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.utils.MathUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;

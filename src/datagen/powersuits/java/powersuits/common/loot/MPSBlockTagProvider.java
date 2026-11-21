@@ -1,6 +1,6 @@
 package powersuits.common.loot;
 
-import lehjr.powersuits.common.base.MPSBlocks;
+import lehjr.powersuits.common.registration.MPSBlocks;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

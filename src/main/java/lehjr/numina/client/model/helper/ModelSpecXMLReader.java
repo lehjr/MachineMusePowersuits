@@ -32,7 +32,7 @@
 //import lehjr.numina.common.capabilities.render.modelspec.*;
 //import lehjr.numina.common.constants.TagConstants;
 //import lehjr.numina.common.math.Color;
-//import lehjr.numina.common.string.StringUtils;
+//import lehjr.numina.common.utils.StringUtils;
 //import net.minecraft.client.renderer.block.model.ItemOverrides;
 //import net.minecraft.client.renderer.block.model.ItemTransforms;
 //import net.minecraft.client.renderer.texture.TextureAtlas;

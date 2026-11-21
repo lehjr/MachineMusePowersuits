@@ -26,16 +26,15 @@
 
 package lehjr.powersuits.common.item.module.weapon;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
-import lehjr.numina.common.math.MathUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.numina.common.utils.MathUtils;
+import lehjr.powersuits.common.config.module.WeaponModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.PlasmaBallEntity;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -50,11 +49,9 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class PlasmaCannonModule extends AbstractPowerModule {
 
@@ -71,54 +68,74 @@ public class PlasmaCannonModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClickie = new RightClickie(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.PLASMA_CANNON_ENERGY_PER_TICK, 100, "FE");
-                addBaseProperty(MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE, 2, "pt");
-                addTradeoffProperty(MPSConstants.AMPERAGE, MPSConstants.PLASMA_CANNON_ENERGY_PER_TICK, 1500, "FE");
-                addTradeoffProperty(MPSConstants.AMPERAGE, MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE, 38, "pt");
-                addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.PLASMA_CANNON_ENERGY_PER_TICK, 500, "FE");
-                addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.PLASMA_CANNON_EXPLOSIVENESS, 0.5F, MPSConstants.CREEPER);
-            }};
-
+            this.rightClickie = new RightClickie(module);
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
-        class RightClickie extends RightClickModule {
-            public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
+        public static class RightClickie extends RightClickModule {
+            public RightClickie(ItemStack module) {
+                super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
+                addBaseProperty(MPSConstants.ENERGY_PER_TICK, WeaponModuleConfig.plasmaCannonEnergyPerTickBase, "FE");
+                addBaseProperty(MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE, WeaponModuleConfig.plasmaCannonDamageAtFullChargeBase, "pt");
+                addTradeoffProperty(MPSConstants.AMPERAGE, MPSConstants.ENERGY_PER_TICK, WeaponModuleConfig.plasmaCannonEnergyPerTickAmperageMultiplier, "FE");
+                addTradeoffProperty(MPSConstants.AMPERAGE, MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE, WeaponModuleConfig.plasmaCannonDamageAtFullChargeAmperageMultiplier, "pt");
+                addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.ENERGY_PER_TICK, WeaponModuleConfig.plasmaCannonEnergyPerTickVoltageMultiplier, "FE");
+                addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.PLASMA_CANNON_EXPLOSIVENESS, WeaponModuleConfig.plasmaCannonExplosivenessVoltageMultiplier, MPSConstants.CREEPER);
             }
 
             @Override
-            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+            public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
                 if (hand == InteractionHand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
                     playerIn.startUsingItem(hand);
-                    return InteractionResultHolder.success(itemStackIn);
+                    return InteractionResultHolder.consume(itemStackIn);
                 }
-                return InteractionResultHolder.pass(itemStackIn);
+                return InteractionResultHolder.fail(itemStackIn);
             }
 
             @Override
-            public void releaseUsing(@NotNull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+            public void releaseUsing(@Nonnull ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
                 int chargeTicks = (int) MathUtils.clampDouble(stack.getUseDuration() - timeLeft, 10, 50);
-                if (!worldIn.isClientSide && entityLiving instanceof Player) {
+                if (!levelIn.isClientSide && entityLiving instanceof Player) {
                     double chargePercent = chargeTicks * 0.02; // chargeticks/50
                     double energyConsumption = getEnergyUsage() * chargePercent;
                     Player player = (Player) entityLiving;
                     if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
                         float explosiveness = (float) (applyPropertyModifiers(MPSConstants.PLASMA_CANNON_EXPLOSIVENESS) * chargePercent);
                         float damagingness = (float) (applyPropertyModifiers(MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE) * chargePercent);
-                        PlasmaBallEntity plasmaBolt = new PlasmaBallEntity(worldIn, player, explosiveness, damagingness, (float) chargePercent);
-                        if (worldIn.addFreshEntity(plasmaBolt)) {
-                            HeatUtils.heatPlayer(player, energyConsumption / 5000F * chargePercent);
-                            ElectricItemUtils.drainPlayerEnergy(player, (int) energyConsumption);
-                        }
+                        levelIn.getServer().execute(()-> {
+                            PlasmaBallEntity plasmaBolt = new PlasmaBallEntity(levelIn, player, explosiveness, damagingness, (float) chargePercent);
+                            if (levelIn.addFreshEntity(plasmaBolt)) {
+                                HeatUtils.heatPlayer(player, energyConsumption / 5000F * chargePercent);
+                                ElectricItemUtils.drainPlayerEnergy(player, (int) energyConsumption, false);
+                            }
+                        });
                     }
                 }
             }
 
             @Override
-            public int getEnergyUsage() {
-                return (int) Math.round(applyPropertyModifiers(MPSConstants.PLASMA_CANNON_ENERGY_PER_TICK));
+            public int getTier() {
+                return 3;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return WeaponModuleConfig.plasmaCannonIsAllowed;
+            }
+
+            @Override
+            public boolean isModuleOnline() {
+                return true;
+            }
+
+            @Override
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_PER_TICK);
             }
         }
 
@@ -126,7 +143,7 @@ public class PlasmaCannonModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

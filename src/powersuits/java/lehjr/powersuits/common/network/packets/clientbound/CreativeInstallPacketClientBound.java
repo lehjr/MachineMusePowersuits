@@ -1,7 +1,7 @@
 package lehjr.powersuits.common.network.packets.clientbound;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;

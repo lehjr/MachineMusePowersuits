@@ -1,6 +1,6 @@
 //package lehjr.numina.common.integration.scannable;
 //
-//import lehjr.numina.common.item.ItemUtils;
+//import lehjr.numina.common.utils.ItemUtils;
 //import li.cil.scannable.common.container.AbstractHeldItemStackAbstractContainerMenuProvider;
 //import li.cil.scannable.common.inventory.ItemHandlerScanner;
 //import li.cil.scannable.util.LazyOptionalUtil;

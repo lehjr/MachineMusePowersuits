@@ -6,7 +6,7 @@
 //import appeng.core.AELog;
 //import appeng.core.Api;
 //import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-//import lehjr.numina.common.energy.ElectricItemUtils;
+//import lehjr.numina.common.utils.ElectricItemUtils;
 //import net.minecraft.nbt.CompoundTag;
 //import net.minecraft.resources.ResourceLocation;
 //import net.minecraft.world.entity.player.Player;

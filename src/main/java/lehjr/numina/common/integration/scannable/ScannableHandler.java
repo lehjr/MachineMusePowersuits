@@ -1,7 +1,7 @@
 //package lehjr.numina.common.integration.scannable;
 //
 //import lehjr.numina.common.capabilities.module.powermodule.*;
-//import lehjr.numina.common.item.ItemUtils;
+//import lehjr.numina.common.utils.ItemUtils;
 //import li.cil.scannable.common.item.ItemScanner;
 //import net.minecraft.core.Direction;
 //import net.minecraft.resources.ResourceLocation;

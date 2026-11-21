@@ -27,27 +27,37 @@
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
+import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
+import lehjr.numina.common.capabilities.module.enhancement.IMiningEnhancementModule;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.BakedModel;
+import lehjr.numina.common.utils.TagUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.ToolAction;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,33 +66,25 @@ import java.util.List;
  * Note that loops starting with 1 instead of 0 are intentional to skip power storage module in the first slot
  */
 public class ModeChangingModularItem extends ModularItem implements IModeChangingItem {
-
-//    public static String uniqueID = "";
-
     protected static int activeMode = -1;
 
-    public ModeChangingModularItem(@Nonnull ItemStack modularItem, int size) {
-        this(modularItem, NonNullList.withSize(size, ItemStack.EMPTY));
+    public ModeChangingModularItem(@Nonnull ItemStack modularItem, int tier, int size) {
+        this(modularItem, tier, NonNullList.withSize(size, ItemStack.EMPTY));
     }
 
-    public ModeChangingModularItem(@Nonnull ItemStack modularItem, NonNullList<ItemStack> stacks) {
-        super(modularItem, stacks, true);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Nullable
-    @Override
-    public BakedModel getInventoryModel() {
-        return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(getActiveModule());
+    public ModeChangingModularItem(@Nonnull ItemStack modularItem, int tier, NonNullList<ItemStack> stacks) {
+        super(modularItem, tier, stacks);
+        activeMode = TagUtils.getModularItemInt(modularItem, TAG_MODE);
+        if(activeMode == 0) {
+            activeMode = -1;
+        }
     }
 
     @Override
     public List<Integer> getValidModes() {
-        this.loadCapValues();
         List<Integer>moduleIndexes = new ArrayList<>();
 
-        // note: starting at 1 skips the power storage there
-        for(int i=1; i < getSlots();  i++) {
+        for(int i=0; i < getSlots();  i++) {
             ItemStack module = getStackInSlot(i);
             if (isValidMode(module)) {
                 moduleIndexes.add(i);
@@ -91,107 +93,60 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         return moduleIndexes;
     }
 
-    boolean isValidMode(@Nonnull ItemStack module) {
-        if (module.isEmpty()) {
-            return false;
-        }
-
-        return module.getCapability(NuminaCapabilities.POWER_MODULE)
-                .map( m-> m.isAllowed() && (m instanceof IRightClickModule|| m instanceof IOtherModItemsAsModules)).orElse(false);
-    }
-
     @Override
-    public boolean isValidMode(ResourceLocation mode) {
-        for(int i=1; i < getSlots();  i++) {
-            ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(mode) && isValidMode(module))
-                return true;
+    public int getActiveMode() {
+        if (activeMode == -1) {
+            List<Integer> validModes = getValidModes();
+            if (!validModes.isEmpty()) {
+                activeMode = validModes.get(0);
+            }
         }
-        return false;
+        return activeMode;
     }
 
     @Override
     public ItemStack getActiveModule() {
         int activeModeIndex = getActiveMode();
-        ItemStack module = activeModeIndex != -1 ? getStackInSlot(activeModeIndex) : ItemStack.EMPTY;
-        return module.getCapability(NuminaCapabilities.POWER_MODULE).map(m->m.isAllowed() && (m instanceof IRightClickModule || m instanceof IOtherModItemsAsModules)).orElse(false)
-                ? module : ItemStack.EMPTY;
+        if(activeModeIndex >=0 && activeModeIndex < getSlots()) {
+            ItemStack module = getStackInSlot(activeModeIndex);
+            IPowerModule pm = getModuleCapability(module);
+            if ((pm instanceof IRightClickModule || pm instanceof IOtherModItemsAsModules) && pm.isAllowed()) {
+                return module;
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override
-    public boolean hasActiveModule(ResourceLocation regName) {
+    public void setActiveMode(int newMode) {
+        activeMode = newMode;
+        TagUtils.setModularItemInt(getModularItemStack(), TAG_MODE, newMode); // fixme
+
+        onContentsChanged(newMode);
+    }
+
+    @Override
+    public boolean hasActiveModule(Item item) {
+        return hasActiveModule(getActiveMode(), item);
+    }
+
+    @Override
+    public boolean hasActiveModule(int index, Item item) {
         final int activeModeIndex = getActiveMode();
-
-        ItemStack module = activeModeIndex != -1 ? getStackInSlot(activeModeIndex) : ItemStack.EMPTY;
-
-        if (regName == ItemUtils.getRegistryName(module)) {
-            return isModuleOnline(module);
-        }
-        for (int i = 0; i < getSlots(); i++) {
-            if (i != activeModeIndex) {
-                module = getStackInSlot(i);
-                if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(regName)) {
-                    return isModuleOnline(module);
-                }
+        if(isSlotValid(activeModeIndex)  && index == activeModeIndex) {
+            ItemStack module = getStackInSlot(activeModeIndex);
+            if(module.is(item)) {
+                return isModuleOnline(module);
             }
         }
         return false;
     }
 
     @Override
-    public boolean isModuleOnline(ItemStack module) {
-        return module.getCapability(NuminaCapabilities.POWER_MODULE).map(m-> {
-            if(m.isAllowed() && m.isModuleOnline()) {
-                if (m instanceof IRightClickModule) {
-                    return m.getModuleStack().equals(getActiveModule(), false);
-                }
-                return true;
-            }
-            return false;
-        }).orElse(false);
+    public boolean hasActiveModule(ResourceLocation regName) {
+        return hasActiveModule(BuiltInRegistries.ITEM.get(regName));
     }
 
-    @Override
-    public int getActiveMode() {
-        if (activeMode == -1) {
-            List<Integer> validModes = getValidModes();
-            if (!validModes.isEmpty())
-                activeMode = validModes.get(0);
-        }
-        return activeMode;
-    }
-
-//    @Override
-//    public void setActiveMode(ResourceLocation moduleName) {
-//        for(int i=1; i < getSlots();  i++) {
-//            ItemStack module = getStackInSlot(i);
-//            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)
-//                    && module.getCapability(NuminaCapabilities.POWER_MODULE).map(m-> m instanceof IRightClickModule).orElse(false)) {
-//                setActiveMode(i, );
-//                return;
-//            }
-//        }
-//    }
-
-   @Nonnull
-    @Override
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-        ItemStack retStack = super.insertItem(slot, stack, simulate);
-        if (retStack.isEmpty() && !simulate) {
-            ItemStack stackInSlot = getStackInSlot(slot);
-            CompoundTag tag = stackInSlot.getOrCreateTag();
-//            tag.putString(UNIQUE_ID, getUniqueID());
-            stackInSlot.setTag(tag);
-            super.setStackInSlot(slot, stackInSlot);
-        }
-        return retStack;
-    }
-
-    @Override
-    public void setActiveMode(int newMode) {
-        activeMode = newMode;
-        onContentsChanged(newMode);
-    }
 
     @Override
     public void cycleMode(Player player, int dMode) {
@@ -228,14 +183,175 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         return (selection > 0) ? (selection % modesSize) : ((selection + modesSize * -selection) % modesSize);
     }
 
+    @Override
+    public boolean isModuleActiveAndOnline(Item module) {
+        int activeModeIndex = getActiveMode();
+        if(activeModeIndex >= 0 && activeModeIndex < getSlots()) {
+            ItemStack activeModule = getStackInSlot(activeModeIndex);
+            if(!activeModule.isEmpty() && activeModule.is(module)) {
+                IPowerModule pm = getModuleCapability(getActiveModule());
+                return pm != null && pm.isModuleOnline() && pm.isAllowed();
+            }
+        }
+        return false;
+    }
+
     @Deprecated
     @Override
     public boolean isModuleActiveAndOnline(ResourceLocation moduleName) {
-        if (hasActiveModule(moduleName)) {
-            return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE).map(IPowerModule::isModuleOnline).orElse(false);
+        return isModuleActiveAndOnline(BuiltInRegistries.ITEM.get(moduleName));
+    }
+
+    @Override
+    public boolean isValidMode(@Nonnull ItemStack module) {
+        if (module.isEmpty()) {
+            return false;
+        }
+
+        IPowerModule pm = getModuleCapability(module);
+        return (pm instanceof IRightClickModule || pm instanceof IOtherModItemsAsModules) && pm.isAllowed();// Allow selecting offline module? && pm.isModuleOnline();
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, InteractionResultHolder<ItemStack> fallback) {
+        IPowerModule pm = getModuleCapability(getActiveModule());
+        ItemStack fist = player.getItemInHand(hand);
+        if(pm instanceof IRightClickModule clickie &&
+                pm.isAllowed() &&
+                pm.isModuleOnline()) {
+            return clickie.use(fist, level, player, hand);
+        }
+        return fallback;
+    }
+
+    @Override
+    public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context, InteractionResult fallback) {
+        IPowerModule pm = getModuleCapability(getActiveModule());
+        if(pm instanceof IRightClickModule clickie && pm.isAllowed() && pm.isModuleOnline()) {
+            return clickie.onItemUseFirst(itemStack, context);
+        }
+        return fallback;
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context, InteractionResult fallback) {
+        IPowerModule pm = getModuleCapability(getActiveModule());
+        if(pm instanceof IRightClickModule clickie && pm.isAllowed() && pm.isModuleOnline()) {
+            return clickie.useOn(context);
+        }
+        return fallback;
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) {
+        IPowerModule pm = getModuleCapability(getActiveModule());
+        if (pm instanceof IRightClickModule rightClickModule) {
+            rightClickModule.releaseUsing(stack, level, entityLiving, timeLeft);
+        }
+    }
+
+    // Fixme: maybe just call releaseUsing with 0 timeLeft?
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+        IPowerModule pm = getModuleCapability(getActiveModule());
+        if (pm instanceof IRightClickModule rightClickModule) {
+            rightClickModule.finishUsingItem(stack, level, livingEntity);
+        }
+        return getModularItemStack();
+    }
+
+    @Override
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockHitResult hitResult, Player player, Level level) {
+        IPowerModule pm = getModuleCapability(getActiveModule());
+        if(pm instanceof IMiningEnhancementModule me && me.isAllowed() && me.isModuleOnline()) {
+            return me.onBlockStartBreak(itemstack, hitResult,player, level);
         }
         return false;
-   }
+    }
+
+    @Override
+    public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        double playerEnergy = ElectricItemUtils.getPlayerEnergy(entityLiving);
+        for(int i = 0;i < getSlots(); i++) {
+            IPowerModule pm = getModuleCapability(getStackInSlot(i));
+            if (pm instanceof IBlockBreakingModule bb &&
+                    bb.isAllowed() &&
+                    bb.isModuleOnline() &&
+                    bb.mineBlock(powerFist, worldIn, state, pos, entityLiving, playerEnergy)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack pStack, BlockState state) {
+        float highest = 1.0F;
+        for(int i = 0;i < getSlots(); i++) {
+            IPowerModule pm = getModuleCapability(getStackInSlot(i));
+            if (pm instanceof IBlockBreakingModule bb &&
+                    bb.isAllowed() &&
+                    bb.isModuleOnline()) {
+                float speed = bb.getEmulatedTool().getDestroySpeed(state);
+                if(speed > highest) {
+                    highest = speed;
+                }
+            }
+        }
+        return highest;
+    }
+
+    @Override
+    public boolean canPerformAction(ToolAction toolAction) {
+        for (int i = 0; i < getSlots(); i++) {
+            ItemStack module = getStackInSlot(i);
+            IPowerModule pm = getModuleCapability(module);
+            if (pm != null && pm.isAllowed() && pm.isModuleOnline() && pm instanceof IBlockBreakingModule blockBreakingModule) {
+                if (blockBreakingModule.canPerformAction(toolAction)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state) {
+        for (int i = 0; i < getSlots(); i++) {
+            ItemStack module = getStackInSlot(i);
+            IPowerModule pm = getModuleCapability(module);
+            if (pm != null && pm.isAllowed() && pm.isModuleOnline() && pm instanceof IBlockBreakingModule blockBreakingModule) {
+                if (blockBreakingModule.getEmulatedTool().isCorrectToolForDrops(state)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean returnForeignModuleToModularItem(ItemStack module) {
+        int slot = findInstalledModule(module);
+        IOtherModItemsAsModules foreignModuleCap = module.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES).resolve().orElse(null);
+        if(isSlotValid(slot) && foreignModuleCap != null) {
+            updateModuleInSlot(slot, module);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+        ItemStack retStack = super.insertItem(slot, stack, simulate);
+        if (retStack.isEmpty() && !simulate) {
+            ItemStack stackInSlot = getStackInSlot(slot);
+            CompoundTag tag = stackInSlot.getOrCreateTag();
+//            tag.putString(UNIQUE_ID, getUniqueID());
+            stackInSlot.setTag(tag);
+            super.setStackInSlot(slot, stackInSlot);
+        }
+        return retStack;
+    }
 
     @Override
     public CompoundTag serializeNBT() {

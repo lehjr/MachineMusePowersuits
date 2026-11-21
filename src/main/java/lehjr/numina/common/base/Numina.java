@@ -40,7 +40,6 @@ import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.entity.NuminaArmorStand;
-import lehjr.numina.common.event.LogoutEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.recipe.RecipeSerializersRegistry;
@@ -90,7 +89,6 @@ public class Numina {
         NuminaEntities.ENTITY_TYPES.register(modEventBus);
         NuminaMenus.MENU_TYPES.register(modEventBus);
         RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
-        MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
 //        // TODO? reload recipes on config change?
 //        // [14:33:10] [Thread-1/DEBUG] [ne.mi.fm.co.ConfigFileTypeHandler/CONFIG]: Config file numina-server.toml changed, sending notifies

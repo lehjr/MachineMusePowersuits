@@ -32,10 +32,10 @@ import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.client.gui.slot.IHideableSlot;
-import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.common.container.slot.IHideableSlot;
+import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.utils.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -236,7 +236,6 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
         return ulGetter.getULShift().plus((offset - slotWidth) * 0.5, (offset - slotHeight) * 0.5);
     }
 
-
     class SlotRect extends Rect implements IDrawableRect {
         public final ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/container/slot_rect.png");
         float zLevel = 0;
@@ -250,7 +249,7 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, BACKGROUND);
-            IconUtils.INSTANCE.blit(gfx.pose(), left(), top(), this.getZLevel(), 0, 0, width(), height(), 18, 18);
+            IconUtils.blit(gfx.pose(), (float)left(), (float)top(), this.getZLevel(), 0, 0, (float)width(), (float)height(), 18, 18);
         }
 
         @Override

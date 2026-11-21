@@ -28,9 +28,9 @@ package lehjr.powersuits.client.model.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -166,7 +166,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
                 color = new Color( stack.getTag().getInt(TagConstants.COLOR));
                 // this is for the active icon
             } else {
-                color = stack.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> {
+                color = stack.getCapability(NuminaCapabilities.Module.POWER_MODULE).map(pm -> {
                     float red = (float) pm.applyPropertyModifiers(MPSConstants.RED_HUE);
                     float green = (float) pm.applyPropertyModifiers(MPSConstants.GREEN_HUE);
                     float blue = (float) pm.applyPropertyModifiers(MPSConstants.BLUE_HUE);

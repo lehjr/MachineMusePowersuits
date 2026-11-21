@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.item.module;
 
-import lehjr.numina.common.string.AdditionalInfo;
+import lehjr.numina.common.utils.AdditionalInfo;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -45,10 +45,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class AbstractPowerModule extends Item {
-    public AbstractPowerModule(Item.Properties properties) {
-        super(properties);
-    }
-
     public AbstractPowerModule() {
         super(new Item.Properties().stacksTo(1).defaultDurability(-1).setNoRepair());
     }

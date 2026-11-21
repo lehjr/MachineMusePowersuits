@@ -26,13 +26,12 @@
 
 package lehjr.powersuits.common.item.module.miningenchantment;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.enchantment.EnchantmentModule;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.config.module.MiningEnchantmentModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
@@ -46,7 +45,6 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 
 // Note: tried as an enchantment, but failed to function properly due to how block breaking code works
@@ -65,9 +63,7 @@ public class AquaAffinityModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.enchantmentModule = new TickingEnchantment(module, ModuleCategory.MINING_ENCHANTMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 50000, "FE");
-            }};
+            this.enchantmentModule = new TickingEnchantment(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 enchantmentModule.loadCapValues();
@@ -75,19 +71,35 @@ public class AquaAffinityModule extends AbstractPowerModule {
             });
         }
 
-        class TickingEnchantment extends EnchantmentModule {
-            public TickingEnchantment(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, false);
+        public static class TickingEnchantment extends EnchantmentModule {
+            public TickingEnchantment(@Nonnull ItemStack module) {
+                super(module, ModuleCategory.MINING_ENCHANTMENT, ModuleTarget.TOOLONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MiningEnchantmentModuleConfig.aquaAffinityModuleEnergyConsumptionBase, "FE");
             }
 
             @Override
-            public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
 
             @Override
             public Enchantment getEnchantment() {
                 return Enchantments.AQUA_AFFINITY;
+            }
+
+            @Override
+            public int getTier() {
+                return 2;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return MiningEnchantmentModuleConfig.aquaAffinityModuleIsAllowed;
             }
         }
 
@@ -95,7 +107,7 @@ public class AquaAffinityModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

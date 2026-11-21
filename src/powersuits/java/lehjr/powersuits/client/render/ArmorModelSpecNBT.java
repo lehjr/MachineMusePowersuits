@@ -30,7 +30,6 @@ import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecStorage;
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

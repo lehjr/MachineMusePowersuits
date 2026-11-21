@@ -1,5 +1,6 @@
 package lehjr.numina.common.recipe;
 
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
@@ -14,7 +15,6 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -75,7 +75,7 @@ public class ModuleInstallationRecipe extends CustomRecipe {
                     int tier = getTier(pm);
                     Pair<Integer, Integer> range = iModularItem.getRangeForCategory(category);
                     if (range != null) {
-                        for (int i = range.getKey(); i< range.getValue(); i++) {
+                        for (int i = range.getFirst(); i< range.getSecond(); i++) {
                             ItemStack tesStack = iModularItem.getStackInSlot(i);
                             if (tesStack.isEmpty()) {
                                 return true;
@@ -153,7 +153,7 @@ public class ModuleInstallationRecipe extends CustomRecipe {
     }
 
     Optional<IPowerModule> getPowerModuleCap(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(NuminaCapabilities.POWER_MODULE)
+        return itemStack.getCapability(NuminaCapabilities.Module.POWER_MODULE)
                 .filter(IPowerModule.class::isInstance)
                 .map(IPowerModule.class::cast);
     }

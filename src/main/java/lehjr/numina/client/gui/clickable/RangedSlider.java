@@ -11,8 +11,8 @@
 //import lehjr.numina.client.gui.geometry.MusePoint2D;
 //import lehjr.numina.client.gui.geometry.Rect;
 //import lehjr.numina.common.math.Color;
-//import lehjr.numina.common.math.MathUtils;
-//import lehjr.numina.common.string.StringUtils;
+//import lehjr.numina.common.utils.MathUtils;
+//import lehjr.numina.common.utils.StringUtils;
 //import net.minecraft.network.chat.Component;
 //import org.lwjgl.opengl.GL11;
 //

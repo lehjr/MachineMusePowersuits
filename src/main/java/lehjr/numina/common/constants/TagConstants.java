@@ -21,6 +21,9 @@ public class TagConstants {
     public static final String HEAT = "heat";
     public static final String MAXIMUM_HEAT = "maxHeat";
 
+    // Misc
+    public static final String BLOCKSTATE = "blockState";
+
     // Model Stuff --------------------------------------------------------------------------------
 
     public static final String SPECLIST = "specList";

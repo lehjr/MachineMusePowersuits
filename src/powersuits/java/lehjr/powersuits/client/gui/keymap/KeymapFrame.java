@@ -7,10 +7,10 @@ import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.utils.IconUtils;
 import lehjr.powersuits.client.control.KeyMappingReaderWriter;
 import lehjr.powersuits.client.control.MPSKeyMapping;
-import lehjr.powersuits.client.gui.overlay.MPSOverlay;
+import lehjr.powersuits.client.overlay.MPSOverlay;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -165,7 +165,7 @@ public class KeymapFrame extends ScrollableFrame {
         @Override
         public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
             super.render(gfx, mouseX, mouseY, partialTick);
-            NuminaRenderer.drawModuleAt(gfx, left() + 2, top() + 3, module, true);
+            IconUtils.drawModuleAt(gfx, left() + 2, top() + 3, module, true);
             checkbox.render(gfx, mouseX, mouseY, partialTick);
             if (keybindingToRemap != null && keybindingToRemap == kb) {
                 button.setLabel((Component.literal("> ")).append(kb.getKey().getDisplayName().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));

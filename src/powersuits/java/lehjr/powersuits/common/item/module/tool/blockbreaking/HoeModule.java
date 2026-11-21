@@ -1,0 +1,287 @@
+/*
+ * Copyright (c) 2021. MachineMuse, Lehjr
+ *  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *      Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *
+ *     Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+package lehjr.powersuits.common.item.module.tool.blockbreaking;
+
+import com.mojang.datafixers.util.Pair;
+import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.powersuits.common.config.module.HoeModuleConfig;
+import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.item.module.AbstractPowerModule;
+import lehjr.powersuits.common.registration.MPSItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+public class HoeModule extends AbstractPowerModule {
+//    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.field_196658_i, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_185774_da, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_150346_d, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_196660_k, Blocks.field_150346_d.defaultBlockState()));
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new CapProvider(stack);
+    }
+
+    public class CapProvider implements ICapabilityProvider {
+        ItemStack module;
+        private final RightClickie rightClickie;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
+
+        public CapProvider(@Nonnull ItemStack module) {
+            this.module = module;
+            this.rightClickie = new RightClickie(module, getTier(module));
+            powerModuleHolder = LazyOptional.of(() -> {
+                rightClickie.loadCapValues();
+                return rightClickie;
+            });
+        }
+
+        public static class RightClickie extends ToggleableModule implements IBlockBreakingModule, IRightClickModule {
+            int tier;
+            public RightClickie(@Nonnull ItemStack module, int tier) {
+                super(module, ModuleCategory.HOE, ModuleTarget.TOOLONLY);
+                this.tier = tier;
+
+                switch (tier) {
+                    case 1:{
+                        addBaseProperty(MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionBase, "FE"); // 500
+//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                        addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.stoneRototillerModuleRadiusMultiplier,  "m", 1, 1); // 4
+
+                        addBaseProperty(MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionBase, "FE");
+                        addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                        addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                        addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                        break;
+                    }
+
+                    case 2: {
+                        addBaseProperty(MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionBase, "FE"); // 500
+//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                        addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.ironRototillerModuleRadiusMultiplier,  "m", 1, 1); // 4
+
+                        addBaseProperty(MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionBase, "FE");
+                        addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                        addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                        addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                        break;
+                    }
+
+                    case 3: {
+                        addBaseProperty(MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionBase, "FE"); // 500
+//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                        addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.diamondRototillerModuleRadiusMultiplier,  "m", 1, 1); // 4
+
+                        addBaseProperty(MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionBase, "FE");
+                        addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                        addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                        addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                        break;
+                    }
+
+                    case 4: {
+                        addBaseProperty(MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionBase, "FE"); // 500
+//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ON_USE_ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                        addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.netheriteRototillerModuleRadiusMultiplier,  "m", 1, 1); // 4
+
+                        addBaseProperty(MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionBase, "FE");
+                        addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                        addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                        addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public InteractionResult useOn(UseOnContext context) {
+                InteractionResult ret = InteractionResult.PASS;
+
+                Player player = context.getPlayer();
+                if(player == null) {
+                    return InteractionResult.PASS;
+                }
+                int energyConsumed = (int)applyPropertyModifiers(MPSConstants.ON_USE_ENERGY_CONSUMPTION, 0);
+
+                Level level = context.getLevel();
+                BlockPos blockPos = context.getClickedPos();
+                Direction facing = context.getClickedFace();
+                ItemStack itemStack = context.getItemInHand();
+                BlockState toolModifiedState1;
+
+                if (player.mayUseItemAt(blockPos, facing, itemStack)) {
+                    int radius = (int)applyPropertyModifiers(MPSConstants.RADIUS);
+                    for (int i = -Math.abs(radius); i < radius; i++) {
+                        for (int j = -Math.abs(radius); j < radius; j++) {
+                            if (i * i + j * j < radius * radius) {
+                                BlockPos newPos = blockPos.offset(i, 0, j);
+                                if (level.getBlockState(newPos.above()).isAir()
+                                        && !level.getBlockState(newPos).isAir()
+                                        && ElectricItemUtils.getPlayerEnergy(player) >= energyConsumed) {
+                                    BlockHitResult hitResult = new BlockHitResult(Vec3.atCenterOf(newPos), Direction.DOWN, newPos, true);
+                                    UseOnContext ctx1 = new UseOnContext(level, player, context.getHand(), getEmulatedTool(), hitResult);
+                                    toolModifiedState1 = level.getBlockState(newPos).getToolModifiedState(ctx1, ToolActions.HOE_TILL, false);
+                                    Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair1 = toolModifiedState1 == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState1, newPos, player));
+                                    if (pair1 != null) {
+                                        Predicate<UseOnContext> predicate1 = pair1.getFirst();
+                                        Consumer<UseOnContext> consumer1 = pair1.getSecond();
+                                        if (predicate1.test(ctx1)) {
+                                            level.playSound(player, blockPos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                                            if (!level.isClientSide) {
+                                                consumer1.accept(context);
+                                                ElectricItemUtils.drainPlayerEnergy(player, energyConsumed, false);
+                                            }
+                                            if(ret == InteractionResult.FAIL || ret == InteractionResult.PASS) {
+                                                ret = InteractionResult.sidedSuccess(level.isClientSide);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return ret;
+            }
+
+            public static Consumer<UseOnContext> changeIntoState(BlockState state, BlockPos pos, Player player) {
+                return (context) -> {
+                    context.getLevel().setBlock(pos, state, 11);
+                    context.getLevel().gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
+                };
+            }
+
+            @Override
+            public boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+                if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
+                    ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage(), false);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
+                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(NuminaConstants.HARVEST_SPEED)));
+            }
+
+            @Override
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            }
+
+            @Override
+            public int getTier() {
+                return tier;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "hoe";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return switch (tier) {
+                    case 1 -> HoeModuleConfig.stoneRototillerModuleIsAllowed;
+                    case 2 -> HoeModuleConfig.ironRototillerModuleIsAllowed;
+                    case 3 -> HoeModuleConfig.diamondRototillerModuleIsAllowed;
+                    case 4 -> HoeModuleConfig.netheriteRototillerModuleIsAllowed;
+                    default -> false;
+                };
+            }
+
+            @Override
+            public ItemStack getEmulatedTool() {
+                return switch (tier) {
+                    case 1 -> new ItemStack(Items.STONE_HOE);
+                    case 2 -> new ItemStack(Items.IRON_HOE);
+                    case 3 -> new ItemStack(Items.DIAMOND_HOE);
+                    case 4 -> new ItemStack(Items.NETHERITE_HOE);
+                    default -> new ItemStack(Items.STICK);
+                };
+            }
+        }
+
+        static int getTier(ItemStack stack) {
+            if(stack.is(MPSItems.STONE_ROTOTILLER_MODULE.get())) {
+                return 1;
+            }
+            if(stack.is(MPSItems.IRON_ROTOTILLER_MODULE.get())) {
+                return 2;
+            }
+            if(stack.is(MPSItems.DIAMOND_ROTOTILLER_MODULE.get())) {
+                return 3;
+            }
+            if (stack.is(MPSItems.NETHERITE_ROTOTILLER_MODULE.get())) {
+                return 4;
+            }
+            return 0;
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
+        }
+    }
+}

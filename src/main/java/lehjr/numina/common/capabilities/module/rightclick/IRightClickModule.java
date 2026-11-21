@@ -40,13 +40,13 @@ public interface IRightClickModule extends IPowerModule {
 
     /**
      * @param itemStackIn
-     * @param worldIn
+     * @param level
      * @param playerIn
      * @param hand
      * @return
      */
 
-    default InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+    default InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
         return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
     }
 
@@ -58,7 +58,7 @@ public interface IRightClickModule extends IPowerModule {
      * @param hand
      * @return
      */
-    default InteractionResultHolder<ItemStack>interactLivingEntity(ItemStack itemStackIn, Player playerIn, LivingEntity entity, InteractionHand hand) {
+    default InteractionResultHolder<ItemStack> interactLivingEntity(ItemStack itemStackIn, Player playerIn, LivingEntity entity, InteractionHand hand) {
         return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
     }
 
@@ -70,7 +70,7 @@ public interface IRightClickModule extends IPowerModule {
         return InteractionResult.PASS;
     }
 
-    default void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+    default void releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
     }
 
     /**
@@ -79,9 +79,5 @@ public interface IRightClickModule extends IPowerModule {
      */
     default ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
         return itemStack.isEdible() ? entity.eat(level, itemStack) : itemStack;
-    }
-
-    default int getEnergyUsage() {
-        return 0;
     }
 }

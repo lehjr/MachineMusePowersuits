@@ -15,9 +15,7 @@ public enum ModelBakeEventHandler {
     public void onAddAdditional(ModelEvent.RegisterAdditional e) {
         ModelSpecLoader.INSTANCE.parse();
 
-        INSTANCE.locations.forEach(location -> {
-            e.register(location);
-        });
+        INSTANCE.locations.forEach(e::register);
     }
 
     public void addLocation(ResourceLocation location) {

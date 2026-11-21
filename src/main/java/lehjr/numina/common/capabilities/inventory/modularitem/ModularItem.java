@@ -26,18 +26,19 @@
 
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
-import com.google.common.util.concurrent.AtomicDouble;
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.capabilities.CapabilityUpdate;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.thruster.IThruster;
 import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.numina.common.tags.TagUtils;
+import lehjr.numina.common.utils.ItemUtils;
+import lehjr.numina.common.utils.TagUtils;
 import lehjr.numina.imixin.common.item.IMixinRangedWrapper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -45,7 +46,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -53,15 +53,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RangedWrapper;
-import net.minecraftforge.registries.ForgeRegistries;
-import com.mojang.datafixers.util.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 public class ModularItem extends ItemStackHandler implements IModularItem, CapabilityUpdate {
     final boolean isTool;
@@ -115,50 +115,46 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     }
 
     @Override
-    public boolean isModuleValid (LazyOptional<IPowerModule> cap) {
+    public boolean isModuleValid (IPowerModule pm) {
         // follow tier requirements
-        return cap.map(pm->{
-            if(pm.isAllowed() && pm.getTier() <= getTier()) {
-                // check module target against item stack type
-                switch (pm.getTarget()) {
-                    case ALLITEMS-> {
-                        return true;
-                    }
-                    case TOOLONLY-> {
-                        return isTool();
-                    }
-                    // this was meant for a shield but never quite got there
-                    case HANDHELD -> {
-                        return isHandHeld();
-                    }
-                    case ARMORONLY-> {
-                        return getModularItemStack().getItem() instanceof ArmorItem;
-                    }
-                    case HEADONLY-> {
-                        return getModularItemStack().getItem() instanceof ArmorItem
-                                && Mob.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.HEAD;
-                    }
-                    case TORSOONLY-> {
-                        return getModularItemStack().getItem() instanceof ArmorItem
-                                && Mob.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.CHEST;
-                    }
-                    case LEGSONLY-> {
-                        return getModularItemStack().getItem() instanceof ArmorItem
-                                && Mob.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.LEGS;
-                    }
-                    case FEETONLY-> {
-                        return getModularItemStack().getItem() instanceof ArmorItem
-                                && Mob.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.FEET;
-                    }
-                    default-> {
-                        return false;
-                    }
+        if(pm.isAllowed() && pm.getTier() <= getTier()) {
+            // check module target against item stack type
+            switch (pm.getTarget()) {
+                case ALLITEMS-> {
+                    return true;
+                }
+                case TOOLONLY-> {
+                    return isTool();
+                }
+                // this was meant for a shield but never quite got there
+                case HANDHELD -> {
+                    return isHandHeld();
+                }
+                case ARMORONLY-> {
+                    return getModularItemStack().getItem() instanceof ArmorItem;
+                }
+                case HEADONLY-> {
+                    return getModularItemStack().getItem() instanceof ArmorItem
+                            && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.HEAD;
+                }
+                case TORSOONLY-> {
+                    return getModularItemStack().getItem() instanceof ArmorItem
+                            && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.CHEST;
+                }
+                case LEGSONLY-> {
+                    return getModularItemStack().getItem() instanceof ArmorItem
+                            && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.LEGS;
+                }
+                case FEETONLY-> {
+                    return getModularItemStack().getItem() instanceof ArmorItem
+                            && ItemUtils.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.FEET;
+                }
+                default-> {
+                    return false;
                 }
             }
-            return false;
-        }).orElse(false);
-
-
+        }
+        return false;
     }
 
     @Override
@@ -168,19 +164,20 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
             return false;
         }
 
-        LazyOptional<IPowerModule> cap = getModuleCapability(module);
-
-        if (!cap.isPresent()) {
+        IPowerModule cap = getModuleCapability(module);
+        if (cap == null) {
             return false;
         }
         return isModuleValid(cap);
     }
 
-
-
-
-    @Override
+    /**
+     * Returns a range of slots (partition) for a given module category, or null if there is none
+     * @param category
+     * @return
+     */
     @Nullable
+    @Override
     public Pair<Integer, Integer> getRangeForCategory(ModuleCategory category) {
         RangedWrapper rangedWrapper = getRangedWrappers().get(category);
         if (rangedWrapper != null){
@@ -188,8 +185,6 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
         }
         return null;
     }
-
-
 
     /**
      * An alternative to isItemValid since the requirements are different WILL cause issues
@@ -235,9 +230,13 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     /**
      * return true for a module is allowed and either can't be turned off or is on, otherwise return false
      */
+    @Override
     public boolean isModuleOnline(ItemStack module) {
-        return module.getCapability(NuminaCapabilities.POWER_MODULE)
-                .map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false);
+        IPowerModule pm = getModuleCapability(module);
+        if(pm != null) {
+            return pm.isModuleOnline() && pm.isAllowed();
+        }
+        return false;
     }
 
     @Override
@@ -253,61 +252,71 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     }
 
     @Override
+    public void toggleModule(boolean online, int moduleIndex) {
+        if (isSlotValid(moduleIndex)) {
+            ItemStack module = getStackInSlot(moduleIndex);
+            IPowerModule pm = getModuleCapability(module);
+            if (pm instanceof IToggleableModule tm) {
+                tm.toggleModule(online);
+                updateModuleInSlot(moduleIndex, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    @Override
     public void toggleModule(ResourceLocation moduleName, boolean online) {
         int slot = findInstalledModule(moduleName);
         toggleModule(online, slot);
     }
 
     @Override
-    public void toggleModule(boolean online, int slot) {
-        if (isSlotValid(slot)) {
-            ItemStack module = getStackInSlot(slot);
-            module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
-                if (m instanceof IToggleableModule) {
-                    ((IToggleableModule) m).toggleModule(online);
-                    // not enough to update the module, the tag for the item in the slot has to be updated too
-                    onContentsChanged(slot);
-                }
-            });
-        }
-    }
-
-
-    @Override
     public void setModuleBoolean(ResourceLocation moduleName, String key, boolean value) {
         int slot = findInstalledModule(moduleName);
         if (isSlotValid(slot)) {
             ItemStack module = getStackInSlot(slot);
-            module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
+            IPowerModule pm = getModuleCapability(module);
+            if (pm != null) {
                 TagUtils.setModuleBoolean(module, key, value);
-                // not enough to update the module, the tag for the item in the slot has to be updated too
-                onContentsChanged(slot);
-            });
+                updateModuleInSlot(slot, ItemStack.EMPTY);
+            }
         }
     }
 
     @Override
-    public void setModuleDouble(int index, String key, double value) {
+    public boolean setModuleDouble(int index, String key, double value) {
         if(isSlotValid(index)) {
             ItemStack module = getStackInSlot(index);
-            module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
-                TagUtils.setModuleDoubleOrRemove(module, key, value);
-                // not enough to update the module, the tag for the item in the slot has to be updated too
-                onContentsChanged(index);
-            });
+            IPowerModule pm = getModuleCapability(module);
+            if (pm != null) {
+                double testValue = TagUtils.getModuleDouble(module, key);
+                if(value != testValue) {
+                    TagUtils.setModuleDouble(module, key, value);
+                    updateModuleInSlot(index, ItemStack.EMPTY);
+                    return true;
+                }
+            }
         }
+        return false;
     }
 
+    /**
+     * TODO: WIP!! Still assessing what changes actually need to be made for things to work
+     *
+     * @param moduleName
+     * @param key
+     * @param value
+     * @return
+     */
     @Override
-    public void setModuleDouble(ResourceLocation moduleName, String key, double value) {
-        setModuleDouble(findInstalledModule(moduleName), key, value);
+    public boolean setModuleDouble(ResourceLocation moduleName, String key, double value) {
+        return setModuleDouble(findInstalledModule(moduleName), key, value);
     }
 
     @Override
     public double getModuleDouble(int index, String key) {
         ItemStack module = getStackInSlot(index);
-        LazyOptional<IPowerModule> cap = getModuleCapability(module);
-        if(cap.isPresent()) {
+        IPowerModule pm = getModuleCapability(module);
+        if (pm != null) {
             return TagUtils.getModuleDouble(module, key);
         }
         return 0;
@@ -320,41 +329,46 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
 
     @Override
     public void setModuleFloat(ResourceLocation moduleName, String key, float value) {
-        int index = findInstalledModule(moduleName);
-        if(isSlotValid(index)) {
-            ItemStack module = getStackInSlot(index);
-            module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
-                TagUtils.setModuleFloatOrRemove(module, key, value);
-                // not enough to update the module, the tag for the item in the slot has to be updated too
-                onContentsChanged(index);
-            });
+        int i = findInstalledModule(moduleName);
+        if(isSlotValid(i)) {
+            ItemStack module = getStackInSlot(i);
+            IPowerModule pm = getModuleCapability(module);
+            if (pm != null) {
+                TagUtils.setModuleFloat(module, key, value);
+                updateModuleInSlot(i, ItemStack.EMPTY);
+            }
         }
     }
 
     @Override
     public void setModuleBlockState(ResourceLocation moduleName, BlockState state) {
-        int index = findInstalledModule(moduleName);
-        if(isSlotValid(index)) {
-            ItemStack module = getStackInSlot(index);
-            module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
+        int i = findInstalledModule(moduleName);
+        if(isSlotValid(i)) {
+            ItemStack module = getStackInSlot(i);
+            IPowerModule pm = getModuleCapability(module);
+            if (pm != null) {
                 TagUtils.setModuleBlockState(module,state);
-                // not enough to update the module, the tag for the item in the slot has to be updated too
-                onContentsChanged(index);
-            });
+                updateModuleInSlot(i, ItemStack.EMPTY);
+            }
         }
     }
 
     @Override
     public void setModuleString(ResourceLocation moduleName, String key, String value) {
-        int index = findInstalledModule(moduleName);
-        if(isSlotValid(index)) {
-            ItemStack module = getStackInSlot(index);
-            module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
+        int i = findInstalledModule(moduleName);
+        if(isSlotValid(i)) {
+            ItemStack module = getStackInSlot(i);
+            IPowerModule pm = getModuleCapability(module);
+            if (pm != null) {
                 TagUtils.setModuleString(module, key, value);
-                // not enough to update the module, the tag for the item in the slot has to be updated too
-                onContentsChanged(index);
-            });
+                updateModuleInSlot(i, ItemStack.EMPTY);
+            }
         }
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack module) {
+        return getStackLimit(slot, module) > 0;
     }
 
     @Override
@@ -372,6 +386,39 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
         return findInstalledModule(item) > -1;
     }
 
+    /**
+     * returns the module capability only if the module is present and online
+     * @param moduleName
+     * @return
+     */
+    @Nullable
+    @Override
+    public IPowerModule getModuleCapabilityOnlineOrNull(ResourceLocation moduleName) {
+        IPowerModule pm = getModuleCapability(moduleName);
+        if(pm != null && pm.isModuleOnline()) {
+            return pm;
+        }
+        return null;
+    }
+
+    /**
+     * returns the module capability if the module is present even if offline
+     * @param moduleName
+     * @return
+     */
+    @Nullable
+    @Override
+    public  IPowerModule getModuleCapability(ResourceLocation moduleName) {
+        int slot = findInstalledModule(moduleName);
+        if(isSlotValid(slot)) {
+            IPowerModule pm = getModuleCapability(getStackInSlot(slot));
+            if (pm != null && pm.isAllowed()) {
+                return pm;
+            }
+        }
+        return null;
+    }
+
     @Override
     public int findInstalledModule(Item item) {
         if(item != Items.AIR) {
@@ -382,77 +429,6 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
             }
         }
         return -1;
-    }
-
-    /**
-     * returns the module capability only if the module is present and online
-     * @param moduleName
-     * @return
-     */
-    @Nullable
-    @Override
-    public Optional<IPowerModule> getModuleCapabilityOnlineOrNull(ResourceLocation moduleName) {
-        return getModuleCapability(moduleName).filter(IPowerModule::isAllowed)
-                .filter(IPowerModule::isModuleOnline);
-    }
-
-
-
-
-
-    @Override
-    public NonNullList<ItemStack> getInstalledModules() {
-        NonNullList<ItemStack> modules = NonNullList.create();
-
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty()) {
-                modules.add(module);
-            }
-        }
-        return modules;
-    }
-
-
-
-    @Override
-    public boolean isItemValid(int slot, @Nonnull ItemStack module) {
-        return getStackLimit(slot, module) > 0;
-    }
-
-
-
-
-
-    @Nonnull
-    @Override
-    public ItemStack getOnlineModuleOrEmpty(ResourceLocation moduleName) {
-        int slot = findInstalledModule(moduleName);
-        if (slot > -1) {
-            ItemStack module = getStackInSlot(slot);
-            if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false)) {
-                return module;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-
-
-    /**
-     * returns the module capability if the module is present even if offline
-     *
-     * @param moduleName
-     * @return
-     */
-    @Nullable
-    @Override
-    public LazyOptional<IPowerModule> getModuleCapability(ResourceLocation moduleName) {
-        int slot = findInstalledModule(moduleName);
-        if(isSlotValid(slot)) {
-            return getModuleCapability(getStackInSlot(slot));
-        }
-        return LazyOptional.empty();
     }
 
     @Override
@@ -468,83 +444,74 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     @Override
     public void tick(Player player, Level level, ItemStack host) {
         for (int i = 0; i < getSlots(); i++) {
-            final int index = i;
+            IPowerModule pm = getModuleCapability(getStackInSlot(i));
+            if(pm instanceof IPlayerTickModule ticker) {
+                if(ticker.isAllowed() && ticker.isModuleOnline()) {
+                    if(ticker.onPlayerTickActive(player, level, this.getModularItemStack(), i)) {
+                        updateModuleInSlot(i, ticker.getModule());
+                    }
+                } else {
+                    if(ticker.onPlayerTickInactive(player, level, this.getModularItemStack(), i)) {
+                        updateModuleInSlot(i, ticker.getModule());
+                    }
+                }
+            }
 
-            getStackInSlot(i).getCapability(NuminaCapabilities.POWER_MODULE)
-                    .filter(IPlayerTickModule.class::isInstance)
-                    .map(IPlayerTickModule.class::cast)
-                    .filter(IPlayerTickModule::isAllowed).ifPresent(m -> {
-                        if (m.isModuleOnline()) {
-                            if (m.onPlayerTickActive(player, level, this.getModularItemStack(), index)) {
-                                onContentsChanged(index);
-                            }
-                        } else {
-                            if(m instanceof IThruster thruster && !m.isModuleOnline()) {
-                                thruster.stopSound(player, level);
-                            }
-                            if(m.onPlayerTickInactive(player, level, this.getModularItemStack(), index)) {
-                                onContentsChanged(index);
-                            }
-                        }
-                    });
+            if(pm instanceof IThruster thruster && !pm.isModuleOnline()) {
+                thruster.stopSound(player, level);
+            }
         }
+    }
+
+    // for porting compatibility
+    @Override
+    public void updateModuleInSlot(int slot, ItemStack ignored) {
+//        setStackInSlot(slot, module);
+        onContentsChanged(slot);
     }
 
     @Override
     public double getMovementResistance() {
-        AtomicDouble movementResistance = new  AtomicDouble(0);
+        double movementResistance = 0;
         for(int i = 0; i < getSlots(); i++) {
-            getModuleCapability(getStackInSlot(i)).ifPresent(m -> {
-                if(m.isAllowed() && m.isModuleOnline()) {
-                    movementResistance.getAndAdd(m.applyPropertyModifiers(NuminaConstants.MOVEMENT_RESISTANCE));
-                }
-            });
-
-
-        }
-        return movementResistance.get();
-    }
-
-    @Override
-    public boolean setModuleTweakDouble(ResourceLocation moduleName, String key, double value) {
-        boolean handled = false;
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
-                if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
-                    TagUtils.setModuleDoubleOrRemove(module, key, value);
-                    return true;
-                }).orElse(false)) {
-                    onContentsChanged(i);
-                    handled = true;
-                    break;
-                }
+            IPowerModule pm = getModuleCapability(getStackInSlot(i));
+            if(pm != null && pm.isAllowed() && pm.isModuleOnline()) {
+                movementResistance += pm.applyPropertyModifiers(NuminaConstants.MOVEMENT_RESISTANCE);
             }
         }
-        return handled;
+        return movementResistance;
     }
 
     /**
      * IItemHandler ------------------------------------------------------------------------------
      */
-    @Override
-    public int getStackLimit(final int slot, @Nonnull final ItemStack module) {
+     @Override
+    public int getStackLimit(final int slot, final ItemStack module) {
+        // allow empty slots, else empty slots will crash on opening container
+        if (module.isEmpty()) {
+            return 1;
+        }
+
         if (isModuleValid(module)) {
-            // is module already installed?
-            if (isModuleInstalled(ForgeRegistries.ITEMS.getKey(module.getItem()))) { // fixme.. use item check instead? maybe?
+            //  Check if the module is already in this slot instead of just blindly
+            // checking if module is already installed somewhere. This is because this method will be called
+            // on loading to check if the module is valid for the given slot.
+            int isInstalled = findInstalledModule(module);
+            if (isSlotValid(isInstalled) && isInstalled != slot) {
+//                NuminaLogger.logDebug("module already installed in slot: " + isInstalled);
                 return 0;
             }
 
             // get the module category... CATEGORY_NONE) is actually just a fallback
-            ModuleCategory category = module.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> m.getCategory())
-                    .orElse(ModuleCategory.NONE);
+            IPowerModule pm = getModuleCapability(module);
+            ModuleCategory category = pm == null ? ModuleCategory.NONE : pm.getCategory();
 
             // Specfic module type for limited modules
-            RangedWrapper wrapper = rangedWrappers.get(category);
+            RangedWrapper wrapper = getRangedWrappers().get(category);
 
             // fallback on generic type if null
             if (wrapper == null) {
-                wrapper = rangedWrappers.get(ModuleCategory.NONE);
+                wrapper = getRangedWrappers().get(ModuleCategory.NONE);
             }
 
             // Note, not using the actual wrapper mechanics, just slot ranges

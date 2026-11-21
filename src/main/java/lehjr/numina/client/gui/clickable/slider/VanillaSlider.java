@@ -2,7 +2,7 @@ package lehjr.numina.client.gui.clickable.slider;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -39,7 +39,6 @@ public class VanillaSlider extends AbstractSlider {
     public void setActive(boolean active) {
         this.active = active;
     }
-
 
     @Override
     public void renderBg(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {

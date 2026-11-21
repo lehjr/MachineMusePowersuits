@@ -2,10 +2,10 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.item.ItemUtils;
-import lehjr.numina.common.math.Color;
+import lehjr.numina.common.container.slot.SlotBackgrounds;
+import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -109,20 +109,14 @@ public class ModularItemTabToggleWidget extends Clickable {
      * Renders the item icons for the tabs. Some tabs have 2 icons, some just one.
      */
     private void renderIcon(GuiGraphics gfx) {
-        int offset = this.isStateActive? -2 : -2;
+        int offset = -2;
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
-            if (EquipmentSlot.MAINHAND.equals(type)) {
-                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-                IconUtils.INSTANCE.getIcon().weapon.draw(gfx.pose(), left() + 9 + offset, top() + 5, Color.WHITE);
-            } else {
-                Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
-                if (pair != null) {
-                    TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
-                    RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
-                    gfx.blit((int)left() + 10 + offset, (int)top() + 5, 0, 16, 16, textureatlassprite);
-                }
-            }
+            Pair<ResourceLocation, ResourceLocation> pair = SlotBackgrounds.getSlotBackground(type);
+            TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
+            RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
+            gfx.blit((int)left() + 10 + offset, (int)top() + 5, 0, 16, 16, textureatlassprite);
+
             RenderSystem.enableDepthTest();
         } else {
             gfx.renderItem(icon, (int)left() + 9 + offset, (int)top() + 6);

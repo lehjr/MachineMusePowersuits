@@ -28,7 +28,7 @@ package lehjr.powersuits.common.block;
 
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
+import lehjr.powersuits.client.gui.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

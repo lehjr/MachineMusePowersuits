@@ -27,14 +27,13 @@
 package lehjr.powersuits.common.item.module.weapon;
 
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.powersuits.common.config.module.WeaponModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -54,11 +53,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 /**
  * Created by User: Andrew2448
@@ -76,29 +72,22 @@ public class LightningModule extends AbstractPowerModule {
         ItemStack module;
         RightClickie rightClickie;
 
-        public CapProvider(@Nonnull ItemStack module) {
+        public CapProvider(ItemStack module) {
             this.module = module;
-            this.rightClickie = new RightClickie(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 4900000, "FE");
-                addBaseProperty(MPSConstants.HEAT_EMISSION, 100, "");
-            }};
+            this.rightClickie = new RightClickie(module);
         }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return NuminaCapabilities.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClickie));
-        }
-
-        class RightClickie extends RightClickModule {
-            public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
+        public static class RightClickie extends RightClickModule {
+            public RightClickie(ItemStack module) {
+                super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, WeaponModuleConfig.lightningSummonerEnergyConsumption, "FE");
+                addBaseProperty(MPSConstants.HEAT_EMISSION, WeaponModuleConfig.lightningSummonerHeatEmission, "");
             }
 
             @Override
-            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
-                if (hand == InteractionHand.MAIN_HAND.MAIN_HAND) {
-                    int energyConsumption = getEnergyUsage();
+            public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
+                if (hand == InteractionHand.MAIN_HAND) {
+                    double energyConsumption = getEnergyUsage();
                     if (energyConsumption < ElectricItemUtils.getPlayerEnergy(playerIn)) {
                         if (!level.isClientSide()) {
                             double range = 64;
@@ -107,7 +96,7 @@ public class LightningModule extends AbstractPowerModule {
                             if (raytraceResult != null && raytraceResult.getType() != HitResult.Type.MISS) {
                                 BlockPos targetPos = new BlockPos((int)raytraceResult.getLocation().x, (int)raytraceResult.getLocation().y, (int)raytraceResult.getLocation().z);
                                 if (level.canSeeSky(targetPos)) {
-                                    ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption);
+                                    ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption, false);
                                     HeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.HEAT_EMISSION));
                                     LightningBolt sparkie = EntityType.LIGHTNING_BOLT.create(level);
 
@@ -127,9 +116,34 @@ public class LightningModule extends AbstractPowerModule {
             }
 
             @Override
-            public int getEnergyUsage() {
-                return (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
+            public boolean isAllowed() {
+                return WeaponModuleConfig.lightningSummonerIsAllowed;
             }
+
+            @Override
+            public boolean isModuleOnline() {
+                return true;
+            }
+
+            @Override
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            }
+
+            @Override
+            public int getTier() {
+                return 2;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+        }
+
+        @Override
+        public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
+            return NuminaCapabilities.Module.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClickie));
         }
     }
 }

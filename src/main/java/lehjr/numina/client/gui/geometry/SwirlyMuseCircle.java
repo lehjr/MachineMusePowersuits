@@ -43,6 +43,10 @@ public class SwirlyMuseCircle {
     protected FloatBuffer color;
     int numsegments;
 
+    public SwirlyMuseCircle() {
+        this(new Color(0.0f, 1.0f, 0.0f, 0.0f), new Color(0.8f, 1.0f, 0.8f, 1.0f));
+    }
+
     public SwirlyMuseCircle(Color c1, Color c2) {
         if (points == null) {
             points = GradientAndArcCalculator.getArcPoints(0, (float) (Math.PI * 2 + 0.0001), detail, 0, 0);

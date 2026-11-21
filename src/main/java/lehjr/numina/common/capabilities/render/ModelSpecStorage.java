@@ -27,7 +27,7 @@
 package lehjr.numina.common.capabilities.render;
 
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.numina.common.tags.TagUtils;
+import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;

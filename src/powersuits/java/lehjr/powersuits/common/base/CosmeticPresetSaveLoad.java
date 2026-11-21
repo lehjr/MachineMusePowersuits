@@ -28,9 +28,9 @@ package lehjr.powersuits.common.base;
 
 import com.google.common.collect.HashBiMap;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.config.ConfigHelper;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;

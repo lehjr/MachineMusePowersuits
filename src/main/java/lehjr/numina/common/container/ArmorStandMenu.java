@@ -26,12 +26,9 @@
 
 package lehjr.numina.common.container;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.client.gui.slot.IconSlot;
-import lehjr.numina.client.render.IconUtils;
-import lehjr.numina.common.base.NuminaObjects;
-import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.IconUtils;
+import lehjr.numina.common.container.slot.SlotBackgrounds;
 import lehjr.numina.common.registration.NuminaMenus;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
@@ -112,17 +109,17 @@ public class ArmorStandMenu extends AbstractContainerMenu {
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, IconUtils.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, SlotBackgrounds.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
                 }
             });
         }
 
-        // ArmorStand OffHand (container slot 4)
+        // ArmorStand OffHand (container slot 1)
         this.addSlot(new Slot(armorStandInventory, 1, 83, 8) {
             @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return IconUtils.getSlotBackground(EquipmentSlot.OFFHAND);
+                return SlotBackgrounds.getSlotBackground(EquipmentSlot.OFFHAND);
             }
 
             @Override
@@ -138,11 +135,12 @@ public class ArmorStandMenu extends AbstractContainerMenu {
             }
         });
 
-        // ArmorStand MainHand (container slot 5)
-        this.addSlot(new IconSlot(armorStandInventory, 0, 83, 26) {
+        // ArmorStand MainHand (container slot 0)
+        this.addSlot(new Slot(armorStandInventory, 0, 83, 26) {
+            @OnlyIn(Dist.CLIENT)
             @Override
-            public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                IconUtils.INSTANCE.getIcon().weapon.draw(matrixStack, posX, posY, color);
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return SlotBackgrounds.getSlotBackground(EquipmentSlot.MAINHAND);
             }
 
             @Override
@@ -191,7 +189,7 @@ public class ArmorStandMenu extends AbstractContainerMenu {
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, IconUtils.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, SlotBackgrounds.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
                 }
             });
         }
@@ -233,7 +231,6 @@ public class ArmorStandMenu extends AbstractContainerMenu {
     /**
      * Handle when the stack in slot {@code index} is shift-clicked. Normally this moves the stack between the player
      * inventory and the other inventory(s).
-     *
      * Based loosely on the vanilla player container
      */
     @Override
@@ -241,7 +238,7 @@ public class ArmorStandMenu extends AbstractContainerMenu {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             EquipmentSlot equipmentslottype = Mob.getEquipmentSlotForItem(itemstack);
@@ -253,7 +250,7 @@ public class ArmorStandMenu extends AbstractContainerMenu {
                 }
 
                 // from Player Armor Slots to Player Inventory
-            } else if (index >= 6 && index < 10) {
+            } else if (index < 10) {
                 if (!this.moveItemStackTo(itemstack1, 9, 45, false)) {
                     return ItemStack.EMPTY;
                 }
@@ -287,13 +284,13 @@ public class ArmorStandMenu extends AbstractContainerMenu {
                 }
 
                 // player main inventory
-            } else if (index >= 10 && index < 37) {
+            } else if (index < 37) {
                 if (!this.moveItemStackTo(itemstack1, 36, 45, false)) {
                     return ItemStack.EMPTY;
                 }
 
                 // player hotbar
-            } else if (index >= 36 && index < 45) {
+            } else if (index < 45) {
                 if (!this.moveItemStackTo(itemstack1, 9, 36, false)) {
                     return ItemStack.EMPTY;
                 }

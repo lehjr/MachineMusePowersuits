@@ -28,8 +28,8 @@ package lehjr.powersuits.common.entity;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
-import lehjr.powersuits.common.base.MPSBlocks;
-import lehjr.powersuits.common.base.MPSEntities;
+import lehjr.powersuits.common.registration.MPSBlocks;
+import lehjr.powersuits.common.registration.MPSEntities;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
 import net.minecraft.core.BlockPos;

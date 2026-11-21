@@ -27,17 +27,15 @@
 package lehjr.powersuits.common.base;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import lehjr.numina.common.config.ConfigHelper;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.event.RenderEventHandler;
-import lehjr.powersuits.client.gui.modding.module.install_salvage.InstallSalvageGui;
+import lehjr.powersuits.client.gui.module.install_salvage.InstallSalvageGui;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
-import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.event.*;
 import lehjr.powersuits.common.network.MPSPackets;
-import lehjr.powersuits.common.registration.MPSConfigurations;
+import lehjr.powersuits.common.registration.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;

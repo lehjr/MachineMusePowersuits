@@ -1,16 +1,15 @@
 package lehjr.powersuits.common.event;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.externalitems.OtherModItemsAsModules;
-import lehjr.numina.common.capabilities.module.hud.HudModule;
-import lehjr.numina.common.capabilities.module.hud.IHudModule;
+import lehjr.numina.common.capabilities.render.hud.HudModule;
+import lehjr.numina.common.capabilities.render.hud.IHudModule;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.item.ItemUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.core.Direction;
@@ -55,7 +54,7 @@ public class AttachCapabilityEventHandler {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == NuminaCapabilities.POWER_MODULE) {
+                    if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         clock.loadCapValues();
                         return LazyOptional.of(() -> (T) clock);
                     }
@@ -71,7 +70,7 @@ public class AttachCapabilityEventHandler {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == NuminaCapabilities.POWER_MODULE) {
+                    if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         compass.loadCapValues();
                         return LazyOptional.of(() -> (T) compass);
                     }
@@ -86,7 +85,7 @@ public class AttachCapabilityEventHandler {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == NuminaCapabilities.POWER_MODULE) {
+                    if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         compass.loadCapValues();
                         return LazyOptional.of(() -> (T) compass);
                     }
@@ -101,7 +100,7 @@ public class AttachCapabilityEventHandler {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == NuminaCapabilities.POWER_MODULE) {
+                    if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         compass.loadCapValues();
                         return LazyOptional.of(() -> (T) compass);
                     }
@@ -194,7 +193,7 @@ public class AttachCapabilityEventHandler {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == NuminaCapabilities.POWER_MODULE) {
+                    if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         return LazyOptional.of(()->(T)rightClick);
                     }
                     return LazyOptional.empty();
@@ -223,7 +222,7 @@ public class AttachCapabilityEventHandler {
 
             @Override
             public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @org.jetbrains.annotations.Nullable Direction side) {
-                final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+                final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
                 if (powerModuleCapability.isPresent()) {
                     return powerModuleCapability;
                 }

@@ -1,8 +1,8 @@
 package lehjr.numina.client.gui.meter;
 
 import lehjr.numina.client.config.IMeterConfig;
-import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -27,7 +27,7 @@ public class EnergyMeter extends HeatMeter {
         super.draw(gfx, xpos, ypos, value);
         value = Mth.clamp(value + getConfig().getDebugValue(), 0F, 1F);
         if (value > 0) {
-            NuminaRenderer.drawMPDLightning(gfx,
+            IconUtils.drawMPDLightning(gfx,
                     xpos + xsize * value, (float) (ypos + ysize * (Math.random() / 2F + 0.25)),
                     1F,
                     xpos, (float) (ypos + ysize * (Math.random() / 2 + 0.25)),

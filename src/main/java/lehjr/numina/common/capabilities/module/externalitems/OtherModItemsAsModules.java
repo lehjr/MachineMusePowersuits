@@ -1,25 +1,47 @@
 package lehjr.numina.common.capabilities.module.externalitems;
 
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.Callable;
+import javax.annotation.Nonnull;
 
-public class OtherModItemsAsModules extends RightClickModule implements IOtherModItemsAsModules {
-    public OtherModItemsAsModules(@NotNull ItemStack module, ModuleCategory category, Callable<IConfig> moduleConfigGetterIn) {
-        super(module, category, ModuleTarget.TOOLONLY, moduleConfigGetterIn);
+
+public abstract class OtherModItemsAsModules extends RightClickModule implements IOtherModItemsAsModules {
+    final int tier;
+
+    public OtherModItemsAsModules(ItemStack module, ModuleCategory category) {
+        this(module, category, 1);
     }
 
-    public OtherModItemsAsModules(@NotNull ItemStack module, ModuleTarget target, ModuleCategory category, Callable<IConfig> moduleConfigGetterIn) {
-        super(module, category, target, moduleConfigGetterIn);
+    public OtherModItemsAsModules(ItemStack module, ModuleTarget target, ModuleCategory category) {
+        this(module, target, category, 1);
+    }
+
+    public OtherModItemsAsModules(ItemStack module, ModuleTarget target, ModuleCategory category, int tier) {
+        super(module, category, target);
+        this.tier = tier;
+    }
+
+    public OtherModItemsAsModules(ItemStack module, ModuleCategory category, int tier) {
+        super(module, category, ModuleTarget.TOOLONLY);
+        this.tier = tier;
     }
 
     @Override
-    public void setModuleStack(@NotNull ItemStack stack) {
+    public boolean isModuleOnline() {
+        return true;
+    }
+
+    @Override
+    public void setModuleStack(@Nonnull ItemStack stack) {
         super.module = stack;
+    }
+
+    @Override
+    public int getTier() {
+        return tier;
     }
 }

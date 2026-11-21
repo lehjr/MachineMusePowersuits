@@ -29,7 +29,7 @@ package lehjr.powersuits.common.event;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.utils.ElectricItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -80,7 +80,7 @@ public class HarvestEventHandler {
                     double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
                     for (ItemStack module : iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                        if (module.getCapability(NuminaCapabilities.POWER_MODULE)
+                        if (module.getCapability(NuminaCapabilities.Module.POWER_MODULE)
                                 .filter(IBlockBreakingModule.class::isInstance)
                                 .map(IBlockBreakingModule.class::cast)
                                 .map(pm-> pm.canHarvestBlock(iItemHandler.getModularItemStack(), state, player, pos, playerEnergy)).orElse(false)) {
@@ -126,7 +126,7 @@ public class HarvestEventHandler {
                     double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
                     for (ItemStack module : iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                        module.getCapability(NuminaCapabilities.POWER_MODULE)
+                        module.getCapability(NuminaCapabilities.Module.POWER_MODULE)
                                 .filter(IBlockBreakingModule.class::isInstance)
                                 .map(IBlockBreakingModule.class::cast)
                                 .ifPresent(pm -> {

@@ -51,21 +51,20 @@ public class NuminaPackets {
     public static void registerNuminaPackets() {
         int i =0;
         // -----------------------------------------------------
-        CHANNEL_INSTANCE.registerMessage(
-                i++,
-                BlockNamePacketServerBound.class,
-                BlockNamePacketServerBound::encode,
-                BlockNamePacketServerBound::decode,
-                BlockNamePacketServerBound.Handler::handle,
+        CHANNEL_INSTANCE.registerMessage(++i,
+                BlockPositionPacketServerBound.class,
+                BlockPositionPacketServerBound::encode,
+                BlockPositionPacketServerBound::decode,
+                BlockPositionPacketServerBound::handle,
                 Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
-        CHANNEL_INSTANCE.registerMessage(
-                i++,
-                BlockNamePacketClientBound.class,
-                BlockNamePacketClientBound::encode,
-                BlockNamePacketClientBound::decode,
-                BlockNamePacketClientBound.Handler::handle,
-                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        // -----------------------------------------------------
+        CHANNEL_INSTANCE.registerMessage(++i,
+                BlockStateClearPacketServerBound.class,
+                BlockStateClearPacketServerBound::encode,
+                BlockStateClearPacketServerBound::decode,
+                BlockStateClearPacketServerBound::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         // -----------------------------------------------------
         CHANNEL_INSTANCE.registerMessage(

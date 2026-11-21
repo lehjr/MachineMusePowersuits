@@ -35,28 +35,28 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.function.Supplier;
+
 @Mod.EventBusSubscriber(modid = MPSConstants.MOD_ID, value = Dist.CLIENT)
 public class MPSSoundDictionary {
-    static {
-        new MPSSoundDictionary();
-    }
-
     public static final DeferredRegister<SoundEvent> MPS_SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MPSConstants.MOD_ID);
-    public static final RegistryObject<SoundEvent> SOUND_EVENT_GLIDER = MPS_SOUND_EVENTS.register("glider",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "glider")));
 
-    public static final RegistryObject<SoundEvent> SOUND_EVENT_JETBOOTS = MPS_SOUND_EVENTS.register("jet_boots",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "jet_boots")));
+    public static final RegistryObject<SoundEvent> SOUND_EVENT_LEAF_BLOWER = registerSoundEvent("blower");
 
-    public static final RegistryObject<SoundEvent> SOUND_EVENT_JETPACK = MPS_SOUND_EVENTS.register("jetpack",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "jetpack")));
+    public static final RegistryObject<SoundEvent> SOUND_EVENT_GLIDER = registerSoundEvent("glider");
 
-    public static final RegistryObject<SoundEvent> SOUND_EVENT_JUMP_ASSIST = MPS_SOUND_EVENTS.register("jump_assist",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "jump_assist")));
+    public static final RegistryObject<SoundEvent>  SOUND_EVENT_JETBOOTS = registerSoundEvent("jet_boots");
 
-    public static final RegistryObject<SoundEvent> SOUND_EVENT_SWIM_ASSIST = MPS_SOUND_EVENTS.register("swim_assist",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "swim_assist")));
+    public static final RegistryObject<SoundEvent>  SOUND_EVENT_JETPACK = registerSoundEvent("jetpack");
 
-    public static final RegistryObject<SoundEvent> SOUND_EVENT_ELECTROLYZER = MPS_SOUND_EVENTS.register("water_electrolyzer",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "water_electrolyzer")));
+    public static final RegistryObject<SoundEvent>  SOUND_EVENT_JUMP_ASSIST = registerSoundEvent("jump_assist");
+
+    public static final RegistryObject<SoundEvent>  SOUND_EVENT_SWIM_ASSIST = registerSoundEvent("swim_assist");
+
+    public static final RegistryObject<SoundEvent>  SOUND_EVENT_ELECTROLYZER = registerSoundEvent("water_electrolyzer");
+
+    static RegistryObject<SoundEvent> registerSoundEvent(String name) {
+        return MPS_SOUND_EVENTS.register(name,
+                () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, name)));
+    }
 }

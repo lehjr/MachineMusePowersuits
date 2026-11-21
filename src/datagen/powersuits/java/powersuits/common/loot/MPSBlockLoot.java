@@ -1,6 +1,6 @@
 package powersuits.common.loot;
 
-import lehjr.powersuits.common.base.MPSBlocks;
+import lehjr.powersuits.common.registration.MPSBlocks;
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.world.level.block.Block;
 

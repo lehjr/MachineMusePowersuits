@@ -1,7 +1,7 @@
 package lehjr.numina.common.network.packets.serverbound;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.clientbound.TweakRequestDoublePacketClientBound;
 import net.minecraft.network.FriendlyByteBuf;
@@ -49,7 +49,7 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot type, ResourceLo
                             .filter(IModularItem.class::isInstance)
                             .map(IModularItem.class::cast)
                             .ifPresent(iItemHandler -> {
-                                iItemHandler.setModuleTweakDouble(moduleRegName, tweakName, tweakValue);
+                                iItemHandler.setModuleDouble(moduleRegName, tweakName, tweakValue);
                             });
                     sendToClient((ServerPlayer) player, type, moduleRegName, tweakName, tweakValue);
                 }

@@ -33,7 +33,7 @@ import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.powersuits.common.item.tool.PowerFist;
+import lehjr.powersuits.common.item.electric.tool.PowerFist;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;

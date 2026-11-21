@@ -30,13 +30,14 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.heat.HeatUtils;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.player.PlayerUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -53,30 +54,32 @@ public class PlayerUpdateHandler {
 //            Player player = (Player) event.getEntity();
         if(true) {
             Player player = event.player;
+            Level level = player.level();
+
             NonNullList<ItemStack> modularItems = NonNullList.create();
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if(ItemUtils.getItemFromEntitySlot(player, slot).isEmpty()) {
+                ItemStack stack = ItemUtils.getItemFromEntitySlot(player, slot);
+                if(stack.isEmpty()) {
                     continue;
                 }
-
                 switch (slot.getType()) {
                     case HAND:
-                        ItemUtils.getItemFromEntitySlot(player, slot).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModeChangingItem.class::isInstance)
                                 .map(IModeChangingItem.class::cast)
                                 .ifPresent(i-> {
-                                    i.tick(player);
+                                    i.tick(player, level, stack);
                                     modularItems.add(i.getModularItemStack());
                                 });
                         break;
 
                     case ARMOR:
                         try {
-                            ItemUtils.getItemFromEntitySlot(player, slot).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                            stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                                     .filter(IModularItem.class::isInstance)
                                     .map(IModularItem.class::cast)
                                     .ifPresent(i-> {
-                                        i.tick(player);
+                                        i.tick(player, level, stack);
                                         modularItems.add(i.getModularItemStack());
                                     });
                         } catch (Exception exception) {

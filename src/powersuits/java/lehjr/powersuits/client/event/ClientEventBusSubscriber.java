@@ -2,13 +2,13 @@ package lehjr.powersuits.client.event;
 
 import lehjr.powersuits.client.control.KeyMappingReaderWriter;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
-import lehjr.powersuits.client.gui.overlay.MPSOverlay;
+import lehjr.powersuits.client.overlay.MPSOverlay;
 import lehjr.powersuits.client.render.blockentity.TinkerTableBER;
 import lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
 import lehjr.powersuits.client.render.entity.SpinningBladeEntityRenderer;
-import lehjr.powersuits.common.base.MPSBlocks;
-import lehjr.powersuits.common.base.MPSEntities;
+import lehjr.powersuits.common.registration.MPSBlocks;
+import lehjr.powersuits.common.registration.MPSEntities;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;

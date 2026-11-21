@@ -31,7 +31,7 @@ import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.gui.meter.EnergyMeter;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ChargingBaseMenu;
-import lehjr.numina.common.string.StringUtils;
+import lehjr.numina.common.utils.StringUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;

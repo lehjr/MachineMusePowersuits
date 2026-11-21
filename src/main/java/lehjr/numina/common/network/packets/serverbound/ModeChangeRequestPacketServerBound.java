@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.serverbound;
 
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.clientbound.ModeChangeRequestPacketClientBound;
 import net.minecraft.network.FriendlyByteBuf;

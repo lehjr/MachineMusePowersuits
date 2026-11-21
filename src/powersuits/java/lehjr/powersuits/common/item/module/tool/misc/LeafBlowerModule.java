@@ -1,0 +1,283 @@
+/*
+ * Copyright (c) 2021. MachineMuse, Lehjr
+ *  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *      Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *
+ *     Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+package lehjr.powersuits.common.item.module.tool.misc;
+
+import lehjr.numina.client.config.NuminaClientConfig;
+import lehjr.numina.client.sound.Musique;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.powersuits.client.sound.MPSSoundDictionary;
+import lehjr.powersuits.common.config.module.ToolModuleConfig;
+import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.IForgeShearable;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+/**
+ * Created by User: Andrew2448
+ * 7:13 PM 4/21/13
+ */
+public class LeafBlowerModule extends AbstractPowerModule {
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new CapProvider(stack);
+    }
+
+    public class CapProvider implements ICapabilityProvider {
+        ItemStack module;
+        private final Ticker ticker;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
+
+
+        public CapProvider(@Nonnull ItemStack module) {
+            this.module = module;
+            this.ticker = new Ticker(module);
+            powerModuleHolder = LazyOptional.of(() -> {
+                ticker.loadCapValues();
+                return ticker;
+            });
+        }
+
+        public static class Ticker extends PlayerTickModule implements IRightClickModule {
+            public Ticker(ItemStack module) {
+                super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionBase, "FE");
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionRadiusMultipler);
+
+                addBaseProperty(MPSConstants.RADIUS, 1, "m"); // no config value here since 1 is as low as a single block radius can be
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, ToolModuleConfig.leafBlowerModuleRadiusMax -1, "m", 1, 1);
+            }
+
+            @Override
+            public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn, int moduleIndex) {
+                double energyUsage = getEnergyUsage();
+                if(getPlayerEnergy(player) < energyUsage) {
+                    toggleModule(false);
+                    player.stopUsingItem();
+                } else if(player.isUsingItem()) {
+                    useBlower(player, level, 60);
+                    ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
+                } else {
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_LEAF_BLOWER.get());
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn, int moduleIndex) {
+                Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_LEAF_BLOWER.get());
+                return false;
+            }
+
+            @Override
+            public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level level, Player player, InteractionHand hand) {
+                if(isModuleOnline()) {
+                    if(getPlayerEnergy(player) >= getEnergyUsage()) {
+                        player.startUsingItem(hand);
+                        return InteractionResultHolder.success(itemStackIn);
+                    }
+                }
+                return InteractionResultHolder.pass(itemStackIn);
+            }
+
+            @Override
+            public int getTier() {
+                return 1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return ToolModuleConfig.leafBlowerModuleIsAllowed;
+            }
+
+            /**
+             *
+             * @param player
+             * @param level
+             * @param fovDegrees
+             */
+            private void useBlower(Player player, Level level, double fovDegrees) {
+                double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                if(playerEnergy >= getEnergyUsage()) {
+                    int radius = (int) applyPropertyModifiers(MPSConstants.RADIUS);
+
+                    if (NuminaClientConfig.useSounds) {
+                        Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_LEAF_BLOWER.get(), SoundSource.PLAYERS, 1, 1F, true);
+                    }
+
+                    double eyeX = player.getX();
+                    double eyeY = player.getEyeY();
+                    double eyeZ  = player.getZ();
+                    Vec3 lookAngle = player.getLookAngle().normalize();
+
+                    // Cosine threshold for the half-angle of the cone
+                    double maxAngleRad = Math.toRadians(fovDegrees / 2.0);
+                    double cosThreshold = Math.cos(maxAngleRad);
+                    double radiusSq = radius * radius;
+
+                    // Bounding box range
+                    int minX = (int) Math.floor(eyeX - radius);
+                    int maxX = (int) Math.ceil(eyeX + radius);
+                    int minY = (int) Math.floor(eyeY - radius);
+                    int maxY = (int) Math.ceil(eyeY + radius);
+                    int minZ = (int) Math.floor(eyeZ - radius);
+                    int maxZ = (int) Math.ceil(eyeZ + radius);
+
+                    for (int x = minX; x <= maxX; x++) {
+                        for (int y = minY; y <= maxY; y++) {
+                            for (int z = minZ; z <= maxZ; z++) {
+
+                                // Offset to block center
+                                double dx = (x + 0.5) - eyeX;
+                                double dy = (y + 0.5) - eyeY;
+                                double dz = (z + 0.5) - eyeZ;
+
+                                double distSq = dx * dx + dy * dy + dz * dz;
+
+                                // Skip blocks outside radius sphere or at exact origin
+                                if (distSq > radiusSq || distSq == 0) {
+                                    continue;
+                                }
+
+                                double dist = Math.sqrt(distSq);
+
+                                // Normalize direction vector pointing toward block center
+                                double dirX = dx / dist;
+                                double dirY = dy / dist;
+                                double dirZ = dz / dist;
+
+                                // Dot product: lookAngle • blockDir
+                                double dotProduct = (lookAngle.x * dirX) + (lookAngle.y * dirY) + (lookAngle.z * dirZ);
+
+                                // If inside cone angle, store as BlockPos
+                                if (dotProduct >= cosThreshold) {
+                                    blockCheckAndHarvest(player, level, new BlockPos(x, y, z));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public double getEnergyUsage() {
+                return applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            }
+        }
+
+        static void blockCheckAndHarvest(Player player, Level world, BlockPos pos) {
+            BlockState state = world.getBlockState(pos);
+            Block block = state.getBlock();
+
+            if (world.isEmptyBlock(pos) || block == Blocks.BEDROCK) {
+                return;
+            }
+
+            if(block == Blocks.SNOW || block == Blocks.SNOW_BLOCK || block == Blocks.POWDER_SNOW) {
+                block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.DIAMOND_SHOVEL));
+                world.removeBlock(pos, false);
+                return;
+            }
+
+            ItemStack shears = new ItemStack(Items.SHEARS);
+            if(shears.isCorrectToolForDrops(state)) {
+                block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.SHEARS));
+                world.removeBlock(pos, false);
+                return;
+            }
+
+            if ((block instanceof IForgeShearable || block instanceof BushBlock || block instanceof LeavesBlock)
+                    && block.canHarvestBlock(state, world, pos, player)) {
+                block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.SHEARS));
+                world.removeBlock(pos, false);
+            }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
+        }
+    }
+
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+        releaseUsing(stack, level, livingEntity, 99);
+        return super.finishUsingItem(stack, level, livingEntity);
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
+        Musique.stopPlayerSound((Player)livingEntity, MPSSoundDictionary.SOUND_EVENT_LEAF_BLOWER.get());
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack) {
+        return 100;
+    }
+
+}

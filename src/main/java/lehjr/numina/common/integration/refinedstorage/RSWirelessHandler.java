@@ -10,8 +10,8 @@
 //import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 //import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 //import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-//import lehjr.numina.common.energy.ElectricItemUtils;
-//import lehjr.numina.common.item.ItemUtils;
+//import lehjr.numina.common.utils.ElectricItemUtils;
+//import lehjr.numina.common.utils.ItemUtils;
 //import net.minecraft.core.Direction;
 //import net.minecraft.world.item.context.UseOnContext;
 //import net.minecraft.nbt.CompoundTag;

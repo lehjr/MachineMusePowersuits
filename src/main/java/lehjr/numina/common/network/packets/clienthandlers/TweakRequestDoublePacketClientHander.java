@@ -1,7 +1,7 @@
 package lehjr.numina.common.network.packets.clienthandlers;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.network.packets.clientbound.TweakRequestDoublePacketClientBound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,7 @@ public class TweakRequestDoublePacketClientHander {
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(iItemHandler -> {
-                            iItemHandler.setModuleTweakDouble(moduleRegName, tweakName, tweakValue);
+                            iItemHandler.setModuleDouble(moduleRegName, tweakName, tweakValue);
                         });
             }
         });

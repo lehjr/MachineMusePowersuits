@@ -4,14 +4,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.client.render.IconUtils;
-import lehjr.numina.common.string.StringUtils;
+import lehjr.numina.common.utils.IconUtils;
+import lehjr.numina.common.utils.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 import java.util.ArrayList;
@@ -99,11 +100,26 @@ public class VanillaButton extends Clickable {
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
 
+        // Calculate Y offset: 46 (disabled), 66 (normal), or 86 (highlighted)
+        int yOffset = !isEnabled() ? 46 : (this.containsPoint(mouseX, mouseY) ? 86 : 66);
+
+
+        gfx.blitNineSliced(
+                AbstractWidget.WIDGETS_LOCATION,
+                (int)this.left(), (int)this.top(),
+                (int)this.width(), (int)this.height(),
+                20, 4,       // sliceWidth = 20, sliceHeight = 4
+                200, 20,     // uWidth = 200, vHeight = 20
+                0, yOffset   // uOffset = 0, vOffset = 46 / 66 / 86
+        );
+
+
         // FIXME: still needed or able to use screen version?
-        IconUtils.INSTANCE.blit(gfx.pose(), this.left(), this.top(), 0, 46 + i * 20, this.width() / 2, this.height());
-        IconUtils.INSTANCE.blit(gfx.pose(), this.left() + this.width() / 2, this.top(), 200 - this.width() / 2, 46 + i * 20, this.width() / 2, this.height());
+//        IconUtils.getIcon().blit(gfx.pose(), this.left(), this.top(), 0, 46 + i * 20, this.width() / 2, this.height());
+//        IconUtils.getIcon().blit(gfx.pose(), this.left() + this.width() / 2, this.top(), 200 - this.width() / 2, 46 + i * 20, this.width() / 2, this.height());
         this.renderBg(gfx, mouseX, mouseY, partialTicks);
         int j = getFGColor();
+
         gfx.drawCenteredString(fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 

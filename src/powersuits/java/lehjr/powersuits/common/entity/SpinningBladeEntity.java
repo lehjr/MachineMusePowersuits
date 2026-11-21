@@ -27,9 +27,9 @@
 package lehjr.powersuits.common.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.powersuits.common.base.MPSEntities;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.registration.MPSEntities;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -73,7 +73,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iModeChangingItem -> {
-                    iModeChangingItem.getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
+                    iModeChangingItem.getActiveModule().getCapability(NuminaCapabilities.Module.POWER_MODULE)
                             .ifPresent(m-> atomicDamage.getAndAdd(m.applyPropertyModifiers(MPSConstants.BLADE_DAMAGE)));
             });
             damage = atomicDamage.get();

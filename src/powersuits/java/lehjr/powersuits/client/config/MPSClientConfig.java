@@ -29,7 +29,7 @@ package lehjr.powersuits.client.config;
 import lehjr.numina.client.config.IMeterConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.utils.MathUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

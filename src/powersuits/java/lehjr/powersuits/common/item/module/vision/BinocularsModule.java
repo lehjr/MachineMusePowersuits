@@ -26,12 +26,12 @@
 
 package lehjr.powersuits.common.item.module.vision;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.config.module.VisionModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
@@ -60,26 +60,46 @@ public class BinocularsModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final ToggleableModule moduleToggle;
+        private final BinocularCap moduleToggle;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, ModuleCategory.VISION, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, false) {{
-                addBaseProperty(MPSConstants.FOV, 0.5F);
-                addTradeoffProperty(MPSConstants.FIELD_OF_VIEW, MPSConstants.FOV, 9.5F, "%");
-            }};
+            this.moduleToggle = new BinocularCap(module);
             powerModuleHolder = LazyOptional.of(() -> {
                 moduleToggle.loadCapValues();
                 return moduleToggle;
             });
         }
 
+        public static class BinocularCap extends ToggleableModule {
+            public BinocularCap(ItemStack module) {
+                super(module, ModuleCategory.VISION, ModuleTarget.HEADONLY);
+                addBaseProperty(MPSConstants.FOV, VisionModuleConfig.binocularsModuleFOVBase);
+                addTradeoffProperty(MPSConstants.FIELD_OF_VIEW, MPSConstants.FOV, VisionModuleConfig.binocularsModuleFOVFieldOfViewMultiplier, "%");
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return VisionModuleConfig.binocularsModuleIsAllowed;
+            }
+
+            @Override
+            public int getTier() {
+                return 2;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+        }
+
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

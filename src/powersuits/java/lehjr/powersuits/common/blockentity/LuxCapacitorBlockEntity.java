@@ -33,7 +33,7 @@ import lehjr.numina.common.capabilities.render.color.IColorTag;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
-import lehjr.powersuits.common.base.MPSBlocks;
+import lehjr.powersuits.common.registration.MPSBlocks;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

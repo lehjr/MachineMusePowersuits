@@ -26,27 +26,23 @@
 
 package lehjr.numina.common.capabilities.module.toggleable;
 
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.numina.common.tags.TagUtils;
+import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import javax.annotation.Nonnull;
-import java.util.concurrent.Callable;
+public abstract class ToggleableModule extends PowerModule implements IToggleableModule, INBTSerializable<ByteTag> {
+    boolean online = false;
 
-public class ToggleableModule extends PowerModule implements IToggleableModule, INBTSerializable<ByteTag> {
-    Boolean online;
-    static boolean defBool;
-    public ToggleableModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> moduleConfigGetterIn, boolean defToggleVal) {
-        super(module, category, target, moduleConfigGetterIn);
-        defBool = defToggleVal;
+    public ToggleableModule(ItemStack module, ModuleCategory category, ModuleTarget target) {
+        super(module, category, target);
+        online = TagUtils.getModularItemBoolean(module, TagConstants.TAG_ONLINE);
     }
 
     @Override
@@ -54,9 +50,6 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
         final CompoundTag tag = TagUtils.getModuleTag(module);
         if (tag.contains(TagConstants.TAG_ONLINE, Tag.TAG_BYTE)) {
             deserializeNBT((ByteTag) tag.get(TagConstants.TAG_ONLINE));
-        } else {
-            tag.putBoolean(TagConstants.TAG_ONLINE, defBool);
-            deserializeNBT(ByteTag.valueOf((byte) (defBool ? 1 : 0)));
         }
     }
 
@@ -83,9 +76,6 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 
     @Override
     public boolean isModuleOnline() {
-        if (online == null) {
-            loadCapValues();
-        }
-        return online !=null ? online : defBool;
+        return TagUtils.getModuleBoolean(module, TagConstants.TAG_ONLINE);
     }
 }

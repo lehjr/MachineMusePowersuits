@@ -26,17 +26,17 @@
 
 package lehjr.powersuits.client.control;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
-import lehjr.numina.common.item.ItemUtils;
-import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ItemUtils;
+import lehjr.numina.common.utils.MathUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.PlayerUpdatePacketServerBound;
-import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
+import lehjr.powersuits.client.gui.module.select.GuiModeSelector;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -210,7 +210,7 @@ public class KeymappingKeyHandler {
     public static void loadKeyBindings() {
         for (Item item : ForgeRegistries.ITEMS.getValues()) {
             ItemStack module = new ItemStack(item);
-            module.getCapability(NuminaCapabilities.POWER_MODULE)
+            module.getCapability(NuminaCapabilities.Module.POWER_MODULE)
                     .filter(IToggleableModule.class::isInstance)
                     .map(IToggleableModule.class::cast).ifPresentOrElse(pm->{
                         // Tool settings are a bit odd

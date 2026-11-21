@@ -28,6 +28,6 @@ public class NuminaMenus {
     public static final RegistryObject<MenuType<ChargingBaseMenu>> CHARGING_BASE_CONTAINER_TYPE = MENU_TYPES.register(NuminaConstants.CHARGING_BASE_REGNAME,
             () -> IForgeMenuType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
-                return new ChargingBaseMenu(windowId, pos, inv);
+                return new ChargingBaseMenu(windowId, inv.player, pos);
             }));
 }

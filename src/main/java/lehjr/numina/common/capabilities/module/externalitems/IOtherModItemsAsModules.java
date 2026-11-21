@@ -2,7 +2,8 @@ package lehjr.numina.common.capabilities.module.externalitems;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.imixin.common.item.IUseOnContextMixn;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public interface IOtherModItemsAsModules extends IRightClickModule {
@@ -31,62 +33,44 @@ public interface IOtherModItemsAsModules extends IRightClickModule {
      */
     @Override
     default InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
-        InteractionResultHolder<ItemStack> tmp = getModuleStack().use(worldIn, playerIn, hand);
+        InteractionResultHolder<ItemStack> tmp = getModule().use(worldIn, playerIn, hand);
         return new InteractionResultHolder<>(tmp.getResult(), itemStackIn);
     }
 
     @Override
     default InteractionResultHolder<ItemStack> interactLivingEntity(ItemStack itemStackIn, Player playerIn, LivingEntity entity, InteractionHand hand) {
-        InteractionResult ret = getModuleStack().interactLivingEntity(playerIn, entity,hand);
+        InteractionResult ret = getModule().interactLivingEntity(playerIn, entity,hand);
         return new InteractionResultHolder<>(ret, itemStackIn);
     }
 
     default boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining) {
-        getModuleStack().onUseTick(level, entity, ticksRemaining);
+        getModule().onUseTick(level, entity, ticksRemaining);
         return false;
     }
 
     @Override
     default InteractionResult useOn(UseOnContext context) {
-        return getModuleStack().useOn(new UseOnContext(context.getLevel(), context.getPlayer(), context.getHand(), getModuleStack(), ((IUseOnContextMixn)context).machineMusePowersuits$getBlockHitResult()));
+        return getModule().useOn(new UseOnContext(context.getLevel(), context.getPlayer(), context.getHand(), getModule(), ((IUseOnContextMixn)context).machineMusePowersuits$getBlockHitResult()));
     }
 
     @Override
     default InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
-        return getModuleStack().onItemUseFirst(new UseOnContext(context.getLevel(), context.getPlayer(), context.getHand(), getModuleStack(), ((IUseOnContextMixn)context).machineMusePowersuits$getBlockHitResult()));
+        return getModule().onItemUseFirst(new UseOnContext(context.getLevel(), context.getPlayer(), context.getHand(), getModule(), ((IUseOnContextMixn)context).machineMusePowersuits$getBlockHitResult()));
     }
 
     @Override
     default void releaseUsing(@NotNull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        getModuleStack().releaseUsing(worldIn, entityLiving, timeLeft);
+        getModule().releaseUsing(worldIn, entityLiving, timeLeft);
     }
 
     @Override
     default ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
-        getModuleStack().finishUsingItem(level, entity);
+        getModule().finishUsingItem(level, entity);
         return itemStack;
     }
 
-//    default String getUniqueID() {
-//        CompoundTag tag = getModuleStack().getOrCreateTag();
-//        if (tag.contains(IModeChangingItem.UNIQUE_ID)) {
-//            return tag.getString(IModeChangingItem.UNIQUE_ID);
-//        }
-//        return "";
-//    }
-//
-//    default void setUniqueID(String uniqueID) {
-//        CompoundTag tag = getModuleStack().getOrCreateTag();
-//        if(uniqueID.isBlank()) {
-//            tag.remove(IModeChangingItem.UNIQUE_ID);
-//        } else {
-//            tag.putString(IModeChangingItem.UNIQUE_ID, uniqueID);
-//        }
-//        getModuleStack().setTag(tag);
-//    }
-
     default void storeHostStack(@Nonnull ItemStack hostStack) {
-        ItemStack module = getModuleStack();
+        ItemStack module = getModule();
         CompoundTag tag = module.getOrCreateTag();
         tag.put(MODE_CHANGING_MODULAR_ITEM, hostStack.serializeNBT());
         module.setTag(tag);
@@ -95,7 +79,7 @@ public interface IOtherModItemsAsModules extends IRightClickModule {
 
     @Nonnull
     default ItemStack retrieveHostStack() {
-        ItemStack module = getModuleStack();
+        ItemStack module = getModule();
         CompoundTag tag = module.getOrCreateTag();
         if (tag.contains(MODE_CHANGING_MODULAR_ITEM)){
             CompoundTag stackTag = tag.getCompound(MODE_CHANGING_MODULAR_ITEM);
@@ -108,14 +92,15 @@ public interface IOtherModItemsAsModules extends IRightClickModule {
         return ItemStack.EMPTY;
     }
 
-    default Optional<IModeChangingItem> getStoredModeChangingModuleCapInStorage() {
-        ItemStack module = getModuleStack();
+    @Nullable
+    default IModeChangingItem getStoredModeChangingModuleCapInStorage() {
+        ItemStack module = getModule();
         CompoundTag tag = module.getOrCreateTag();
         if (tag.contains(MODE_CHANGING_MODULAR_ITEM)){
             CompoundTag stackTag = tag.getCompound(MODE_CHANGING_MODULAR_ITEM);
-            return ItemUtils.getModeChangingModularItemCapability(ItemStack.of(stackTag));
+            return NuminaCapabilities.getModeChangingModularItem(ItemStack.of(stackTag));
         }
-        return Optional.empty();
+        return null;
     }
 
     void setModuleStack(@Nonnull ItemStack stack);

@@ -40,6 +40,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Author: MachineMuse (Claire Semple)
  * Created: 4:01 AM, 30/04/13
@@ -49,11 +52,13 @@ import org.joml.Matrix4f;
 public class NuminaIcons {
     private final NuminaSpriteUploader spriteUploader;
     private static final String iconPrefix = "gui";
+
     public final DrawableIcon armordisplayselect;
     public final DrawableIcon checkmark;
     public final DrawableIcon colorclicker;
     public final DrawableIcon energygeneration;
     public final DrawableIcon energystorage;
+    public final DrawableIcon fluidStorage;
     public final DrawableIcon glowArmor;
 
     public final DrawableIcon lightning;
@@ -63,15 +68,17 @@ public class NuminaIcons {
     public final DrawableIcon normalArmor;
     public final DrawableIcon plusSign;
     public final DrawableIcon transparentArmor;
-    public final DrawableIcon weapon;
+    public static final Map<ResourceLocation, DrawableIcon> iconMap = new HashMap<>();
+
 
     public NuminaIcons(NuminaSpriteUploader spriteUploader) {
         this.spriteUploader = spriteUploader;
         this.armordisplayselect = registerIcon("armordisplayselect", 8, 8);
         this.checkmark = registerIcon("checkmark", 16, 16);
         this.colorclicker = registerIcon("colorclicker", 8, 8);
-        this.energygeneration = registerIcon("energygeneration",32, 32);
-        this.energystorage = registerIcon("energystorage",32, 32);
+        this.energygeneration = registerIcon(NuminaConstants.ENERGY_GENERATION_ICON,32, 32);
+        this.energystorage = registerIcon(NuminaConstants.ENERGY_STORAGE_ICON,32, 32);
+        this.fluidStorage = registerIcon(NuminaConstants.FLUID_STORAGE_ICON, 32, 32);
         this.glowArmor= registerIcon("glowarmor", 8, 8);
         this.lightning = registerIcon("lightning", 800, 62);
         this.lightning2 = registerIcon("lightning2", 800, 62);
@@ -80,12 +87,22 @@ public class NuminaIcons {
         this.normalArmor = registerIcon("normalarmor", 8, 8);
         this.plusSign= registerIcon("plussign", 8, 8);
         this.transparentArmor = registerIcon("transparentarmor", 8, 8);
-        this.weapon = registerIcon("weapon", 16, 16);
     }
 
     private DrawableIcon registerIcon(String name, int width, int height) {
         ResourceLocation location = new ResourceLocation(NuminaConstants.MOD_ID, name);
-        return new DrawableIcon(location, width, height);
+        return registerIcon(location, width, height);
+    }
+
+    private DrawableIcon registerIcon(ResourceLocation location, int width, int height) {
+        DrawableIcon icon = new DrawableIcon(location, width, height);
+        iconMap.put(location, icon);
+        return icon;
+    }
+
+
+    public static DrawableIcon getIcon(ResourceLocation location) {
+        return iconMap.get(location);
     }
 
     public NuminaSpriteUploader  getSpriteUploader() {
@@ -102,6 +119,14 @@ public class NuminaIcons {
             this.location = locationIn;
             this.width = width;
             this.height = height;
+        }
+
+        public TextureAtlasSprite getSprite() {
+            return spriteUploader.getSprite(location);
+        }
+
+        public ResourceLocation getLocation() {
+            return location;
         }
 
         public int getWidth() {
@@ -180,15 +205,8 @@ public class NuminaIcons {
 //            RenderSystem.enableDepthTest();
         }
 
-        public TextureAtlasSprite getSprite() {
-            return spriteUploader.getSprite(location);
-        }
-
         @Override
         public String toString() {
-//            Minecraft minecraft = Minecraft.getInstance();
-//            TextureManager textureManager = minecraft.getTextureManager();
-//            textureManager.bindForSetup(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS);
             TextureAtlasSprite icon = getSprite();
 
             if (icon != null) {

@@ -2,7 +2,8 @@ package lehjr.numina.client.gui.overlay;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,18 +22,20 @@ public class ModeChangingIconOverlay {
         for (int i = 0; i< Inventory.getSelectionSize(); i++) {
             assert player != null;
             ItemStack itemStack = player.getInventory().getItem(i);
-            Optional<IModeChangingItem> modeChangingItemCap = ItemUtils.getModeChangingModularItemCapability(itemStack);
-            int finalI = i;
-            modeChangingItemCap.ifPresent(handler-> handler.drawModeChangeIcon(player, finalI, gui, mc, gfx, partialTick, screenWidth, screenHeight));
-
-            if (modeChangingItemCap.isEmpty()) {
-                Optional<IOtherModItemsAsModules> foreignModuleCap = ItemUtils.getForeignItemAsModuleCap(itemStack);
-                foreignModuleCap.ifPresent(fmc->{
-                    Optional<IModeChangingItem> storedMCIC = fmc.getStoredModeChangingModuleCapInStorage();
-                    storedMCIC.ifPresent(cap->{
-                        cap.drawModeChangingModularItemIcon(player, finalI, gui, mc, gfx, partialTick, screenWidth, screenHeight);
-                    });
-                });
+            if (!itemStack.isEmpty()) {
+                IModeChangingItem modeChangingItemCap = NuminaCapabilities.getModeChangingModularItemOrStored(itemStack);
+                int finalI = i;
+                if(modeChangingItemCap != null) {
+                    modeChangingItemCap.drawModeChangeIcon(player, finalI, gfx, gfx.guiWidth(), gfx.guiHeight());
+                } else {
+                    IOtherModItemsAsModules foreignModuleCap = itemStack.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES).resolve().orElse(null);
+                    if(foreignModuleCap != null) {
+                        IModeChangingItem storedMCIC = foreignModuleCap.getStoredModeChangingModuleCapInStorage();
+                        if(storedMCIC != null) {
+                            storedMCIC.drawModeChangingModularItemIcon(player, finalI, gfx, gfx.guiWidth(), gfx.guiHeight());
+                        }
+                    }
+                }
             }
         }
     });

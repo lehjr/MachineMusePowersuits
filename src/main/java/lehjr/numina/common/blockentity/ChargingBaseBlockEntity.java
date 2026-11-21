@@ -26,11 +26,10 @@
 
 package lehjr.numina.common.blockentity;
 
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.energy.BlockEnergyStorage;
 import lehjr.numina.common.capabilities.energy.BlockEnergyWrapper;
 import lehjr.numina.common.config.NuminaCommonConfig;
-import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.registration.NuminaBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,6 +54,9 @@ import java.util.List;
 
 
 public class ChargingBaseBlockEntity extends BlockEntity {
+    public static final int SLOT_COUNT = 1;
+    public static final int SLOT = 0;
+
     public ChargingBaseBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
     }
@@ -139,7 +141,7 @@ public class ChargingBaseBlockEntity extends BlockEntity {
     }
 
     private ItemStackHandler createHandler() {
-        return new ItemStackHandler(1) {
+        return new ItemStackHandler(SLOT_COUNT) {
 
             @Override
             protected void onContentsChanged(int slot) {

@@ -38,23 +38,19 @@ public interface IEnchantmentModule extends IPlayerTickModule {
     /**
      * enable enchantment
      */
-    @Nonnull
-    default ItemStack addEnchantment(@Nonnull ItemStack itemStack) {
+    default void addEnchantment(ItemStack itemStack) {
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
         enchantments.put(getEnchantment(), getLevel());
         EnchantmentHelper.setEnchantments(enchantments, itemStack);
-        return itemStack;
     }
 
     /**
      * disable enchantment
      */
-    @Nonnull
-    default ItemStack removeEnchantment(@Nonnull ItemStack itemStack) {
+    default void removeEnchantment(ItemStack itemStack) {
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
         enchantments.remove(getEnchantment());
         EnchantmentHelper.setEnchantments(enchantments, itemStack);
-        return itemStack;
     }
 
     void setAdded(boolean added);

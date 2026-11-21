@@ -28,10 +28,16 @@ package lehjr.numina.common.capabilities.module.toggleable;
 
 import lehjr.numina.common.capabilities.CapabilityUpdate;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.utils.TagUtils;
 
 public interface IToggleableModule extends IPowerModule, CapabilityUpdate {
-    void toggleModule(boolean online);
+    default void toggleModule(boolean online) {
+        TagUtils.setModuleBoolean(getModule(), TagConstants.TAG_ONLINE, online);
+    }
 
     @Override
-    boolean isModuleOnline();
+    default boolean isModuleOnline() {
+        return TagUtils.getModuleBoolean(getModule(), TagConstants.TAG_ONLINE);
+    }
 }

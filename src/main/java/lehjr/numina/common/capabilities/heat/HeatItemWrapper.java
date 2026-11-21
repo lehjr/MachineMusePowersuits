@@ -28,7 +28,7 @@ package lehjr.numina.common.capabilities.heat;
 
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.numina.common.tags.TagUtils;
+import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -57,11 +57,11 @@ public class HeatItemWrapper extends HeatStorage {
 
     @Override
     public void loadCapValues() {
-        heat = Math.min(capacity, TagUtils.getModularItemDoubleOrZero(stack, TagConstants.HEAT));
+        heat = Math.min(capacity, TagUtils.getModularItemDouble(stack, TagConstants.HEAT));
     }
 
     @Override
     public void onValueChanged() {
-        TagUtils.setModularItemDoubleOrRemove(stack, TagConstants.HEAT, heat);
+        TagUtils.setModularItemDouble(stack, TagConstants.HEAT, heat);
     }
 }

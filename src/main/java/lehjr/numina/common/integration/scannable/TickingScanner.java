@@ -5,8 +5,8 @@
 //import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 //import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 //import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-//import lehjr.numina.common.energy.ElectricItemUtils;
-//import lehjr.numina.common.item.ItemUtils;
+//import lehjr.numina.common.utils.ElectricItemUtils;
+//import lehjr.numina.common.utils.ItemUtils;
 //import li.cil.scannable.api.scanning.ScannerModule;
 //import li.cil.scannable.client.ScanManager;
 //import li.cil.scannable.client.audio.SoundManager;

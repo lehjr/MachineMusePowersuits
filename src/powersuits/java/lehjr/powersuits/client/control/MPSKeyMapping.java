@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ToggleRequestPacketServerBound;
-import lehjr.powersuits.client.gui.overlay.MPSOverlay;
+import lehjr.powersuits.client.overlay.MPSOverlay;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

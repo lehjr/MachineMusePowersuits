@@ -7,7 +7,7 @@
 //import lehjr.numina.common.capabilities.module.powermodule.EnumModuleTarget;
 //import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 //import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-//import lehjr.numina.common.energy.ElectricItemUtils;
+//import lehjr.numina.common.utils.ElectricItemUtils;
 //import lehjr.numina.heat.HeatUtils;
 //import lehjr.numina.nbt.NBTUtils;
 //import net.minecraft.world.entity.LivingEntity;

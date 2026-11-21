@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.utils.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import org.joml.Matrix4f;
 

@@ -31,7 +31,7 @@
 //import org.joml.Vector3f;
 //import lehjr.numina.client.model.helper.ModelHelper;
 //import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-//import lehjr.numina.client.render.IconUtils;
+//import lehjr.numina.common.utils.IconUtils;
 //import lehjr.numina.common.constants.NuminaConstants;
 //import lehjr.numina.common.math.Color;
 //import net.minecraft.client.renderer.MultiBufferSource;

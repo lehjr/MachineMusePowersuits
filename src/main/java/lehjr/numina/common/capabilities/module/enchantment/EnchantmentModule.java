@@ -1,17 +1,15 @@
 package lehjr.numina.common.capabilities.module.enchantment;
 
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.energy.ElectricItemUtils;
-import lehjr.numina.common.tags.TagUtils;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.Callable;
 
 /**
  * Uses player tick to apply/update enchantment while applying appropriate energy drain or remove enchantment when tuned off
@@ -20,37 +18,39 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
     boolean added;
     boolean removed;
 
-    public EnchantmentModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config, boolean defBool) {
-        super(module, category, target, config, defBool);
+    public EnchantmentModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target) {
+        super(module, category, target);
         // setting to and loading these just allow values to be persistant when capability reloads
-        added = TagUtils.getModuleBooleanOrFalse(module, "added");
-        removed = TagUtils.getModuleBooleanOrFalse(module, "removed");
+        added = TagUtils.getModuleBoolean(module, "added");
+        removed = TagUtils.getModuleBoolean(module, "removed");
     }
 
     @Override
-    public void onPlayerTickActive(Player player, @NotNull ItemStack item) {
-        if (player.level().isClientSide()) {
-            return;
+    public boolean onPlayerTickActive(Player player, Level level, ItemStack host, int moduleIndex) {
+        if (level.isClientSide()) {
+            return false;
         }
 
         double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-        int energyUsage = getEnergyUsage();
+        double energyUsage = getEnergyUsage();
 
         if (playerEnergy > energyUsage) {
-            addEnchantment(item);
-            ElectricItemUtils.drainPlayerEnergy(player, energyUsage);
+            addEnchantment(host);
+            ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
             setAdded(true);
             setRemoved(false);
         }
+        return false;
     }
 
     @Override
-    public void onPlayerTickInactive(Player player, @NotNull ItemStack item) {
+    public boolean onPlayerTickInactive(Player player, Level level, ItemStack host, int moduleIndex) {
         if (added && !removed) {
-            removeEnchantment(item);
+            removeEnchantment(host);
             setAdded(false);
             setRemoved(true);
         }
+        return false;
     }
 
     @Override

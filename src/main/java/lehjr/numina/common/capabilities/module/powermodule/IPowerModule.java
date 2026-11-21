@@ -26,103 +26,126 @@
 
 package lehjr.numina.common.capabilities.module.powermodule;
 
-import com.google.common.collect.ImmutableList;
-import lehjr.numina.common.tags.TagUtils;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
-public interface IPowerModule extends IConfigGetter {
-    /**
-     * Returns the enum corresponding to the EntityEquipment slot that the parent itemStack (Head, Chest... ALL.. )
-     *
-     * @return
-     */
-    ItemStack getModuleStack();
+public interface IPowerModule {
+    ModuleCategory getCategory();
+
+    int getTier();
 
     ModuleTarget getTarget();
 
-    ModuleCategory getCategory();
+    String getModuleGroup();
 
-    default int getTier() {
-        return -1;
+    default boolean isGroup(String group) {
+        return group.equalsIgnoreCase(getModuleGroup());
     }
 
-    default String getModuleGroup() {
-        return "";
+    ItemStack getModule();
+
+    default CompoundTag getModuleTag() {
+        return TagUtils.getModuleTag(getModule());
     }
-
-    void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier);
-
-    void addPropertyModifier(String propertyName, IPropertyModifier modifier);
-
-    void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier, String unit);
-
-    void addBaseProperty(String propertyName, double baseVal);
-
-    void addBaseProperty(String propertyName, double baseVal, String unit);
-
-    double applyPropertyModifiers(String propertyName);
-
-    double applyPropertyModifiers(String propertyName, CompoundTag moduleTag);
-
-    Map<String, List<IPropertyModifier>> getPropertyModifiers();
-
-    void addIntTradeoffProperty(String tradeoffName, String propertyName, int multiplier, String unit, int roundTo, int offset);
 
     boolean isAllowed();
 
-    default boolean getGenericBooleanProperty(ImmutableList key, Callable<IConfig> config, boolean defBool) {
-        return getConfig(config).map(iconfig-> iconfig.getGenericBooleanProperty(key)).orElse(defBool);
+    boolean isModuleOnline();
+
+    default void addUnitLabel(String propertyName, String unit) {
+        UnitMap.addUnitLabel(propertyName, unit);
     }
 
-    default CompoundTag getModuleTag() {
-        return TagUtils.getModuleTag(getModuleStack());
+    Map<String, List<IPropertyModifier>> getPropertyModifiers();
+
+    default double getEnergyUsage() {
+        return 0;
     }
 
-    default boolean isModuleOnline() {
-        return true;
+    default double getPlayerEnergy(Player player) {
+        return ElectricItemUtils.getPlayerEnergy(player);
     }
 
-    // TODO: move to somewhere else??
-    @OnlyIn(Dist.CLIENT) // only used by the client for display purposes
-    default String getUnit(@Nonnull String propertyName) {
-        return UnitMap.MAP.getUnit(propertyName);
+    default void addSimpleTradeoff(String tradeoffName,
+                                   String firstPropertyName,
+                                   String firstUnits,
+                                   double firstPropertyBase,
+                                   double firstPropertyMultiplier,
+                                   String secondPropertyName,
+                                   String secondUnits,
+                                   double secondPropertyBase,
+                                   double secondPropertyMultiplier) {
+        addBaseProperty(firstPropertyName, firstPropertyBase, firstUnits);
+        addTradeoffProperty(tradeoffName, firstPropertyName, firstPropertyMultiplier);
+        addBaseProperty(secondPropertyName, secondPropertyBase, secondUnits);
+        addTradeoffProperty(tradeoffName, secondPropertyName, secondPropertyMultiplier);
     }
 
-    default void addUnitLabel(@Nonnull String propertyName, String unit) {
-        UnitMap.MAP.addUnitLabel(propertyName, unit);
+    void addBaseProperty(String propertyName, double configValue);
+
+    void addBaseProperty(String propertyName, double configValue, String unit);
+
+    void addTradeoffProperty(String tradeoffName, String propertyName, double multiplierConfigValue);
+
+    void addTradeoffProperty(String tradeoffName, String propertyName, double mulitiplierConfigValue, String unit);
+
+    void addIntTradeoffProperty(String tradeoffName, String propertyName, int mulitiplierConfigValue, String unit, int roundTo, int offset);
+
+    void addPropertyModifier(String propertyName, IPropertyModifier modifier);
+
+    default double applyPropertyModifiers(String propertyName) {
+        return applyPropertyModifiers(propertyName, TagUtils.getModuleTag(getModule()), 0);
     }
 
-    interface IPropertyModifier extends IConfigGetter {
+    default double applyPropertyModifiers(String propertyName, CompoundTag moduleTag) {
+        return applyPropertyModifiers(propertyName, moduleTag, 0);
+    }
+
+    default double applyPropertyModifiers(String propertyName, double propertyValue) {
+        return applyPropertyModifiers(propertyName, TagUtils.getModuleTag(getModule()), propertyValue);
+    }
+
+    default double applyPropertyModifiers(String propertyName, CompoundTag moduleTag, double propertyValue) {
+        if (getPropertyModifiers().containsKey(propertyName)) {
+            Iterable<IPropertyModifier> propertyModifiersIterable = getPropertyModifiers().get(propertyName);
+            for (IPropertyModifier modifier : propertyModifiersIterable) {
+                propertyValue = modifier.applyModifier(moduleTag, propertyValue);
+            }
+        }
+        return propertyValue;
+    }
+
+    interface IPropertyModifier {
         double applyModifier(CompoundTag moduleTag, double value);
     }
 
     class PropertyModifierFlatAdditive implements IPropertyModifier {
-        ImmutableList<String> configKey;
-        Callable<IConfig> config;
-        double defaultVal;
+        double configValue;
 
-        public PropertyModifierFlatAdditive(ImmutableList<String> configKey, Callable<IConfig> config, double baseVal) {
-            this.configKey = configKey;
-            this.config = config;
-            this.defaultVal = baseVal;
+        public PropertyModifierFlatAdditive(double configValue) {
+            this.configValue = configValue;
         }
 
         /**
-         * @param moduleTag unused
+         * @param ignoredTag unused
          * @param value
          * @return getValue + this.valueAdded
          */
         @Override
-        public double applyModifier(CompoundTag moduleTag, double value) {
-            return value + getConfig(config).map(config-> config.getBasePropertyDoubleOrDefault(configKey, defaultVal)).orElse(defaultVal);
+        public double applyModifier(CompoundTag ignoredTag, double value) {
+            return value + configValue;
+        }
+
+        @Override
+        public String toString() {
+            return "Class: " + getClass() + "\n"
+                    + "configValue: " + configValue;
         }
     }
 
@@ -131,68 +154,69 @@ public interface IPowerModule extends IConfigGetter {
         protected int offset = 0;
 
         public PropertyModifierIntLinearAdditive(
-                ImmutableList<String> configKey,
-                Callable<IConfig> config,
+                double multiplier,
                 String tradeoffName,
-                double defaultMultiplier,
                 int roundTo,
                 int offset) {
-            super(configKey, config, tradeoffName, defaultMultiplier);
+            super(multiplier, tradeoffName);
             this.roundTo = roundTo;
             this.offset = offset;
         }
 
+        int getMultiplier() {
+            return (int) multiplier;
+        }
+
         @Override
         public double applyModifier(CompoundTag moduleTag, double value) {
-            int multiplier = getConfig(config).map(config->
-                    config.getTradeoffPropertyIntegerOrDefault(configKey, (int)defaultMultiplier)).orElse((int)defaultMultiplier);
-
-            long result = (long) (value + multiplier * TagUtils.getDoubleOrZero(moduleTag, tradeoffName));
-            return Double.valueOf(roundWithOffset(result, roundTo, offset));
+            long result = (long) (value + getMultiplier() * TagUtils.getDoubleOrZero(moduleTag, tradeoffName));
+            return (double) roundWithOffset(result);
         }
 
         public double getScaledDouble(CompoundTag moduleTag, double value) {
             double scaledVal = applyModifier(moduleTag, value);
-            double ret = (scaledVal - value)/ defaultMultiplier;
+            double ret = (scaledVal - value)/ getMultiplier();
             TagUtils.setDoubleOrRemove(moduleTag, tradeoffName, ret);
             return ret;
         }
 
-        public long roundWithOffset(double input, int roundTo, int offset) {
+        public long roundWithOffset(double input) {
             return Math.round((input + offset) / roundTo) * roundTo - offset;
         }
 
-        public int getRoundTo() {
-            return roundTo;
-        }
-
-        public int getOffset() {
-            return offset;
+        @Override
+        public String toString() {
+            return "Class: " + getClass() + "\n"
+                    + "roundTo: " + roundTo +"\n"
+                    + "offset: " + offset  +"\n"
+                    + "multiplier: " + multiplier  +"\n"
+                    + "tradeoffName: " + tradeoffName;
         }
     }
 
     class PropertyModifierLinearAdditive implements IPropertyModifier {
         public final String tradeoffName;
-        public double defaultMultiplier;
-        ImmutableList<String> configKey;
-        Callable<IConfig> config;
+        double multiplier;
 
-        public PropertyModifierLinearAdditive(ImmutableList<String> configKey, Callable<IConfig> config, String tradeoffName, double defaultMultiplier) {
-            this.defaultMultiplier = defaultMultiplier;
+        public PropertyModifierLinearAdditive(double multiplier, String tradeoffName) {
             this.tradeoffName = tradeoffName;
-            this.configKey = configKey;
-            this.config = config;
+            this.multiplier = multiplier;
         }
 
         @Override
         public double applyModifier(CompoundTag moduleTag, double value) {
-            double multiplier = getConfig(config).map(config->
-                    config.getTradeoffPropertyDoubleOrDefault(configKey, defaultMultiplier)).orElse(defaultMultiplier);
             return value + multiplier * TagUtils.getDoubleOrZero(moduleTag, tradeoffName);
         }
 
         public String getTradeoffName() {
             return tradeoffName;
+        }
+
+        @Override
+        public String toString() {
+            return "Class: " + getClass() + "\n"
+                    + "multiplier: " + multiplier  +"\n"
+                    + "tradeoffName: " + tradeoffName;
         }
     }
 }

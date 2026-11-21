@@ -39,9 +39,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -133,12 +138,16 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            NetworkHooks.openScreen((ServerPlayer) player,
-                    new SimpleMenuProvider((windowID, inventory, playerEntity) ->
-                            new ChargingBaseMenu(windowID, pos, inventory), title),
-                    buf -> buf.writeBlockPos(pos));
+            player.openMenu(new SimpleMenuProvider((windowID, inventory, pPlayer) ->
+                    new ChargingBaseMenu(windowID, player, pos), title));
             return InteractionResult.CONSUME;
         }
+    }
+
+    @Override
+    public MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pos) {
+        return new SimpleMenuProvider((windowID, inventory, player) ->
+                new ChargingBaseMenu(windowID, player, pos), title);
     }
 
     @Nullable

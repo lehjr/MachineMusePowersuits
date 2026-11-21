@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.clienthandlers;
 
-import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.network.packets.clientbound.ColorInfoPacketClientBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.client.Minecraft;
