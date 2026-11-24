@@ -38,9 +38,8 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.AdditionalInfo;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.powersuits.common.capability.PowerArmorCap;
+import lehjr.powersuits.common.capability.legacy.PowerArmorLegacyCap;
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -71,14 +70,14 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public abstract class AbstractElectricItemArmor extends ArmorItem {
+public class ElectricArmor extends ArmorItem {
     public static final UUID[] ARMOR_MODIFIERS = new UUID[]{
             UUID.randomUUID(),
             UUID.randomUUID(),
             UUID.randomUUID(),
             UUID.randomUUID()};
 
-    public AbstractElectricItemArmor(ArmorItem.Type type) {
+    public ElectricArmor(ArmorItem.Type type) {
         super(MPSArmorMaterial.EMPTY_ARMOR, type, new Item.Properties()
                 .stacksTo(1)
                 .durability(0)
@@ -86,11 +85,23 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     }
 
     @Override
-    public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.PIGLIN_PACIFICATION_MODULE)).orElse(false);
+    public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
+        IModularItem iModularItem =  stack.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM).resolve().orElse(null);
+        if(iModularItem != null) {
+            return iModularItem.isModuleOnline(MPSConstants.GLIDER_MODULE);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+        // FIXME: module? also address frostbite
+        return this.type == Type.BOOTS;
+    }
+
+    @Override
+    public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
+        return true;
     }
 
     //    /*
@@ -101,23 +112,21 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
         // FIXME: this should probably factor in the damage value
+        int enerConsum = 0;
+        IModularItem iModularItem = NuminaCapabilities.getModularItem(stack);
+        if (iModularItem != null) {
+            Pair<Integer, Integer> range = iModularItem.getRangeForCategory(ModuleCategory.ARMOR);
+            for (int x = range.getFirst(); x < range.getSecond(); x++) {
+                IPowerModule pm = iModularItem.getModuleCapability(iModularItem.getStackInSlot(x));
+                if (pm != null) {
+                    enerConsum += (int) pm.applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION);
+                }
+            }
 
-        int enerConsum = (int) Math.round(stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .map(iItemHandler -> {
-                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
-                    double energyUsed = 0;
-                    for (int x = range.getFirst(); x < range.getSecond(); x++) {
-                        energyUsed += iItemHandler.getStackInSlot(x).getCapability(NuminaCapabilities.Module.POWER_MODULE)
-                                .map(pm -> pm.applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION)).orElse(0D);
-                    }
-                    return energyUsed;
-                }).orElse(0D));
-
-        // protects as long as there is energy to drain I guess
-        if (enerConsum > 0 && entity instanceof LivingEntity) {
-            ElectricItemUtils.drainPlayerEnergy(entity, enerConsum, false);
+            // protects as long as there is energy to drain I guess
+            if (enerConsum > 0 && entity != null) {
+                ElectricItemUtils.drainPlayerEnergy(entity, enerConsum, false);
+            }
         }
         return 0;
     }
@@ -185,7 +194,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                                     .map(IPowerModule.class::cast)
                                     .filter(IPowerModule::isModuleOnline)
                                     .ifPresent(iPowerModule -> {
-                                        movementResistance.getAndAdd(iPowerModule.applyPropertyModifiers(MPSConstants.MOVEMENT_RESISTANCE));
+                                        movementResistance.getAndAdd(iPowerModule.applyPropertyModifiers(NuminaConstants.MOVEMENT_RESISTANCE));
                                         iPowerModule.getModule().getAttributeModifiers(slotType).get(Attributes.MOVEMENT_SPEED).forEach(attributeModifier -> speed.getAndAdd(attributeModifier.getAmount()));
                                         iPowerModule.getModule().getAttributeModifiers(slotType).get(ForgeMod.SWIM_SPEED.get()).forEach(attributeModifier -> {
                                             swimBoost.getAndAdd(attributeModifier.getAmount());
@@ -263,10 +272,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         return builder.build();
     }
 
-    @Override
-    public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
-    }
+
 
 
     //    /**
@@ -355,6 +361,24 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 //        });
 //    }
 
+    @Override
+    public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+        IModularItem iModularItem = stack.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM).resolve().orElse(null);
+        if(iModularItem != null) {
+            return iModularItem.isModuleOnline(MPSConstants.PIGLIN_PACIFICATION_MODULE);
+        }
+        return false;
+    }
+
+    @Override
+    public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+        return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
+    }
+
+    @Override
+    public boolean isDamageable(ItemStack stack) {
+        return false;
+    }
 
     @OnlyIn(Dist.CLIENT)
     @Override
@@ -368,27 +392,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     @Override
     public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundTag nbt) {
         assert stack != null;
-        return new PowerArmorCap(stack, this.type);
-    }
-
-    @Override
-    public boolean isBarVisible(ItemStack stack) {
-        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 1).orElse(false);
-    }
-
-    @Override
-    public int getBarWidth(ItemStack stack) {
-        double retVal = stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13D / iEnergyStorage.getMaxEnergyStored()).orElse(1D);
-        return (int) retVal;
-    }
-
-    @Override
-    public int getBarColor(ItemStack stack) {
-        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
-        if (energy == null) {
-            return super.getBarColor(stack);
-        }
-        return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
+        return new PowerArmorLegacyCap(stack, this.type);
     }
 
     @Override
@@ -398,11 +402,35 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
     @Override
     public void setDamage(ItemStack stack, int damage) {
-
     }
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return false;
+    }
+
+    /** Durability bar for showing energy level ------------------------------------------------------------------ */
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 1).orElse(false);
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+        double retVal = 1;
+        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY).resolve().orElse(null);
+        if(energy != null) {
+            retVal =  energy.getEnergyStored() * 13D / energy.getMaxEnergyStored();
+        }
+        return (int) retVal;
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY).resolve().orElse(null);
+        if (energy == null) {
+            return super.getBarColor(stack);
+        }
+        return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
     }
 }

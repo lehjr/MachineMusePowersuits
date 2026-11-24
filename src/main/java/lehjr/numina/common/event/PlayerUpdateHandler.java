@@ -26,93 +26,141 @@
 
 package lehjr.numina.common.event;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.heat.HeatUtils;
+import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.player.PlayerUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.utils.HeatUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class PlayerUpdateHandler {
     @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onPlayerUpdate(TickEvent.PlayerTickEvent event) {
-        // switched from LivingEvent because it fires multiple times per tick causing major issues
-
-//            LivingEvent event) {
-//        if (event.getEntity() instanceof Player) {
-//            Player player = (Player) event.getEntity();
-        if(true) {
-            Player player = event.player;
-            Level level = player.level();
-
-            NonNullList<ItemStack> modularItems = NonNullList.create();
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                ItemStack stack = ItemUtils.getItemFromEntitySlot(player, slot);
-                if(stack.isEmpty()) {
-                    continue;
-                }
-                switch (slot.getType()) {
-                    case HAND:
-                        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                                .filter(IModeChangingItem.class::isInstance)
-                                .map(IModeChangingItem.class::cast)
-                                .ifPresent(i-> {
-                                    i.tick(player, level, stack);
-                                    modularItems.add(i.getModularItemStack());
-                                });
-                        break;
-
-                    case ARMOR:
-                        try {
-                            stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                                    .filter(IModularItem.class::isInstance)
-                                    .map(IModularItem.class::cast)
-                                    .ifPresent(i-> {
-                                        i.tick(player, level, stack);
-                                        modularItems.add(i.getModularItemStack());
-                                    });
-                        } catch (Exception exception) {
-                            NuminaLogger.logException(ItemUtils.getItemFromEntitySlot(player, slot).toString(), exception);
-                        }
-                        break;
-                }
+    public static void onPlayerUpdate(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        NonNullList<ItemStack> modularItems = NonNullList.create();
+        Level level = player.level();
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack modularItem = ItemUtils.getItemFromEntitySlot(player, slot);
+            if(modularItem.isEmpty()) {
+                continue;
             }
 
-            //  Done this way so players can let their stuff cool in their inventory without having to equip it,
-            // allowing it to cool off enough to not take damage
-            if (!modularItems.isEmpty()) {
-                // Heat update
-                double currHeat = HeatUtils.getPlayerHeat(player);
+            IModularItem iModularItemCap = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItem);
+            if(iModularItemCap != null) {
+                modularItems.add(modularItem);
+                if(slot.isArmor() || iModularItemCap instanceof IModeChangingItem) {
+                    iModularItemCap.tick(player, level, modularItem);
+                }
+            }
+        }
+        //  Done this way so players can let their stuff cool in their inventory without having to equip it,
+        // allowing it to cool off enough to not take damage
+        if (!modularItems.isEmpty()) {
+            // Heat update
+            HeatUtils.PlayerHeat playerHeat = HeatUtils.getPlayerHeat(player);
 
-                if (currHeat >= 0 && !player.level().isClientSide) { // only apply serverside so change is not applied twice
+            if (playerHeat.currentHeat() >= 0 && !level.isClientSide) { // only apply serverside so change is not applied twice
 
-                    // cooling value adjustment. Too much or too little cooling makes the heat system useless.
-                    double coolPlayerAmount = (PlayerUtils.getPlayerCoolingBasedOnMaterial(player) * 0.55);  // cooling value adjustment. Too much or too little cooling makes the heat system useless.
+                // cooling value adjustment. Too much or too little cooling makes the heat system useless.
+                double coolPlayerAmount = (PlayerUtils.getPlayerCoolingBasedOnMaterial(player) * 0.55);  // cooling value adjustment. Too much or too little cooling makes the heat system useless.
 
-                    if (coolPlayerAmount > 0) {
-                        HeatUtils.coolPlayer(player, coolPlayerAmount);
-                    }
+                if (coolPlayerAmount > 0) {
+                    HeatUtils.coolPlayer(player, coolPlayerAmount);
+                }
 
-                    double maxHeat = HeatUtils.getPlayerMaxHeat(player);
-
-                    if (currHeat < maxHeat * 0.95) {
-                        player.clearFire();
-                    }
+                if (playerHeat.currentHeat() < playerHeat.maxHeat() * 0.95) {
+                    player.clearFire();
                 }
             }
         }
     }
+
+    private static final String INVENTORY_BACKUP_KEY = "numina:inventory_backup";
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onPlayerDeath(LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player) || !NuminaCommonConfig.keepModularItemsOnDeath) {
+            return;
+        }
+        if (player.serverLevel().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+            return;
+        }
+
+        ListTag savedItems = new ListTag();
+        Inventory inventory = player.getInventory();
+
+        for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+            ItemStack stack = inventory.getItem(slot);
+            if (!stack.isEmpty() && shouldPreserveItem(stack)) {
+                CompoundTag itemTag = stack.save(new CompoundTag());
+                itemTag.putByte("Slot", (byte) slot);
+                savedItems.add(itemTag);
+                inventory.setItem(slot, ItemStack.EMPTY);
+            }
+        }
+
+        if (!savedItems.isEmpty()) {
+            // Forge automatically copies Player.PERSISTED_NBT_TAG to the new player on respawn
+            CompoundTag persisted = player.getPersistentData().getCompound(Player.PERSISTED_NBT_TAG);
+            persisted.put(INVENTORY_BACKUP_KEY, savedItems);
+            player.getPersistentData().put(Player.PERSISTED_NBT_TAG, persisted);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        if (!event.isWasDeath() || !(event.getEntity() instanceof ServerPlayer newPlayer)) {
+            return;
+        }
+
+        newPlayer.getCapability(NuminaCapabilities.PLAYER_KEYSTATES).ifPresent(ks -> ks.setStates((byte) 0));
+
+        if (!NuminaCommonConfig.keepModularItemsOnDeath) {
+            return;
+        }
+
+        CompoundTag persisted = newPlayer.getPersistentData().getCompound(Player.PERSISTED_NBT_TAG);
+        if (persisted.contains(INVENTORY_BACKUP_KEY, Tag.TAG_LIST)) {
+            ListTag savedItems = persisted.getList(INVENTORY_BACKUP_KEY, Tag.TAG_COMPOUND);
+            Inventory newInventory = newPlayer.getInventory();
+
+            for (int i = 0; i < savedItems.size(); i++) {
+                CompoundTag itemTag = savedItems.getCompound(i);
+                int slot = itemTag.getByte("Slot") & 255;
+                ItemStack restored = ItemStack.of(itemTag);
+
+                if (!restored.isEmpty() && slot < newInventory.getContainerSize()) {
+                    newInventory.setItem(slot, restored);
+                }
+            }
+
+            persisted.remove(INVENTORY_BACKUP_KEY);
+        }
+    }
+
+    private static boolean shouldPreserveItem(ItemStack stack) {
+        return NuminaCapabilities.getModularItemOrModeChangingCapability(stack) != null;
+    }
+
 
     /**
      * Use this instead of the above method.

@@ -24,18 +24,16 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.common.capability;
+package lehjr.powersuits.common.capability.legacy;
 
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
+import lehjr.numina.common.capabilities.heat.ModularItemHeatWrapper;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
-import lehjr.numina.common.capabilities.inventory.modularitem.NuminaRangedWrapper;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.render.IModelSpec;
-import lehjr.powersuits.client.render.ArmorModelSpecNBT;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.capability.armor.PowerArmorRenderWrapper;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ArmorItem;
@@ -47,82 +45,79 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.RangedWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PowerArmorCap implements ICapabilityProvider {
+public class PowerArmorLegacyCap implements ICapabilityProvider {
     final ItemStack itemStack;
     final ArmorItem.Type targetType;
     final ModularItem modularItem;
     final LazyOptional<IItemHandler> modularItemHolder;
 
-    final ArmorModelSpecNBT modelSpec;
+    final PowerArmorRenderWrapper modelSpec;
     final LazyOptional<IModelSpec> modelSpecHolder;
 
     final LazyOptional<IHeatStorage> heatHolder;
 
     final LazyOptional<IFluidHandlerItem> fluidHolder;
 
-    double maxHeat;
+    double maxHeat = 10;
 
-    public PowerArmorCap(@Nonnull ItemStack itemStackIn, ArmorItem.Type type) {
+    public PowerArmorLegacyCap(@Nonnull ItemStack itemStackIn, ArmorItem.Type type) {
         this.itemStack = itemStackIn;
         this.targetType = type;
-        Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
+        Map<ModuleCategory, RangedWrapper> rangedWrapperMap = new HashMap<>();
         switch(targetType) {
             case HELMET: {
-                this.modularItem = new ModularItem(itemStack, 18) {{
-                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
-                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
-                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
-                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
+                this.modularItem = new ModularItem(itemStack, 0, 18) {{
+                    rangedWrapperMap.put(ModuleCategory.ARMOR,new RangedWrapper(this, 0, 1));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new RangedWrapper(this, 1, 2));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new RangedWrapper(this, 2, 3));
+                    rangedWrapperMap.put(ModuleCategory.NONE,new RangedWrapper(this, 3, this.getSlots()));
                     setRangedWrapperMap(rangedWrapperMap);
                 }};
 
-                this.maxHeat = MPSSettings.getMaxHeatHelmet();
                 break;
             }
 
             case CHESTPLATE: {
-                this.modularItem = new ModularItem(itemStack, 18) {{
-                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
-                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
-                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
-                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
+                this.modularItem = new ModularItem(itemStack, 0, 18) {{
+                    rangedWrapperMap.put(ModuleCategory.ARMOR,new RangedWrapper(this, 0, 1));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new RangedWrapper(this, 1, 2));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new RangedWrapper(this, 2, 3));
+                    rangedWrapperMap.put(ModuleCategory.NONE,new RangedWrapper(this, 3, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
-                this.maxHeat = MPSSettings.getMaxHeatChestplate();
                 break;
             }
 
             case LEGGINGS: {
-                this.modularItem = new ModularItem(itemStackIn, 10) {{
-                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
-                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
-                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
-                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
+                this.modularItem = new ModularItem(itemStackIn, 0, 10) {{
+                    rangedWrapperMap.put(ModuleCategory.ARMOR,new RangedWrapper(this, 0, 1));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new RangedWrapper(this, 1, 2));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new RangedWrapper(this, 2, 3));
+                    rangedWrapperMap.put(ModuleCategory.NONE,new RangedWrapper(this, 3, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
-                this.maxHeat = MPSSettings.getMaxHeatLegs();
                 break;
             }
 
             case BOOTS: {
-                this.modularItem = new ModularItem(itemStack, 8) {{
-                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
-                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
-                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 2, this.getSlots()));
+                this.modularItem = new ModularItem(itemStack, 0, 8) {{
+                    rangedWrapperMap.put(ModuleCategory.ARMOR,new RangedWrapper(this, 0, 1));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new RangedWrapper(this, 1, 2));
+                    rangedWrapperMap.put(ModuleCategory.NONE,new RangedWrapper(this, 2, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
-                this.maxHeat = MPSSettings.getMaxHeatBoots();
                 break;
             }
 
             default:
-                this.modularItem = new ModularItem(itemStack, 8);
+                this.modularItem = new ModularItem(itemStack, 0, 8);
 
         }
 
@@ -131,14 +126,14 @@ public class PowerArmorCap implements ICapabilityProvider {
             return modularItem;
         });
 
-        this.modelSpec = new ArmorModelSpecNBT(itemStackIn);
+        this.modelSpec = new PowerArmorRenderWrapper(itemStackIn);
         this.modelSpecHolder = LazyOptional.of(()-> modelSpec);
 
 
         heatHolder = LazyOptional.of(() -> {
             modularItem.loadCapValues();
 
-            final HeatItemWrapper heatStorage = new HeatItemWrapper(itemStack, maxHeat, modularItem.getStackInSlot(0).getCapability(NuminaCapabilities.POWER_MODULE));
+            final ModularItemHeatWrapper heatStorage = new ModularItemHeatWrapper(itemStack, maxHeat);
             heatStorage.loadCapValues();
             return heatStorage;
         });
@@ -153,9 +148,8 @@ public class PowerArmorCap implements ICapabilityProvider {
         });
     }
 
-    @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         if (cap == null) {
             return LazyOptional.empty();
         }

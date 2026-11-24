@@ -26,20 +26,17 @@
 
 package lehjr.powersuits.common.event;
 
-import lehjr.numina.client.sound.Musique;
-import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.utils.ItemUtils;
-import lehjr.numina.common.utils.MathUtils;
-import lehjr.powersuits.client.sound.MPSSoundDictionary;
-import lehjr.powersuits.common.item.electric.armor.PowerArmorBoots;
-import lehjr.powersuits.common.item.electric.armor.PowerArmorChestplate;
-import lehjr.powersuits.common.item.electric.armor.PowerArmorLeggings;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EquipmentSlot;
+import lehjr.powersuits.common.network.MPSPackets;
+import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
+import lehjr.powersuits.common.network.packets.clientbound.ToggleableModuleListClientBound;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.PacketDistributor;
 
 /**
  * Created by Claire Semple on 9/8/2014.
@@ -47,53 +44,28 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  * Ported to Java by lehjr on 10/24/16.
  */
 public class PlayerUpdateHandler {
-    @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onPlayerUpdate(LivingEvent event) {
-        if (event.getEntity() == null) {
-            return;
+    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+//        for (Item item : BuiltInRegistries.ITEM.stream().toList()) {
+//            ItemStack module = new ItemStack(item);
+//            IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
+//            if (pm != null && pm.isAllowed() && pm instanceof IToggleableModule) {
+//                moduleNames.add(ItemUtils.getRegistryName(item));
+//            }
+//        }
+
+        // NOT empty and NOT client side
+        if(!(AttachCapabilityEventHandler.toggleable.isEmpty() && player.level().isClientSide)) {
+            MPSPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+                new ToggleableModuleListClientBound(AttachCapabilityEventHandler.toggleable));
         }
+    }
 
-
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-
-            // pretty sure the whole point of this was to reduce fall distance, not increase it.
-            float fallDistance = (float) MovementManager.INSTANCE.computeFallHeightFromVelocity(MathUtils.clampDouble(player.getDeltaMovement().y, -1000.0, 0.0));
-            if (fallDistance < player.fallDistance) {
-                player.fallDistance = fallDistance;
-            }
-
-            if(player.getInventory() == null) {
-                NuminaLogger.logDebug("player inventory is NULL");
-                return;
-            }
-
-            // Sound update
-            if (player.level().isClientSide && NuminaSettings.useSounds()) {
-                if ((ItemUtils.getItemFromEntitySlot(player,EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
-                    double velsq2 = MathUtils.sumsq(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z) - 0.5;
-                    if (player.hasImpulse && velsq2 > 0) {
-                        Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_GLIDER.get(), SoundSource.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
-                    } else {
-                        Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_GLIDER.get());
-                    }
-                } else {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_GLIDER.get());
-                }
-
-                if (!(ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.FEET).getItem() instanceof PowerArmorBoots)) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
-                }
-
-                if (!(ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
-                }
-
-                if (!(ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS).getItem() instanceof PowerArmorLeggings)) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get());
-                }
-            }
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void onPlayerUpdate(TickEvent.PlayerTickEvent event) {
+        if(event.phase == TickEvent.Phase.END) {
+        MovementManager.playerMovementTick(event.player, event.player.level());
         }
     }
 }

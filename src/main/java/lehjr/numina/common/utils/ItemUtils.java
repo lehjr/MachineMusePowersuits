@@ -38,6 +38,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -253,5 +254,29 @@ public class ItemUtils {
             return foreignModuleCap.getStoredModeChangingModuleCapInStorage();
         }
         return null;
+    }
+
+    public static ArmorItem.Type getArmorType(ItemStack stack) {
+        EquipmentSlot slot = getEquipmentSlotForItem(stack);
+        if (slot.isArmor()) {
+            switch (slot) {
+                case HEAD -> {
+                    return ArmorItem.Type.HELMET;
+                }
+
+                case CHEST -> {
+                    return ArmorItem.Type.CHESTPLATE;
+                }
+
+                case LEGS -> {
+                    return ArmorItem.Type.LEGGINGS;
+                }
+
+                case FEET -> {
+                    return ArmorItem.Type.BOOTS;
+                }
+            }
+        }
+        throw new RuntimeException("Invalid ItemStack for armor capability");
     }
 }

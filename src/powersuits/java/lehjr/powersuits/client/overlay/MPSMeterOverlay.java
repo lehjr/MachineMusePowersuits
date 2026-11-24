@@ -5,20 +5,24 @@ import lehjr.numina.client.gui.meter.HeatMeter;
 import lehjr.numina.client.gui.meter.PlasmaChargeMeter;
 import lehjr.numina.client.gui.meter.WaterMeter;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.heat.HeatUtils;
+import lehjr.numina.common.utils.HeatUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.MathUtils;
 import lehjr.numina.common.utils.StringUtils;
-import lehjr.powersuits.common.constants.MPSRegistryNames;
+import lehjr.powersuits.client.config.MPSClientConfig;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Objects;
 
 public class MPSMeterOverlay {
     private static HeatMeter heatMeter = null;
@@ -39,91 +43,99 @@ public class MPSMeterOverlay {
         String maxEnergyStr = StringUtils.formatNumberShort(maxEnergy)+ "FE";;
 
         // heat
-        float maxHeat = (float) HeatUtils.getPlayerMaxHeat(player);
-        float currHeat = (float) HeatUtils.getPlayerHeat(player);
+        HeatUtils.PlayerHeat playerHeat =HeatUtils.getPlayerHeat(player);
+        float maxHeat = (float) playerHeat.maxHeat();
+        float currHeat = (float) playerHeat.currentHeat();
 
         String currHeatStr = StringUtils.formatNumberShort(currHeat);
         String maxHeatStr = StringUtils.formatNumberShort(maxHeat);
 
         // Water
-        AtomicReference<Float> currWater = new AtomicReference<>(0F);
-        AtomicReference<Float> maxWater = new AtomicReference<>(0F);
-        AtomicReference<String> currWaterStr = new AtomicReference<>("");
-        AtomicReference<String> maxWaterStr = new AtomicReference<>("");
+        // Water
+        float currWater = 0;
+        float maxWater = 0;
+        String currWaterStr = "";
+        String maxWaterStr = "";
 
-        ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(fh -> {
+        ItemStack chestPlate = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST);
+        IFluidHandlerItem fh = chestPlate.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).resolve().orElse(null);
+        if(fh != null) {
             for (int i = 0; i < fh.getTanks(); i++) {
-                maxWater.set(maxWater.get() + fh.getTankCapacity(i));
-                if (maxWater.get() > 0) {
-                    FluidStack fluidStack = fh.getFluidInTank(i);
-                    currWater.set(currWater.get() + fluidStack.getAmount());
-                    waterMeter = new WaterMeter(MPSSettings::getWaterMeterConfig);
-                    currWaterStr.set(StringUtils.formatNumberShort(currWater.get()));
-                    maxWaterStr.set(StringUtils.formatNumberShort(maxWater.get()));
+                if(fh.isFluidValid(i, new FluidStack(Fluids.WATER, 1000))) {
+                    maxWater = maxWater + fh.getTankCapacity(i);
+                    if (maxWater > 0) {
+                        FluidStack fluidStack = fh.getFluidInTank(i);
+                        if (fluidStack.getFluid() == Fluids.WATER){
+                            currWater = currWater + fluidStack.getAmount();
+                        }
+                    }
                 }
             }
-        });
-
-        // Plasma
-        AtomicReference<Float> currentPlasma = new AtomicReference<Float>(0F);
-        AtomicReference<Float> maxPlasma = new AtomicReference<Float>(0F);
-        if (player.isUsingItem()) {
-            player.getItemInHand(player.getUsedItemHand()).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModeChangingItem.class::isInstance)
-                    .map(IModeChangingItem.class::cast)
-                    .ifPresent(modeChanging -> {
-                        ItemStack module = modeChanging.getActiveModule();
-                        int actualCount = 0;
-
-                        int maxDuration = modeChanging.getModularItemStack().getUseDuration();
-                        if (!module.isEmpty()) {
-                            // Plasma Cannon
-                            if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
-                                actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                                currentPlasma.set(currentPlasma.get() + (Math.min(actualCount, 50)) * 2);
-                                maxPlasma.set(maxPlasma.get() + 100F);
-
-                                // Ore Scanner or whatever
-                            } else {
-                                actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                                currentPlasma.set(currentPlasma.get() + (Math.min(actualCount, 40)) * 2.5F);
-                                maxPlasma.set(maxPlasma.get() + 100F);
-                            }
-                        }
-                    });
+            currWaterStr = StringUtils.formatNumberShort(currWater);
+            maxWaterStr = StringUtils.formatNumberShort(maxWater);
         }
 
-        float val = currentPlasma.get();
-        String currPlasmaStr = StringUtils.formatNumberShort((int)val) + "%";
-        String maxPlasmaStr = StringUtils.formatNumberShort(maxPlasma.get());
+        // Plasma
+        float currentPlasma = 0;
+        float maxPlasma = 0;
+        if (player.isUsingItem()) {
+            IModeChangingItem modeChanging = NuminaCapabilities.getModeChangingModularItem(player.getItemInHand(player.getUsedItemHand()));
+            if(modeChanging != null){
+                ItemStack module = modeChanging.getActiveModule();
+                int actualCount = 0;
 
-        if (MPSSettings.useGraphicalMeters()) {
+                int maxDuration = modeChanging.getModularItemStack().getUseDuration();
+                if (!module.isEmpty()) {
+                    // Plasma Cannon
+                    if (Objects.equals(ItemUtils.getRegistryName(module), MPSConstants.PLASMA_CANNON_MODULE)) {
+                        actualCount = (maxDuration - player.getUseItemRemainingTicks());
+                        currentPlasma = currentPlasma  + (Math.min(actualCount, 50)) * 2;
+                        maxPlasma = maxPlasma + 100F;
+
+                        // Ore Scanner or whatever
+                    } else {
+                        actualCount = (maxDuration - player.getUseItemRemainingTicks());
+                        currentPlasma = currentPlasma + (Math.min(actualCount, 40)) * 2.5F;
+                        maxPlasma = maxPlasma + 100F;
+                    }
+                }
+            }
+        }
+
+        float val = currentPlasma;
+        String currPlasmaStr = StringUtils.formatNumberShort((int)val) + "%";
+        String maxPlasmaStr = StringUtils.formatNumberShort(maxPlasma);
+
+        if (MPSClientConfig.hud_use_graphical_meters) {
             int numMeters = 0;
 
-            if (maxEnergy > 0) {
-                numMeters++;
-                if (energyMeter == null) {
-                    energyMeter = new EnergyMeter(MPSSettings::getEnergyMeterConfig);
-                }
-            } else energyMeter = null;
-
-            if (maxHeat > 0) {
-                numMeters++;
-                if (heatMeter == null) {
-                    heatMeter = new HeatMeter(MPSSettings::getHeatMeterConfig);
-                }
-            } else heatMeter = null;
-
-            if (maxWater.get() > 0 && waterMeter != null) {
-                numMeters++;
+//            if (maxEnergy > 0) {
+            numMeters++;
+            if (energyMeter == null) {
+                energyMeter = new EnergyMeter(MPSClientConfig::getEnergyMeterConfig);
             }
+//            } else energyMeter = null;
 
-            if (maxPlasma.get() > 0 /* && drawPlasmaMeter */) {
-                numMeters++;
-                if (plasmaMeter == null) {
-                    plasmaMeter = new PlasmaChargeMeter(MPSSettings::getPlasmaMeterConfig);
-                }
-            } else plasmaMeter = null;
+//            if (maxHeat > 0) {
+            numMeters++;
+            if (heatMeter == null) {
+                heatMeter = new HeatMeter(MPSClientConfig::getHeatMeterConfig);
+            }
+//            } else heatMeter = null;
+
+//            if (maxWater > 0 ) {
+            numMeters++;
+            if(waterMeter == null) {
+                waterMeter = new WaterMeter(MPSClientConfig::getWaterMeterConfig);
+            }
+//            }
+
+//            if (maxPlasma > 0 /* && drawPlasmaMeter */) {
+            numMeters++;
+            if (plasmaMeter == null) {
+                plasmaMeter = new PlasmaChargeMeter(MPSClientConfig::getPlasmaMeterConfig);
+            }
+//            } else plasmaMeter = null;
 
 
             final int totalMeters = numMeters;
@@ -143,13 +155,13 @@ public class MPSMeterOverlay {
             }
 
             if (waterMeter != null) {
-                waterMeter.draw(poseStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currWater.get(), 0, maxWater.get()) / maxWater.get());
-                StringUtils.drawRightAlignedShadowedString(poseStack, currWaterStr.get(), stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+                waterMeter.draw(poseStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currWater, 0, maxWater) / maxWater);
+                StringUtils.drawRightAlignedShadowedString(poseStack, currWaterStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                 numMeters--;
             }
 
             if (plasmaMeter != null) {
-                plasmaMeter.draw(poseStack, left, top + (totalMeters - numMeters) * 9, currentPlasma.get() / maxPlasma.get());
+                plasmaMeter.draw(poseStack, left, top + (totalMeters - numMeters) * 9, currentPlasma / maxPlasma);
                 StringUtils.drawRightAlignedShadowedString(poseStack, currPlasmaStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
             }
 
@@ -165,12 +177,12 @@ public class MPSMeterOverlay {
             StringUtils.drawRightAlignedShadowedString(poseStack, currHeatStr + '/' + maxHeatStr + " C", stringX, top + (numReadouts * 9));
             numReadouts += 1;
 
-            if (maxWater.get() > 0) {
-                StringUtils.drawRightAlignedShadowedString(poseStack, currWaterStr.get() + '/' + maxWaterStr.get() + " buckets", stringX, top + (numReadouts * 9));
+            if (maxWater > 0) {
+                StringUtils.drawRightAlignedShadowedString(poseStack, currWaterStr + '/' + maxWaterStr + " buckets", stringX, top + (numReadouts * 9));
                 numReadouts += 1;
             }
 
-            if (maxPlasma.get() > 0 /* && drawPlasmaMeter */) {
+            if (maxPlasma > 0 /* && drawPlasmaMeter */) {
                 StringUtils.drawRightAlignedShadowedString(poseStack, currPlasmaStr + '/' + maxPlasmaStr + "%", stringX, top + (numReadouts * 9));
             }
         }

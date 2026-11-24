@@ -51,6 +51,13 @@ public interface IHeatStorage extends CapabilityUpdate {
     double extractHeat(double maxExtract, boolean simulate);
 
     /**
+     * Condensed version of MaxHeatReceive and MaxHeatExtract
+     *
+     * @return
+     */
+    double getMaxHeatTransfer();
+
+    /**
      * Returns the amount of heat currently stored.
      */
     double getHeatStored();

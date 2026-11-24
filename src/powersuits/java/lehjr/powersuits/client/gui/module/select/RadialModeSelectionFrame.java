@@ -33,6 +33,7 @@ import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.gui.GuiGraphics;
@@ -44,27 +45,27 @@ import java.util.List;
 import java.util.Optional;
 
 
-/*
-TODO: revamp with a set of concentric circles to sort modules by category
- */
-public class RadialModeSelectionFrame extends AbstractGuiFrame {
+public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {
     boolean visible = true;
     boolean enabled = true;
     protected final long spawnTime;
     protected List<ClickableModule> modeButtons = new ArrayList<>();
-    protected int selectedModuleOriginal = -1;
-    protected int selectedModuleNew = -1;
-    SwirlyMuseCircle circle;
+    ClickableModule selectedModule = null;
+    ClickableModule selectedModuleNew = null;
+
     protected Player player;
     protected double radius;
     float zLevel;
+    SwirlyMuseCircle circle;
+    IModeChangingItem mcmi;
 
     public RadialModeSelectionFrame(MusePoint2D topLeft, MusePoint2D bottomRight, Player player, float zLevel) {
-        super(new Rect(topLeft, bottomRight));
+        super(new DrawableTile(topLeft, bottomRight));
         spawnTime = System.currentTimeMillis();
         this.player = player;
         this.radius = Math.min(width(), height());
         this.zLevel = zLevel;
+        mcmi = NuminaCapabilities.getModeChangingModularItemOrStored(player.getMainHandItem(), player.level());
         loadItems();
         circle = new SwirlyMuseCircle();
     }
@@ -78,12 +79,12 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
             selectModule(mouseX, mouseY);
         }
 
-        Optional<IModeChangingItem> mcic = ItemUtils.getModeChangingModularItemCapability(player);
         //Switch to selected mode if mode changed
-        if (mcic.isPresent() && getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
+        if (mcmi != null && selectedModuleNew != null) {
             // update to detect mode changes
-            selectedModuleOriginal = selectedModuleNew;
-            ItemUtils.getModeChangingModularItemCapability(player).ifPresent(handler-> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot())));
+            selectedModule = selectedModuleNew;
+            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot()));
+            selectedModuleNew = null;
         }
     }
 
@@ -109,27 +110,29 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
 
     private void loadItems() {
         if (player != null && modeButtons.isEmpty()) {
-            Optional<IModeChangingItem> mcic = ItemUtils.getModeChangingModularItemCapability(player);
-            mcic.ifPresent(handler->{
-                List<Integer> modes = handler.getValidModes();
-                int activeMode = handler.getActiveMode();
-                if (activeMode > 0)
-                    selectedModuleOriginal = activeMode;
+            if (mcmi != null) {
+                int activeMode = mcmi.getActiveMode();
+
+                List<Integer> modes = mcmi.getValidModes();
+
                 int modeNum = 0;
                 for (int mode : modes) {
-                    ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(center(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
+                    ClickableModule clickie = new ClickableModule(mcmi.getStackInSlot(mode), new SpiralPointToPoint2D(center(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
                     modeButtons.add(clickie);
+                    if (mode == activeMode) {
+                        selectedModule = clickie;
+                    }
                     modeNum ++;
                 }
-            });
+            }
         }
     }
 
     private void selectModule(double x, double y) {
         if (modeButtons != null) {
-            for(int i =0; i<modeButtons.size(); i++ ) {
-                if (modeButtons.get(i).containsPoint(x, y)) {
-                    selectedModuleNew = i;
+            for (ClickableModule clickie: modeButtons) {
+                if(clickie.containsPoint(x, y) && clickie != selectedModule) {
+                    selectedModuleNew = clickie;
                     break;
                 }
             }
@@ -137,11 +140,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
     }
 
     public ClickableModule getSelectedModule() {
-        if (modeButtons.size() > selectedModuleNew && selectedModuleNew != -1) {
-            return modeButtons.get(selectedModuleNew);
-        } else {
-            return null;
-        }
+        return selectedModule;
     }
 
     public void drawSelection(GuiGraphics gfx) {

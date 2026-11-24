@@ -24,12 +24,12 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.heat;
+package lehjr.numina.common.utils;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -43,22 +43,49 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Handler for heating and cooling.
  * Note: values can be read on either logical side, but should only be set server side
  */
 public class HeatUtils {
+    public record PlayerHeat(double currentHeat, double maxHeat) {}
 
-    public static double getPlayerHeat(LivingEntity entity) {
-        double heat = 0;
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            heat += getItemHeat(ItemUtils.getItemFromEntitySlot(entity, slot));
+    public static PlayerHeat getPlayerHeat(LivingEntity entity) {
+        double currentHeat = 0;
+        double maxHeat = 0;
+
+        Map<EquipmentSlot, IHeatStorage> heatCapMap = getHeatCapMap(entity);
+        for (Map.Entry<EquipmentSlot, IHeatStorage> entry : heatCapMap.entrySet()) {
+            currentHeat += entry.getValue().getHeatStored();
+            maxHeat += entry.getValue().getMaxHeatStored();
         }
-        return heat;
+
+        return  new PlayerHeat(currentHeat, maxHeat);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Should only be called server side
@@ -112,7 +139,7 @@ public class HeatUtils {
 
     /**
      * Should only be called server side
-     */
+     */ // fixme!!!
     public static double heatPlayer(LivingEntity entity, double heatJoules) {
         if (entity.level().isClientSide /*|| entity.abilities.instabuild */) {
             return 0;
@@ -133,29 +160,22 @@ public class HeatUtils {
      * temperature is below the max threshold.
      * @param event
      */
+    @SubscribeEvent
     public static void heatEntity(LivingAttackEvent event) {
-        if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
+        if (event.getSource().is(DamageTypeTags.IS_FIRE) && event.getEntity() instanceof Player player) {
             // round amount due do float values being weird
-            double heatLeftToGive = Math.round(event.getAmount());
-            final double originalHeatToGive = heatLeftToGive;
+            final double originalHeatToGive = Math.round(event.getAmount());
+            double heatLeftToGive = originalHeatToGive;
 
-            LivingEntity entity = event.getEntity();
-            boolean allPresent = true;
+            Map<EquipmentSlot, IHeatStorage> heatCapMap = getHeatCapMap(player);
+            boolean allPresent = allPresent(heatCapMap);
 
-            for (ItemStack stack : entity.getArmorSlots()) {
-                if (!stack.getCapability(NuminaCapabilities.HEAT).isPresent()) {
-                    allPresent = false;
-                    break;
-                }
-            }
-
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
+            for (Map.Entry<EquipmentSlot, IHeatStorage> entry : heatCapMap.entrySet()) {
                 if (heatLeftToGive == 0) {
                     break;
                 }
-                double finalHeatLeftToGive = heatLeftToGive;
-                heatLeftToGive -= ItemUtils.getItemFromEntitySlot(entity, slot)
-                        .getCapability(NuminaCapabilities.HEAT).map(heat->heat.receiveHeat(finalHeatLeftToGive, false)).orElse(0D);
+                IHeatStorage iHeatStorage = entry.getValue();
+                heatLeftToGive -= iHeatStorage.receiveHeat(heatLeftToGive, false);
             }
 
             // check if any heat applied to entity otherwise do nothing
@@ -163,29 +183,85 @@ public class HeatUtils {
                 if (allPresent) {
                     event.setCanceled(true);
                 }
+
                 if (heatLeftToGive > 0) {
-                    entity.hurt(new OverheatDamage(entity.level().registryAccess()).overheat(), (float) heatLeftToGive);
+                    player.hurt(new OverheatDamage(player.level().registryAccess()).overheat(), (float) heatLeftToGive);
                 }
             }
         }
     }
 
-    public static double getItemMaxHeat(@Nonnull ItemStack stack) {
-        return stack.getCapability(NuminaCapabilities.HEAT).map(h->h.getMaxHeatStored()).orElse(0D);
+//    /**
+//     * Heats the player's equipment and puts out player >>IF<< the equipment's
+//     * temperature is below the max threshold.
+//     * @param event
+//     */
+//    // Looks like this event fires last whereas the other fires first
+//    public static void heatEntity(LivingDamageEvent event) {
+//
+//        if (event.getSource().is(DamageTypeTags.IS_FIRE) && event.getEntity() instanceof Player player) {
+//            // round amount due do float values being weird
+//            final double originalHeatToGive = Math.round(event.getAmount());
+//            double heatLeftToGive = originalHeatToGive;
+//
+//            Map<EquipmentSlot, IHeatStorage> heatCapMap = getHeatCapMap(player);
+//            boolean allPresent = allPresent(heatCapMap);
+//
+//            for (Map.Entry<EquipmentSlot, IHeatStorage> entry : heatCapMap.entrySet()) {
+//                if (heatLeftToGive == 0) {
+//                    break;
+//                }
+//                IHeatStorage iHeatStorage = entry.getValue();
+//                heatLeftToGive -= iHeatStorage.receiveHeat(heatLeftToGive, false);
+//            }
+//
+//            // check if any heat applied to entity otherwise do nothing
+//            if (heatLeftToGive < originalHeatToGive) {
+//                if (allPresent) {
+//                    event.setCanceled(true);
+//                }
+//
+//                if (heatLeftToGive > 0) {
+//                    player.hurt(new OverheatDamage(player.level().registryAccess()).overheat(), (float) heatLeftToGive);
+//                }
+//            }
+//        }
+//    }
+
+    static Map<EquipmentSlot, IHeatStorage> getHeatCapMap (LivingEntity entity) {
+        Map<EquipmentSlot, IHeatStorage> capMap = new HashMap<>();
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack stack = ItemUtils.getItemFromEntitySlot(entity, slot);
+            IHeatStorage cap = stack.getCapability(NuminaCapabilities.HEAT).resolve().orElse(null);
+            if(cap != null) {
+                capMap.put(slot, cap);
+            }
+        }
+        return capMap;
     }
 
-    public static double getItemHeat(@Nonnull ItemStack stack) {
-        return stack.getCapability(NuminaCapabilities.HEAT).map(h->h.getHeatStored()).orElse(0D);
+    static boolean allPresent(Map<EquipmentSlot, IHeatStorage> heatCapMap) {
+        return heatCapMap.containsKey(EquipmentSlot.HEAD) &&
+                heatCapMap.containsKey(EquipmentSlot.CHEST) &&
+                heatCapMap.containsKey(EquipmentSlot.LEGS) &&
+                heatCapMap.containsKey(EquipmentSlot.FEET);
     }
 
     public static double heatItem(@Nonnull ItemStack stack, double value) {
-        return stack.getCapability(NuminaCapabilities.HEAT, null).map(h->h.receiveHeat(value, false)).orElse(0D);
+        IHeatStorage iHeatStorage = stack.getCapability(NuminaCapabilities.HEAT).resolve().orElse(null);
+        if(iHeatStorage != null) {
+            return iHeatStorage.receiveHeat(value, false);
+        }
+        return 0;
     }
 
     public static double coolItem(@Nonnull ItemStack stack, double value) {
-        return stack.getCapability(NuminaCapabilities.HEAT, null).map(h->h.extractHeat(value, false)).orElse(0D);
+        IHeatStorage iHeatStorage = stack.getCapability(NuminaCapabilities.HEAT).resolve().orElse(null);
+        if(iHeatStorage != null) {
+            return iHeatStorage.extractHeat(value, false);
+        }
+        return 0;
     }
-
     static final ResourceKey<DamageType> OVERHEAT_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE,
             NuminaConstants.OVERHEAT_DAMAGE_REGANAME
     );

@@ -30,7 +30,7 @@ package lehjr.powersuits.common.item.module.weapon;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.heat.HeatUtils;
+import lehjr.numina.common.utils.HeatUtils;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.WeaponModuleConfig;

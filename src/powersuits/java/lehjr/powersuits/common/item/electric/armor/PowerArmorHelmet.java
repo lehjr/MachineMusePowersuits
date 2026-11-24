@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.item.electric.armor;
 
-public class PowerArmorHelmet extends AbstractElectricItemArmor {
+public class PowerArmorHelmet extends ElectricArmor {
     public PowerArmorHelmet() {
         super(Type.HELMET);
     }

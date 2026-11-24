@@ -30,6 +30,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -44,6 +45,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -126,10 +128,13 @@ public class SprintAssistModule extends AbstractPowerModule {
 
 
             @Override
-            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStack) {
-                if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()) {
-                    onPlayerTickInactive(player, itemStack);
-                    return;
+            public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack armorLegs, int moduleIndex) {
+                // Normal:
+                // ----------------------------------------
+                // player speed .1 walking, .13 sprinting
+                // ----------------------------------------
+                if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()  || player.isInWaterOrBubble()) {
+                    return onPlayerTickInactive(player, level, armorLegs, moduleIndex);
                 }
 
                 double horzMovement = player.walkDist - player.walkDistO;
@@ -141,13 +146,14 @@ public class SprintAssistModule extends AbstractPowerModule {
                         double sprintCost = applyPropertyModifiers(MPSConstants.SPRINT_ENERGY_CONSUMPTION);
                         if (sprintCost < totalEnergy) {
                             double sprintMultiplier = applyPropertyModifiers(MPSConstants.SPRINT_SPEED_MULTIPLIER);
-                            double exhaustionComp = applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
-                            if (!player.level().isClientSide &&
-                                    // every 20 ticks
-                                    (player.level().getGameTime() % 20) == 0) {
-                                ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement) * 20);
+                            double exhaustionComp = applyPropertyModifiers(MPSConstants.EXHAUSTION_COMPENSATION);
+
+
+
+                            if (!player.level().isClientSide) {
+                                ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement), false);
                             }
-                            setMovementModifier(getModuleStack(), sprintMultiplier * 0.13 * 0.5, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
+                            setMovementModifier(getModule(), sprintMultiplier * 0.13 * 0.5, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
                             player.getFoodData().addExhaustion((float) (-0.01 * exhaustion * exhaustionComp));
                             player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
                         }
@@ -158,32 +164,32 @@ public class SprintAssistModule extends AbstractPowerModule {
                             if (!player.level().isClientSide &&
                                     // every 20 ticks
                                     (player.level().getGameTime() % 20) == 0) {
-                                ElectricItemUtils.drainPlayerEnergy(player, (int) (walkCost * horzMovement));
+                                ElectricItemUtils.drainPlayerEnergy(player, (int) (walkCost * horzMovement), false);
 
 
 
 
                             }
-                            setMovementModifier(getModuleStack(), walkMultiplier * 0.1, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
+                            setMovementModifier(getModule(), walkMultiplier * 0.1, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
                             player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
                         }
                     }
                 }
-                onPlayerTickInactive(player, itemStack);
+                return onPlayerTickInactive(player, level, armorLegs, moduleIndex);
             }
 
             @Override
-            public void onPlayerTickInactive(Player player, @Nonnull ItemStack itemStack) {
+            public boolean onPlayerTickInactive(Player player, Level level, ItemStack itemStack, int moduleIndex) {
 //                itemStack.removeTagKey("AttributeModifiers");
-                setMovementModifier(getModuleStack(), 0, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
+                setMovementModifier(getModule(), 0, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
+                return true;
             }
         }
 
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        @Nonnull
-        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

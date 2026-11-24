@@ -26,14 +26,13 @@
 
 package lehjr.powersuits.common.item.module.energy_generation;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
@@ -65,8 +64,8 @@ public class KineticGeneratorModule extends AbstractPowerModule {
             this.ticker = new Ticker(module, ModuleCategory.ENERGY_GENERATION, ModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.ENERGY_GENERATION, 2000);
                 addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.ENERGY_GENERATION, 6000, "FE");
-                addBaseProperty(MPSConstants.MOVEMENT_RESISTANCE, 0.01F);
-                addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.MOVEMENT_RESISTANCE, 0.49F, "%");
+                addBaseProperty(NuminaConstants.MOVEMENT_RESISTANCE, 0.01F);
+                addTradeoffProperty(MPSConstants.ENERGY_GENERATED, NuminaConstants.MOVEMENT_RESISTANCE, 0.49F, "%");
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
@@ -110,7 +109,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

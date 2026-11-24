@@ -30,7 +30,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.heat.HeatUtils;
+import lehjr.numina.common.utils.HeatUtils;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;

@@ -115,7 +115,7 @@ public class TinkerKeymapGui extends ContainerlessGui {
     @Override
     public void tick() {
         super.tick();
-        if (!minecraft.isWindowActive()) {
+        if (!Minecraft.getInstance().isWindowActive()) {
             KeyMappingReaderWriter.INSTANCE.writeOutKeybindSetings();
             Minecraft.getInstance().options.save(); // fixme
 //            this.player.closeAbstractContainerMenu();

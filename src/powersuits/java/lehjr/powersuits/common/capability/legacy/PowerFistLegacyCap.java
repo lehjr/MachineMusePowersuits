@@ -24,18 +24,14 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.common.capability;
+package lehjr.powersuits.common.capability.legacy;
 
-import lehjr.numina.common.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.capabilities.inventory.modechanging.ModeChangingModularItem;
-import lehjr.numina.common.capabilities.inventory.modularitem.NuminaRangedWrapper;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.render.IModelSpec;
-import lehjr.numina.common.capabilities.render.ModelSpecStorage;
 import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.powersuits.client.render.PowerFistSpecNBT;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.capability.tool.PowerFistRenderWrapper;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -44,6 +40,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.RangedWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,26 +48,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class PowerFistCap implements ICapabilityProvider {
+public class PowerFistLegacyCap implements ICapabilityProvider {
     final ItemStack itemStack;
     final EquipmentSlot targetSlot;
     final ModeChangingModularItem modularItem;
     final LazyOptional<IItemHandler> modularItemHolder;
 
-    final ModelSpecStorage modelSpec;
+    final PowerFistRenderWrapper modelSpec;
     final LazyOptional<IModelSpec> modelSpecHolder;
 
     final HeatItemWrapper heatStorage;
     final LazyOptional<IHeatStorage> heatHolder;
 
-    public PowerFistCap(@Nonnull ItemStack itemStackIn) {
+    public PowerFistLegacyCap(@Nonnull ItemStack itemStackIn) {
         this.itemStack = itemStackIn;
         this.targetSlot = EquipmentSlot.MAINHAND;
 
-        this.modularItem = new ModeChangingModularItem(itemStack, 60)  {{
-            Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
-            rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new NuminaRangedWrapper(this, 0, 1));
-            rangedWrapperMap.put(ModuleCategory.NONE, new NuminaRangedWrapper(this, 1, this.getSlots() ));
+        this.modularItem = new ModeChangingModularItem(itemStack, 0, 60)  {{
+            Map<ModuleCategory, RangedWrapper> rangedWrapperMap = new HashMap<>();
+            rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new RangedWrapper(this, 0, 1));
+            rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 1, this.getSlots() ));
             this.setRangedWrapperMap(rangedWrapperMap);
         }};
 
@@ -79,10 +76,10 @@ public class PowerFistCap implements ICapabilityProvider {
             return modularItem;
         });
 
-        this.modelSpec = new PowerFistSpecNBT(itemStack);
+        this.modelSpec = new PowerFistRenderWrapper(itemStack);
         this.modelSpecHolder = LazyOptional.of(()-> modelSpec);
 
-        this.heatStorage = new HeatItemWrapper(itemStack, MPSSettings.getMaxHeatPowerFist());
+        this.heatStorage = new HeatItemWrapper(itemStack, 10);
         heatHolder = LazyOptional.of(() -> {
             modularItem.loadCapValues();
             heatStorage.loadCapValues();

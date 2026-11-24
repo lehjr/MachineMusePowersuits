@@ -75,7 +75,7 @@ public class CosmeticGui extends ContainerlessGui {
     public void init() {
         super.init();
         frames.clear();
-        usingCosmeticPresets = !MPSSettings.useLegacyCosmeticSystem();
+        usingCosmeticPresets = false; //todo: !MPSClientConfig.useLegacyCosmeticSystem();
         if (usingCosmeticPresets) {
             // check if player is the server owner
             if (Minecraft.getInstance().hasSingleplayerServer()) {

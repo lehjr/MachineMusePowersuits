@@ -138,6 +138,32 @@ public class PlayerKeyStateStorage implements IPlayerKeyStates, INBTSerializable
     }
 
     @Override
+    public byte getStates() {
+        return MathUtils.boolArrayToByte(new boolean[]{
+                getForwardKeyState(),
+                getReverseKeyState(),
+                getLeftStrafeKeyState(),
+                getRightStrafeKeyState(),
+                getDownKeyState(),
+                getJumpKeyState(),
+                false,
+                false
+        });
+    }
+
+    @Override
+    public void setStates(byte state) {
+        boolean[] boolArray = MathUtils.byteToBooleanArray(state);
+
+        setForwardKeyState(boolArray[0]);
+        setReverseKeyState(boolArray[1]);
+        setLeftStrafeKeyState(boolArray[2]);
+        setRightStrafeKeyState(boolArray[3]);
+        setDownKeyState(boolArray[4]);
+        setJumpKeyState(boolArray[5]);
+    }
+
+    @Override
     public String toString() {
         return "forwardKeyState: " + getForwardKeyState() +
                 ", reverseKeyState: " + getReverseKeyState() +
@@ -149,32 +175,13 @@ public class PlayerKeyStateStorage implements IPlayerKeyStates, INBTSerializable
 
     @Override
     public ByteTag serializeNBT() {
-        boolean[] boolArray = new boolean[]{
-                getForwardKeyState(),
-                getReverseKeyState(),
-                getLeftStrafeKeyState(),
-                getRightStrafeKeyState(),
-                getDownKeyState(),
-                getJumpKeyState(),
-                false,
-                false
-        };
-        byte byteOut = MathUtils.boolArrayToByte(boolArray);
-        return ByteTag.valueOf(byteOut);
+        return ByteTag.valueOf(getStates());
     }
 
     @Override
     public void deserializeNBT(ByteTag nbt) {
         if (nbt instanceof ByteTag) {
-            byte byteOut = nbt.getAsByte();
-            boolean[] boolArray = MathUtils.byteToBooleanArray(byteOut);
-
-            setForwardKeyState(boolArray[0]);
-            setReverseKeyState(boolArray[1]);
-            setLeftStrafeKeyState(boolArray[2]);
-            setRightStrafeKeyState(boolArray[3]);
-            setDownKeyState(boolArray[4]);
-            setJumpKeyState(boolArray[5]);
+            setStates(nbt.getAsByte());
         }
     }
 

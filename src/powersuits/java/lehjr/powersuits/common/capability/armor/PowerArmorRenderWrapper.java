@@ -1,43 +1,17 @@
-/*
- * Copyright (c) 2021. MachineMuse, Lehjr
- *  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *      Redistributions of source code must retain the above copyright notice, this
- *      list of conditions and the following disclaimer.
- *
- *     Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-package lehjr.powersuits.client.render;
+package lehjr.powersuits.common.capability.armor;
 
 import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecStorage;
 import lehjr.numina.common.capabilities.render.modelspec.*;
-import lehjr.numina.common.constants.TagConstants;
-import net.minecraft.client.renderer.texture.TextureAtlas;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 
@@ -45,8 +19,8 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSpecNBT {
-    public ArmorModelSpecNBT(@Nonnull ItemStack itemStackIn) {
+public class PowerArmorRenderWrapper extends ModelSpecStorage implements IArmorModelSpecNBT {
+    public PowerArmorRenderWrapper(@Nonnull ItemStack itemStackIn) {
         super(itemStackIn);
     }
 
@@ -54,11 +28,11 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
     public NonNullList<SpecBase> getSpecList() {
         CompoundTag renderTag = getRenderTag();
         if (renderTag == null || renderTag.isEmpty()) {
-              renderTag = getDefaultRenderTag();
+            renderTag = getDefaultRenderTag();
         }
         NonNullList<SpecBase> specs = NonNullList.create();
         for (String key : renderTag.getAllKeys()) {
-            if (key.equals(TagConstants.COLORS)) {
+            if (key.equals(NuminaConstants.COLORS)) {
                 continue;
             }
             if (renderTag.get(key) instanceof CompoundTag) {
@@ -88,7 +62,7 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
         // temp data holder
         CompoundTag tempNBT;
 
-        EquipmentSlot slot = Mob.getEquipmentSlotForItem(getItemStack());
+        EquipmentSlot slot = ItemUtils.getEquipmentSlotForItem(getItemStack());
 
         for (SpecBase spec : NuminaModelSpecRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
@@ -108,7 +82,7 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
                     }
 
                     // Armor models
-                    else if (spec.getSpecType().equals(SpecType.ARMOR_OBJ_MODEL) && MPSSettings.allowHighPollyArmor()) {
+                    else if (spec.getSpecType().equals(SpecType.ARMOR_OBJ_MODEL) /*&& MPSSettings.allowHighPollyArmor()*/) {
                         for (PartSpecBase partSpec : spec.getPartSpecs()) {
                             if (partSpec.getBinding().getSlot() == slot) {
                                 /*
@@ -129,13 +103,13 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
 
         CompoundTag nbt = new CompoundTag();
         for (CompoundTag elem : prefArray) {
-            nbt.put(elem.getString(TagConstants.MODEL) + "." + elem.getString(TagConstants.PART), elem);
+            nbt.put(elem.getString(NuminaConstants.MODEL) + "." + elem.getString(NuminaConstants.PART), elem);
         }
 
         if (!specList.isEmpty()) {
-            nbt.put(TagConstants.SPECLIST, specList);
+            nbt.put(NuminaConstants.SPECLIST, specList);
         }
-        nbt.put(TagConstants.COLORS, new IntArrayTag(colors));
+        nbt.put(NuminaConstants.COLORS, new IntArrayTag(colors));
         return nbt;
     }
 
@@ -145,6 +119,6 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
             return ((JavaPartSpec) part).getTextureLocation();
         }
         // TODO: eventually, maybe put armor textures in their own atlas?
-        return TextureAtlas.LOCATION_BLOCKS;
+        return InventoryMenu.BLOCK_ATLAS;
     }
 }

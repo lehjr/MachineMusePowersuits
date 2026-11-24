@@ -49,4 +49,9 @@ public interface IPlayerKeyStates {
 
     void setDownKeyState(boolean state);
 
-    boolean getDownKeyState();}
+    boolean getDownKeyState();
+
+    byte getStates();
+
+    void setStates(byte state);
+}

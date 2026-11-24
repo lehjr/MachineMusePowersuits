@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ToggleRequestPacketServerBound;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.client.overlay.MPSOverlay;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -53,30 +54,36 @@ public class MPSKeyMapping extends KeyMapping {
         if (Minecraft.getInstance().player != null) {
             Player player = Minecraft.getInstance().player;
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                if (player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                        .filter(IModularItem.class::isInstance)
-                        .map(IModularItem.class::cast)
-                        .map(handler -> handler.isModuleOnline(registryName)).orElse(false)) {
-                        toggleVal = true;
-                        break;
+                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
+                if(iModularItem != null && iModularItem.isModuleOnline(registryName)) {
+                    toggleVal = true;
+                    break;
                 }
             }
         }
     }
 
-    public void toggleModules() {
+    public void syncModules(boolean online) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }
 
+        toggleVal = online;
+
         NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacketServerBound(registryName, toggleVal));
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModularItem.class::isInstance)
-                    .map(IModularItem.class::cast)
-                    .ifPresent(handler -> handler.toggleModule(registryName, toggleVal));
+            IModularItem modularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
+            if (modularItem != null) {
+                modularItem.toggleModule(registryName, toggleVal);
+            }
         }
-        toggleVal = !toggleVal;
+
+        // reload after changing to verify changes
+        initToggleVal();
+    }
+
+    public void toggleModules() {
+        syncModules(!toggleVal);
     }
 }

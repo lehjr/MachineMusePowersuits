@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.item.electric.armor;
 
-public class PowerArmorBoots extends AbstractElectricItemArmor {
+public class PowerArmorBoots extends ElectricArmor {
     public PowerArmorBoots() {
         super(Type.BOOTS);
     }

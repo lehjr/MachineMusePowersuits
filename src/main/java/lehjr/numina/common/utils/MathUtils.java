@@ -26,7 +26,7 @@
 
 package lehjr.numina.common.utils;
 
-import org.apache.commons.lang3.tuple.Pair;
+import com.mojang.datafixers.util.Pair;
 import org.joml.Vector3f;
 
 import java.util.Random;
@@ -82,26 +82,36 @@ public final class MathUtils {
 
     public static boolean isIntInRange(Pair<Integer, Integer> range, int val) {
         if (range != null) {
-            return val >= range.getLeft() && val < range.getRight();
+            return val >= range.getFirst() && val < range.getSecond();
         }
         return false;
     }
 
+    /**
+     * Used for packing a set of up to 8 boolean values into a single byte.
+     * Handles short arrays safely by leaving missing bits as 0.
+     */
     public static byte boolArrayToByte(boolean[] boolArray) {
         byte keysOut = 0;
-        for(int i = 0; i < 8; i++ ) {
-            if (boolArray.length > i) {
-                keysOut = (byte) (keysOut | (byte) (((boolArray[i] ? 1 : 0) <<  i)));
+        // Limit the loop to the shorter of 8 or the actual array length
+        int limit = Math.min(8, boolArray.length);
+        for (int i = 0; i < limit; i++) {
+            if (boolArray[i]) {
+                keysOut |= (1 << i);
             }
         }
         return keysOut;
     }
 
-
+    /**
+     * Used for unpacking a byte into a set of 8 boolean values.
+     * Safely handles Java's signed bytes using a bitmask.
+     */
     public static boolean[] byteToBooleanArray(byte byteVal) {
         boolean[] boolArray = new boolean[8];
-        for (int i=0; i< 8; i++) {
-            boolArray[i] = byteVal >> i > 0;
+        for (int i = 0; i < 8; i++) {
+            // Shift 1 to the bit position and check if that bit is set
+            boolArray[i] = (byteVal & (1 << i)) != 0;
         }
         return boolArray;
     }

@@ -1,6 +1,7 @@
 package lehjr.powersuits.common.network.packets.clienthandlers;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
 import net.minecraft.client.Minecraft;
@@ -31,18 +32,19 @@ public class CreativeInstallPacketClientHandler {
 
             module.getCapability(ForgeCapabilities.ENERGY).ifPresent(iEnergyStorage -> iEnergyStorage.receiveEnergy(iEnergyStorage.getMaxEnergyStored(), false));
 
-            ItemUtils.getItemFromEntitySlot(player, slotType).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModularItem.class::isInstance)
-                    .map(IModularItem.class::cast)
-                    .ifPresent(iModularItem -> {
-                        if (!iModularItem.getInstalledModuleNames().contains(regName)) {
-                            for (int index = 0; index < iModularItem.getSlots(); index++) {
-                                if (ItemStack.isSameItem(iModularItem.insertItem(index, module, false), ItemStack.EMPTY)) {
-                                    break;
-                                }
-                            }
+            IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, slotType));
+            if(iModularItem != null) {
+                int index = iModularItem.findInstalledModule(module);
+                if(index < 0) {
+                    for (index = 0; index < iModularItem.getSlots(); index++) {
+                        if (iModularItem.insertItem(index, module, false).isEmpty()) {
+                            break;
                         }
-                    });
+                    }
+                } else {
+                    iModularItem.setStackInSlot(index, module);
+                }
+            }
         });
         ctx.get().setPacketHandled(true);
     }

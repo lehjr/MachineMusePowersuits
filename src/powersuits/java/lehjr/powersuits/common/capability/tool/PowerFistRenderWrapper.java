@@ -1,30 +1,4 @@
-/*
- * Copyright (c) 2021. MachineMuse, Lehjr
- *  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *      Redistributions of source code must retain the above copyright notice, this
- *      list of conditions and the following disclaimer.
- *
- *     Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-package lehjr.powersuits.client.render;
+package lehjr.powersuits.common.capability.tool;
 
 import lehjr.numina.common.capabilities.render.IHandHeldEntitySpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecStorage;
@@ -32,7 +6,7 @@ import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
-import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.item.electric.tool.PowerFist;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
@@ -44,8 +18,8 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PowerFistSpecNBT extends ModelSpecStorage implements IHandHeldEntitySpecNBT {
-    public PowerFistSpecNBT(@Nonnull ItemStack itemStackIn) {
+public class PowerFistRenderWrapper extends ModelSpecStorage implements IHandHeldEntitySpecNBT {
+    public PowerFistRenderWrapper(@Nonnull ItemStack itemStackIn) {
         super(itemStackIn);
     }
 
@@ -78,9 +52,9 @@ public class PowerFistSpecNBT extends ModelSpecStorage implements IHandHeldEntit
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
 //                        if (partSpec instanceof ModelPartSpec) {
-                            prefArray.add(partSpec.multiSet(new CompoundTag(),
-                                    getNewColorIndex(colors, spec.getColors(), partSpec.getDefaultColorIndex()),
-                                    partSpec.getGlow()));
+                        prefArray.add(partSpec.multiSet(new CompoundTag(),
+                                getNewColorIndex(colors, spec.getColors(), partSpec.getDefaultColorIndex()),
+                                partSpec.getGlow()));
 //                        }
                     }
                 }
@@ -89,16 +63,16 @@ public class PowerFistSpecNBT extends ModelSpecStorage implements IHandHeldEntit
 
         CompoundTag nbt = new CompoundTag();
         for (CompoundTag elem : prefArray) {
-            nbt.put(elem.getString(TagConstants.MODEL) + "." + elem.getString(TagConstants.PART), elem);
+            nbt.put(elem.getString(NuminaConstants.MODEL) + "." + elem.getString(NuminaConstants.PART), elem);
         }
 
         if (!specList.isEmpty())
-            nbt.put(TagConstants.SPECLIST, specList);
+            nbt.put(NuminaConstants.SPECLIST, specList);
 
 //        if (!texSpecTag.isEmpty())
-//            nbt.put(TagConstants.TEXTURESPEC, texSpecTag);
+//            nbt.put(NuminaConstants.TEXTURESPEC, texSpecTag);
 
-        nbt.put(TagConstants.COLORS, new IntArrayTag(colors));
+        nbt.put(NuminaConstants.COLORS, new IntArrayTag(colors));
         return nbt;
     }
 }

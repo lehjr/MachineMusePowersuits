@@ -31,7 +31,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.heat.HeatUtils;
+import lehjr.numina.common.utils.HeatUtils;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.TagUtils;

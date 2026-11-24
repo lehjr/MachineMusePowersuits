@@ -27,14 +27,22 @@
 package lehjr.powersuits.common.item.electric.tool;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.AdditionalInfo;
-import lehjr.powersuits.common.capability.PowerFistCap;
+import lehjr.powersuits.common.capability.legacy.PowerFistLegacyCap;
+import lehjr.powersuits.common.capability.tool.PowerFistCap;
+import lehjr.powersuits.common.registration.MPSItems;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -76,17 +84,23 @@ public class AbstractElectricTool extends DiggerItem {
 
                     @Override
                     public Ingredient getRepairIngredient() {
-                        return null;
+                        return Ingredient.EMPTY;
                     }
                 },
-                null,
+                TagKey.create(Registries.BLOCK, BuiltInRegistries.BLOCK.getKey(Blocks.AIR)),
                 properties);
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (worldIn != null) {
+            super.appendHoverText(stack, worldIn, tooltip, flagIn);
             AdditionalInfo.appendHoverText(stack, worldIn, tooltip, flagIn);
         }
     }
@@ -94,33 +108,10 @@ public class AbstractElectricTool extends DiggerItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new PowerFistCap(stack);
-    }
-
-    /** Durability bar for showing energy level ------------------------------------------------------------------ */
-    @Override
-    public boolean isBarVisible(ItemStack stack) {
-        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 1).orElse(false);
-    }
-
-    @Override
-    public int getBarWidth(ItemStack stack) {
-        double retVal = stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13D / iEnergyStorage.getMaxEnergyStored()).orElse(1D);
-        return (int) retVal;
-    }
-
-    @Override
-    public int getBarColor(ItemStack stack) {
-        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
-        if (energy == null) {
-            return super.getBarColor(stack);
+        if(stack.is(MPSItems.POWER_FIST_LEGACY.get())) {
+            return new PowerFistLegacyCap(stack);
         }
-        return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
-    }
-
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-
+        return new PowerFistCap(stack);
     }
 
     @Override
@@ -135,9 +126,68 @@ public class AbstractElectricTool extends DiggerItem {
      */
     @Override
     public int getUseDuration(ItemStack stack) {
-        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(IModeChangingItem::getUseDuration).orElse(72000);
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
+        if(mci != null) {
+            return Math.min(mci.getUseDuration(), 7200);
+        }
+        return 7200;
+    }
+
+    /**
+     * Item.releaseUsing(ItemStack, Level, LivingEntity, int) (ItemStack, Level, LivingEntity)} for when the player releases but the full timer has not passed
+     * @param stack
+     * @param level
+     * @param entityLiving
+     * @param timeLeft
+     */
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) {
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
+        if(mci != null) {
+//            NuminaLogger.logDebug("releaseUsing tool, timeleft: " + timeLeft);
+            mci.releaseUsing(stack, level, entityLiving, timeLeft);
+        }
+    }
+
+    /**
+     * Item.finishUsingItem(ItemStack, Level, LivingEntity) for when the player releases and enough ticks have passed
+     * @param stack
+     * @param level
+     * @param livingEntity
+     * @return
+     */
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
+        if(mci != null) {
+//            NuminaLogger.logDebug("finishUsing tool");
+            return mci.finishUsingItem(stack, level, livingEntity);
+        }
+        return stack;
+    }
+
+    /** Durability bar for showing energy level ------------------------------------------------------------------ */
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 1).orElse(false);
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+        double retVal = 1;
+        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY).resolve().orElse(null);
+        if(energy != null) {
+            retVal =  energy.getEnergyStored() * 13D / energy.getMaxEnergyStored();
+        }
+        return (int) retVal;
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY).resolve().orElse(null);
+        if (energy == null) {
+            return super.getBarColor(stack);
+        }
+        return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
     }
 }

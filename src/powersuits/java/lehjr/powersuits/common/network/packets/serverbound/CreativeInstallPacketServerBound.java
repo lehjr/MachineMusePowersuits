@@ -1,6 +1,7 @@
 package lehjr.powersuits.common.network.packets.serverbound;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -41,23 +43,43 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
                 EquipmentSlot slotType = message.slotType;
                 ResourceLocation regName = message.regName;
                 Item item = ForgeRegistries.ITEMS.getValue(regName);
+                if(item == null ){
+                    return;
+                }
+
                 ItemStack module = new ItemStack(item, 1);
 
-                module.getCapability(ForgeCapabilities.ENERGY).ifPresent(iEnergyStorage -> iEnergyStorage.receiveEnergy(iEnergyStorage.getMaxEnergyStored(), false));
+                IEnergyStorage iEnergyStorage = module.getCapability(ForgeCapabilities.ENERGY).resolve().orElse(null);
+                if(iEnergyStorage != null) {
+                    while (iEnergyStorage.getEnergyStored() < iEnergyStorage.getMaxEnergyStored()) {
+                        iEnergyStorage.receiveEnergy(iEnergyStorage.getMaxEnergyStored(), false);
+                    }
+                    iEnergyStorage.receiveEnergy(iEnergyStorage.getMaxEnergyStored(), false);
+                }
 
-                ItemUtils.getItemFromEntitySlot(player, slotType).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                        .filter(IModularItem.class::isInstance)
-                        .map(IModularItem.class::cast)
-                        .ifPresent(iModularItem -> {
-                            if (!iModularItem.getInstalledModuleNames().contains(regName)) {
-                                for (int index = 0; index < iModularItem.getSlots(); index++) {
-                                    if (iModularItem.insertItem(index, module, false).isEmpty()) {
-                                        break;
-                                    }
-                                }
+                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, slotType));
+                if (iModularItem != null) {
+                    int index = iModularItem.findInstalledModule(module);
+
+                    // Todo: upgrade modules
+
+                    // if not installed
+                    if (index < 0) {
+                        for (index = 0; index < iModularItem.getSlots(); index++) {
+                            if (iModularItem.isModuleValidForPlacement(index, module) && iModularItem.insertItem(index, module, false).isEmpty()) {
+                                break;
                             }
-                        });
-
+                        }
+                    } else {
+                        ItemStack tmp = iModularItem.getStackInSlot(index);
+                        iModularItem.setStackInSlot(index, ItemStack.EMPTY);
+                        if (iModularItem.isModuleValidForPlacement(index, module)) {
+                            iModularItem.setStackInSlot(index, module);
+                        } else {
+                            iModularItem.setStackInSlot(index, tmp);
+                        }
+                    }
+                }
                 if (player instanceof ServerPlayer) {
                     sendToClient((ServerPlayer) player, slotType, regName);
                 }

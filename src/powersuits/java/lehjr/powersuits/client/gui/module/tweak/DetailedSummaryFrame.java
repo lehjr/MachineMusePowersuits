@@ -28,6 +28,7 @@ package lehjr.powersuits.client.gui.module.tweak;
 
 
 import com.google.common.util.concurrent.AtomicDouble;
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
@@ -41,7 +42,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -70,7 +70,7 @@ public class DetailedSummaryFrame extends ScrollableFrame {
                     .ifPresent(iModularItem -> {
                         Pair<Integer, Integer> range = iModularItem.getRangeForCategory(ModuleCategory.ARMOR);
                         if (range != null) {
-                            for (int i = range.getLeft(); i < range.getRight(); i++) {
+                            for (int i = range.getFirst(); i < range.getSecond(); i++) {
                                 iModularItem.getStackInSlot(i).getCapability(NuminaCapabilities.Module.POWER_MODULE).ifPresent(iPowerModule -> {
                                     armor.getAndAdd(iPowerModule.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_PHYSICAL));
                                     armor.getAndAdd(iPowerModule.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_ENERGY));
@@ -80,7 +80,7 @@ public class DetailedSummaryFrame extends ScrollableFrame {
 
                         range =  iModularItem.getRangeForCategory(ModuleCategory.ENERGY_STORAGE);
                         if (range != null) {
-                            for (int i = range.getLeft(); i < range.getRight(); i++) {
+                            for (int i = range.getFirst(); i < range.getSecond(); i++) {
                                 energy.getAndAdd(iModularItem.getStackInSlot(i).getCapability(ForgeCapabilities.ENERGY).map((energyHandler) -> energyHandler.getEnergyStored()).orElse(0));
                             }
                         }

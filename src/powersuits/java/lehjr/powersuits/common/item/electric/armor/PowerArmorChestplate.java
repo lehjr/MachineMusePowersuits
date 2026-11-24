@@ -34,10 +34,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
-public class PowerArmorChestplate extends AbstractElectricItemArmor {
+public class PowerArmorChestplate extends ElectricArmor {
     public PowerArmorChestplate() {
         super(Type.CHESTPLATE);
     }
+
+
 
 
     @Override

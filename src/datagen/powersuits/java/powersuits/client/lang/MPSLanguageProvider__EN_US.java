@@ -31,16 +31,16 @@ public class MPSLanguageProvider__EN_US extends AbstractLangageProviderMPS {
     @Override
     public void addModularItems() {
         // Helmet --------------------------------------------------------------------------------------
-        add(MPSItems.POWER_ARMOR_HELMET.get(), "Power Armor Helmet");
+        add(MPSItems.POWER_ARMOR_HELMET_LEGACY.get(), "Power Armor Helmet");
 
         // Chestplate ----------------------------------------------------------------------------------
-        add(MPSItems.POWER_ARMOR_CHESTPLATE.get(), "Power Armor Chestplate");
+        add(MPSItems.POWER_ARMOR_CHESTPLATE_LEGACY.get(), "Power Armor Chestplate");
 
         // Leggings ------------------------------------------------------------------------------------
-        add(MPSItems.POWER_ARMOR_LEGGINGS.get(), "Power Armor Leggings");
+        add(MPSItems.POWER_ARMOR_LEGGINGS_LEGACY.get(), "Power Armor Leggings");
 
         // Boots ---------------------------------------------------------------------------------------
-        add(MPSItems.POWER_ARMOR_BOOTS.get(), "Power Armor Boots");
+        add(MPSItems.POWER_ARMOR_BOOTS_LEGACY.get(), "Power Armor Boots");
 
         // Power Fist ----------------------------------------------------------------------------------
         add(MPSItems.POWER_FIST.get(), "Power Fist");
@@ -248,14 +248,14 @@ public class MPSLanguageProvider__EN_US extends AbstractLangageProviderMPS {
 
         // Tools =======================================================================================
         // Axe -----------------------------------------------------------------------------------------
-        add(MPSItems.AXE_MODULE.get(), "Axe");
+        add(MPSItems.AXE_MODULE_LEGACY.get(), "Axe");
 
-        addItemDescriptions(MPSItems.AXE_MODULE.get(), "Axes are mostly for chopping trees.");
+        addItemDescriptions(MPSItems.AXE_MODULE_LEGACY.get(), "Axes are mostly for chopping trees.");
 
         // Diamond Drill Upgrade -----------------------------------------------------------------------
-        add(MPSItems.DIAMOND_PICK_UPGRADE_MODULE.get(), "Diamond Drill Upgrade");
+        add(MPSItems.DIAMOND_PICK_UPGRADE_MODULE_LEGACY.get(), "Diamond Drill Upgrade");
 
-        addItemDescriptions(MPSItems.DIAMOND_PICK_UPGRADE_MODULE.get(), "Add diamonds to allow your pickaxe module to mine Obsidian. *REQUIRES PICKAXE MODULE TO WORK*");
+        addItemDescriptions(MPSItems.DIAMOND_PICK_UPGRADE_MODULE_LEGACY.get(), "Add diamonds to allow your pickaxe module to mine Obsidian. *REQUIRES PICKAXE MODULE TO WORK*");
 
         // Flint and Steel -----------------------------------------------------------------------------
         add(MPSItems.FLINT_AND_STEEL_MODULE.get(), "Flint and Steel");
@@ -263,9 +263,9 @@ public class MPSLanguageProvider__EN_US extends AbstractLangageProviderMPS {
         addItemDescriptions(MPSItems.FLINT_AND_STEEL_MODULE.get(), "A portable igniter that creates fire through the power of energy.");
 
         // Rototiller ----------------------------------------------------------------------------------
-        add(MPSItems.HOE_MODULE.get(), "Rototiller");
+        add(MPSItems.HOE_MODULE_LEGACY.get(), "Rototiller");
 
-        addItemDescriptions(MPSItems.HOE_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
+        addItemDescriptions(MPSItems.HOE_MODULE_LEGACY.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
 
         // Leaf Blower ---------------------------------------------------------------------------------
         add(MPSItems.LEAF_BLOWER_MODULE.get(), "Leaf Blower");
@@ -278,9 +278,9 @@ public class MPSLanguageProvider__EN_US extends AbstractLangageProviderMPS {
         addItemDescriptions(MPSItems.LUX_CAPACITOR_MODULE.get(), "Launch a virtually infinite number of attractive light sources at the wall.");
 
         // Pickaxe -------------------------------------------------------------------------------------
-        add(MPSItems.PICKAXE_MODULE.get(), "Pickaxe");
+        add(MPSItems.PICKAXE_MODULE_.get(), "Pickaxe");
 
-        addItemDescriptions(MPSItems.PICKAXE_MODULE.get(), "Picks are good for harder materials like stone and ore.");
+        addItemDescriptions(MPSItems.PICKAXE_MODULE_.get(), "Picks are good for harder materials like stone and ore.");
 
         // Shears --------------------------------------------------------------------------------------
         add(MPSItems.SHEARS_MODULE.get(), "Shears");
@@ -288,9 +288,9 @@ public class MPSLanguageProvider__EN_US extends AbstractLangageProviderMPS {
         addItemDescriptions(MPSItems.SHEARS_MODULE.get(), "Cuts through leaves, wool, and creepers alike.");
 
         // Shovel --------------------------------------------------------------------------------------
-        add(MPSItems.SHOVEL_MODULE.get(), "Shovel");
+        add(MPSItems.SHOVEL_MODULE_LEGACY.get(), "Shovel");
 
-        addItemDescriptions(MPSItems.SHOVEL_MODULE.get(), "Shovels are good for soft materials like dirt and sand.");
+        addItemDescriptions(MPSItems.SHOVEL_MODULE_LEGACY.get(), "Shovels are good for soft materials like dirt and sand.");
 
         // Debug =======================================================================================
         // TODO

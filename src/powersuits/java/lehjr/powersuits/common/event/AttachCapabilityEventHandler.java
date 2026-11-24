@@ -1,18 +1,17 @@
 package lehjr.powersuits.common.event;
 
-import lehjr.numina.common.capabilities.module.externalitems.OtherModItemsAsModules;
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.render.hud.HudModule;
 import lehjr.numina.common.capabilities.render.hud.IHudModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
-import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -34,26 +33,28 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AttachCapabilityEventHandler {
+    public static NonNullList<ResourceLocation> toggleable = NonNullList.create();
+
     public static void attachCapability(AttachCapabilitiesEvent<ItemStack> event) {
         final ItemStack itemStack = event.getObject();
         final ResourceLocation regName = ItemUtils.getRegistryName(itemStack);
-        Map<ResourceLocation, ResourceLocation> externalTools = MPSSettings.getExternalModItemsAsToolModules();
-        Map<ResourceLocation, ResourceLocation> externalWeapons = MPSSettings.getExternalModItemsAsWeaponModules();
+//
+//        Map<ResourceLocation, ResourceLocation> externalTools = MPSSettings.getExternalModItemsAsToolModules();
+//        Map<ResourceLocation, ResourceLocation> externalWeapons = MPSSettings.getExternalModItemsAsWeaponModules();
 
         // Clock
         if (!event.getCapabilities().containsKey(MPSRegistryNames.CLOCK_MODULE) && event.getObject().getItem().equals(Items.CLOCK)) {
-            IHudModule clock = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            IHudModule clock = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY);
+
             event.addCapability(MPSRegistryNames.CLOCK_MODULE, new ICapabilityProvider() {
-                @Nonnull
                 @Override
-                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
                     if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         clock.loadCapValues();
                         return LazyOptional.of(() -> (T) clock);
@@ -64,12 +65,11 @@ public class AttachCapabilityEventHandler {
 
             // Compass
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.COMPASS_MODULE) && event.getObject().getItem().equals(Items.COMPASS)) {
-            IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY);
 
             event.addCapability(MPSRegistryNames.COMPASS_MODULE, new ICapabilityProvider() {
-                @Nonnull
                 @Override
-                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
                     if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         compass.loadCapValues();
                         return LazyOptional.of(() -> (T) compass);
@@ -80,11 +80,11 @@ public class AttachCapabilityEventHandler {
 
             // Recovery Compass
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.RECOVERY_COMPASS) && event.getObject().getItem().equals(Items.RECOVERY_COMPASS)) {
-            IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY);
+
             event.addCapability(MPSRegistryNames.RECOVERY_COMPASS, new ICapabilityProvider() {
-                @Nonnull
                 @Override
-                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
                     if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         compass.loadCapValues();
                         return LazyOptional.of(() -> (T) compass);
@@ -95,11 +95,11 @@ public class AttachCapabilityEventHandler {
 
             // AE2 Meteorite Compass (WIP only handheld model shows needle direction)
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.AE2_METEOR_COMPASS) && event.getObject().getItem().equals(ForgeRegistries.ITEMS.getValue(new ResourceLocation("ae2:meteorite_compass")))) {
-            IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY);
             event.addCapability(MPSRegistryNames.AE2_METEOR_COMPASS, new ICapabilityProvider() {
-                @Nonnull
+
                 @Override
-                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
                     if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         compass.loadCapValues();
                         return LazyOptional.of(() -> (T) compass);
@@ -111,7 +111,28 @@ public class AttachCapabilityEventHandler {
             // Crafting workbench
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
             final Component CONTAINER_NAME = Component.translatable("container.crafting");
-            IRightClickModule rightClick = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
+            IRightClickModule rightClick = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY) {
+
+                @Override
+                public int getTier() {
+                    return 1;
+                }
+
+                @Override
+                public String getModuleGroup() {
+                    return "";
+                }
+
+                @Override
+                public boolean isAllowed() {
+                    return true;
+                }
+
+                @Override
+                public boolean isModuleOnline() {
+                    return true;
+                }
+
                 @Override
                 public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
                     if (worldIn.isClientSide) {
@@ -180,7 +201,7 @@ public class AttachCapabilityEventHandler {
                                 }
                                 return itemstack;
                             }
-                        }, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME);
+                        }, CONTAINER_NAME);
 //                        NetworkHooks.openScreen((ServerPlayer) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
                         NetworkHooks.openScreen((ServerPlayer) playerIn, container);
                         playerIn.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
@@ -190,9 +211,9 @@ public class AttachCapabilityEventHandler {
             };
 
             event.addCapability(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE, new ICapabilityProvider() {
-                @Nonnull
+
                 @Override
-                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
                     if (cap == NuminaCapabilities.Module.POWER_MODULE) {
                         return LazyOptional.of(()->(T)rightClick);
                     }
@@ -201,37 +222,45 @@ public class AttachCapabilityEventHandler {
             });
         }
 
-        ResourceLocation capName = MPSRegistryNames.getRegName(ItemUtils.getRegistryName(itemStack).getPath());
-        if (externalTools.containsKey(regName) && !event.getCapabilities().containsKey(capName)) {
-            addCapabilityToItem(event, capName, itemStack, ModuleCategory.TOOL);
-        } else if (externalWeapons.containsKey(regName) && !event.getCapabilities().containsKey(capName)) {
-            addCapabilityToItem(event, capName, itemStack, ModuleCategory.WEAPON);
-        }
-    }
-
-    static void addCapabilityToItem(AttachCapabilitiesEvent<ItemStack> event, ModuleTarget target, ResourceLocation capName, @Nonnull ItemStack module, ModuleCategory category) {
-        event.addCapability(capName, new ICapabilityProvider() {
-            final OtherModItemsAsModules powerModule = new OtherModItemsAsModules(module, target, category, MPSSettings::getModuleConfig) {
-                @Override
-                public boolean isAllowed() {
-                    return true;
+        event.getCapabilities().forEach((resourceLocation, iCapabilityProvider) ->
+            iCapabilityProvider.getCapability(NuminaCapabilities.Module.POWER_MODULE).filter(IToggleableModule.class::isInstance).ifPresent(cap -> {
+                if(!toggleable.contains(resourceLocation)) {
+                    toggleable.add(resourceLocation);
                 }
-            };
+            }));
 
-            final LazyOptional<IPowerModule> powerModuleHolder = LazyOptional.of(() -> powerModule);
 
-            @Override
-            public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @org.jetbrains.annotations.Nullable Direction side) {
-                final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
-                if (powerModuleCapability.isPresent()) {
-                    return powerModuleCapability;
-                }
-                return LazyOptional.empty();
-            }
-        });
+//        ResourceLocation capName = MPSRegistryNames.getRegName(ItemUtils.getRegistryName(itemStack).getPath());
+//        if (externalTools.containsKey(regName) && !event.getCapabilities().containsKey(capName)) {
+//            addCapabilityToItem(event, capName, itemStack, ModuleCategory.TOOL);
+//        } else if (externalWeapons.containsKey(regName) && !event.getCapabilities().containsKey(capName)) {
+//            addCapabilityToItem(event, capName, itemStack, ModuleCategory.WEAPON);
+//        }
     }
 
-    static void addCapabilityToItem(AttachCapabilitiesEvent<ItemStack> event, ResourceLocation capName, @Nonnull ItemStack module, ModuleCategory category) {
-        addCapabilityToItem(event, ModuleTarget.TOOLONLY, capName, module, category);
-    }
+//    static void addCapabilityToItem(AttachCapabilitiesEvent<ItemStack> event, ModuleTarget target, ResourceLocation capName, @Nonnull ItemStack module, ModuleCategory category) {
+//        event.addCapability(capName, new ICapabilityProvider() {
+//            final OtherModItemsAsModules powerModule = new OtherModItemsAsModules(module, target, category) {
+//                @Override
+//                public boolean isAllowed() {
+//                    return true;
+//                }
+//            };
+//
+//            final LazyOptional<IPowerModule> powerModuleHolder = LazyOptional.of(() -> powerModule);
+//
+//            @Override
+//            public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @org.jetbrains.annotations.Nullable Direction side) {
+//                final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+//                if (powerModuleCapability.isPresent()) {
+//                    return powerModuleCapability;
+//                }
+//                return LazyOptional.empty();
+//            }
+//        });
+//    }
+
+//    static void addCapabilityToItem(AttachCapabilitiesEvent<ItemStack> event, ResourceLocation capName, @Nonnull ItemStack module, ModuleCategory category) {
+//        addCapabilityToItem(event, ModuleTarget.TOOLONLY, capName, module, category);
+//    }
 }

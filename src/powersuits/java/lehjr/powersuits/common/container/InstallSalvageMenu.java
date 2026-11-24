@@ -1,13 +1,12 @@
 package lehjr.powersuits.common.container;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.container.slot.HideableSlotItemHandler;
-import lehjr.numina.common.container.slot.IIConProvider;
+import lehjr.numina.common.container.slot.*;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.utils.IconUtils;
-import lehjr.numina.common.utils.ItemUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.MathUtils;
 import lehjr.powersuits.common.registration.MPSMenuTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -19,72 +18,39 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 public class InstallSalvageMenu extends AbstractContainerMenu {
     EquipmentSlot slotType;
     int mainInventoryStart = 0;
     int hotbarInventoryStart = 0;
+    double mouseX;
+    double mouseY;
+    boolean preserve;
 
     public InstallSalvageMenu(int containerID, Inventory playerInventory, EquipmentSlot slotType) {
+        this(containerID, playerInventory, slotType, false, 0, 0);
+    }
+
+    public InstallSalvageMenu(int containerID, Inventory playerInventory, EquipmentSlot slotType, boolean preserve, double mouseX, double mouseY) {
         super(MPSMenuTypes.INSTALL_SALVAGE_MENU_TYPE.get(), containerID);
         this.slotType = slotType;
+        this.preserve = preserve;
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
 
         int row, col;
         int parentSlot = slotType == EquipmentSlot.MAINHAND ? playerInventory.selected : equipmentSlotToParent(slotType);
+        ItemStack modularItemStack = playerInventory.player.getItemBySlot(slotType);
 
-        ItemUtils.getItemFromEntitySlot(playerInventory.player, slotType).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .ifPresent(iItemHandler -> {
-                    int innerrow = 0;
-                    int innercol = 0;
-                    for (int modularItemInvIndex = 0; modularItemInvIndex < iItemHandler.getSlots(); modularItemInvIndex ++) {
-                        innercol = modularItemInvIndex % 16;
-                        innerrow = (modularItemInvIndex - innercol)/16;
-
-                        if (MathUtils.isIntInRange(iItemHandler.getRangeForCategory(ModuleCategory.ARMOR), modularItemInvIndex)) {
-                            addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
-
-                                @OnlyIn(Dist.CLIENT)
-                                @Override
-                                public com.mojang.datafixers.util.Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                                    return IconUtils.getSlotBackground(EquipmentSlot.OFFHAND);
-                                }
-
-                                @OnlyIn(Dist.CLIENT)
-                                @Override
-                                public void drawIconAt(PoseStack matrixStack, double v, double v1, Color color) {
-
-                                }
-                            });
-                        } else if (MathUtils.isIntInRange(iItemHandler.getRangeForCategory(ModuleCategory.ENERGY_STORAGE), modularItemInvIndex)) {
-                            addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
-                                @OnlyIn(Dist.CLIENT)
-                                @Override
-                                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                                    IconUtils.INSTANCE.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
-                                }
-                            });
-
-                        } else if (MathUtils.isIntInRange(iItemHandler.getRangeForCategory(ModuleCategory.ENERGY_GENERATION), modularItemInvIndex)) {
-                            addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, -1000) {
-                                @OnlyIn(Dist.CLIENT)
-                                @Override
-                                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                                    IconUtils.INSTANCE.getIcon().energygeneration.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
-                                }
-                            });
-                        } else {
-                            addSlot(new HideableSlotItemHandler(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18));
-                        }
-                    }
-                });
+        IModularItem modularItemCapability = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItemStack);
+        if (modularItemCapability != null) {
+            addSlots(modularItemCapability, parentSlot);
+        }
 
         mainInventoryStart = this.slots.size();
 
-        /** Main inventory */
+        // Main inventory
         for(row = 0; row < 3; ++row) {
             for(col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 178 + col * 18, 133 + row * 18));
@@ -93,13 +59,9 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
         hotbarInventoryStart = this.slots.size();
 
-        /** Hotbar with pickup disabled for modular items */
+        // Hotbar with pickup disabled for modular items
         for(col = 0; col < 9; ++col) {
-            if (col == playerInventory.selected &&
-                    playerInventory.getItem(playerInventory.selected).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                            .filter(IModularItem.class::isInstance)
-                            .map(IModularItem.class::cast)
-                            .isPresent()) {
+            if (col == playerInventory.selected && modularItemCapability != null) {
                 this.addSlot(new Slot(playerInventory, col, 178 + col * 18, 191) {
                     @Override
                     public boolean mayPickup(Player player) {
@@ -111,11 +73,95 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
             }
         }
 
-//        for (Slot slot : this.slots) {
-//            if(slot instanceof IHideableSlot) {
-//                ((IHideableSlot) slot).disable();
-//            }
-//        }
+        for (Slot slot : this.slots) {
+            if(slot instanceof IHideableSlot) {
+                ((IHideableSlot) slot).disable();
+            }
+        }
+    }
+
+    void addSlots(IModularItem cap, int parentSlot) {
+
+        int innerrow = 0;
+        int innercol = 0;
+        for (int modularItemInvIndex = 0; modularItemInvIndex < cap.getSlots(); modularItemInvIndex ++) {
+            innercol = modularItemInvIndex % 16;
+            innerrow = (modularItemInvIndex - innercol)/16;
+            int finalModularItemInvIndex = modularItemInvIndex;
+
+            if (MathUtils.isIntInRange(cap.getRangeForCategory(ModuleCategory.ARMOR), modularItemInvIndex)) {
+                // OFFHAND
+                addSlot(new EquipmentIconSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18, EquipmentSlot.OFFHAND) {
+                    @OnlyIn(Dist.CLIENT)
+                    @Override
+                    public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
+
+                    }
+
+                    @Override
+                    public boolean mayPlace(ItemStack stack) {
+//                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+
+                        return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                    }
+                });
+
+            } else {
+                for (ModuleCategory category: ModuleCategory.values()) {
+                    if((MathUtils.isIntInRange(cap.getRangeForCategory(category), modularItemInvIndex))) {
+//                        NuminaLogger.logDebug("category " + category +" is in range for slot: " + modularItemInvIndex);
+                        if(category.hasContainerIcon()){
+                            if(category.usesNuminaGuiIcons()) {
+                                addSlot(new CategoryIconSlotItemHandler(cap, parentSlot, finalModularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18, category) {
+                                    @Override
+                                    public boolean mayPlace(ItemStack stack) {
+//                                        NuminaLogger.logDebug("may place <" + stack + "> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+
+                                        return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                                    }
+                                });
+                            } else {
+                                addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
+                                    @Override
+                                    @Nullable
+                                    public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                                        return SlotBackgrounds.getIconLocationPairForCategory(category);
+                                    }
+
+                                    @Override
+                                    public boolean mayPlace(ItemStack stack) {
+//                                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+                                        return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                                    }
+                                });
+                            }
+                        } else {
+                            // Generic slot (Category NONE)
+                            addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
+                                @Override
+                                public boolean mayPlace(ItemStack stack) {
+//                                    NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+                                    return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    public boolean preserveMouse() {
+        return preserve;
+    }
+
+    public double getMouseX() {
+        return mouseX;
+    }
+
+    public double getMouseY() {
+        return mouseY;
     }
 
     public EquipmentSlot getEquipmentSlot() {
@@ -132,7 +178,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
                 return 37;
             case FEET:
                 return 36;
-             case OFFHAND:
+            case OFFHAND:
                 return 40;
             default:
                 return  -1;
@@ -148,13 +194,17 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
     }
 
     // InventoryMenu version
-    public void removed(Player playerEntity) {
-        super.removed(playerEntity);
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
     }
 
+
     // player container version
-    public boolean stillValid(Player playerEntity) {
+    @Override
+    public boolean stillValid(Player player) {
         return true;
+        //        return this.container.stillValid(player);
     }
 
 
@@ -166,37 +216,28 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
      */
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {
-            ItemStack itemstack1 = slot.getItem();
-            itemstack = itemstack1.copy();
+            ItemStack itemStack1 = slot.getItem();
+            itemStack = itemStack1.copy();
+            // hotbar
             if (index < mainInventoryStart) {
-                if (!this.moveItemStackTo(itemstack1, mainInventoryStart, this.slots.size(), true)) {
+                if (!this.moveItemStackTo(itemStack1, mainInventoryStart, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.moveItemStackTo(itemstack1, 0, mainInventoryStart, false)) {
+
+            } else if (!this.moveItemStackTo(itemStack1, 0, mainInventoryStart, false)) {
                 return ItemStack.EMPTY;
             }
 
-            if (itemstack1.isEmpty()) {
+            if (itemStack1.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }
         }
 
-        return itemstack;
-    }
-
-    abstract class IconSlot extends HideableSlotItemHandler implements IIConProvider {
-        public IconSlot(IItemHandler itemHandler, int parent, int index, int xPosition, int yPosition) {
-            super(itemHandler, parent, index, xPosition, yPosition);
-        }
-
-        public IconSlot(IItemHandler itemHandler, int parent, int index, int xPosition, int yPosition, boolean isEnabled) {
-            super(itemHandler, parent, index, xPosition, yPosition, isEnabled);
-        }
+        return itemStack;
     }
 }
-

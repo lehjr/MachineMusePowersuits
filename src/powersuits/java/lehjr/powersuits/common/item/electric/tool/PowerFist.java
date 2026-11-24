@@ -27,9 +27,10 @@
 package lehjr.powersuits.common.item.electric.tool;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
@@ -55,6 +56,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,95 +75,30 @@ public class PowerFist extends AbstractElectricTool {
      * @return
      */
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
-
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+//        NuminaLogger.logDebug("use()... ");
         ItemStack fist = ItemUtils.getItemFromEntityHand(player, hand);
         final InteractionResultHolder<ItemStack> fallback = new InteractionResultHolder<>(InteractionResult.PASS, fist);
 //        if (hand != InteractionHand.MAIN_HAND) {
 //            return fallback;
 //        }
-        InteractionResultHolder<ItemStack> tmp = fist.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(handler-> handler.use(level, player, hand, fallback)).orElse(fallback);
-        return new InteractionResultHolder<>(tmp.getResult(), fist);
-    }
-
-    /**
-     * Called server side when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
-     *
-     * @param powerFist
-     * @param worldIn
-     * @param state
-     * @param pos
-     * @param entityLiving
-     * @return
-     */
-    @Override
-    public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        return powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(iItemHandler -> iItemHandler.mineBlock(powerFist, worldIn, state, pos, entityLiving)).orElse(false);
-    }
-
-    @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return false;
-    }
-
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, LevelReader level, BlockPos pos, Player player) {
-        return true;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining) {
-        if(itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(handler-> handler.onUseTick(level, entity, ticksRemaining)).orElse(false)) {
-            super.onUseTick(level, entity, itemStack, ticksRemaining);
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(fist);
+        if(mci!= null) {
+            return new InteractionResultHolder<>(mci.use(level, player, hand, fallback).getResult(), fist);
         }
+        return fallback;
     }
 
-    @Override
-    public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
-        final InteractionResult fallback = InteractionResult.PASS;
-
-        final InteractionHand hand = context.getHand();
-        if (hand != InteractionHand.MAIN_HAND) {
-            return fallback;
-        }
-
-        return context.getItemInHand().getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(handler-> handler.onItemUseFirst(itemStack, context, fallback)).orElse(fallback);
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack pStack, BlockState pState) {
-        return pStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(handler-> handler.getDestroySpeed(pStack, pState)).orElse(1.0F);
-    }
-
-    @Override
-    public InteractionResult interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, InteractionHand hand) {
-        return itemStackIn.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(handler->
-                        handler.getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
-                                .filter(IRightClickModule.class::isInstance)
-                                .map(IRightClickModule.class::cast)
-                                .map(m-> m.interactLivingEntity(itemStackIn, player, entity, hand).getResult())
-                                .orElse(InteractionResult.PASS)
-                ).orElse(super.interactLivingEntity(itemStackIn, player, entity, hand));
-    }
+//    @SuppressWarnings("deprecation")
+//    @Override
+//    public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining) {
+//        if(itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                .filter(IModeChangingItem.class::isInstance)
+//                .map(IModeChangingItem.class::cast)
+//                .map(handler-> handler.onUseTick(level, entity, ticksRemaining)).orElse(false)) {
+//            super.onUseTick(level, entity, itemStack, ticksRemaining);
+//        }
+//    }
 
 //    @Override
 //    public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
@@ -179,6 +116,99 @@ public class PowerFist extends AbstractElectricTool {
                 .ifPresent(handler-> handler.releaseUsing(stack, worldIn, entityLiving, timeLeft));
     }
 
+
+
+
+    /**
+     * Called server side when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
+     *
+     * @param powerFist
+     * @param worldIn
+     * @param state
+     * @param pos
+     * @param entityLiving
+     * @return
+     */
+    @Override
+    public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(powerFist);
+        if(mci != null) {
+            return mci.mineBlock(powerFist, worldIn, state, pos, entityLiving);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
+    }
+
+//    /**
+//     * Called before a block is broken.  Return true to prevent default block harvesting.
+//     *
+//     * Note: In SMP, this is called on both client and server sides!
+//     *
+//     * @param itemstack The current ItemStack
+//     * @param pos Block's position in world
+//     * @param player The Player that is wielding the item
+//     * @return True to prevent harvesting, false to continue as normal
+//     */
+//    @Override
+//    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
+//        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(itemstack);
+//        if(mci != null) {
+//
+//        }
+//
+//
+//        return itemstack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                .filter(IModeChangingItem.class::isInstance)
+//                .map(IModeChangingItem.class::cast)
+//                .map(iItemHandler -> iItemHandler.onBlockStartBreak(itemstack, pos, player)).orElse(false);
+//    }
+
+    @Override
+    public boolean doesSneakBypassUse(ItemStack stack, LevelReader level, BlockPos pos, Player player) {
+        return true;
+    }
+
+    @Override
+    public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
+        final InteractionResult fallback = InteractionResult.PASS;
+
+        final InteractionHand hand = context.getHand();
+        if (hand != InteractionHand.MAIN_HAND) {
+            return fallback;
+        }
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(itemStack);
+        if(mci != null) {
+            return mci.onItemUseFirst(itemStack, context, fallback);
+        }
+        return fallback;
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack itemStack, BlockState state) {
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(itemStack);
+        if(mci != null) {
+            return mci.getDestroySpeed(itemStack, state);
+        }
+        return 1F;
+    }
+
+    @Override
+    public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity entity, InteractionHand hand) {
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(itemStack);
+        if(mci != null) {
+            ItemStack module = mci.getActiveModule();
+            IPowerModule pm = mci.getModuleCapability(module);
+            if(pm instanceof IRightClickModule) {
+                return ((IRightClickModule) pm).interactLivingEntity(itemStack, player, entity, hand).getResult();
+            }
+        }
+        return super.interactLivingEntity(itemStack, player, entity, hand);
+    }
+
     @Override
     public InteractionResult useOn(UseOnContext context) {
         final InteractionResult fallback = InteractionResult.PASS;
@@ -188,10 +218,11 @@ public class PowerFist extends AbstractElectricTool {
             return fallback;
         }
 
-        return context.getItemInHand().getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(handler-> handler.useOn(context, fallback)).orElse(fallback);
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(context.getItemInHand());
+        if(mci != null) {
+            return mci.useOn(context, fallback);
+        }
+        return fallback;
     }
 
     /**
@@ -203,10 +234,8 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state) {
-        return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(iItemHandler -> iItemHandler.isCorrectToolForDrops(itemStack, state)).orElse(false);
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(itemStack);
+        return mci != null && mci.isCorrectToolForDrops(itemStack, state);
     }
 
     /**
@@ -215,45 +244,35 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof Player) {
-            itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModeChangingItem.class::isInstance)
-                    .map(IModeChangingItem.class::cast)
-                    .ifPresent(iItemHandler -> iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.MELEE_ASSIST_MODULE)
-                            .getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(pm->{
-                                Player player = (Player) attacker;
-                                double drain = pm.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-                                if (ElectricItemUtils.getPlayerEnergy(player) > drain) {
-                                    ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
-                                    double damage = pm.applyPropertyModifiers(MPSConstants.PUNCH_DAMAGE);
-                                    double knockback = pm.applyPropertyModifiers(MPSConstants.PUNCH_KNOCKBACK);
-                                    DamageSource damageSource = attacker.damageSources().playerAttack(player);
-                                    if (target.hurt(damageSource, (float) (int) damage)) {
-                                        Vec3 lookVec = player.getLookAngle();
-                                        target.push(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);
-                                    }
-                                }
-                            }));
+        if (attacker instanceof Player player) {
+            IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(itemStack);
+            if(mci != null) {
+                int index = mci.findInstalledModule(MPSConstants.MELEE_ASSIST_MODULE);
+                if(mci.isSlotValid(index)) {
+                    IPowerModule pm = mci.getModuleCapability(mci.getStackInSlot(index));
+                    if(pm != null) {
+                        double drain = pm.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                        if (ElectricItemUtils.getPlayerEnergy(player) > drain) {
+                            ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
+                            double damage = pm.applyPropertyModifiers(MPSConstants.PUNCH_DAMAGE);
+                            double knockback = pm.applyPropertyModifiers(MPSConstants.PUNCH_KNOCKBACK);
+                            DamageSource damageSource = attacker.damageSources().playerAttack(player);
+                            if (target.hurt(damageSource, (float) (int) damage)) {
+                                Vec3 lookVec = player.getLookAngle();
+                                target.push(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);
+                            }
+                        }
+                    }
+                }
+            }
         }
         return true;
     }
 
-    /**
-     * Called before a block is broken.  Return true to prevent default block harvesting.
-     *
-     * Note: In SMP, this is called on both client and server sides!
-     *
-     * @param itemstack The current ItemStack
-     * @param pos Block's position in world
-     * @param player The Player that is wielding the item
-     * @return True to prevent harvesting, false to continue as normal
-     */
     @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-        return itemstack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(iItemHandler -> iItemHandler.onBlockStartBreak(itemstack, pos, player)).orElse(false);
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
+        return mci != null && mci.canPerformAction(toolAction);
     }
 
     @Override
@@ -263,10 +282,11 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
-        return oldStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(iModeChangingItem -> iModeChangingItem.canContinueUsing(newStack)).orElse(false);
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(oldStack);
+        if(mci != null) {
+            return mci.canContinueUsing(newStack);
+        }
+        return false;
     }
 
     @Override

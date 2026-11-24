@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.item.electric.armor;
 
-public class PowerArmorLeggings extends AbstractElectricItemArmor {
+public class PowerArmorLeggings extends ElectricArmor {
     public PowerArmorLeggings() {
         super(Type.LEGGINGS);
     }

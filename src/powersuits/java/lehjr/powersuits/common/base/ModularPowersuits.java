@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.common.base;
 
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.event.RenderEventHandler;
@@ -47,8 +46,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -87,22 +84,22 @@ public class ModularPowersuits {
         MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
 
 
-        // handles loading and reloading event
-        modEventBus.addListener((ModConfigEvent event) -> {
-            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
-
-            final ModConfig config = event.getConfig();
-            if (config.getSpec()!= null && config.getSpec() == MPSSettings.SERVER_SPEC) {
-                MPSSettings.getModuleConfig().setServerConfig(config);
-
-                // This is actually for a feature that isn't even currently enabled :P
-                // getFullPath can't be used on client if it isn't also hosting the server
-                if (config instanceof CommentedFileConfig) {
-                    CosmeticPresetSaveLoad.setConfigDirString(config.getFullPath().getParent().toString());
-                    CosmeticPresetSaveLoad.copyPresetsFromJar(config.getFullPath().getParent().toString());
-                }
-            }
-        });
+//        // handles loading and reloading event
+//        modEventBus.addListener((ModConfigEvent event) -> {
+//            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
+//
+//            final ModConfig config = event.getConfig();
+//            if (config.getSpec()!= null && config.getSpec() == MPSSettings.SERVER_SPEC) {
+//                MPSSettings.getModuleConfig().setServerConfig(config);
+//
+//                // This is actually for a feature that isn't even currently enabled :P
+//                // getFullPath can't be used on client if it isn't also hosting the server
+//                if (config instanceof CommentedFileConfig) {
+//                    CosmeticPresetSaveLoad.setConfigDirString(config.getFullPath().getParent().toString());
+//                    CosmeticPresetSaveLoad.copyPresetsFromJar(config.getFullPath().getParent().toString());
+//                }
+//            }
+//        });
 
 
         MPSConfigurations.setup(ModLoadingContext.get());
@@ -123,7 +120,6 @@ public class ModularPowersuits {
 
         modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onModelBake);
         modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onAddAdditional);
-        modEventBus.addListener(RenderEventHandler.INSTANCE::preTextureStitch);
 
         MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new KeymappingKeyHandler());

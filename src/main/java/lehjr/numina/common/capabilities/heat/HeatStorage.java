@@ -63,7 +63,7 @@ public abstract class HeatStorage implements IHeatStorage, INBTSerializable<Doub
             return 0;
         }
 
-        double heatReceived = Math.min(capacity - heat, Math.min(this.maxReceive, maxReceive));
+        double heatReceived = Math.min(getMaxHeatStored() - heat, Math.min(this.maxReceive, maxReceive));
         if (!simulate && heatReceived !=0) {
             heat += heatReceived;
             onValueChanged();

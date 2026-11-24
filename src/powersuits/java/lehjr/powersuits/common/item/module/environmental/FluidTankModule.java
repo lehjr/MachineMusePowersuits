@@ -26,14 +26,12 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.heat.HeatUtils;
-import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.numina.common.utils.HeatUtils;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -165,7 +163,7 @@ public class FluidTankModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> capabilityPowerModule = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> capabilityPowerModule = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (capabilityPowerModule.isPresent()) {
                 return capabilityPowerModule;
             }
