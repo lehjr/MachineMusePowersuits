@@ -27,6 +27,7 @@
 package lehjr.powersuits.common.capability.legacy;
 
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
+import lehjr.numina.common.capabilities.heat.ModularItemHeatWrapper;
 import lehjr.numina.common.capabilities.inventory.modechanging.ModeChangingModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.render.IModelSpec;
@@ -57,7 +58,7 @@ public class PowerFistLegacyCap implements ICapabilityProvider {
     final PowerFistRenderWrapper modelSpec;
     final LazyOptional<IModelSpec> modelSpecHolder;
 
-    final HeatItemWrapper heatStorage;
+    final ModularItemHeatWrapper heatStorage;
     final LazyOptional<IHeatStorage> heatHolder;
 
     public PowerFistLegacyCap(@Nonnull ItemStack itemStackIn) {
@@ -79,7 +80,7 @@ public class PowerFistLegacyCap implements ICapabilityProvider {
         this.modelSpec = new PowerFistRenderWrapper(itemStack);
         this.modelSpecHolder = LazyOptional.of(()-> modelSpec);
 
-        this.heatStorage = new HeatItemWrapper(itemStack, 10);
+        this.heatStorage = new ModularItemHeatWrapper(itemStack, 10);
         heatHolder = LazyOptional.of(() -> {
             modularItem.loadCapValues();
             heatStorage.loadCapValues();

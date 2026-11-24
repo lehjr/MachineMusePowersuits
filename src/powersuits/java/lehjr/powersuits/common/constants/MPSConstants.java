@@ -134,7 +134,7 @@ public class MPSConstants {
     public static final String ENERGY_CONSUMPTION_THRUST_MULTIPLIER = ENERGY_CONSUMPTION + StringUtils.capitalize(THRUST) + MULTIPLIER;
     public static final String MOVEMENT_SPEED = "movement_speed";
     public static final String SWIM_SPEED = "swim_speed";
-
+    public static final String STEP_HEIGHT = "step_height";
 
     // Blink Drive
     public static final String RANGE = "range";

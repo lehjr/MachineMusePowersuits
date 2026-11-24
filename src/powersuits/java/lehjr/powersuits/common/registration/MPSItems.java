@@ -9,10 +9,9 @@ import lehjr.powersuits.common.item.electric.tool.PowerFist;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
-import lehjr.powersuits.common.item.module.energy_generation.AdvancedSolarGeneratorModule;
 import lehjr.powersuits.common.item.module.energy_generation.KineticGeneratorModule;
-import lehjr.powersuits.common.item.module.energy_generation.SolarGeneratorModule;
-import lehjr.powersuits.common.item.module.energy_generation.ThermalGeneratorModule;
+import lehjr.powersuits.common.item.module.energy_generation.solar.SolarGeneratorModule;
+import lehjr.powersuits.common.item.module.energy_generation.thermal.ThermalGeneratorModule;
 import lehjr.powersuits.common.item.module.environmental.*;
 import lehjr.powersuits.common.item.module.fluidstorage.CoolantTankModule;
 import lehjr.powersuits.common.item.module.miningenchantment.AquaAffinityModule;
@@ -228,7 +227,7 @@ public class MPSItems {
     // TODO: disable item but add upgrade path through crafting, remove the old recipes (make a tier 1)
     public static final RegistryObject<Item> SOLAR_GENERATOR_MODULE = MPS_ITEMS.register(MPSRegistryNames.SOLAR_GENERATOR_MODULE.getPath(), SolarGeneratorModule::new);
     // TODO: disable item but add upgrade path through crafting, remove the old recipes (make a tier 2)
-    public static final RegistryObject<Item> ADVANCED_SOLAR_GENERATOR_MODULE = MPS_ITEMS.register(MPSRegistryNames.ADVANCED_SOLAR_GENERATOR_MODULE.getPath(), AdvancedSolarGeneratorModule::new);
+    public static final RegistryObject<Item> ADVANCED_SOLAR_GENERATOR_MODULE = MPS_ITEMS.register(MPSRegistryNames.ADVANCED_SOLAR_GENERATOR_MODULE.getPath(), SolarGeneratorModule::new);
     // TODO: not sure yet
     public static final RegistryObject<Item> KINETIC_GENERATOR_MODULE = MPS_ITEMS.register(MPSRegistryNames.KINETIC_GENERATOR_MODULE.getPath(), KineticGeneratorModule::new);
     // TODO: disable item but add upgrade path through crafting, remove the old recipes (make a tier 1)
@@ -239,10 +238,10 @@ public class MPSItems {
 
     // disable and offer upgrade to thermal generator
     public static final RegistryObject<Item> COOLING_SYSTEM_MODULE = MPS_ITEMS.register(MPSRegistryNames.COOLING_SYSTEM_MODULE.getPath(),
-            CoolingSystemModule::new);
+            ThermalGeneratorModule::new);
 
     // disable and offer upgrade to coolant tank
-    public static final RegistryObject<Item> FLUID_TANK_MODULE = MPS_ITEMS.register(MPSRegistryNames.FLUID_TANK_MODULE.getPath(), FluidTankModule::new);
+    public static final RegistryObject<Item> FLUID_TANK_MODULE = MPS_ITEMS.register(MPSRegistryNames.FLUID_TANK_MODULE.getPath(), CoolantTankModule::new);
 
     // Mining Enhancements ------------------------------------------------------------------------
     // just replace this with selective miner

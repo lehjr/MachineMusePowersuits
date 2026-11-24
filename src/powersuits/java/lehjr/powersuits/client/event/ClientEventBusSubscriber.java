@@ -79,10 +79,11 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
-        if (!event.getEntity().getAbilities().flying && !event.getEntity().onGround() && this.playerHasFlightOn(event.getEntity())) {
-            event.getEntity().getAbilities().flying = true;
-            ownFly = true;
-        }
+        //FIME!!! WTF?
+//        if (!event.getEntity().getAbilities().flying && !event.getEntity().onGround() && this.playerHasFlightOn(event.getEntity())) {
+//            event.getEntity().getAbilities().flying = true;
+//            ownFly = true;
+//        }
 
         if(ItemUtils.getItemFromEntitySlot(event.getEntity(), EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)

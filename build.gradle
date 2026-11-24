@@ -28,6 +28,14 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.ALL
 }
 
+//tasks.named('updateDaemonJvm', UpdateDaemonJvm) {
+//    languageVersion = JavaLanguageVersion.of("${java_version}")
+//}
+
+if (JavaVersion.current() != JavaVersion.VERSION_17) {
+    throw new GradleException("This 1.20.1 project requires Gradle to run on Java 17 (currently using ${JavaVersion.current()}). Set your IDE Gradle JVM or JAVA_HOME to Java 17.")
+}
+
 defaultTasks 'build'
 
 idea {
@@ -258,8 +266,7 @@ minecraft {
 
     accessTransformers.from(
             file('src/main/resources/META-INF/accesstransformer.cfg'),
-            file('src/powersuits/resources/META-INF/accesstransformer.cfg'),
-            file('src/mpsrecipecreator/resources/META-INF/accesstransformer.cfg'))
+            file('src/powersuits/resources/META-INF/accesstransformer.cfg'))
 
     runs {
         client {

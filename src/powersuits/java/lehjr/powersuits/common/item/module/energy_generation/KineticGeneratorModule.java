@@ -39,6 +39,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -59,14 +60,9 @@ public class KineticGeneratorModule extends AbstractPowerModule {
         private final Ticker ticker;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
-        public CapProvider(@Nonnull ItemStack module) {
+        public CapProvider(ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.ENERGY_GENERATION, ModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_GENERATION, 2000);
-                addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.ENERGY_GENERATION, 6000, "FE");
-                addBaseProperty(NuminaConstants.MOVEMENT_RESISTANCE, 0.01F);
-                addTradeoffProperty(MPSConstants.ENERGY_GENERATED, NuminaConstants.MOVEMENT_RESISTANCE, 0.49F, "%");
-            }};
+            this.ticker = new Ticker(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
@@ -75,14 +71,18 @@ public class KineticGeneratorModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, true);
+            public Ticker(ItemStack module) {
+                super(module, ModuleCategory.ENERGY_GENERATION, ModuleTarget.LEGSONLY);
+                addBaseProperty(MPSConstants.ENERGY_GENERATION, 2000);
+                addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.ENERGY_GENERATION, 6000, "FE");
+                addBaseProperty(NuminaConstants.MOVEMENT_RESISTANCE, 0.01F);
+                addTradeoffProperty(MPSConstants.ENERGY_GENERATED, NuminaConstants.MOVEMENT_RESISTANCE, 0.49F, "%");
             }
 
             @Override
-            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
+            public boolean onPlayerTickActive(Player player, Level level, ItemStack host, int moduleIndex) {
                 if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying() || !player.onGround())
-                    onPlayerTickInactive(player, itemStackIn);
+                    return onPlayerTickInactive(player, level, host, moduleIndex);
 
                 // really hate running this check on every tick but needed for player speed adjustments
                 if (ElectricItemUtils.getPlayerEnergy(player) < ElectricItemUtils.getMaxPlayerEnergy(player)) {
@@ -96,19 +96,39 @@ public class KineticGeneratorModule extends AbstractPowerModule {
                         ElectricItemUtils.givePlayerEnergy(player, (int) (distance * 20 * applyPropertyModifiers(MPSConstants.ENERGY_GENERATION)));
                     }
                 }
+                return false;
+            }
+
+//            @Override
+//            public void onPlayerTickInactive(Player player, ItemStack itemStackIn) {
+//                // remove attribute modifier when not active
+//                getModule.removeTagKey("AttributeModifiers");
+//            }
+
+            @Override
+            public boolean onPlayerTickInactive(Player player, Level level, ItemStack host, int moduleIndex) {
+                return super.onPlayerTickInactive(player, level, host, moduleIndex);
             }
 
             @Override
-            public void onPlayerTickInactive(Player player, ItemStack itemStackIn) {
-                // remove attribute modifier when not active
-                getModuleStack().removeTagKey("AttributeModifiers");
+            public int getTier() {
+                return 1;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return true;
             }
         }
 
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        @Nonnull
-        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+        public <T> LazyOptional<T> getCapability(final Capability<T> capability, final Direction side) {
             final LazyOptional<T> powerModuleCapability = NuminaCapabilities.Module.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;

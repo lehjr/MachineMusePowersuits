@@ -142,70 +142,53 @@ public class ElectricArmor extends ArmorItem {
             return multimap;
         }
 
-        AtomicDouble armorVal = new AtomicDouble(0);
-        AtomicDouble toughnessVal = new AtomicDouble(0);
-        AtomicDouble knockbackResistance = new AtomicDouble(0);
-        AtomicDouble speed = new AtomicDouble(0);
-        AtomicDouble movementResistance = new AtomicDouble(0);
+        double armorVal = 0;
+        double toughnessVal = 0;
+        double knockbackResistance = 0;
+        double speed = 0;
+        double movementResistance = 0;
+        float stepHeight = 0.5001F;
 
-        AtomicDouble swimBoost = new AtomicDouble(0);
-        AtomicReference<Float> stepHeight = new AtomicReference<>(0.5001F);
+        IModularItem iModularItem = NuminaCapabilities.getModularItem(stack);
+        if(iModularItem != null) {
+            movementResistance = iModularItem.getMovementResistance();
+            Pair<Integer, Integer> range = iModularItem.getRangeForCategory(ModuleCategory.ARMOR);
+            if (range != null) {
+                for (int i = range.getFirst(); i < range.getSecond(); i++) {
+                    if(iModularItem.isSlotValid(i)) {
+                        IPowerModule pm = iModularItem.getModuleCapability(iModularItem.getStackInSlot(i));
+                        if(pm != null && pm.isAllowed() && pm.isModuleOnline()) {
+                            armorVal += pm.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_PHYSICAL);
+                            if (pm instanceof IToggleableModule && pm.isModuleOnline()) {
+                                armorVal += pm.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_ENERGY);
+                            }
+                            knockbackResistance += pm.applyPropertyModifiers(MPSConstants.KNOCKBACK_RESISTANCE);
+                            toughnessVal += pm.applyPropertyModifiers(MPSConstants.ARMOR_TOUGHNESS);
 
-        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .ifPresent(iItemHandler -> {
-
-                    // Armor **should** only occupy one slot
-                    com.mojang.datafixers.util.Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
-                    if (range != null) {
-                        for (int i = range.getFirst(); i < range.getSecond(); i++) {
-                            iItemHandler.getStackInSlot(i).getCapability(NuminaCapabilities.Module.POWER_MODULE).ifPresent(pm -> {
-                                if (pm.isAllowed()) {
-                                    // physical armor and hybrid energy/physical armor
-                                    double armorDouble = pm.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_PHYSICAL);
-                                    double knockBack = 0;
-
-                                    if (pm instanceof IToggleableModule && pm.isModuleOnline()) {
-                                        armorDouble += pm.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_ENERGY);
-                                    }
-
-                                    if (armorDouble > 0) {
-                                        armorVal.getAndAdd(armorDouble);
-                                        knockbackResistance.getAndAdd(pm.applyPropertyModifiers(MPSConstants.KNOCKBACK_RESISTANCE));
-                                        toughnessVal.addAndGet(pm.applyPropertyModifiers(MPSConstants.ARMOR_TOUGHNESS));
-
-                                        /*
-                                        toughness for diamond = 2 per
-                                        */
-
-
-                                    }
-                                }
-                            });
+//                            if(slot == EquipmentSlot.LEGS) {
+//                                pm.getModule().getAttributeModifiers(slotType).get(Attributes.MOVEMENT_SPEED).forEach(attributeModifier -> speed +=. getAndAdd(attributeModifier.getAmount()));
+//                                if (!pm.getModule().getAttributeModifiers(slotType).get(ForgeMod.STEP_HEIGHT_ADDITION.get()).isEmpty()) {
+//                                    stepHeight = 0.5F;
+//                                }
+//                            }
                         }
                     }
-
-                    if (slotType == EquipmentSlot.LEGS) {
-                        for (int i = 0; i < iItemHandler.getSlots(); i++) {
-                            /** Note: attribute should already be removed when module is offline */
-                            iItemHandler.getStackInSlot(i).getCapability(NuminaCapabilities.Module.POWER_MODULE)
-                                    .filter(IPowerModule.class::isInstance)
-                                    .map(IPowerModule.class::cast)
-                                    .filter(IPowerModule::isModuleOnline)
-                                    .ifPresent(iPowerModule -> {
-                                        movementResistance.getAndAdd(iPowerModule.applyPropertyModifiers(NuminaConstants.MOVEMENT_RESISTANCE));
-                                        iPowerModule.getModule().getAttributeModifiers(slotType).get(Attributes.MOVEMENT_SPEED).forEach(attributeModifier -> speed.getAndAdd(attributeModifier.getAmount()));
-                                        iPowerModule.getModule().getAttributeModifiers(slotType).get(ForgeMod.SWIM_SPEED.get()).forEach(attributeModifier -> {
-                                            swimBoost.getAndAdd(attributeModifier.getAmount());
-                                        });
-                                        if (!iPowerModule.getModule().getAttributeModifiers(slotType).get(ForgeMod.STEP_HEIGHT_ADDITION.get()).isEmpty()) {
-                                            stepHeight.set(0.5F);
-                                        }
-                                    });
-                        }
+                }
+            }
+            if(slot == EquipmentSlot.LEGS) {
+                int index = iModularItem.findInstalledModule(MPSConstants.CLIMB_ASSIST_MODULE);
+                if (iModularItem.isSlotValid(index)) {
+                    IPowerModule pm = iModularItem.getModuleCapability(iModularItem.getStackInSlot(index));
+                    if (pm != null && pm.isAllowed() && pm.isModuleOnline()) {
+                        stepHeight = (float) pm.applyPropertyModifiers(MPSConstants.STEP_HEIGHT);
+                    } else {
+                        stepHeight = 0.5F;
                     }
-                });
+                } else {
+                    stepHeight = 0.5F;
+                }
+            }
+        }
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 
@@ -213,24 +196,24 @@ public class ElectricArmor extends ArmorItem {
             builder.put((Attribute) entry.getKey(), (AttributeModifier) entry.getValue());
         }
 
-        if (armorVal.get() > 0) {
-            builder.put(Attributes.ARMOR, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor modifier", armorVal.get(), AttributeModifier.Operation.ADDITION));
+        if (armorVal > 0) {
+            builder.put(Attributes.ARMOR, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor modifier", armorVal, AttributeModifier.Operation.ADDITION));
         }
 
-        if (knockbackResistance.get() > 0) {
-            builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Knockback resistance", knockbackResistance.get(), AttributeModifier.Operation.ADDITION));
+        if (knockbackResistance > 0) {
+            builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Knockback resistance", knockbackResistance, AttributeModifier.Operation.ADDITION));
         }
 
-        if (toughnessVal.get() > 0) {
-            builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor toughness", toughnessVal.get(), AttributeModifier.Operation.ADDITION));
+        if (toughnessVal > 0) {
+            builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor toughness", toughnessVal, AttributeModifier.Operation.ADDITION));
         }
 
-        if(stepHeight.get() > 0.5001F) {
-            builder.put(ForgeMod.STEP_HEIGHT_ADDITION.get(), new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], ForgeMod.STEP_HEIGHT_ADDITION.getId().getNamespace(), stepHeight.get(), AttributeModifier.Operation.ADDITION));
+        if(stepHeight > 0.5001F) {
+            builder.put(ForgeMod.STEP_HEIGHT_ADDITION.get(), new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], ForgeMod.STEP_HEIGHT_ADDITION.getId().getNamespace(), stepHeight, AttributeModifier.Operation.ADDITION));
         }
 
 
-        if (speed.get() != 0 || movementResistance.get() != 0) {
+        if (speed != 0 || movementResistance != 0) {
             /*
                 --------------------------
                 kinetic gen max speed hit: 0.025 (total walking speed: 0.075) ( total running speed: 0.08775)
@@ -254,20 +237,20 @@ public class ElectricArmor extends ArmorItem {
                 resistance should be up to about 80% of walking speed or 0.08
              */
 
-            builder.put(Attributes.MOVEMENT_SPEED,
-                    new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()],
-                            Attributes.MOVEMENT_SPEED.getDescriptionId(),
-                            (speed.get() - movementResistance.get() * 0.16), // up to 80% walking speed restriction
-                            AttributeModifier.Operation.ADDITION));
+//            builder.put(Attributes.MOVEMENT_SPEED,
+//                    new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()],
+//                            Attributes.MOVEMENT_SPEED.getDescriptionId(),
+//                            (speed - movementResistance * 0.16), // up to 80% walking speed restriction
+//                            AttributeModifier.Operation.ADDITION));
         }
 
-        if (swimBoost.get() > 0) {
-            builder.put(ForgeMod.SWIM_SPEED.get(),
-                    new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()],
-                            ForgeMod.SWIM_SPEED.get().getDescriptionId(),
-                            swimBoost.get(),
-                            AttributeModifier.Operation.ADDITION));
-        }
+//        if (swimBoost.get() > 0) {
+//            builder.put(ForgeMod.SWIM_SPEED.get(),
+//                    new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()],
+//                            ForgeMod.SWIM_SPEED.get().getDescriptionId(),
+//                            swimBoost.get(),
+//                            AttributeModifier.Operation.ADDITION));
+//        }
 
         return builder.build();
     }

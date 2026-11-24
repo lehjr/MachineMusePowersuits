@@ -30,7 +30,10 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.powersuits.common.config.module.MovementModuleConfig;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -53,12 +56,12 @@ public class ClimbAssistModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final Ticker ticker;
+        private final ClimbAssistCap ticker;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY, MPSSettings::getModuleConfig);
+            this.ticker = new ClimbAssistCap(module);
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
@@ -66,23 +69,51 @@ public class ClimbAssistModule extends AbstractPowerModule {
             });
         }
 
-        class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config, true);
+
+
+
+
+
+//        class Ticker extends PlayerTickModule {
+//            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
+//                super(module, category, target, config, true);
+//            }
+//
+//            @Override
+//            public void onPlayerTickActive(Player player, ItemStack item) {
+//////                ForgeMod#STEP_HEIGHT
+////                player.getAttribute()
+////                player.setMaxUpStep().maxUpStep = 1.001F;
+//            }
+//
+//            @Override
+//            public void onPlayerTickInactive(Player player, ItemStack item) {
+////                if (player.maxUpStep == 1.001F) {
+////                    player.maxUpStep = 0.5001F;
+////                }
+//            }
+//        }
+
+
+        public static class ClimbAssistCap extends ToggleableModule {
+            public ClimbAssistCap(@Nonnull ItemStack module) {
+                super(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY);
+                addBaseProperty(MPSConstants.STEP_HEIGHT, 1.01); // not adjustable for a reason
             }
 
             @Override
-            public void onPlayerTickActive(Player player, ItemStack item) {
-////                ForgeMod#STEP_HEIGHT
-//                player.getAttribute()
-//                player.setMaxUpStep().maxUpStep = 1.001F;
+            public int getTier() {
+                return 1;
             }
 
             @Override
-            public void onPlayerTickInactive(Player player, ItemStack item) {
-//                if (player.maxUpStep == 1.001F) {
-//                    player.maxUpStep = 0.5001F;
-//                }
+            public String getModuleGroup() {
+                return "";
+            }
+
+            @Override
+            public boolean isAllowed() {
+                return MovementModuleConfig.climbAssistModuleIsAllowed;
             }
         }
 

@@ -1,0 +1,18 @@
+
+
+
+
+
+# Screen/Container stuff
+protected net.minecraft.client.gui.screens.inventory.AbstractContainerScreen m_97774_(Lnet/minecraft/world/inventory/Slot;DD)Z #isHovering
+protected net.minecraft.client.gui.screens.inventory.AbstractContainerScreen m_280092_(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;)V # renderSlot
+# allow overriding of tick method
+public-f net.minecraft.client.gui.screens.inventory.AbstractContainerScreen  tick()V # tick()
+
+# Slot x,y (allow moving)
+public-f net.minecraft.world.inventory.Slot f_40220_ # x
+public-f net.minecraft.world.inventory.Slot f_40221_ # y
+
+
+
+

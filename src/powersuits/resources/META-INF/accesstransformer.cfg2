@@ -1,0 +1,22 @@
+#
+## Allow slots to be moved
+#public-f net.minecraft.world.inventory.Slot x # xPos
+#public-f net.minecraft.world.inventory.Slot y # yPos
+#
+## public net.minecraft.server.network.ServerGamePacketListenerImpl f_9736_ # clientIsFloating
+#
+## AbstractContainerMenu stuff
+#protected net.minecraft.inventory.container.WorkbenchAbstractContainerMenu field_192390_i # player
+#protected net.minecraft.inventory.container.WorkbenchAbstractContainerMenu field_75160_f # resultSlots
+#protected net.minecraft.inventory.container.WorkbenchAbstractContainerMenu field_75162_e # craftSlots
+
+# Allow slots to be moved
+public-f net.minecraft.world.inventory.Slot f_40220_ # x
+public-f net.minecraft.world.inventory.Slot f_40221_ # y
+
+public net.minecraft.server.network.ServerGamePacketListenerImpl f_9736_ # clientIsFloating
+
+# CraftingMenu fields (replaces old 1.16 WorkbenchAbstractContainerMenu)
+protected net.minecraft.world.inventory.CraftingMenu f_39350_ # player
+protected net.minecraft.world.inventory.CraftingMenu f_39349_ # resultSlots
+protected net.minecraft.world.inventory.CraftingMenu f_39348_ # craftSlots

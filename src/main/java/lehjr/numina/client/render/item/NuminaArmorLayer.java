@@ -57,6 +57,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -166,7 +167,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                                     poseStack.pushPose();
                                     if (part != null) {
                                         part.translateAndRotate(poseStack);
-                                        VertexConsumer consumer = getVertexConsumer(bufferIn, location, glow);
+                                        VertexConsumer consumer = bufferIn.getBuffer((RenderType.entityTranslucentCull(InventoryMenu.BLOCK_ATLAS)));
                                         part.compile(poseStack.last(), consumer,
                                                 glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn,
                                                 OverlayTexture.NO_OVERLAY,
@@ -183,7 +184,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 
                                     HighPolyArmor highPolyArmor = ArmorModelInstance.getInstance();
                                     highPolyArmor.copyPropertiesFrom(getParentModel());
-                                    VertexConsumer consumer = getVertexConsumer(bufferIn, TextureAtlas.LOCATION_BLOCKS, glow);
+                                    VertexConsumer consumer = bufferIn.getBuffer((RenderType.entityTranslucentCull(InventoryMenu.BLOCK_ATLAS)));
                                     highPolyArmor.renderToBuffer((ObjPartSpec) partSpec, tag, poseStack, consumer, glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn, OverlayTexture.NO_OVERLAY, color);
 
                                     if (transform != Transformation.identity()) {
@@ -209,15 +210,6 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                 .map(IModularItem.class::cast)
                 .map(handler -> handler.isModuleOnline(powersuitsTransparentArmor))
                 .orElse(false);
-    }
-
-    VertexConsumer getVertexConsumer(MultiBufferSource buffer, ResourceLocation location, boolean glow) {
-        if (glow) {
-//            return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.beaconBeam(location, true), false, glow);
-            return buffer.getBuffer(RenderType.beaconBeam(location, true));
-        }
-//        return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.entityTranslucentCull(location), false, glow);
-        return buffer.getBuffer(RenderType.entityTranslucentCull(location));
     }
 }
 

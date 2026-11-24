@@ -35,6 +35,8 @@ import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
+import lehjr.powersuits.common.network.MPSPackets;
+import lehjr.powersuits.common.network.packets.serverbound.SetSprintAssistDoubleAndDrainServerBound;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -118,71 +120,64 @@ public class SprintAssistModule extends AbstractPowerModule {
                 return MovementModuleConfig.sprintAssistModuleIsAllowed;
             }
 
-
-
-
-
-
-
-
-
-
+            /*
+             * Testing shows neither walkDistO or deltaMovement update on the server side, and deltaMovement often returns NaN
+             */
             @Override
             public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack armorLegs, int moduleIndex) {
                 // Normal:
                 // ----------------------------------------
                 // player speed .1 walking, .13 sprinting
                 // ----------------------------------------
-                if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()  || player.isInWaterOrBubble()) {
-                    return onPlayerTickInactive(player, level, armorLegs, moduleIndex);
+                if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying() || player.isInWaterOrBubble()) {
+                    setPlayerSpeed(0, 0);
+                    return false;
                 }
 
-                double horzMovement = player.walkDist - player.walkDistO;
-                double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                if (level.isClientSide()) {
+                    double horzMovement = player.walkDist - player.walkDistO;
+                    double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
-                if (horzMovement > 0) { // stop doing drain calculations when player hasn't moved
-                    if (player.isSprinting()) {
-                        double exhaustion = Math.round(horzMovement * 100.0F) * 0.01;
-                        double sprintCost = applyPropertyModifiers(MPSConstants.SPRINT_ENERGY_CONSUMPTION);
-                        if (sprintCost < totalEnergy) {
-                            double sprintMultiplier = applyPropertyModifiers(MPSConstants.SPRINT_SPEED_MULTIPLIER);
-                            double exhaustionComp = applyPropertyModifiers(MPSConstants.EXHAUSTION_COMPENSATION);
-
-
-
-                            if (!player.level().isClientSide) {
-                                ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement), false);
+                    if (horzMovement > 0.001) { // stop doing drain calculations or when player hasn't moved
+                        if (player.isSprinting()) {
+                            double exhaustion = Math.round(horzMovement * 100.0F) * 0.01;
+                            double sprintCost = applyPropertyModifiers(MPSConstants.SPRINT_ENERGY_CONSUMPTION);
+                            if (sprintCost < totalEnergy) {
+                                double exhaustionComp = applyPropertyModifiers(MPSConstants.EXHAUSTION_COMPENSATION);
+                                double sprintMultiplier = applyPropertyModifiers(MPSConstants.SPRINT_SPEED_MULTIPLIER) * 0.13;
+                                setPlayerSpeed(sprintMultiplier, (int) (sprintCost * horzMovement) * 20);
+                                player.getFoodData().addExhaustion((float) (-0.01 * exhaustion * exhaustionComp));
+                                player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
                             }
-                            setMovementModifier(getModule(), sprintMultiplier * 0.13 * 0.5, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
-                            player.getFoodData().addExhaustion((float) (-0.01 * exhaustion * exhaustionComp));
-                            player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
+                        } else {
+                            double walkCost = applyPropertyModifiers(MPSConstants.WALKING_ENERGY_CONSUMPTION);
+                            if (walkCost < totalEnergy) {
+                                double walkMultiplier = applyPropertyModifiers(MPSConstants.WALKING_SPEED_MULTIPLIER) * 0.1; // value * normalWalkingSpeed
+                                setPlayerSpeed(walkMultiplier, (int) (walkCost * horzMovement));
+                                player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
+                            }
                         }
                     } else {
-                        double walkCost = applyPropertyModifiers(MPSConstants.WALKING_ENERGY_CONSUMPTION);
-                        if (walkCost < totalEnergy) {
-                            double walkMultiplier = applyPropertyModifiers(MPSConstants.WALKING_SPEED_MULTIPLIER);
-                            if (!player.level().isClientSide &&
-                                    // every 20 ticks
-                                    (player.level().getGameTime() % 20) == 0) {
-                                ElectricItemUtils.drainPlayerEnergy(player, (int) (walkCost * horzMovement), false);
-
-
-
-
-                            }
-                            setMovementModifier(getModule(), walkMultiplier * 0.1, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
-                            player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
-                        }
+                        setPlayerSpeed(0, 0);
                     }
                 }
-                return onPlayerTickInactive(player, level, armorLegs, moduleIndex);
+                return false;
             }
 
             @Override
-            public boolean onPlayerTickInactive(Player player, Level level, ItemStack itemStack, int moduleIndex) {
-//                itemStack.removeTagKey("AttributeModifiers");
-                setMovementModifier(getModule(), 0, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
-                return true;
+            public boolean onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack itemStack, int moduleIndex) {
+                setPlayerSpeed(0, 0);
+                player.getAbilities().setFlyingSpeed(0.02f); // fixme
+                return false;
+            }
+
+            void setPlayerSpeed(double value, int drainAmount) {
+                try {
+                    MPSPackets.CHANNEL_INSTANCE.sendToServer(new SetSprintAssistDoubleAndDrainServerBound(value, drainAmount));
+                } catch (Exception e) {
+                    e.printStackTrace();
+//                NuminaLogger.logDebug("value: " + value + ", drain amount: " + drainAmount );
+                }
             }
         }
 
@@ -196,40 +191,104 @@ public class SprintAssistModule extends AbstractPowerModule {
             return LazyOptional.empty();
         }
     }
-
-    // moved here so it is still accessible if sprint assist module isn't installed.
-    public static void setMovementModifier(ItemStack itemStack, double multiplier, Attribute attributeModifier, String key) {
-        CompoundTag itemNBT = itemStack.getOrCreateTag();
-        boolean hasAttribute = false;
-        if (itemNBT.contains("AttributeModifiers", Tag.TAG_LIST)) {
-            ListTag listnbt = itemNBT.getList("AttributeModifiers", Tag.TAG_COMPOUND);
-            ArrayList<Integer> remove = new ArrayList();
-
-            for (int i = 0; i < listnbt.size(); ++i) {
-                CompoundTag attributeTag = listnbt.getCompound(i);
-                AttributeModifier attributemodifier = AttributeModifier.load(attributeTag);
-                if (attributemodifier != null && attributemodifier.getName().equals(key)) {
-                    // adjust the tag
-                    if (multiplier != 0) {
-                        attributeTag.putDouble("Amount", multiplier);
-                        hasAttribute = true;
-                        break;
-                    } else {
-                        // discard the tag
-                        remove.add(i);
-//                        break; // leave commented for redundant tag cleanup
-                    }
-                }
-            }
-            if (hasAttribute && !remove.isEmpty()) {
-                // remove from last to first so indices are valid
-                Collections.reverse(remove);
-                remove.forEach(index -> listnbt.remove(index));
-            }
-        }
-
-        if (!hasAttribute && multiplier != 0) {
-            itemStack.addAttributeModifier(attributeModifier, new AttributeModifier(key, multiplier, AttributeModifier.Operation.ADDITION), EquipmentSlot.LEGS);
-        }
-    }
 }
+
+
+//
+//            @Override
+//            public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack armorLegs, int moduleIndex) {
+//                // Normal:
+//                // ----------------------------------------
+//                // player speed .1 walking, .13 sprinting
+//                // ----------------------------------------
+//                if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()  || player.isInWaterOrBubble()) {
+//                    return onPlayerTickInactive(player, level, armorLegs, moduleIndex);
+//                }
+//
+//                double horzMovement = player.walkDist - player.walkDistO;
+//                double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
+//
+//                if (horzMovement > 0) { // stop doing drain calculations when player hasn't moved
+//                    if (player.isSprinting()) {
+//                        double exhaustion = Math.round(horzMovement * 100.0F) * 0.01;
+//                        double sprintCost = applyPropertyModifiers(MPSConstants.SPRINT_ENERGY_CONSUMPTION);
+//                        if (sprintCost < totalEnergy) {
+//                            double sprintMultiplier = applyPropertyModifiers(MPSConstants.SPRINT_SPEED_MULTIPLIER);
+//                            double exhaustionComp = applyPropertyModifiers(MPSConstants.EXHAUSTION_COMPENSATION);
+//
+//
+//
+//                            if (!player.level().isClientSide) {
+//                                ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement), false);
+//                            }
+//                            setMovementModifier(getModule(), sprintMultiplier * 0.13 * 0.5, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
+//                            player.getFoodData().addExhaustion((float) (-0.01 * exhaustion * exhaustionComp));
+//                            player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
+//                        }
+//                    } else {
+//                        double walkCost = applyPropertyModifiers(MPSConstants.WALKING_ENERGY_CONSUMPTION);
+//                        if (walkCost < totalEnergy) {
+//                            double walkMultiplier = applyPropertyModifiers(MPSConstants.WALKING_SPEED_MULTIPLIER);
+//                            if (!player.level().isClientSide &&
+//                                    // every 20 ticks
+//                                    (player.level().getGameTime() % 20) == 0) {
+//                                ElectricItemUtils.drainPlayerEnergy(player, (int) (walkCost * horzMovement), false);
+//
+//
+//
+//
+//                            }
+//                            setMovementModifier(getModule(), walkMultiplier * 0.1, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
+//                            player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
+//                        }
+//                    }
+//                }
+//                return onPlayerTickInactive(player, level, armorLegs, moduleIndex);
+//            }
+//
+//            @Override
+//            public boolean onPlayerTickInactive(Player player, Level level, ItemStack itemStack, int moduleIndex) {
+////                itemStack.removeTagKey("AttributeModifiers");
+//                setMovementModifier(getModule(), 0, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
+//                return true;
+//            }
+//        }
+//
+
+//
+//    // moved here so it is still accessible if sprint assist module isn't installed.
+//    public static void setMovementModifier(ItemStack itemStack, double multiplier, Attribute attributeModifier, String key) {
+//        CompoundTag itemNBT = itemStack.getOrCreateTag();
+//        boolean hasAttribute = false;
+//        if (itemNBT.contains("AttributeModifiers", Tag.TAG_LIST)) {
+//            ListTag listnbt = itemNBT.getList("AttributeModifiers", Tag.TAG_COMPOUND);
+//            ArrayList<Integer> remove = new ArrayList();
+//
+//            for (int i = 0; i < listnbt.size(); ++i) {
+//                CompoundTag attributeTag = listnbt.getCompound(i);
+//                AttributeModifier attributemodifier = AttributeModifier.load(attributeTag);
+//                if (attributemodifier != null && attributemodifier.getName().equals(key)) {
+//                    // adjust the tag
+//                    if (multiplier != 0) {
+//                        attributeTag.putDouble("Amount", multiplier);
+//                        hasAttribute = true;
+//                        break;
+//                    } else {
+//                        // discard the tag
+//                        remove.add(i);
+////                        break; // leave commented for redundant tag cleanup
+//                    }
+//                }
+//            }
+//            if (hasAttribute && !remove.isEmpty()) {
+//                // remove from last to first so indices are valid
+//                Collections.reverse(remove);
+//                remove.forEach(index -> listnbt.remove(index));
+//            }
+//        }
+//
+//        if (!hasAttribute && multiplier != 0) {
+//            itemStack.addAttributeModifier(attributeModifier, new AttributeModifier(key, multiplier, AttributeModifier.Operation.ADDITION), EquipmentSlot.LEGS);
+//        }
+//    }
+//}
