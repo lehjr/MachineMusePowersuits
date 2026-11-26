@@ -192,7 +192,7 @@
 //    }
 //}
 
-package lehjr.numina.client.model.item.armor;
+package lehjr.numina.client.model.obj;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;

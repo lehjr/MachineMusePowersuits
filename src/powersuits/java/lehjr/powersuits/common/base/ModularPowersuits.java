@@ -47,12 +47,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(MPSConstants.MOD_ID)
 public class ModularPowersuits {
-    public ModularPowersuits() {
+    public ModularPowersuits(FMLJavaModLoadingContext context) {
         NuminaLogger.logDebug("Loaded ModularPowersuits!!!!");
-
-
-        ModLoadingContext modContainer = ModLoadingContext.get();
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = context.getModEventBus();
 
         // Register the setup method for modloading
         modEventBus.addListener(this::setup);
@@ -91,7 +88,7 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler); // FIXME: does nothing
 
 
-        MPSConfigurations.setup(ModLoadingContext.get());
+        MPSConfigurations.setup(context);
     }
 
     /**

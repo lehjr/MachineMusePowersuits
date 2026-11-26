@@ -1,4 +1,4 @@
-package lehjr.numina.common.network.packets.clienthandlers;
+package lehjr.numina.client.network;
 
 import lehjr.numina.common.network.packets.clientbound.ColorInfoPacketClientBound;
 import lehjr.numina.common.registration.NuminaCapabilities;

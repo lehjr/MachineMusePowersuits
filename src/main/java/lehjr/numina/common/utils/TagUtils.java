@@ -253,7 +253,7 @@ public class TagUtils {
     public static Optional<ResourceLocation> getModuleResourceLocation(@Nonnull ItemStack module, String string) {
         CompoundTag moduleTag = getModuleTag(module);
         if (moduleTag.contains(string, Tag.TAG_STRING)) {
-            return Optional.of(new ResourceLocation(moduleTag.getString(string)));
+            return Optional.ofNullable(ResourceLocation.tryParse(moduleTag.getString(string)));
         }
         return Optional.empty();
     }

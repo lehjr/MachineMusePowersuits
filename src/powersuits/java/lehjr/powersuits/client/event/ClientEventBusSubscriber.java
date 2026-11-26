@@ -80,8 +80,8 @@ public class ClientEventBusSubscriber {
 //        NuminaLogger.logDebug("keymappingevent loaded");
         KeyMappingReaderWriter.INSTANCE.readInKeybinds(); // read existing keybindings
         KeymappingKeyHandler.loadKeyBindings(); // check for possible additional
-        KeymappingKeyHandler.keyMappings.values().forEach(kb-> event.register(kb)); // register keybinds
-        Arrays.stream(KeymappingKeyHandler.keybindArray).forEach(kb->event.register(kb));
+        KeymappingKeyHandler.keyMappings.values().forEach(event::register); // register keybinds
+        Arrays.stream(KeymappingKeyHandler.keybindArray).forEach(event::register);
 
         MPSOverlay.makeKBDisplayList();
     }
@@ -165,25 +165,6 @@ public class ClientEventBusSubscriber {
 //        }
 //    }
 
-//    @OnlyIn(Dist.CLIENT)
-//    public void drawKeybindToggles(GuiGraphics gfx) {
-////        if (MPSSettings.displayHud() && isModularItemEquuiiped()) {
-////            Minecraft minecraft = Minecraft.getInstance();
-////            AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
-////            kbDisplayList.forEach(kbDisplay -> {
-////                if (!kbDisplay.boundKeybinds.isEmpty()) {
-////                    kbDisplay.setLeft(MPSSettings.getHudKeybindX());
-////                    kbDisplay.setTop(top.get());
-////                    kbDisplay.setBottom(top.get() + 16);
-////                    kbDisplay.render(matrixStack, 0, 0, minecraft.getFrameTime());
-////                    top.getAndAdd(16);
-////                }
-////            });
-////        }
-//    }
-
-
-
 
 
     public static void registerScreen() {
@@ -221,7 +202,6 @@ public class ClientEventBusSubscriber {
 
     /**
      * Just for a couple modules that can break multiple blocks at once
-     * @param event
      */
     @OnlyIn(Dist.CLIENT)
 //    @SubscribeEvent
@@ -320,7 +300,6 @@ public class ClientEventBusSubscriber {
 
     /**
      * Restore the mouse cursor position when switching between Modular items in the Install/Salvage Gui
-     * @param event
      */
 //    @SubscribeEvent
     public static void onScreenInitPost(ScreenEvent.Init.Post event) {

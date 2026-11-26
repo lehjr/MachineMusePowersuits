@@ -28,6 +28,8 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.platform.Lighting;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.registration.NuminaCapabilities;
@@ -36,6 +38,7 @@ import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -71,8 +74,15 @@ public class ClickableModule extends Clickable {
         this.module = module;
         this.inventorySlot = inventorySlot;
         this.category = category;
-        allowed = module.getCapability(NuminaCapabilities.Module.POWER_MODULE).map(pm->pm.isAllowed()).orElse(false);
-        tier = module.getCapability(NuminaCapabilities.Module.POWER_MODULE).map(pm-> pm.getTier()).orElse(null);
+        IOtherModItemsAsModules otherCap = module.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES).resolve().orElse(null);
+        if(otherCap != null) {
+            allowed = otherCap.isAllowed();
+            tier = otherCap.getTier();
+        } else {
+            IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE).resolve().orElse(null);
+            allowed = pm != null && pm.isAllowed();
+            tier = pm == null? -1 : pm.getTier();
+        }
         this.regName = ForgeRegistries.ITEMS.getKey(module.getItem());
     }
 
@@ -136,10 +146,14 @@ public class ClickableModule extends Clickable {
             } else if (installed) {
                 gfx.pose().pushPose();
                 gfx.pose().translate(0, 0,250);
-                IconUtils.INSTANCE.getIcon().checkmark.draw(gfx.pose(), left() + 1, top() + 1, Color.LIGHT_GREEN);
+                IconUtils.getIcon().checkmark.draw(gfx.pose(), left() + 1, top() + 1, Color.LIGHT_GREEN);
                 gfx.pose().popPose();
             }
         }
+    }
+
+    public void setModule(@Nonnull ItemStack module) {
+        this.module = module;
     }
 
     @Nonnull

@@ -12,7 +12,7 @@ import java.util.concurrent.Callable;
  * Created by leon on 4/9/17.
  */
 public class PlasmaChargeMeter extends HeatMeter {
-    final ResourceLocation TEXTURE_LOCATION = new ResourceLocation( "block/water_still");
+    final ResourceLocation TEXTURE_LOCATION = ResourceLocation.parse( "block/water_still");
 
     public PlasmaChargeMeter(Callable<IMeterConfig> config) {
         super(config);

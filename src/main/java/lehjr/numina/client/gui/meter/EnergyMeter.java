@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import java.util.concurrent.Callable;
 
 public class EnergyMeter extends HeatMeter {
-    final ResourceLocation TEXTURE_LOCATION = new ResourceLocation("minecraft:block/water_still");
+    final ResourceLocation TEXTURE_LOCATION = ResourceLocation.parse("minecraft:block/water_still");
 
     public EnergyMeter(Callable<IMeterConfig> config) {
         super(config);

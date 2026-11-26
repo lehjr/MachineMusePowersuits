@@ -34,7 +34,7 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
     TinkerTableModel tinkerTableModel;
     PowerFistModel2 powerFistModelRight;
     PowerFistModel2 powerFistModelLeft;
-    public static final ResourceLocation powerFistIcon = new ResourceLocation(MPSConstants.MOD_ID, "textures/item/handitem.png");
+    public static final ResourceLocation powerFistIcon = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "textures/item/handitem.png");
 //    IconModel icon = new IconModel();
 
     public MPSBEWLR() {

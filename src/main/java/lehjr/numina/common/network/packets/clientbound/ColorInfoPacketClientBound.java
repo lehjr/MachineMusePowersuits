@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.clientbound;
 
-import lehjr.numina.common.network.packets.clienthandlers.ColorInfoPacketClientHandler;
+import lehjr.numina.client.network.ColorInfoPacketClientHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.api.distmarker.Dist;

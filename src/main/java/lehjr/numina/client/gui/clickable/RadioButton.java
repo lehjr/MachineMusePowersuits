@@ -33,7 +33,7 @@ public class RadioButton extends AbstractIconButton {
         if (isEnabled() && isVisible()) {
             getIcon().draw(gfx.pose(), this.left(), this.top(), color);
             if (isSelected) {
-                IconUtils.INSTANCE.getIcon().armordisplayselect.draw(gfx.pose(), this.left(), this.top(), Color.WHITE);
+                IconUtils.getIcon().armordisplayselect.draw(gfx.pose(), this.left(), this.top(), Color.WHITE);
             }
         }
     }

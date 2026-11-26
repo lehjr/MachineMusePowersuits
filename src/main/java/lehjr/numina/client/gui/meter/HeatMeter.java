@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class HeatMeter {
-    final ResourceLocation TEXTURE_LOCATION = new ResourceLocation("block/magma");
+    final ResourceLocation TEXTURE_LOCATION = ResourceLocation.tryParse("block/magma");
 
     final int xsize = 32;
     final int ysize = 8;

@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.render;
+package lehjr.numina.client.gui;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -36,7 +36,7 @@ import net.minecraft.resources.ResourceLocation;
 public class NuminaSpriteUploader extends TextureAtlasHolder {
 
 
-    static final ResourceLocation GUI_ATLAS = new ResourceLocation(NuminaConstants.MOD_ID,"gui");
+    static final ResourceLocation GUI_ATLAS = ResourceLocation.tryBuild(NuminaConstants.MOD_ID,"gui");
 
     public NuminaSpriteUploader(TextureManager textureManager) {
         super(textureManager, NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, GUI_ATLAS);

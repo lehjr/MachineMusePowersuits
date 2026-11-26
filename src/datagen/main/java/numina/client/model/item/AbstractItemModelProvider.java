@@ -29,7 +29,7 @@ public abstract class AbstractItemModelProvider extends ItemModelProvider {
     public ItemModelBuilder basicItem(ResourceLocation item, String texturePath) {
         return this.getBuilder(item.toString())
             .parent(new ModelFile.UncheckedModelFile("item/generated"))
-            .texture("layer0", new ResourceLocation(item.getNamespace(), texturePath));
+            .texture("layer0", ResourceLocation.tryBuild(item.getNamespace(), texturePath));
     }
 
     public ItemModelBuilder basicItemMC(ResourceLocation item, String texturePath) {

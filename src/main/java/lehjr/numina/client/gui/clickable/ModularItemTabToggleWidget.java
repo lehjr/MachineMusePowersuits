@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.container.slot.SlotBackgrounds;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.Minecraft;
@@ -38,16 +39,14 @@ public class ModularItemTabToggleWidget extends Clickable {
     public ModularItemTabToggleWidget(EquipmentSlot type) {
         super(0, 0, 35, 27, false);
         this.isStateActive = false;
-        this.initTextureValues(153, 2, 35, 0, new ResourceLocation("textures/gui/recipe_book.png"));
+        this.initTextureValues(153, 2, 35, 0, ResourceLocation.tryParse("textures/gui/recipe_book.png"));
 
         this.type = type;
         Player player = getMinecraft().player;
         ItemStack test = ItemUtils.getItemFromEntitySlot(player, type);
+        IModularItem iModularItem = NuminaCapabilities.getModularItem(test);
 
-        this.icon = test.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .map(iItemHandler -> test).orElse(ItemStack.EMPTY);
+        this.icon = iModularItem == null ? ItemStack.EMPTY : test;
     }
 
     public void initTextureValues(int pXTexStart, int pYTexStart, int pXDiffTex, int pYDiffTex, ResourceLocation pResourceLocation) {

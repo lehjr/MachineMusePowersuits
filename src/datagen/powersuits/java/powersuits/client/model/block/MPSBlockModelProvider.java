@@ -20,11 +20,11 @@ public class MPSBlockModelProvider extends BlockModelProvider {
     @Override
     protected void registerModels() {
         getBuilder(MPSBlocks.LUX_CAPACITOR_BLOCK.get())
-            .parent(getExistingFile(new ResourceLocation("block/block")))
-            .texture("particle", new ResourceLocation("forge", "white"))
+            .parent(getExistingFile(ResourceLocation.tryBuild("block/block")))
+            .texture("particle", ResourceLocation.tryBuild("forge", "white"))
             // Pass a custom anonymous builder that manually appends extra properties to the json output
             .customLoader((parent, existingFileHelper) ->
-                    new CustomLoaderBuilder<>(new ResourceLocation("numina", "obj"), parent, existingFileHelper) {
+                    new CustomLoaderBuilder<>(ResourceLocation.tryBuild("numina", "obj"), parent, existingFileHelper) {
                         @Override
                         public com.google.gson.JsonObject toJson(com.google.gson.JsonObject json) {
                             // Always call super to ensure the loader type and visibility arrays are included

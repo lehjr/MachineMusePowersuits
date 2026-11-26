@@ -16,7 +16,7 @@ public class NuminaEntities {
     public static final RegistryObject<EntityType<NuminaArmorStand>> ARMOR_STAND__ENTITY_TYPE = ENTITY_TYPES.register(NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME,
             () -> EntityType.Builder.<NuminaArmorStand>of(NuminaArmorStand::new, MobCategory.CREATURE)
                     .sized(0.5F, 1.975F) // Hitbox Size
-                    .build(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME).toString()));
+                    .build(ResourceLocation.tryBuild(NuminaConstants.MOD_ID, NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME).toString()));
 
     public static void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(NuminaEntities.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStand.createAttributes().build());

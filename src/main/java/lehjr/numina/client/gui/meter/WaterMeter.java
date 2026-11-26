@@ -13,7 +13,7 @@ import java.util.concurrent.Callable;
  * 4:30 PM 6/21/13
  */
 public class WaterMeter extends HeatMeter {
-    final ResourceLocation TEXTURE_LOCATION = new ResourceLocation( "block/water_still");
+    final ResourceLocation TEXTURE_LOCATION = ResourceLocation.tryParse( "block/water_still");
 
     public WaterMeter(Callable<IMeterConfig> config) {
         super(config);

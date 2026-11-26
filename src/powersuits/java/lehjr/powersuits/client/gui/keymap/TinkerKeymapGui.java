@@ -47,7 +47,7 @@ import net.minecraftforge.client.settings.KeyModifier;
  * Fixme: buttons rendering on top of module icons and their label/text
  */
 public class TinkerKeymapGui extends ContainerlessGui {
-    public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/keybinds.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "textures/gui/background/keybinds.png");
     TabSelectFrame tabSelectFrame;
     Player player;
     KeymapFrame kbFrame;

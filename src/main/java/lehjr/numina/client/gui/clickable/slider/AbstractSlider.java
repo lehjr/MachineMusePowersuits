@@ -12,7 +12,7 @@ import org.joml.Matrix4f;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractSlider extends Clickable {
+public abstract class AbstractSlider extends Clickable implements ISlider {
     /** keep knob completely inside the track/slot/frame/whatever */
     public boolean keepKnobWithinBounds=true;
     /** useful for differentiating sliders */
@@ -179,7 +179,6 @@ public abstract class AbstractSlider extends Clickable {
         if (value != 0 && tickVal != 0) {
             value = value - (value % tickVal);
         }
-
         this.sliderValue = MathUtils.clampDouble((value - minValue) / (maxValue - minValue), 0.0, 1.0);
     }
 
@@ -216,15 +215,25 @@ public abstract class AbstractSlider extends Clickable {
 
     void drawSingleLine(GuiGraphics gfx, double xStart, double yStart, double xEnd, double yEnd, Color color) {
         PoseStack poseStack = gfx.pose();
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder builder = tessellator.getBuilder();
         Matrix4f matrix4f = poseStack.last().pose();
-
-        preDraw(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder builder = preDraw(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         RenderSystem.lineWidth(1);
         builder.vertex(matrix4f, (float) xStart, (float) yStart, getZLevel()).color(color.r, color.g, color.b, color.a).endVertex();
         builder.vertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).color(color.r, color.g, color.b, color.a).endVertex();
-        builder.end();
         postDraw(builder);
+    }
+
+    public IUpdated updated;
+
+    @Override
+    public void setOnUpdated(IUpdated updated) {
+        this.updated = updated;
+    }
+
+    @Override
+    public void onUpdated() {
+        if (this.isVisible() && this.isEnabled() && this.updated != null) {
+            this.updated.onUpdated();
+        }
     }
 }

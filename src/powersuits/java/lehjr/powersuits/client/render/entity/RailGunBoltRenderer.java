@@ -50,7 +50,7 @@
 //
 //
 //    static final Color color = new Color(0.631F, 0.615F, 0.58F, 1F);
-//    static final ResourceLocation modelLocation = new ResourceLocation(MPSConstants.MOD_ID, "models/entity/bolt.obj");
+//    static final ResourceLocation modelLocation = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "models/entity/bolt.obj");
 //    // NonNullLazy doesn't init until called
 //    public static final NonNullLazy<OBJBakedCompositeModel> modelBolt = NonNullLazy.of(() -> ModelHelper.loadBakedModel(BlockModelRotation.X0_Y0, null, modelLocation));
 //    protected static final RandomSource rand = RandomSource.create();

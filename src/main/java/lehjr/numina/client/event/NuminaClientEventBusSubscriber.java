@@ -79,7 +79,7 @@ public class NuminaClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
-        NuminaIcons icon = IconUtils.INSTANCE.getIcon();
+        NuminaIcons icon = IconUtils.getIcon();
         event.registerReloadListener(icon.getSpriteUploader());
     }
 

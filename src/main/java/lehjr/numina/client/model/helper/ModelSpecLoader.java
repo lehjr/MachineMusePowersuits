@@ -162,7 +162,7 @@ public enum ModelSpecLoader {
      */
     void parseObjModelSpec(JsonObject modelJson, SpecType specType, String specName, boolean isDefault, boolean isSingle) {
         // Load model location
-        ResourceLocation modelLocation = new ResourceLocation(modelJson.get(FILE).getAsString());
+        ResourceLocation modelLocation = ResourceLocation.tryParse(modelJson.get(FILE).getAsString());
         ModelBakeEventHandler.INSTANCE.addLocation(modelLocation);
         if (!isSingle) {
             specName = specName(modelLocation);
@@ -260,7 +260,7 @@ public enum ModelSpecLoader {
         }
     }
 
-    static final ResourceLocation ignored = new ResourceLocation(NuminaConstants.MOD_ID, "ignored");
+    static final ResourceLocation ignored = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "ignored");
     static void parseJavaModelPart(JavaModelSpec javaModel, JsonObject partJson, SpecBinding binding) {
         String name = partJson.get(NAME).getAsString();
         boolean glow = partJson.has(GLOW) && partJson.get(GLOW).getAsBoolean();
@@ -281,8 +281,8 @@ public enum ModelSpecLoader {
         Color bodyColor = bodyJson.has(COLOR) ? parseColor(bodyJson.get(COLOR).getAsString()) : Color.WHITE;
         Color legsColor = legsJson.has(COLOR) ? parseColor(legsJson.get(COLOR).getAsString()) : Color.WHITE;
 
-        ResourceLocation bodyTexture = new ResourceLocation(bodyJson.get(TEXTURE).getAsString());
-        ResourceLocation legsTexture = new ResourceLocation(legsJson.get(TEXTURE).getAsString());
+        ResourceLocation bodyTexture = ResourceLocation.tryParse(bodyJson.get(TEXTURE).getAsString());
+        ResourceLocation legsTexture = ResourceLocation.tryParse(legsJson.get(TEXTURE).getAsString());
 
         putJavaModelPartSpecs(false, existingspec, bodyTexture, bodyColor);
         putJavaModelPartSpecs(true, existingspec, legsTexture, legsColor);

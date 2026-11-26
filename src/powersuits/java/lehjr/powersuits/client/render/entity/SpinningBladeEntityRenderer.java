@@ -53,7 +53,7 @@ public class SpinningBladeEntityRenderer extends net.minecraft.client.renderer.e
         this.shadowStrength = 0.75F;
     }
 
-    public static final ResourceLocation textureLocation = new ResourceLocation(MPSConstants.TEXTURE_PREFIX + "item/module/weapon/spinningblade.png");
+    public static final ResourceLocation textureLocation = ResourceLocation.tryParse(MPSConstants.TEXTURE_PREFIX + "item/module/weapon/spinningblade.png");
 
     @Nullable
     @Override

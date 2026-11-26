@@ -144,7 +144,7 @@ public enum KeyMappingReaderWriter {
                         JsonObject data = ((JsonObject) entry.getValue()).getAsJsonObject();
                         boolean showOnHud = data.get(showOnHudKey).getAsBoolean();
                         int defaultKey = data.get(defaultKeyKey).getAsInt();
-                        ResourceLocation registryName = new ResourceLocation(data.get(registryNameKey).getAsString());
+                        ResourceLocation registryName = ResourceLocation.tryParse(data.get(registryNameKey).getAsString());
                         KeymappingKeyHandler.registerKeyBinding(registryName, name, defaultKey, MPSConstants.MPS_ITEM_GROUP, showOnHud, true);
                     }
 
@@ -211,7 +211,7 @@ public enum KeyMappingReaderWriter {
                     /** bind modules to it */
                 } else if (line.contains("~") && id != null) {
                     String[] exploded = line.split("~");
-                    ResourceLocation regName = new ResourceLocation(MPSConstants.MOD_ID, exploded[0]);
+                    ResourceLocation regName = ResourceLocation.tryBuild(MPSConstants.MOD_ID, exploded[0]);
                     boolean finalDisplayOnHUD = displayOnHUD;
                     InputConstants.Key finalId = id;
                     boolean finalToggleval = toggleval;

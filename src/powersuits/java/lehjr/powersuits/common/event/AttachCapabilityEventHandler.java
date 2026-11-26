@@ -94,7 +94,7 @@ public class AttachCapabilityEventHandler {
             });
 
             // AE2 Meteorite Compass (WIP only handheld model shows needle direction)
-        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.AE2_METEOR_COMPASS) && event.getObject().getItem().equals(ForgeRegistries.ITEMS.getValue(new ResourceLocation("ae2:meteorite_compass")))) {
+        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.AE2_METEOR_COMPASS) && event.getObject().getItem().equals(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse("ae2:meteorite_compass")))) {
             IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY);
             event.addCapability(MPSRegistryNames.AE2_METEOR_COMPASS, new ICapabilityProvider() {
 

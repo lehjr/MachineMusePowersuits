@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.clientbound;
 
-import lehjr.numina.common.network.packets.clienthandlers.ModeChangeRequestPacketClientHandler;
+import lehjr.numina.client.network.ModeChangeRequestPacketClientHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;

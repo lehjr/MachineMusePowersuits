@@ -9,6 +9,7 @@ import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.StringUtils;
 import net.minecraft.client.Minecraft;
@@ -135,26 +136,22 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     public ItemStack getModularItemOrEmpty() {
         return getSelectedTab().map(tab -> {
             ItemStack stack = getStack(tab.getSlotType());
-            return getModularItemCapability(tab.getSlotType()).isPresent() ? stack : ItemStack.EMPTY;
+            return getModularItemCapability(tab.getSlotType()) != null ? stack : ItemStack.EMPTY;
         }).orElse(ItemStack.EMPTY);
     }
 
-    public Optional<IModularItem> getModularItemCapability () {
-        return getModularItemOrEmpty().getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast);
+    public IModularItem getModularItemCapability () {
+        return NuminaCapabilities.getModularItemOrModeChangingCapability(getModularItemOrEmpty());
     }
 
     public boolean playerHasModularItems() {
-        return equipmentSlotTypes.stream()
-                .anyMatch(type->getModularItemCapability(type).isPresent());
+        return equipmentSlotTypes.stream().anyMatch(type->getModularItemCapability(type) != null);
     }
 
-    Optional<IModularItem> getModularItemCapability (EquipmentSlot type) {
-        return getStack(type).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast);
+    IModularItem getModularItemCapability (EquipmentSlot type) {
+        return NuminaCapabilities.getModularItemOrModeChangingCapability(getStack(type));
     }
+
 
     @Nonnull
     ItemStack getStack(EquipmentSlot type) {

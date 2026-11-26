@@ -38,7 +38,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ArmorStandScreen extends AbstractContainerScreen<ArmorStandMenu> {
-    public static final ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/container/armorstand.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "textures/gui/container/armorstand.png");
     /** The old x position of the mouse pointer */
     /** The old x position of the mouse pointer */
     private float xMouse;

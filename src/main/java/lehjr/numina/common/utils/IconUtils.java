@@ -33,7 +33,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.MatrixUtil;
 import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
-import lehjr.numina.client.render.NuminaSpriteUploader;
+import lehjr.numina.client.gui.NuminaSpriteUploader;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

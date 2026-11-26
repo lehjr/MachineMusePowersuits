@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.clientbound;
 
-import lehjr.numina.common.network.packets.clienthandlers.TweakRequestDoublePacketClientHander;
+import lehjr.numina.client.network.TweakRequestDoublePacketClientHander;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;

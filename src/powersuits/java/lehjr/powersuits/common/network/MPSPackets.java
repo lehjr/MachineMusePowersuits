@@ -47,7 +47,7 @@ public class MPSPackets {
     private static final String PROTOCOL_VERSION = "1";
 
     public static final SimpleChannel CHANNEL_INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(MPSConstants.MOD_ID, "data"),
+            ResourceLocation.tryBuild(MPSConstants.MOD_ID, "data"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals

@@ -26,20 +26,24 @@
 
 package lehjr.powersuits.client.gui.module.tweak;
 
+import lehjr.numina.client.gui.clickable.slider.AbstractTinkerSlider;
+import lehjr.numina.client.gui.clickable.slider.TinkerDoubleSlider;
+import lehjr.numina.client.gui.clickable.slider.TinkerIntSlider;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
-import lehjr.numina.client.gui.clickable.slider.VanillaTinkerIntSlider;
-import lehjr.numina.client.gui.clickable.slider.VanillaTinkerSlider;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.UnitMap;
+import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.TweakRequestDoublePacketServerBound;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.StringUtils;
+import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -54,32 +58,55 @@ public class ModuleTweakFrame extends ScrollableFrame {
     protected static int margin = 4;
     protected ModularItemSelectionFrame itemTarget;
     protected ModuleSelectionFrame moduleTarget;
-    protected List<VanillaTinkerSlider> sliders = new LinkedList<>();
-    protected Map<String, Double> propertyStrings = new HashMap<>();
-    protected VanillaTinkerSlider selectedSlider;
     VanillaFrameScrollBar scrollBar;
+    // the slider currently being adjusted, if any
+    protected AbstractTinkerSlider selectedSlider;
+
+    // repopulated on module or modular item change
+    protected List<AbstractTinkerSlider> sliders = new LinkedList<>();
+    // This should be updated every loop
+    protected Map<String, Double> propertyStrings = new HashMap<>();
+    // <TranslationKey, <List of associated propertyModifiers>>
+    Map<String, List<IPowerModule.IPropertyModifier>> propertyModifiers = new HashMap<>();
+
+    // This needs updating whenever a slider value changes just to make the value changes display, easier to just do it on every render loop
+    Map<String, IPowerModule.PropertyModifierLinearAdditive> tweaks = new HashMap<>();
+
+    boolean needsUpdating = false;
 
     public ModuleTweakFrame(Rect rect, ModularItemSelectionFrame itemTarget, ModuleSelectionFrame moduleTarget) {
         super(rect);
         this.itemTarget = itemTarget;
         this.moduleTarget = moduleTarget;
-        this.scrollBar = new VanillaFrameScrollBar(this, "slider");
+        this.scrollBar = new VanillaFrameScrollBar(this, "scrolbar");
+    }
+
+    public void setRefresh() {
+        this.needsUpdating = true;
+    }
+
+    IPowerModule getModuleCap() {
+        return moduleTarget.getModuleCap();
     }
 
     @Override
     public void update(double mousex, double mousey) {
-        LazyOptional<IPowerModule> cap = moduleTarget.getModuleCap();
-        if (cap.isPresent()) {
-            loadTweaks(cap);
+        IPowerModule pm = getModuleCap();
+        if (needsUpdating || pm == null){
+            if (pm != null) {
+                loadTweaks();
+            } else {
+                propertyModifiers.clear();
+                tweaks.clear();
+                this.sliders.clear();
+                this.propertyStrings.clear();
+                this.selectedSlider = null;
+            }
+            needsUpdating = false;
         } else {
-            this.sliders.clear();
-            this.propertyStrings.clear();
-            this.selectedSlider = null;
+            updateTweaks();
         }
-
-        for (VanillaTinkerSlider slider : sliders) {
-            slider.update(mousex, mousey);
-        }
+        sliders.forEach(slider->slider.update(mousex, mousey));
 
         if (selectedSlider != null) {
             selectedSlider.setValueByMouse(mousex);
@@ -125,23 +152,46 @@ public class ModuleTweakFrame extends ScrollableFrame {
         super.postRender(gfx, mouseX, mouseY, partialTick);
     }
 
+    private void updateTweaks() {
+        IPowerModule pm = getModuleCap();
+        if(pm != null) {
+            CompoundTag moduleTag = pm.getModuleTag();
+            for (Map.Entry<String, List<IPowerModule.IPropertyModifier>> property : propertyModifiers.entrySet()) {
+                double currValue = 0;
+                for (IPowerModule.IPropertyModifier modifier : property.getValue()) {
+                    currValue = modifier.applyModifier(moduleTag, currValue);
+
+                    // This is not updating because the reference is not updating or is it a sync issue??
+                    // The module in the packet handler shows the module being updated server side
+
+                    if (modifier instanceof IPowerModule.PropertyModifierLinearAdditive) {
+                        String modifierName = ((IPowerModule.PropertyModifierLinearAdditive) modifier).getTradeoffName();
+                        // overwriting PropertyModifierIntLinearAdditive messes up rounding to int
+                        if (!(tweaks.get(modifierName) instanceof IPowerModule.PropertyModifierIntLinearAdditive)) {
+                            tweaks.put(modifierName, (IPowerModule.PropertyModifierLinearAdditive) modifier);
+                        }
+                    }
+                }
+                propertyStrings.put(property.getKey(), currValue);
+            }
+        }
+    }
+
     /**
      * Loads values that can be adjusted through the sliders
      * Also loads permanently set values for display
      *
-     * @param cap
      */
-    private void loadTweaks(LazyOptional<IPowerModule> cap) {
-        propertyStrings = new HashMap();
+    private void loadTweaks() {
+        IPowerModule pm = getModuleCap();
+        propertyStrings = new HashMap<>();
         sliders = new LinkedList<>();
-        Map<String, IPowerModule.PropertyModifierLinearAdditive> tweaks = new HashMap<>();
+        this.tweaks = new HashMap<>();
 
-        this.totalSize = cap.map(pm -> {
-            int totalSize = 0;
+        this.totalSize = 0;
+        if(pm != null) {
             CompoundTag moduleTag = pm.getModuleTag();
-
-            Map<String, List<IPowerModule.IPropertyModifier>> propertyModifiers = new HashMap<>();
-
+            this.propertyModifiers = new HashMap<>();
             pm.getPropertyModifiers().entrySet().stream()
                     .sorted(Map.Entry.comparingByKey())
                     .forEachOrdered(property -> {
@@ -159,50 +209,64 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             tweaks.put(modifierName, (IPowerModule.PropertyModifierLinearAdditive) modifier);
                             totalSize += 9;
                         }
-
                     }
                 }
                 propertyStrings.put(property.getKey(), currValue);
-//                totalSize += 9;
             }
 
-            double left = centerX() - ((width() -16) * 0.5 );
+            double left = centerX() - ((width() - 16) * 0.5);
             int y = 5;
             for (String tweak : tweaks.keySet()) {
-                MusePoint2D ul = new MusePoint2D(left, top() +y);
+                MusePoint2D ul = new MusePoint2D(left, top() + y);
 
                 IPowerModule.PropertyModifierLinearAdditive tweakObj = tweaks.get(tweak);
+
+                String translationString = NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak;
+                Component translation = Component.translatable(translationString);
+                if(translationString.equals(translation.getString())) {
+                    NuminaLogger.logDebug("missing translation: " + translationString);
+                }
+
                 if (tweakObj instanceof IPowerModule.PropertyModifierIntLinearAdditive) {
-                    VanillaTinkerIntSlider slider = new VanillaTinkerIntSlider(
+                    TinkerIntSlider slider = new TinkerIntSlider(
                             ul,
                             width() - 16,
                             moduleTag,
                             tweak,
-                            Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + tweak),
+                            translation,
                             (IPowerModule.PropertyModifierIntLinearAdditive) tweaks.get(tweak));
                     sliders.add(slider);
-                    totalSize += slider.height();
+                    totalSize += (int) slider.height();
                 } else {
-                    VanillaTinkerSlider slider = new VanillaTinkerSlider(
+                    TinkerDoubleSlider slider = new TinkerDoubleSlider(
                             ul,
                             width() - 16,
-                            moduleTag,
                             tweak,
-                            Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + tweak));
+                            translation);
                     sliders.add(slider);
-                    totalSize += slider.height();
+                    totalSize += (int) slider.height();
                 }
                 y += 22;
             }
-            return totalSize;// + 20;
-        }).orElse(0);
+
+            sliders.forEach(slider->{
+                slider.setValue(TagUtils.getDoubleOrZero(moduleTag, slider.id()));
+                slider.setOnUpdated(()-> {
+                    itemTarget.selectedType().ifPresent(type-> {
+                        NuminaPackets.sendToServer(new TweakRequestDoublePacketServerBound(type, ItemUtils.getRegistryName(pm.getModule()), slider.id(),
+                                slider.getValue()));
+                        moduleTarget.refreshModule();
+                    });
+                });
+            });
+        }
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (super.mouseClicked(mouseX, mouseY, button)) {
             mouseY += currentScrollPixels;
-            for (VanillaTinkerSlider slider : sliders) {
+            for (AbstractTinkerSlider slider : sliders) {
                 if (slider.mouseClicked(mouseX, mouseY, button)) {
                     selectedSlider = slider;
                     return true;
@@ -217,14 +281,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if (selectedSlider != null) {
             selectedSlider.mouseReleased(mouseX, mouseY, button);
-            itemTarget.selectedType().ifPresent(type-> moduleTarget.getModuleCap().ifPresent(pm-> {
-                    NuminaPackets.sendToServer(
-                            new TweakRequestDoublePacketServerBound(
-                                    type,
-                                    ItemUtils.getRegistryName(pm.getModule()),
-                                    selectedSlider.id(),
-                                    selectedSlider.getValue()));
-            }));
+
             selectedSlider = null;
             return true;
         }

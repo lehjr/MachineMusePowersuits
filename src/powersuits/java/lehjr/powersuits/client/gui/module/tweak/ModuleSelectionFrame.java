@@ -43,6 +43,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
+import javax.annotation.Nullable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     protected ModularItemSelectionFrame target;
     protected Map<ModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
     protected Rect lastPosition;
-    Optional<ClickableModule> selectedModule = Optional.empty();
-    LazyOptional<IPowerModule> moduleCap = LazyOptional.empty();
+    ClickableModule selectedModule = null;
     VanillaFrameScrollBar scrollBar;
     SwirlyMuseCircle circle;
 
@@ -84,10 +84,31 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
             categories.put(category, frame);
             frame.setDoOnNewSelect(thing-> {
-                selectedModule = Optional.of(thing.getSelectedModule());
-                moduleCap = selectedModule.map(ClickableModule::getModule).orElse(ItemStack.EMPTY).getCapability(NuminaCapabilities.Module.POWER_MODULE);
+                this.selectedModule = thing.getSelectedModule();
+                this.onSelected();
             });
             return frame;
+        }
+    }
+
+    /**
+     * This is required for the new ItemStack data setup in order for changes to propagate through the GUI code
+     */
+    public void refreshModule() {
+        if(selectedModule != null) {
+            IModularItem iModularItem = target.getModularItemCapability();
+            if(iModularItem != null) {
+                if(selectedModule.isInstalled()) {
+                    final int selected = selectedModule.getInventorySlot();
+                    // -1 indicates module is not installed, just a precaution
+                    if (selected >= 0 && selected < iModularItem.getSlots()) {
+                        ItemStack otherModule = iModularItem.getStackInSlot(selected);
+                        if (selectedModule.getModule().is(otherModule.getItem())) {
+                            selectedModule.setModule(otherModule);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -102,17 +123,16 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
         this.lastPosition = null;
         // temp holder
-        AtomicReference<Optional<ClickableModule>> selCopy = new AtomicReference<>(getSelectedModule());
+        AtomicReference<ClickableModule> selCopy = new AtomicReference<>(getSelectedModule());
         AtomicBoolean preserve = new AtomicBoolean(preserveSelected);
         categories.clear();
 
-        target.getModularItemCapability().ifPresent(iModularItem -> {
+        IModularItem iModularItem = target.getModularItemCapability();
+        if(iModularItem != null) {
             if (!preserve.get()) {
-                selCopy.set(Optional.empty());
-            } else if(getSelectedModule().isPresent()) {
-                getSelectedModule().ifPresent(sm-> {
-                    selCopy.set(Optional.of(new ClickableModule(sm.getModule(), new MusePoint2D(0, 0), -1, sm.category)));
-                });
+                selCopy.set(null);
+            } else if(selectedModule != null) {
+                selCopy.set(new ClickableModule(selectedModule.getModule(), new MusePoint2D(0, 0), -1, selectedModule.category));
             }
 
             // Occupied slots in the Modular Item
@@ -120,21 +140,22 @@ public class ModuleSelectionFrame extends ScrollableFrame {
                 ItemStack module = iModularItem.getStackInSlot(index);
                 if (!module.isEmpty()) {
                     int finalIndex = index;
-                    module.getCapability(NuminaCapabilities.Module.POWER_MODULE).ifPresent(m -> {
+                    IPowerModule m = iModularItem.getModuleCapability(module);
+                    if(m != null) {
                         if (m.isAllowed()) {
                             getOrCreateCategory(m.getCategory()).addModule(module, finalIndex);
                         }
-                    });
+                    }
                 }
             }
-        });
+        }
 
         for (ModuleSelectionSubFrame frame : categories.values()) {
             frame.refreshButtonPositions();
             // actually preserve the module selection during call to init due to it being called on gui resize
-            if(preserveSelected && selCopy.get().isPresent() && frame.category == selCopy.get().get().category) {
+            if(preserveSelected && selCopy.get() != null && frame.category == selCopy.get().category) {
                 for (ClickableModule button : frame.moduleButtons) {
-                    if (ItemStack.isSameItem(button.getModule(), selCopy.get().get().getModule())) {
+                    if (ItemStack.isSameItem(button.getModule(), selCopy.get().getModule())) {
                         frame.selectedModule = frame.moduleButtons.indexOf(button);
                         preserveSelected = false; // just to skip checking the rest
                         break;
@@ -149,16 +170,16 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         super.render(gfx, mouseX, mouseY, partialTick);
         this.scrollBar.render(gfx, mouseX, mouseY, partialTick);
 
-        Optional<IModularItem> iModularItem = target.getModularItemCapability();
+        IModularItem iModularItem = target.getModularItemCapability();
 
         categories.values().forEach(ModuleSelectionSubFrame::refreshButtonPositions);
 
-        if (iModularItem.isPresent()) {
+        if (iModularItem != null) {
             int totalHeight=0;
 
             for (ModuleSelectionSubFrame frame : categories.values()) {
-//                totalSize = (int) Math.max(frame.border.bottom() - this.top(), totalSize);
-                totalHeight += frame.border.height();
+                //                totalSize = (int) Math.max(frame.border.bottom() - this.top(), totalSize);
+                totalHeight += (int)frame.border.height();
             }
             setTotalSize(totalHeight);
 
@@ -181,33 +202,32 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         }
     }
 
-    float getzLevel() {
-        return 0;
-    }
-
-    private void drawSelection(GuiGraphics gfx) {
-        getSelectedModule().ifPresent(module ->{
-            MusePoint2D pos = module.center();
+    public void drawSelection(GuiGraphics gfx) {
+        if (selectedModule != null) {
+            MusePoint2D pos = selectedModule.center();
             if (pos.y() > this.currentScrollPixels + top() + 4 && pos.y() < this.currentScrollPixels + top() + height() - 4) {
                 IconUtils.drawCircleAround(circle, gfx.pose(), pos.x(), pos.y(), 10, 100);
             }
-        });
-    }
-
-    public Optional<ClickableModule> getSelectedModule() {
-        if (!categories.isEmpty()) {
-            return categories.values().stream().filter(frame -> frame !=null && frame.getSelectedModule() != null).findFirst().map(frame->frame.getSelectedModule());
         }
-        return Optional.empty();
-//        return selectedModule;
     }
 
-    public LazyOptional<IPowerModule> getModuleCap() {
-        return getSelectedModule()
-                .map(ClickableModule::getModule).orElse(ItemStack.EMPTY).getCapability(NuminaCapabilities.Module.POWER_MODULE);
-//        return moduleCap;
+    @Nullable
+    public ClickableModule getSelectedModule() {
+        return selectedModule;
     }
 
+    @Nullable
+    public IPowerModule getModuleCap() {
+        if (selectedModule != null) {
+            IModularItem iModularItem = target.getModularItemCapability();
+            if(iModularItem != null) {
+                ItemStack module = iModularItem.getStackInSlot(selectedModule.getInventorySlot());
+                selectedModule.setModule(module);
+                return iModularItem.getModuleCapability(module);
+            }
+        }
+        return null;
+    }
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
         boolean retVal = super.mouseScrolled(mouseX, mouseY, dWheel);
@@ -217,6 +237,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     @Override
     public void update(double mouseX, double mouseY) {
+        refreshModule();
         scrollBar.setMaxValue(getMaxScrollPixels());
         scrollBar.setValueByMouse(mouseY);
         setCurrentScrollPixels(scrollBar.getValue());
@@ -239,30 +260,28 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
         if (super.mouseClicked(mouseX, mouseY, button)) {
             ModuleSelectionSubFrame sel = null;
-
-            if (containsPoint(mouseX, mouseY)) {
-                mouseY += currentScrollPixels;
-                for (ModuleSelectionSubFrame frame : categories.values()) {
-                    if (frame.mouseClicked(mouseX, mouseY, button)) {
-                        sel = frame;
-                    }
+            mouseY += currentScrollPixels;
+            for (ModuleSelectionSubFrame frame : categories.values()) {
+                if (frame.mouseClicked(mouseX, mouseY, button)) {
+                    sel = frame;
                 }
+            }
 
-                if (sel != null && sel.getSelectedModule() != null) {
-                    for (ModuleSelectionSubFrame frame : categories.values()) {
-                        if (frame != sel) {
-                            frame.resetSelection();
+            if (sel != null && sel.getSelectedModule() != null) {
+                for (ModuleSelectionSubFrame frame : categories.values()) {
+                    if (frame != sel) {
+                        frame.resetSelection();
+                    }
+                    else {
+                        final ClickableModule selectedOther = sel.getSelectedModule();
+                        if(selectedModule!= selectedOther) {
+                            selectedModule = selectedOther;
+                            onSelected();
                         }
-//                        else {
-//                            final ClickableModule selectedOther = sel.getSelectedModule();
-//
-//                            if (selectedModule.map(module-> module.equals(selectedOther)).orElse(false)) {
-//                                NuminaLogger.logDebug("do something here???");
-//                            }
-//                        }
                     }
                 }
             }
+
             return sel != null;
         }
         return false;

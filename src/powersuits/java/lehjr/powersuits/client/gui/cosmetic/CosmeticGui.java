@@ -52,7 +52,7 @@ import net.minecraft.world.entity.player.Player;
  * Ported to Java by lehjr on 10/19/16.
  */
 public class CosmeticGui extends ContainerlessGui {
-    public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/cosmetic.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "textures/gui/background/cosmetic.png");
     Player player;
     ModularItemSelectionFrame itemSelectFrame;
     EntityRenderFrame renderframe;

@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.clientbound;
 
-import lehjr.numina.common.network.packets.clienthandlers.CosmeticInfoPacketClientHandler;
+import lehjr.numina.client.network.CosmeticInfoPacketClientHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.EquipmentSlot;

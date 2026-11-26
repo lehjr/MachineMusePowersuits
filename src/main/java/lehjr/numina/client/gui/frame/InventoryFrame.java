@@ -237,7 +237,7 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
     }
 
     class SlotRect extends Rect implements IDrawableRect {
-        public final ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/container/slot_rect.png");
+        public final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "textures/gui/container/slot_rect.png");
         float zLevel = 0;
 
         public SlotRect(MusePoint2D ul) {

@@ -54,7 +54,7 @@ import java.util.Map;
 
 public enum ModelBakeEventHandler {
     INSTANCE;
-    public static final ResourceLocation plasmaBall = new ResourceLocation(MPSConstants.MOD_ID, "entity/plasma");
+    public static final ResourceLocation plasmaBall = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "entity/plasma");
 
     public MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
 
@@ -72,7 +72,7 @@ public enum ModelBakeEventHandler {
     public void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> registry = event.getModels();
         for (Direction facing : Direction.values()) {
-            BakedModel model = registry.get(new ModelResourceLocation(new ResourceLocation("powersuits:luxcapacitor"), "facing=" + facing + ",waterlogged=true"));
+            BakedModel model = registry.get(new ModelResourceLocation(ResourceLocation.tryParse("powersuits:luxcapacitor"), "facing=" + facing + ",waterlogged=true"));
             if(model instanceof OBJBakedCompositeModel) {
                 HashMap<DIR, List<BakedQuad>> map = new HashMap<>();
                 for (DIR dir : DIR.values()) {

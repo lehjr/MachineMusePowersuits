@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class VanillaFrameScrollBar extends AbstractSlider {
-    ResourceLocation SCROLL_TEXTURE = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/scrollbar.png");
+    ResourceLocation SCROLL_TEXTURE = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "textures/gui/scrollbar.png");
     ScrollableFrame parent;
     public VanillaFrameScrollBar(ScrollableFrame parent, String id) {
         super(parent.right() -6, parent.top(), parent.right(), parent.bottom(), id,  false);

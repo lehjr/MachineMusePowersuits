@@ -28,7 +28,6 @@ package lehjr.numina.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import lehjr.numina.client.render.NuminaSpriteUploader;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
@@ -90,7 +89,7 @@ public class NuminaIcons {
     }
 
     private DrawableIcon registerIcon(String name, int width, int height) {
-        ResourceLocation location = new ResourceLocation(NuminaConstants.MOD_ID, name);
+        ResourceLocation location = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, name);
         return registerIcon(location, width, height);
     }
 

@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.clientbound;
 
-import lehjr.numina.common.network.packets.clienthandlers.ToggleRequestPacketClientHandler;
+import lehjr.numina.client.network.ToggleRequestPacketClientHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,7 +17,7 @@ public record ToggleRequestPacketClientBound(ResourceLocation registryName, bool
 
     public static ToggleRequestPacketClientBound decode(FriendlyByteBuf packetBuffer) {
         return new ToggleRequestPacketClientBound(
-                new ResourceLocation(packetBuffer.readUtf(500)),
+                ResourceLocation.tryParse(packetBuffer.readUtf(500)),
                 packetBuffer.readBoolean()
         );
     }

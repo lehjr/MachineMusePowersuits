@@ -42,7 +42,7 @@ import java.util.Optional;
 public class NuminaPackets {
     private static final String PROTOCOL_VERSION = "1";
     private static final SimpleChannel CHANNEL_INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(NuminaConstants.MOD_ID, "data"),
+            ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "data"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals

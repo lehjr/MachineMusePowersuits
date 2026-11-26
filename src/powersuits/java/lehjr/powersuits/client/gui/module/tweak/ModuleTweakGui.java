@@ -54,7 +54,7 @@ public class ModuleTweakGui extends ContainerlessGui {
     Component TINKER_FRAME_LABEL = Component.translatable("gui.powersuits.tinker");
     Component SUMMARY_FRAME_LABEL = Component.translatable(MPSConstants.GUI_EQUIPPED_TOTALS);
 
-    public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
     protected ModularItemSelectionFrame itemSelectFrame;
     protected ModuleSelectionFrame moduleSelectFrame;
     protected DetailedSummaryFrame summaryFrame;
@@ -71,7 +71,7 @@ public class ModuleTweakGui extends ContainerlessGui {
     @Override
     public void init() {
         super.init();
-        frames.clear();
+//        frames.clear();
 
         /** for selecting the item to manipulate ------------------------------------------------ */
         EquipmentSlot type;
@@ -98,7 +98,7 @@ public class ModuleTweakGui extends ContainerlessGui {
 
         /** setup call to make the modules reload when new button pressed */
         itemSelectFrame.setOnChanged(()-> {
-            moduleSelectFrame.selectedModule = Optional.ofNullable(null);
+            moduleSelectFrame.selectedModule = null;
             moduleSelectFrame.loadModules(false);
             tweakFrame.resetScroll();
         });
@@ -108,11 +108,15 @@ public class ModuleTweakGui extends ContainerlessGui {
         addFrame(summaryFrame);
 
         tweakFrame = new ModuleTweakFrame(new Rect(leftPos + 176, topPos + 58, leftPos + 345, topPos + 208),
-        itemSelectFrame,
-        moduleSelectFrame);
+                itemSelectFrame,
+                moduleSelectFrame);
         addFrame(tweakFrame);
-   }
 
+        moduleSelectFrame.setDoOnNewSelect(doThis -> {
+//            NuminaLogger.logDebug("module cap: " + moduleSelectFrame.getModuleCap());
+            tweakFrame.setRefresh();//loadTweaks(moduleSelectFrame.getModuleCap());
+        });
+    }
     @Override
     public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         super.render(gfx, mouseX, mouseY, partialTicks);

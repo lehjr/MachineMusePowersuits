@@ -37,7 +37,7 @@ import java.util.Optional;
 public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMenu> {
     Component modularItemInventoryLabel = Component.translatable("gui." + MPSConstants.MOD_ID + ".modularitem.inventory");
     Component moduleSelectionFrameLabel = Component.translatable(MPSConstants.GUI_COMPATIBLE_MODULES);
-    public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
     protected TabSelectFrame tabSelectFrame;
     ModularItemSelectionFrameContainered<InstallSalvageMenu> itemSelectFrame;
 
@@ -82,22 +82,43 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         moduleSelectFrame = new CompatibleModuleDisplayFrame(itemSelectFrame, new Rect(leftPos + 8, topPos + 13, leftPos + 172, topPos + 208));
         itemSelectFrame.getCreativeInstallButton().setOnPressed(pressed -> {
             itemSelectFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
-            moduleSelectFrame.getSelectedModule().ifPresent(clickie -> MPSPackets.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(clickie.getModule()))));
+            if (moduleSelectFrame.getSelectedModule() != null && itemSelectFrame.selectedType().isPresent()) {
+                MPSPackets.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(moduleSelectFrame.getSelectedModule().getModule())));
+            }
         });
 
         // not perfect but better than nothing, I think
         itemSelectFrame.getCreativeInstallAllButton().setOnPressed(pressed->{
-            Optional<IModularItem> modularItemCap = itemSelectFrame.getModularItemCapability();
-            if (modularItemCap.isPresent()) {
+            IModularItem modularItemCap = itemSelectFrame.getModularItemCapability();
+            if (modularItemCap != null) {
                 itemSelectFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
                 NonNullList<ItemStack> compatibleModules = getCompatibleModuleList();
+                int modularItemTier = modularItemCap.getTier();
+
                 for(ItemStack module : compatibleModules) {
-                    Optional<IPowerModule> powerModule = module.getCapability(NuminaCapabilities.Module.POWER_MODULE).resolve();
-                    if (powerModule.isPresent()) {
-                        ModuleCategory category = powerModule.map(IPowerModule::getCategory).orElse(ModuleCategory.NONE);
-                        int tier = powerModule.map(IPowerModule::getTier).orElse(0);
-                        if(tier == -1 || (tier >= 4 &&(category == ModuleCategory.ARMOR || category == ModuleCategory.ENERGY_STORAGE))) {
+                    IPowerModule powerModule = modularItemCap.getModuleCapability(module);
+                    if (powerModule != null) {
+                        int tier = powerModule.getTier();
+
+                        // tier -1 is just no tier.
+                        if(tier == -1 ||
+                                // already the highest tier the modular item will support
+                                tier == modularItemTier) {
                             MPSPackets.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(module)));
+
+
+                        } else if (tier < modularItemTier) {
+                            NonNullList<ItemStack> otherModules = NonNullList.create();
+                            ModuleCategory category = powerModule.getCategory();
+                            if(category != null) {}
+
+                            // FIXME: get highest tier matching item group if not blank
+
+
+
+
+                            String group = powerModule.getModuleGroup();
+
                         }
                     }
                 }

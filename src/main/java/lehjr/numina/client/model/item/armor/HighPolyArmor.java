@@ -28,6 +28,7 @@ package lehjr.numina.client.model.item.armor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.client.model.obj.RenderOBJPart;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.MorphTarget;
 import lehjr.numina.common.capabilities.render.modelspec.ObjPartSpec;

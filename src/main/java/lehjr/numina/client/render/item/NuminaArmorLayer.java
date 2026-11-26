@@ -202,7 +202,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
         }
     }
 
-    final ResourceLocation powersuitsTransparentArmor = new ResourceLocation("powersuits", "transparent_armor");
+    final ResourceLocation powersuitsTransparentArmor = ResourceLocation.tryBuild("powersuits", "transparent_armor");
 
     boolean doesBypassRender(@Nonnull ItemStack itemStack) {
         return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)

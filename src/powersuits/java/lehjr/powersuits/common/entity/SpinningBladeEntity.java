@@ -134,7 +134,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
                     // onSheared(@Nullable Player player, @Nonnull ItemStack item, Level world, BlockPos pos, int fortune)
 
                     List<ItemStack> drops = target.onSheared((Player) this.getOwner(), this.shootingItem, world, result.getBlockPos(),
-                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
+                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(ResourceLocation.tryParse("fortune")), this.shootingItem));
                     Random rand = new Random();
 
                     for (ItemStack stack : drops) {
@@ -162,7 +162,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
                 if (target.isShearable(this.shootingItem, entity.level(), entity.blockPosition()) && this.getOwner() instanceof Player) {
                     List<ItemStack> drops = target.onSheared((Player) getOwner(), this.shootingItem, entity.level(),
                             entity.blockPosition(),
-                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
+                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(ResourceLocation.tryParse("fortune")), this.shootingItem));
 
                     Random rand = new Random();
                     for (ItemStack drop : drops) {

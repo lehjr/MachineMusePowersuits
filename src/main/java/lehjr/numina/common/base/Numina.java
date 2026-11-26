@@ -52,9 +52,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(NuminaConstants.MOD_ID)
 public class Numina {
-    public Numina() {
-        ModLoadingContext modContainer = ModLoadingContext.get();
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public Numina(FMLJavaModLoadingContext context) {
+        IEventBus modEventBus = context.getModEventBus();
 
         NuminaItems.NUMINA_ITEMS.register(modEventBus);
         NuminaItems.CREATIVE_MODE_TABS.register(modEventBus);
@@ -80,13 +79,9 @@ public class Numina {
         MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
         MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
 
-        modContainer.registerConfig(ModConfig.Type.CLIENT, NuminaClientConfig.CLIENT_SPEC, ConfigHelper.setupConfigFile("numina-client-only.toml", NuminaConstants.MOD_ID).getAbsolutePath());
-        modContainer.registerConfig(ModConfig.Type.COMMON, NuminaCommonConfig.COMMON_SPEC, ConfigHelper.setupConfigFile("numina-common.toml", NuminaConstants.MOD_ID).getAbsolutePath());
-
-
+        context.registerConfig(ModConfig.Type.CLIENT, NuminaClientConfig.CLIENT_SPEC, ConfigHelper.setupConfigFile("numina-client-only.toml", NuminaConstants.MOD_ID).getAbsolutePath());
+        context.registerConfig(ModConfig.Type.COMMON, NuminaCommonConfig.COMMON_SPEC, ConfigHelper.setupConfigFile("numina-common.toml", NuminaConstants.MOD_ID).getAbsolutePath());
     }
-
-
 
     private void setup(final FMLCommonSetupEvent event) {
         NuminaPackets.registerNuminaPackets();
@@ -99,6 +94,6 @@ public class Numina {
         if (!(event.getObject() instanceof Player) || event.getObject() == null) {
             return;
         }
-        event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_keystates1"), new PlayerKeyStateWrapper((Player) event.getObject()));
+        event.addCapability(ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "player_keystates1"), new PlayerKeyStateWrapper((Player) event.getObject()));
     }
 }

@@ -43,7 +43,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
 public class Checkbox extends Clickable {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/checkbox.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.tryParse("textures/gui/checkbox.png");
     private final boolean showLabel;
     protected boolean isChecked;
     protected CheckboxTile tile;

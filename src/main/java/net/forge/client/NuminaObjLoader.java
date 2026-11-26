@@ -82,7 +82,7 @@ public class NuminaObjLoader implements IGeometryLoader<NuminaObjModel>, Resourc
         }
 
         return loadModel(new NuminaObjModel.ModelSettings(
-                new ResourceLocation(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride), deprecationWarningsBuilder.build());
+                ResourceLocation.tryParse(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride), deprecationWarningsBuilder.build());
     }
 
     public NuminaObjModel loadWithDefaultSettings(ResourceLocation location) {

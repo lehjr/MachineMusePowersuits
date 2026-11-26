@@ -22,7 +22,7 @@
 //public enum MPSOverlayRenderer {
 //    INSTANCE;
 //
-//    private static final ResourceLocation PROGRESS = new ResourceLocation("scannable", "textures/gui/overlay/scanner_progress.png");
+//    private static final ResourceLocation PROGRESS = ResourceLocation.tryBuild("scannable", "textures/gui/overlay/scanner_progress.png");
 //
 //    @SubscribeEvent
 //    public void onOverlayRender(final RenderGameOverlayEvent.Post event) {

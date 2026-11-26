@@ -438,7 +438,7 @@ public class MPSConstants {
 
     // TODO?
     //    public static final ResourceLocation AE2_METEOR_COMPASS = getRegName("meteorite_compass");
-    public static final ResourceLocation AE2_METEOR_COMPASS = new ResourceLocation("ae2", "meteorite_compass");
+    public static final ResourceLocation AE2_METEOR_COMPASS = ResourceLocation.tryBuild("ae2", "meteorite_compass");
 
 
     // Tools --------------------------------------------------------------------------------------
@@ -487,6 +487,6 @@ public class MPSConstants {
 
 
     public static ResourceLocation getRegName(String regNameString) {
-        return new ResourceLocation(MPSConstants.MOD_ID, regNameString);
+        return ResourceLocation.tryBuild(MPSConstants.MOD_ID, regNameString);
     }
 }
