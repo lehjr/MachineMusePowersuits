@@ -2,9 +2,9 @@ package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.math.Transformation;
-import forge.NuminaObjLoader;
-import forge.NuminaObjModel;
-import forge.QuadTransformers;
+import net.forge.client.NuminaObjLoader;
+import net.forge.client.NuminaObjModel;
+import net.forge.client.QuadTransformers;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;

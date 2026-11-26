@@ -1,0 +1,15 @@
+
+["Vision Modules"]
+
+	["Vision Modules".Binnoculars]
+		isAllowed = true
+		#Range: 0.0 ~ 100.0
+		fieldOfViewBase = 0.5
+		#Range: 0.0 ~ 100.0
+		fieldOfViewfOVMultMultiplier = 9.5
+
+	["Vision Modules"."Night Vision"]
+		isAllowed = true
+		#Range: 0.0 ~ 1000000.0
+		energyConBase = 100.0
+

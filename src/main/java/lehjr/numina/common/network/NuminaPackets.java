@@ -41,7 +41,7 @@ import java.util.Optional;
 
 public class NuminaPackets {
     private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel CHANNEL_INSTANCE = NetworkRegistry.newSimpleChannel(
+    private static final SimpleChannel CHANNEL_INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(NuminaConstants.MOD_ID, "data"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
@@ -158,35 +158,17 @@ public class NuminaPackets {
                 TweakRequestDoublePacketClientBound::decode,
                 TweakRequestDoublePacketClientBound.Handler::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-
-//        //------------------------------------------------------
-//        CHANNEL_INSTANCE.registerMessage(
-//             i++,
-//                PlayerHandStorageSyncResponseClientBound.class,
-//                PlayerHandStorageSyncResponseClientBound::encode,
-//                PlayerHandStorageSyncResponseClientBound::decode,
-//                PlayerHandStorageSyncResponseClientBound.Handler::handle,
-//                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-//        //------------------------------------------------------
-//        CHANNEL_INSTANCE.registerMessage(
-//                i++,
-//                PlayerHandStorageSyncRequestServerBound.class,
-//                PlayerHandStorageSyncRequestServerBound::encode,
-//                PlayerHandStorageSyncRequestServerBound::decode,
-//                PlayerHandStorageSyncRequestServerBound.Handler::handle,
-//                Optional.of(NetworkDirection.PLAY_TO_SERVER));
-
     }
 
     public SimpleChannel getWrapper() {
         return CHANNEL_INSTANCE;
     }
 
-    public static <MSG> void sendFromClientToServer(MSG message) {
+    public static <MSG> void sendToServer(MSG message) {
         CHANNEL_INSTANCE.sendToServer(message);
     }
 
-    public static <MSG> void sendFromServerToClient(Player player, MSG message) {
-        CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), message);
+    public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
+        CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 }

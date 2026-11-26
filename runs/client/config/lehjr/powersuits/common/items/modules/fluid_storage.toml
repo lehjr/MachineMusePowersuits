@@ -1,0 +1,55 @@
+
+[FluidStorage]
+
+	[FluidStorage.Coolant_Tank_1]
+		isAllowed = true
+		#Range: 1000 ~ 100000
+		fluidTankSize = 1000
+		#Range: 0.0 ~ 1000000.0
+		heatActivationPercentBase = 0.5
+		#Range: 0.0 ~ 1000000.0
+		heatActivationPercentMultiplier = 0.5
+		#Range: 0.0 ~ 1000000.0
+		energyConcoolingBonusMultiplier = 1.0
+		#Range: 0.0 ~ 1000000.0
+		energyConMultiplier = 40.0
+
+	[FluidStorage.Coolant_Tank_2]
+		isAllowed = true
+		#Range: 1000 ~ 100000
+		fluidTankSize = 5000
+		#Range: 0.0 ~ 1000000.0
+		heatActivationPercentBase = 0.5
+		#Range: 0.0 ~ 1000000.0
+		heatActivationPercentMultiplier = 0.5
+		#Range: 0.0 ~ 1000000.0
+		energyConcoolingBonusMultiplier = 1.0
+		#Range: 0.0 ~ 1000000.0
+		energyConMultiplier = 40.0
+
+	[FluidStorage.Coolant_Tank_3]
+		isAllowed = true
+		#Range: 1000 ~ 100000
+		fluidTankSize = 10000
+		#Range: 0.0 ~ 1000000.0
+		heatActivationPercentBase = 0.5
+		#Range: 0.0 ~ 1000000.0
+		heatActivationPercentMultiplier = 0.5
+		#Range: 0.0 ~ 1000000.0
+		energyConcoolingBonusMultiplier = 1.0
+		#Range: 0.0 ~ 1000000.0
+		energyConMultiplier = 40.0
+
+	[FluidStorage.Coolant_Tank_4]
+		isAllowed = true
+		#Range: 1000 ~ 100000
+		fluidTankSize = 20000
+		#Range: 0.0 ~ 1000000.0
+		heatActivationPercentBase = 0.5
+		#Range: 0.0 ~ 1000000.0
+		heatActivationPercentMultiplier = 0.5
+		#Range: 0.0 ~ 1000000.0
+		energyConcoolingBonusMultiplier = 1.0
+		#Range: 0.0 ~ 1000000.0
+		energyConMultiplier = 40.0
+

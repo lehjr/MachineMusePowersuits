@@ -1,14 +1,12 @@
 modLoader="javafml"
-loaderVersion="${loader_version}"
+loaderVersion="${loader_version_range}"
 issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
-license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
-[[accessTransformers]]
-    file="META-INF/accesstransformer.cfg"
+license="${mod_license}"
+
 [[mods]]
     modId="numina"
-    version="${version}"
+    version="${mod_version}"
     displayName="Numina"
-    updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235440"
     displayURL="https://github.com/lehjr/MachineMusePowersuits"
     authors="MachineMuse, lehjr"
     description="A common library of useful functions and utilities for dealing with Minecraft's source code."
@@ -16,18 +14,20 @@ license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
 [[dependencies.numina]]
     modId="forge"
     mandatory=true
-    versionRange="${forge_version}"
+    versionRange="${forge_version_range}"
+    ordering="NONE"
     side="BOTH"
 
 [[dependencies.numina]]
     modId="minecraft"
     mandatory=true
-    versionRange="${minecraft_version}"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
     side="BOTH"
 
 [[dependencies.numina]]
     modId="jei"
     mandatory=false
-    versionRange="${jei_version}"
+    versionRange="${jei_version_range}"
     ordering="AFTER"
     side="BOTH"

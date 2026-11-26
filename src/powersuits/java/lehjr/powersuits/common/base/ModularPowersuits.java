@@ -26,19 +26,15 @@
 
 package lehjr.powersuits.common.base;
 
-import lehjr.powersuits.client.control.KeymappingKeyHandler;
-import lehjr.powersuits.client.event.ModelBakeEventHandler;
-import lehjr.powersuits.client.event.RenderEventHandler;
-import lehjr.powersuits.client.gui.module.install_salvage.InstallSalvageGui;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.event.AttachCapabilityEventHandler;
 import lehjr.powersuits.common.event.EntityDamageEvent;
 import lehjr.powersuits.common.event.MovementManager;
-import lehjr.powersuits.common.event.PlayerUpdateHandler;
+import lehjr.powersuits.common.event.PlayerEventHandler;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.registration.*;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -46,60 +42,53 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(MPSConstants.MOD_ID)
 public class ModularPowersuits {
     public ModularPowersuits() {
-        // Config
-//        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPSSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mps-client-only.toml", MPSConstants.MOD_ID).getAbsolutePath());
-//        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPSSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config
+        NuminaLogger.logDebug("Loaded ModularPowersuits!!!!");
 
+
+        ModLoadingContext modContainer = ModLoadingContext.get();
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register the setup method for modloading
         modEventBus.addListener(this::setup);
-
         MPSItems.MPS_ITEMS.register(modEventBus);
-        MPSBlocks.BLOCKS.register(modEventBus);
-        MPSBlocks.BLOCKENTITY_TYPES.register(modEventBus);
-        MPSEntities.ENTITY_TYPES.register(modEventBus);
-        MPSMenuTypes.CONTAINER_TYPES.register(modEventBus);
-        MPSItems.register(modEventBus);
+        MPSItems.MPS_CREATIVE_MODE_TAB.register(modEventBus);
+        MPSBlocks.MPS_BLOCKS.register(modEventBus);
+        MPSBlocks.MPS_BLOCKENTITY_TYPES.register(modEventBus);
+        MPSEntities.MPS_ENTITY_TYPES.register(modEventBus);
+        MPSMenuTypes.MPS_MENU_TYPES.register(modEventBus);
 
-
-        // Register the doClientStuff method for modloading
-        modEventBus.addListener(this::setupClient);
-//
-//        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent); // FIXME: does nothing
-        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler); // FIXME: does nothing
-        MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
         MinecraftForge.EVENT_BUS.register(MovementManager.INSTANCE);
-////
 
         MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
 
+        MinecraftForge.EVENT_BUS.register(PlayerEventHandler.class);
 
-//        // handles loading and reloading event
-//        modEventBus.addListener((ModConfigEvent event) -> {
-//            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
+
+        // Config
+//        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPSSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mps-client-only.toml", MPSConstants.MOD_ID).getAbsolutePath());
+//        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPSSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config
+
+
+
+
+
+
+
+
+        // Register the doClientStuff method for modloading
+//        modEventBus.addListener(this::setupClient);
 //
-//            final ModConfig config = event.getConfig();
-//            if (config.getSpec()!= null && config.getSpec() == MPSSettings.SERVER_SPEC) {
-//                MPSSettings.getModuleConfig().setServerConfig(config);
-//
-//                // This is actually for a feature that isn't even currently enabled :P
-//                // getFullPath can't be used on client if it isn't also hosting the server
-//                if (config instanceof CommentedFileConfig) {
-//                    CosmeticPresetSaveLoad.setConfigDirString(config.getFullPath().getParent().toString());
-//                    CosmeticPresetSaveLoad.copyPresetsFromJar(config.getFullPath().getParent().toString());
-//                }
-//            }
-//        });
+//        // Register ourselves for server and other game events we are interested in
+        MinecraftForge.EVENT_BUS.register(this);
+
+        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent); // FIXME: does nothing
+        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler); // FIXME: does nothing
 
 
         MPSConfigurations.setup(ModLoadingContext.get());
@@ -109,24 +98,12 @@ public class ModularPowersuits {
      * Setup common (clien/server) stuff
      */
     private void setup(final FMLCommonSetupEvent event) {
+        NuminaLogger.logDebug("Loaded ModularPowersuits setup!!!!");
+
         MPSPackets.registerMPAPackets();
     }
 
-    /**
-     * Setup client related stuff
-     */
-    private void setupClient(final FMLClientSetupEvent event) {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onModelBake);
-        modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onAddAdditional);
-
-        MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(new KeymappingKeyHandler());
-
-        MenuScreens.register(MPSMenuTypes.INSTALL_SALVAGE_MENU_TYPE.get(), InstallSalvageGui::new);
-
-    }
 
     /**
      * Attach capabilities to a few existing items in order to use them as modules

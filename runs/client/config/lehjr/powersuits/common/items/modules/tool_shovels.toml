@@ -1,0 +1,47 @@
+
+[Shovels]
+
+	[Shovels.Stone_Shovel_Module]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 600.0
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 1.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 3.0
+
+	[Shovels.Iron_Shovel_Module]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 600.0
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 6.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 40.0
+
+	[Shovels.Diamond_Shovel_Module]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 600.0
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 6.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 40.0
+
+	[Shovels.Netherite_Shovel_Module]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 600.0
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 6.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 40.0
+

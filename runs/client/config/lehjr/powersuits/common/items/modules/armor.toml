@@ -1,0 +1,47 @@
+
+[Armor_Modules]
+
+	[Armor_Modules.Iron_Armor_Plating]
+		isAllowed = true
+		#Range: 0.0 ~ 40.0
+		armorPhysical = 4.0
+		#Range: 0.0 ~ 4.0
+		knockbackResistance = 0.25
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 300.0
+		#Range: 0.0 ~ 100.0
+		armorToughness = 1.0
+
+	[Armor_Modules.Diamond_Armor_Plating]
+		isAllowed = true
+		#Range: 0.0 ~ 40.0
+		armorPhysical = 5.0
+		#Range: 0.0 ~ 4.0
+		knockbackResistance = 0.4
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 400.0
+		#Range: 0.0 ~ 100.0
+		armorToughness = 2.5
+
+	[Armor_Modules.Netherite_Armor_Plating]
+		isAllowed = true
+		#Range: 0.0 ~ 40.0
+		armorPhysical = 7.5
+		#Range: 0.0 ~ 8.0
+		knockbackResistance = 1.5
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 750.0
+		#Range: 0.0 ~ 100.0
+		armorToughness = 3.5
+
+	[Armor_Modules.Energy_Shield_Armor_Plating]
+		isAllowed = true
+		#Range: 0.0 ~ 1000.0
+		fieldStrengthMultiplier = 6.0
+		#Range: 0.0 ~ 1.7976931348623157E308
+		armorEnergyPerDamageMultiplier = 5000.0
+		#Range: 0.0 ~ 1000.0
+		maxHeatMultiplier = 900.0
+		#Range: 0.0 ~ 100.0
+		armorToughnessMultiplier = 4.5
+

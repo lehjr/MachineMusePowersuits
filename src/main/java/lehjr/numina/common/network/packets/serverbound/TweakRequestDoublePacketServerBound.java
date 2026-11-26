@@ -31,8 +31,7 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot type, ResourceLo
     }
 
     public static void sendToClient(ServerPlayer entity, EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
-        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
-                new TweakRequestDoublePacketClientBound(type, moduleRegName, tweakName, tweakValue));
+        NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(type, moduleRegName, tweakName, tweakValue),  entity);
     }
 
     public static class Handler {

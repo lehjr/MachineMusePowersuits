@@ -262,9 +262,8 @@ public class HeatUtils {
         }
         return 0;
     }
-    static final ResourceKey<DamageType> OVERHEAT_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE,
-            NuminaConstants.OVERHEAT_DAMAGE_REGANAME
-    );
+
+    public static final ResourceKey<DamageType> OVERHEAT_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, NuminaConstants.OVERHEAT_DAMAGE_REGANAME);
 
     public static class OverheatDamage {
         private final DamageSource overheat;

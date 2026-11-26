@@ -83,7 +83,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {
         if (mcmi != null && selectedModuleNew != null) {
             // update to detect mode changes
             selectedModule = selectedModuleNew;
-            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot()));
+            NuminaPackets.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot()));
             selectedModuleNew = null;
         }
     }

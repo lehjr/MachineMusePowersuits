@@ -22,8 +22,7 @@ public record ModeChangeRequestPacketServerBound(int mode) {
     }
 
     public static void sendToClient(ServerPlayer entity, int mode) {
-        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
-                new ModeChangeRequestPacketClientBound(mode));
+        NuminaPackets.sendToPlayer(new ModeChangeRequestPacketClientBound(mode), entity);
     }
 
     public static class Handler {

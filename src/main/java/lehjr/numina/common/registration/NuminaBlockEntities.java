@@ -10,8 +10,8 @@ import net.minecraftforge.registries.RegistryObject;
 import static lehjr.numina.common.registration.NuminaBlocks.CHARGING_BASE_BLOCK;
 
 public class NuminaBlockEntities {
-    public static final DeferredRegister<BlockEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, NuminaConstants.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCKENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, NuminaConstants.MOD_ID);
 
-    public static final RegistryObject<BlockEntityType<ChargingBaseBlockEntity>> CHARGING_BASE_BLOCK_ENTITY = TILE_TYPES.register(NuminaConstants.CHARGING_BASE_REGNAME,
+    public static final RegistryObject<BlockEntityType<ChargingBaseBlockEntity>> CHARGING_BASE_BLOCK_ENTITY = BLOCKENTITY_TYPES.register(NuminaConstants.CHARGING_BASE_REGNAME,
             () -> BlockEntityType.Builder.of(ChargingBaseBlockEntity::new, CHARGING_BASE_BLOCK.get()).build(null));
 }

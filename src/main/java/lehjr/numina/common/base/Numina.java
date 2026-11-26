@@ -28,30 +28,20 @@ package lehjr.numina.common.base;
 
 import lehjr.numina.client.config.NuminaClientConfig;
 import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.numina.common.capabilities.heat.IHeatStorage;
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
 import lehjr.numina.common.capabilities.player.keystates.PlayerKeyStateWrapper;
-import lehjr.numina.common.capabilities.render.IModelSpec;
-import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
-import lehjr.numina.common.capabilities.render.color.IColorTag;
-import lehjr.numina.common.capabilities.render.highlight.IHighlight;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.entity.NuminaArmorStand;
 import lehjr.numina.common.event.HarvestEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.recipe.RecipeSerializersRegistry;
+import lehjr.numina.common.registration.RecipeSerializersRegistry;
 import lehjr.numina.common.registration.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -64,75 +54,43 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class Numina {
     public Numina() {
         ModLoadingContext modContainer = ModLoadingContext.get();
-
-        modContainer.registerConfig(ModConfig.Type.CLIENT, NuminaClientConfig.CLIENT_SPEC, ConfigHelper.setupConfigFile("numina-client-only.toml", NuminaConstants.MOD_ID).getAbsolutePath());
-        modContainer.registerConfig(ModConfig.Type.COMMON, NuminaCommonConfig.COMMON_SPEC, ConfigHelper.setupConfigFile("numina-common.toml", NuminaConstants.MOD_ID).getAbsolutePath());
-
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        NuminaItems.NUMINA_ITEMS.register(modEventBus);
+        NuminaItems.CREATIVE_MODE_TABS.register(modEventBus);
+
+        NuminaBlocks.NUMINA_BLOCKS.register(modEventBus);
+        NuminaBlockEntities.BLOCKENTITY_TYPES.register(modEventBus);
+        NuminaEntities.ENTITY_TYPES.register(modEventBus);
+
+        NuminaMenus.MENU_TYPES.register(modEventBus);
 
         // Register the setup method for modloading
         modEventBus.addListener(this::setup);
 
-        modEventBus.addListener(this::addEntityAttributes);
-
-        modEventBus.addListener(this::registerCapabilities);
+        modEventBus.addListener(NuminaEntities::addEntityAttributes);
+        modEventBus.addListener(NuminaCapabilities::registerCapabilities);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         SoundDictionary.NUMINA_SOUND_EVENTS.register(modEventBus);
-        NuminaItems.NUMINA_ITEMS.register(modEventBus);
 
-        // item group
-        NuminaItems.register(modEventBus);
-
-        NuminaBlocks.NUMINA_BLOCKS.register(modEventBus);
-        NuminaBlockEntities.TILE_TYPES.register(modEventBus);
-        NuminaEntities.ENTITY_TYPES.register(modEventBus);
-        NuminaMenus.MENU_TYPES.register(modEventBus);
         RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
         MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
 
+        modContainer.registerConfig(ModConfig.Type.CLIENT, NuminaClientConfig.CLIENT_SPEC, ConfigHelper.setupConfigFile("numina-client-only.toml", NuminaConstants.MOD_ID).getAbsolutePath());
+        modContainer.registerConfig(ModConfig.Type.COMMON, NuminaCommonConfig.COMMON_SPEC, ConfigHelper.setupConfigFile("numina-common.toml", NuminaConstants.MOD_ID).getAbsolutePath());
 
-//        // TODO? reload recipes on config change?
-//        // [14:33:10] [Thread-1/DEBUG] [ne.mi.fm.co.ConfigFileTypeHandler/CONFIG]: Config file numina-server.toml changed, sending notifies
-//        // handles loading and reloading event
-//        modEventBus.addListener((ModConfigEvent event) -> {
-//            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
-//
-//            final ModConfig config = event.getConfig();
-//            if (config.getSpec() == NuminaSettings.SERVER_SPEC) {
-//                NuminaSettings.getModuleConfig().setServerConfig(config);
-//            }
-//        });
+
     }
 
 
-
-    //    @SubscribeEvent
-    public void addEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(NuminaEntities.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStand.createAttributes().build());
-    }
-
-//    @SubscribeEvent
-    public void registerCapabilities(final RegisterCapabilitiesEvent event) {
-        event.register(IHeatStorage.class);
-        event.register(IColorTag.class);
-
-        // Modules
-        event.register(IPowerModule.class);
-        event.register(IModelSpec.class);
-        event.register(IHighlight.class);
-        event.register(IChameleon.class);
-
-        // Player
-        event.register(IPlayerKeyStates.class);
-//        event.register(IPlayerHandStorage.class);
-    }
 
     private void setup(final FMLCommonSetupEvent event) {
         NuminaPackets.registerNuminaPackets();
+        NuminaIngredientTypes.regIngredients(event);
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
     }
 
@@ -142,6 +100,5 @@ public class Numina {
             return;
         }
         event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_keystates1"), new PlayerKeyStateWrapper((Player) event.getObject()));
-//        event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_hand_storage"), new PlayerHandStorageWrapper((Player) event.getObject()));
     }
 }

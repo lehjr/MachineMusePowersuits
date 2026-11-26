@@ -27,8 +27,7 @@ public record ToggleRequestPacketServerBound(ResourceLocation registryName, bool
     }
 
     public static void sendToClient(ServerPlayer entity, ResourceLocation registryName, boolean active) {
-        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
-                new ToggleRequestPacketClientBound(registryName, active));
+        NuminaPackets.sendToPlayer(new ToggleRequestPacketClientBound(registryName, active), entity);
     }
 
     public static class Handler {

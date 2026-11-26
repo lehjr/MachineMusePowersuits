@@ -1,0 +1,62 @@
+
+[Weapon_Modules]
+
+	[Weapon_Modules.Blade_Launcher]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 5000.0
+		#Range: 0.0 ~ 100000.0
+		spinBladeDam = 6.0
+
+	[Weapon_Modules.Lightning_Summoner_Launcher]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 4900000.0
+		#Range: 0.0 ~ 100000.0
+		heatEmission = 100.0
+
+	[Weapon_Modules.Melee_Assist]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 10.0
+		#Range: 0.0 ~ 100000.0
+		energyConImpactMultiplier = 1000.0
+		#Range: 0.0 ~ 100000.0
+		energyConcarryThroughMultiplier = 200.0
+		#Range: 0.0 ~ 100000.0
+		meleeDamageBase = 2.0
+		#Range: 0.0 ~ 100000.0
+		meleeDamageImpactMultiplier = 2.0
+		#Range: 0.0 ~ 100000.0
+		meleeKnockbackcarryThroughMultiplier = 1.0
+
+	[Weapon_Modules.Plasma_Cannon]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyPerTickBase = 100.0
+		#Range: 0.0 ~ 100000.0
+		energyPerTickvoltageMultiplier = 500.0
+		#Range: 0.0 ~ 100000.0
+		energyPerTickamperageMultiplier = 1500.0
+		#Range: 0.0 ~ 100000.0
+		plasmaDamageBase = 2.0
+		#Range: 0.0 ~ 100000.0
+		plasmaDamageamperageMultiplier = 38.0
+		#Range: 0.0 ~ 100000.0
+		plasmaExplosivenessvoltageMultiplier = 0.5
+
+	[Weapon_Modules.Railgun]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		totalImpulseBase = 500.0
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 500.0
+		#Range: 0.0 ~ 100000.0
+		heatEmissionBase = 2.0
+		#Range: 0.0 ~ 100000.0
+		totalImpulsevoltageMultiplier = 2500.0
+		#Range: 0.0 ~ 100000.0
+		energyConvoltageMultiplier = 2500.0
+		#Range: 0.0 ~ 100000.0
+		heatEmissionvoltageMultiplier = 10.0
+

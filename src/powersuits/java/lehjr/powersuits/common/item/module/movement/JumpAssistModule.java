@@ -31,7 +31,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
-import lehjr.numina.common.player.PlayerUtils;
+import lehjr.numina.common.utils.PlayerUtils;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.common.config.module.MovementModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;

@@ -27,7 +27,7 @@
 package lehjr.numina.client.event;
 
 
-import forge.NuminaObjLoader;
+import net.forge.client.NuminaObjLoader;
 import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.overlay.ModeChangingIconOverlay;
 import lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
@@ -55,6 +55,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -91,22 +92,6 @@ public class NuminaClientEventBusSubscriber {
     public static void registerOverlay(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll("numina_mode_changing_icon", ModeChangingIconOverlay.MODE_CHANGING_ICON_OVERLAY);
     }
-
-
-    @SubscribeEvent
-    public static void onTextureStitchPre(TextureStitchEvent event) {
-        TextureAtlas map = event.getAtlas();
-        // only adds if it doesn't already exist
-        if (map.location() == InventoryMenu.BLOCK_ATLAS) {
-            System.out.println("fixme, sprite upload not fixed yet!!!!");
-//            event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
-
-
-        }
-    }
-
-
-
 
     @SubscribeEvent
     public static void addLayers(EntityRenderersEvent.AddLayers event) {
@@ -165,8 +150,8 @@ public class NuminaClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void doClientStuff(final FMLClientSetupEvent event) {
-        MinecraftForge.EVENT_BUS.register(new NuminaFOVUpdateEventHandler());
-        MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
+        MinecraftForge.EVENT_BUS.register(NuminaFOVUpdateEventHandler.class);
+//        MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
         event.enqueueWork(() -> {
             MenuScreens.register(NuminaMenus.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
             MenuScreens.register(NuminaMenus.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
@@ -180,6 +165,5 @@ public class NuminaClientEventBusSubscriber {
 ////            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
 //        });
     }
-
 }
 

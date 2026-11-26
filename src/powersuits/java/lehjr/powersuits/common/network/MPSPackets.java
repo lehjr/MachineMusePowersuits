@@ -29,10 +29,19 @@ package lehjr.powersuits.common.network;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
+import lehjr.powersuits.common.network.packets.clientbound.SetSprintAssistDoubleClientBound;
+import lehjr.powersuits.common.network.packets.clientbound.ToggleableModuleListClientBound;
 import lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
+import lehjr.powersuits.common.network.packets.serverbound.SetSprintAssistDoubleAndDrainServerBound;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
+
+import java.util.Optional;
 
 public class MPSPackets {
     private static final String PROTOCOL_VERSION = "1";
@@ -52,59 +61,56 @@ public class MPSPackets {
                 CreativeInstallPacketClientBound.class,
                 CreativeInstallPacketClientBound::write,
                 CreativeInstallPacketClientBound::read,
-                CreativeInstallPacketClientBound::handle);
+                CreativeInstallPacketClientBound::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
                 CreativeInstallPacketServerBound.class,
                 CreativeInstallPacketServerBound::write,
                 CreativeInstallPacketServerBound::read,
-                CreativeInstallPacketServerBound.Handler::handle);
-
-//        CHANNEL_INSTANCE.registerMessage(
-//                i++,
-//                CPlaceRecipePacket.class,
-//                CPlaceRecipePacket::encode,
-//                CPlaceRecipePacket::decode,
-//                CPlaceRecipePacket::handle);
-//
-//        CHANNEL_INSTANCE.registerMessage(
-//                i++,
-//                SPlaceGhostRecipePacket.class,
-//                SPlaceGhostRecipePacket::encode,
-//                SPlaceGhostRecipePacket::decode,
-//                SPlaceGhostRecipePacket::handle);
-
+                CreativeInstallPacketServerBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
                 ContainerGuiOpenPacket.class,
                 ContainerGuiOpenPacket::write,
                 ContainerGuiOpenPacket::read,
-                ContainerGuiOpenPacket::handle);
-
-
-//        CHANNEL_INSTANCE.registerMessage(
-//                i++,
-//                MusePacketCosmeticPreset.class,
-//                MusePacketCosmeticPreset::encode,
-//                MusePacketCosmeticPreset::decode,
-//                MusePacketCosmeticPreset::handle);
-
-//        CHANNEL_INSTANCE.registerMessage(
-//                i++,
-//                MusePacketCosmeticPresetUpdate.class,
-//                MusePacketCosmeticPresetUpdate::encode,
-//                MusePacketCosmeticPresetUpdate::decode,
-//                MusePacketCosmeticPresetUpdate::handle);
-
+                ContainerGuiOpenPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                ContainerGuiOpenPacket.class,
-                ContainerGuiOpenPacket::write,
-                ContainerGuiOpenPacket::read,
-                ContainerGuiOpenPacket::handle);
+                ToggleableModuleListClientBound.class,
+                ToggleableModuleListClientBound::write,
+                ToggleableModuleListClientBound::read,
+                ToggleableModuleListClientBound::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                SetSprintAssistDoubleAndDrainServerBound.class,
+                SetSprintAssistDoubleAndDrainServerBound::write,
+                SetSprintAssistDoubleAndDrainServerBound::read,
+                SetSprintAssistDoubleAndDrainServerBound::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                SetSprintAssistDoubleClientBound.class,
+                SetSprintAssistDoubleClientBound::write,
+                SetSprintAssistDoubleClientBound::read,
+                SetSprintAssistDoubleClientBound::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+    }
+
+    public static <MSG> void sendToServer(MSG message) {
+        CHANNEL_INSTANCE.sendToServer(message);
+    }
+
+    public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
+        CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 
     public SimpleChannel getWrapper() {

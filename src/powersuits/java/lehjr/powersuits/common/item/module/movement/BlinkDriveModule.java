@@ -30,7 +30,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.player.PlayerUtils;
+import lehjr.numina.common.utils.PlayerUtils;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.config.module.MovementModuleConfig;

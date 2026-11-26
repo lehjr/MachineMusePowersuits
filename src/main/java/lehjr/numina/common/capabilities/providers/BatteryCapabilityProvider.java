@@ -85,48 +85,48 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
     }
 
     static int getTier(ItemStack module) {
-        if(module.is(NuminaItems.BASIC_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_1.get())) {
             return 1;
         }
-        if(module.is(NuminaItems.ADVANCED_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_2.get())) {
             return 2;
         }
-        if(module.is(NuminaItems.ELITE_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_3.get())) {
             return 3;
         }
-        if(module.is(NuminaItems.ULTIMATE_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_4.get())) {
             return 4;
         }
         return 0;
     }
 
     static int getMaxEnergy(ItemStack module) {
-        if(module.is(NuminaItems.BASIC_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_1.get())) {
             return NuminaCommonConfig.batteryMaxEnergy1;
         }
-        if(module.is(NuminaItems.ADVANCED_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_2.get())) {
             return NuminaCommonConfig.batteryMaxEnergy2;
         }
-        if(module.is(NuminaItems.ELITE_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_3.get())) {
             return NuminaCommonConfig.batteryMaxEnergy3;
         }
-        if(module.is(NuminaItems.ULTIMATE_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_4.get())) {
             return NuminaCommonConfig.batteryMaxEnergy4;
         }
         return 0;
     }
 
     static int getMaxTransfer(ItemStack module) {
-        if(module.is(NuminaItems.BASIC_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_1.get())) {
             return NuminaCommonConfig.batteryMaxTransfer1;
         }
-        if(module.is(NuminaItems.ADVANCED_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_2.get())) {
             return NuminaCommonConfig.batteryMaxTransfer2;
         }
-        if(module.is(NuminaItems.ELITE_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_3.get())) {
             return NuminaCommonConfig.batteryMaxTransfer3;
         }
-        if(module.is(NuminaItems.ULTIMATE_BATTERY.get())) {
+        if(module.is(NuminaItems.BATTERY_4.get())) {
             return NuminaCommonConfig.batteryMaxTransfer4;
         }
         return 0;

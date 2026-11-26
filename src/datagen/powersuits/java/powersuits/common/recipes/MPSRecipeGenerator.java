@@ -1,0 +1,1096 @@
+package powersuits.common.recipes;
+
+import lehjr.numina.common.registration.NuminaItems;
+import lehjr.powersuits.common.registration.MPSItems;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.*;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraftforge.common.Tags;
+import numina.common.recipes.ShapedEnchantmentRecipeBuilder;
+import numina.common.recipes.SmithingUpgradeRecipeBuilder;
+
+import javax.annotation.Nonnull;
+import java.util.function.Consumer;
+
+public class MPSRecipeGenerator extends RecipeProvider {
+    public MPSRecipeGenerator(PackOutput output) {
+        super(output);
+    }
+
+    @Override
+    protected void buildRecipes(@Nonnull Consumer<FinishedRecipe> recipeOutput) {
+        // Tinker Table -------------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.TINKER_TABLE_ITEM.get())
+            .pattern("IBI")
+            .pattern("BCB")
+            .pattern("GBG")
+            .define('I', Tags.Items.INGOTS_IRON)
+            .define('B', Tags.Items.DYES_BLUE)
+            .define('C', Items.CRAFTING_TABLE)
+            .define('G', Tags.Items.INGOTS_GOLD)
+            .unlockedBy(getHasName(Items.CRAFTING_TABLE), has(Items.CRAFTING_TABLE))
+            .save(recipeOutput);
+
+        // Power Fist ---------------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_1.get())
+            .pattern(" W ")
+            .pattern("WIC")
+            .pattern(" IW")
+            .define('I', Tags.Items.INGOTS_COPPER)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_FIST_1.get()), 
+                Ingredient.of(Items.IRON_INGOT), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_FIST_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_FIST_2.get()),
+                Ingredient.of(Items.DIAMOND), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_FIST_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_FIST_3.get()),
+                Ingredient.of(Items.NETHERITE_INGOT), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_FIST_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_2.get())
+//            .pattern(" W ")
+//            .pattern("WXC")
+//            .pattern(" IW")
+//            .define('X', MPSItems.POWER_FIST_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_FIST_1.get()), has(MPSItems.POWER_FIST_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_3.get())
+//            .pattern(" W ")
+//            .pattern("WXC")
+//            .pattern(" IW")
+//            .define('X', MPSItems.POWER_FIST_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_FIST_2.get()), has(MPSItems.POWER_FIST_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.POWER_FIST_4.get())
+//            .pattern(" W ")
+//            .pattern("WXC")
+//            .pattern(" IW")
+//            .define('X', MPSItems.POWER_FIST_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_FIST_3.get()), has(MPSItems.POWER_FIST_3.get()))
+//            .save(output);
+
+        // Armor ==========================================================================================================
+        // Helmet
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_1.get())
+            .pattern("III")
+            .pattern("WCW")
+            .define('I', Tags.Items.INGOTS_COPPER)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_HELMET_1.get()),
+                Ingredient.of(Items.IRON_INGOT), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_HELMET_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_HELMET_2.get()),
+                Ingredient.of(Items.DIAMOND), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_HELMET_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_HELMET_3.get()),
+                Ingredient.of(Items.NETHERITE_INGOT), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_HELMET_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_2.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern(" X ")
+//            .define('X', MPSItems.POWER_ARMOR_HELMET_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_HELMET_1.get()), has(MPSItems.POWER_ARMOR_HELMET_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_3.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern(" X ")
+//            .define('X', MPSItems.POWER_ARMOR_HELMET_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_HELMET_2.get()), has(MPSItems.POWER_ARMOR_HELMET_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_HELMET_4.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern(" X ")
+//            .define('X', MPSItems.POWER_ARMOR_HELMET_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_HELMET_3.get()), has(MPSItems.POWER_ARMOR_HELMET_3.get()))
+//            .save(output);
+
+        // ChestPlate
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_1.get())
+            .pattern("ICI")
+            .pattern("WIW")
+            .pattern("III")
+            .define('I', Tags.Items.INGOTS_COPPER)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()),
+                Ingredient.of(Items.IRON_INGOT), 5,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_CHESTPLATE_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_CHESTPLATE_2.get()),
+                Ingredient.of(Items.DIAMOND), 5,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_CHESTPLATE_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_CHESTPLATE_3.get()),
+                Ingredient.of(Items.NETHERITE_INGOT), 5,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_CHESTPLATE_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_2.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .pattern("III")
+//            .define('X', MPSItems.POWER_ARMOR_CHESTPLATE_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_3.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .pattern("III")
+//            .define('X', MPSItems.POWER_ARMOR_CHESTPLATE_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_2.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_CHESTPLATE_4.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .pattern("III")
+//            .define('X', MPSItems.POWER_ARMOR_CHESTPLATE_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_3.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_3.get()))
+//            .save(output);
+
+        // Leggings
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_1.get())
+            .pattern("III")
+            .pattern("WCW")
+            .pattern("I I")
+            .define('I', Tags.Items.INGOTS_COPPER)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_LEGGINGS_1.get()),
+                Ingredient.of(Items.IRON_INGOT), 5,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_LEGGINGS_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_LEGGINGS_2.get()),
+                Ingredient.of(Items.DIAMOND), 5,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_LEGGINGS_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_LEGGINGS_3.get()),
+                Ingredient.of(Items.NETHERITE_INGOT), 5,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_LEGGINGS_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_2.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern("IXI")
+//            .define('X', MPSItems.POWER_ARMOR_LEGGINGS_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_LEGGINGS_1.get()), has(MPSItems.POWER_ARMOR_LEGGINGS_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_3.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern("IXI")
+//            .define('X', MPSItems.POWER_ARMOR_LEGGINGS_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_LEGGINGS_2.get()), has(MPSItems.POWER_ARMOR_LEGGINGS_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_LEGGINGS_4.get())
+//            .pattern("III")
+//            .pattern("WCW")
+//            .pattern("IXI")
+//            .define('X', MPSItems.POWER_ARMOR_LEGGINGS_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_LEGGINGS_3.get()), has(MPSItems.POWER_ARMOR_LEGGINGS_3.get()))
+//            .save(output);
+
+        // Boots
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_1.get())
+            .pattern("ICI")
+            .pattern("W W")
+            .define('I', Tags.Items.INGOTS_COPPER)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.WIRING_COPPER.get()), has(NuminaItems.WIRING_COPPER.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_BOOTS_1.get()),
+                Ingredient.of(Items.IRON_INGOT), 2,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_BOOTS_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_BOOTS_2.get()),
+                Ingredient.of(Items.DIAMOND), 2,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_BOOTS_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.POWER_ARMOR_BOOTS_3.get()),
+                Ingredient.of(Items.NETHERITE_INGOT), 2,
+                RecipeCategory.TOOLS,
+                MPSItems.POWER_ARMOR_BOOTS_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_2.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .define('X', MPSItems.POWER_ARMOR_BOOTS_1.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_COPPER.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_BOOTS_1.get()), has(MPSItems.POWER_ARMOR_BOOTS_1.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_3.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .define('X', MPSItems.POWER_ARMOR_BOOTS_2.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_BOOTS_2.get()), has(MPSItems.POWER_ARMOR_BOOTS_2.get()))
+//            .save(output);
+//
+//        ShapedModularItemUpgradeRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.POWER_ARMOR_BOOTS_4.get())
+//            .pattern("ICI")
+//            .pattern("WXW")
+//            .define('X', MPSItems.POWER_ARMOR_BOOTS_3.get())
+//            .define('I', Tags.Items.INGOTS_IRON)
+//            .define('W', NuminaItems.WIRING_GOLD.get())
+//            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+//            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_BOOTS_3.get()), has(MPSItems.POWER_ARMOR_BOOTS_3.get()))
+//            .save(output);
+
+        // Modules ========================================================================================================
+        // Armor --------------------------------------------------------------------------------------------
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, MPSItems.IRON_PLATING_MODULE.get())
+            .requires(NuminaItems.PLATING_IRON.get(), 3)
+            .unlockedBy(getHasName(NuminaItems.PLATING_IRON.get()), has(NuminaItems.PLATING_IRON.get()))
+            .save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, MPSItems.DIAMOND_PLATING_MODULE.get())
+            .requires(NuminaItems.PLATING_DIAMOND.get(), 3)
+            .unlockedBy(getHasName(NuminaItems.PLATING_DIAMOND.get()), has(NuminaItems.PLATING_DIAMOND.get()))
+            .save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, MPSItems.NETHERITE_PLATING_MODULE.get())
+            .requires(NuminaItems.PLATING_NETHERITE.get(), 3)
+            .unlockedBy(getHasName(NuminaItems.PLATING_NETHERITE.get()), has(NuminaItems.PLATING_NETHERITE.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.ENERGY_SHIELD_MODULE.get())
+            .pattern("WEW")
+            .pattern("WCW")
+            .pattern("WEW")
+            .define('E', NuminaItems.FIELD_EMITTER.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+            .unlockedBy(getHasName(NuminaItems.FIELD_EMITTER.get()), has(NuminaItems.FIELD_EMITTER.get()))
+            .save(recipeOutput);
+
+        // Cosmetic -----------------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.TRANSPARENT_ARMOR_MODULE.get())
+            .pattern("WW")
+            .pattern("LC")
+            .pattern("WW")
+            .define('L', NuminaItems.LASER_EMITTER.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+            .unlockedBy(getHasName(NuminaItems.FIELD_EMITTER.get()), has(NuminaItems.FIELD_EMITTER.get()))
+            .save(recipeOutput);
+
+
+        // Energy Generation --------------------------------------------------------------------------
+        // Thermal
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.THERMAL_GENERATOR_MODULE_1.get())
+            .pattern("IOI")
+            .pattern("SWO")
+            .pattern("IOI")
+            .define('I', NuminaItems.PLATING_IRON.get())
+            .define('O', Tags.Items.INGOTS_COPPER)
+            .define('S', NuminaItems.SERVO.get())
+            .define('W', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()), has(MPSItems.POWER_ARMOR_CHESTPLATE_1.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.THERMAL_GENERATOR_MODULE_1.get()),
+                Ingredient.of(Items.GOLD_INGOT), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.THERMAL_GENERATOR_MODULE_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.THERMAL_GENERATOR_MODULE_2.get()),
+                Ingredient.of(Tags.Items.GEMS_DIAMOND), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.THERMAL_GENERATOR_MODULE_3.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.THERMAL_GENERATOR_MODULE_3.get()),
+                Ingredient.of(Tags.Items.INGOTS_NETHERITE), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.THERMAL_GENERATOR_MODULE_4.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        // Solar ---------------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.SOLAR_GENERATOR_MODULE_1.get())
+            .pattern("SIS")
+            .pattern("WCI")
+            .pattern("SIS")
+            .define('I', Tags.Items.INGOTS_COPPER)
+            .define('S', NuminaItems.SOLAR_PANEL.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.SOLAR_GENERATOR_MODULE_1.get()),
+                Ingredient.of(Items.GOLD_INGOT), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.SOLAR_GENERATOR_MODULE_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.SOLAR_GENERATOR_MODULE_2.get()),
+                Ingredient.of(Tags.Items.GEMS_DIAMOND), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.SOLAR_GENERATOR_MODULE_3.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.SOLAR_GENERATOR_MODULE_3.get()),
+                Ingredient.of(Tags.Items.INGOTS_NETHERITE), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.SOLAR_GENERATOR_MODULE_4.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        // Environmental -------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get())
+            .pattern("LCL")
+            .pattern("CMC")
+            .pattern("LCL")
+            .define('L', NuminaItems.LASER_EMITTER.get())
+            .define('M', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.AUTO_FEEDER_MODULE.get())
+            .pattern("FOF")
+            .pattern("RCR")
+            .pattern("SMS")
+            .define('F', NuminaItems.SOLENOID.get())
+            .define('O', Tags.Items.CHESTS)
+            .define('R', NuminaItems.WIRING_COPPER.get())
+            .define('S', NuminaItems.SERVO.get())
+            .define('M', NuminaItems.RUBBER_HOSE.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.MAGNET_MODULE.get())
+            .pattern("IMI")
+            .pattern("WCW")
+            .pattern("IMI")
+            .define('I', Tags.Items.INGOTS_IRON)
+            .define('M', NuminaItems.MAGNET.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.MOB_REPULSOR_MODULE.get())
+            .pattern("FWF")
+            .pattern("WCW")
+            .pattern("FWF")
+            .define('F', NuminaItems.FIELD_EMITTER.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.PIGLIN_PACIFICATION_MODULE.get())
+            .pattern(" S ")
+            .pattern(" G ")
+            .define('S', Tags.Items.STRING)
+            .define('G', Tags.Items.NUGGETS_GOLD)
+            .unlockedBy(getHasName(Items.GOLD_NUGGET), has(Items.GOLD_NUGGET))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.WATER_ELECTROLYZER_MODULE.get())
+            .pattern("WLW")
+            .pattern("OCO")
+            .pattern("WRW")
+            .define('L', NuminaItems.CAPACITOR_1.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('R', NuminaItems.RUBBER_HOSE.get())
+            .define('O', NuminaItems.SOLENOID.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        // Fluid Tanks ---------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.COOLANT_TANK_MODULE_1.get())
+            .pattern("IBI")
+            .pattern("SCS")
+            .pattern("RSR")
+            .define('B', Items.BUCKET)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .define('I', Tags.Items.INGOTS_COPPER)
+            .define('R', NuminaItems.RUBBER_HOSE.get())
+            .define('S', NuminaItems.SOLENOID.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.COOLANT_TANK_MODULE_1.get()),
+                Ingredient.of(Tags.Items.INGOTS_GOLD), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.COOLANT_TANK_MODULE_2.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.COOLANT_TANK_MODULE_2.get()),
+                Ingredient.of(Tags.Items.GEMS_DIAMOND), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.COOLANT_TANK_MODULE_3.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.COOLANT_TANK_MODULE_3.get()),
+                Ingredient.of(Tags.Items.INGOTS_NETHERITE), 4,
+                RecipeCategory.TOOLS,
+                MPSItems.COOLANT_TANK_MODULE_4.get())
+            .unlockedBy(getHasName(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()), has(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()))
+            .save(recipeOutput);
+
+        // Mining Enchantments ------------------------------------------------------------------------
+        ShapedEnchantmentRecipeBuilder
+                .shaped(RecipeCategory.MISC, MPSItems.AQUA_AFFINITY_MODULE.get())
+                .pattern("ENE")
+                .pattern("WCW")
+                .pattern("EEE")
+                .define('E', NuminaItems.COMPUTER_CHIP.get())
+                .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+                .define('W', NuminaItems.WIRING_GOLD.get())
+                .define('N', Enchantments.AQUA_AFFINITY, 1)
+                .unlockedBy(getHasName(Items.ENCHANTED_BOOK), has(Items.ENCHANTED_BOOK))
+                .save(recipeOutput);
+
+        ShapedEnchantmentRecipeBuilder
+                .shaped(RecipeCategory.MISC, MPSItems.FORTUNE_MODULE.get())
+                .pattern("ENE")
+                .pattern("WCW")
+                .pattern("EEE")
+                .define('E', NuminaItems.COMPUTER_CHIP.get())
+                .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+                .define('W', NuminaItems.WIRING_GOLD.get())
+                .define('N', Enchantments.BLOCK_FORTUNE, 3)
+                .unlockedBy(getHasName(Items.ENCHANTED_BOOK), has(Items.ENCHANTED_BOOK))
+                .save(recipeOutput);
+
+        ShapedEnchantmentRecipeBuilder
+                .shaped(RecipeCategory.MISC, MPSItems.SILK_TOUCH_MODULE.get())
+                .pattern("ENE")
+                .pattern("WCW")
+                .pattern("EEE")
+                .define('E', NuminaItems.COMPUTER_CHIP.get())
+                .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
+                .define('W', NuminaItems.WIRING_GOLD.get())
+                .define('N', Enchantments.SILK_TOUCH, 3)
+                .unlockedBy(getHasName(Items.ENCHANTED_BOOK), has(Items.ENCHANTED_BOOK))
+                .save(recipeOutput);
+
+        // Mining Enhancements ------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.TUNNEL_BORE_MODULE.get())
+            .pattern("SES")
+            .pattern("ECE")
+            .pattern("SES")
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .define('S', NuminaItems.SERVO.get())
+            .define('E', NuminaItems.SOLENOID.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.VEIN_MINER_MODULE.get())
+            .pattern("CSC")
+            .pattern("SMS")
+            .pattern("CSC")
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .define('S', NuminaItems.SERVO.get())
+            .define('M', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.SELECTIVE_MINER_MODULE.get())
+            .pattern("OCO")
+            .pattern("GMG")
+            .pattern("SGS")
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .define('S', NuminaItems.SERVO.get())
+            .define('O', NuminaItems.SOLENOID.get())
+            .define('M', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .define('G', NuminaItems.WIRING_GOLD.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        // Movement -----------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.BLINK_DRIVE_MODULE.get())
+            .pattern("CIC")
+            .pattern("FPF")
+            .pattern("WIW")
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .define('P', NuminaItems.CONTROL_CIRCUIT_4.get())
+            .define('F', NuminaItems.FIELD_EMITTER.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('I', NuminaItems.ION_THRUSTER.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.CLIMB_ASSIST_MODULE.get())
+            .pattern("W W")
+            .pattern("SCS")
+            .pattern("W W")
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.DIMENSIONAL_RIFT_MODULE.get())
+            .pattern("ECE")
+            .pattern("COC")
+            .pattern("ECE")
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .define('E', Items.ENDER_EYE)
+            .define('O', NuminaItems.CONTROL_CIRCUIT_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.FLIGHT_CONTROL_MODULE.get())
+            .pattern("CWC")
+            .pattern("WOW")
+            .pattern("CWC")
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('O', NuminaItems.CONTROL_CIRCUIT_4.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.GLIDER_MODULE.get())
+            .pattern("SWS")
+            .pattern("GCG")
+            .pattern("SWS")
+            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .define('G', NuminaItems.GLIDER_WING.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('S', NuminaItems.SERVO.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.JET_BOOTS_MODULE.get())
+            .pattern("S S")
+            .pattern("CMC")
+            .pattern("IWI")
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('M', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .define('I', NuminaItems.ION_THRUSTER.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.JETPACK_MODULE.get())
+            .pattern("ISI")
+            .pattern("WCW")
+            .pattern("ISI")
+            .define('I', NuminaItems.ION_THRUSTER.get())
+            .define('S', NuminaItems.SERVO.get())
+            .define('W', NuminaItems.COMPUTER_CHIP.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.JUMP_ASSIST_MODULE.get())
+            .pattern("SWS")
+            .pattern("WCW")
+            .pattern("SWS")
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('W', Items.WHITE_WOOL)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.PARACHUTE_MODULE.get())
+            .pattern("SGS")
+            .pattern("PCP")
+            .pattern("GSG")
+            .define('S', NuminaItems.SERVO.get())
+            .define('G', Tags.Items.STRING)
+            .define('P', NuminaItems.PARACHUTE.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.SHOCK_ABSORBER_MODULE.get())
+            .pattern("S S")
+            .pattern("SCS")
+            .pattern("W W")
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('W', Items.WHITE_WOOL)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.SPRINT_ASSIST_MODULE.get())
+            .pattern("SNS")
+            .pattern("NMN")
+            .pattern("SCS")
+            .define('S', NuminaItems.SERVO.get())
+            .define('N', NuminaItems.SOLENOID.get())
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .define('M', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.SWIM_ASSIST_MODULE.get())
+            .pattern("SHS")
+            .pattern("WCW")
+            .pattern("HSH")
+            .define('S', NuminaItems.SERVO.get())
+            .define('H', NuminaItems.RUBBER_HOSE.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        // Tools ------------------------------------------------------------------------------------------------
+        // Axes -----------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.STONE_AXE_MODULE.get())
+            .pattern("IIW")
+            .pattern("ICW")
+            .pattern(" X ")
+            .define('I', Tags.Items.COBBLESTONE_NORMAL)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('X', NuminaItems.SOLENOID.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.STONE_AXE_MODULE.get()),
+                Ingredient.of(Items.IRON_INGOT), 3,
+                RecipeCategory.TOOLS,
+                MPSItems.IRON_AXE_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.IRON_AXE_MODULE.get()),
+                Ingredient.of(Items.DIAMOND), 3,
+                RecipeCategory.TOOLS,
+                MPSItems.DIAMOND_AXE_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.DIAMOND_AXE_MODULE.get()),
+                Ingredient.of(Items.NETHERITE_INGOT), 3,
+                RecipeCategory.TOOLS,
+                MPSItems.NETHERITE_AXE_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+        // Pickaxes -------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.STONE_PICKAXE_MODULE.get())
+            .pattern("III")
+            .pattern("WCW")
+            .pattern(" X ")
+            .define('I', Tags.Items.COBBLESTONE_NORMAL)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('X', NuminaItems.SOLENOID.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.STONE_PICKAXE_MODULE.get()),
+                Ingredient.of(Items.IRON_INGOT), 3,
+                RecipeCategory.TOOLS,
+                MPSItems.IRON_PICKAXE_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.IRON_PICKAXE_MODULE.get()),
+                Ingredient.of(Items.DIAMOND), 3,
+                RecipeCategory.TOOLS,
+                MPSItems.DIAMOND_PICKAXE_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.DIAMOND_PICKAXE_MODULE.get()),
+                Ingredient.of(Items.NETHERITE_INGOT), 3,
+                RecipeCategory.TOOLS,
+                MPSItems.NETHERITE_PICKAXE_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+        // Rototillers --------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.STONE_ROTOTILLER_MODULE.get())
+            .pattern("SS ")
+            .pattern("WCW")
+            .pattern(" X ")
+            .define('S', Tags.Items.COBBLESTONE_NORMAL)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('X', NuminaItems.SOLENOID.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.STONE_ROTOTILLER_MODULE.get()),
+                Ingredient.of(Items.IRON_INGOT), 2,
+                RecipeCategory.TOOLS,
+                MPSItems.IRON_ROTOTILLER_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.IRON_ROTOTILLER_MODULE.get()),
+                Ingredient.of(Items.DIAMOND), 2,
+                RecipeCategory.TOOLS,
+                MPSItems.DIAMOND_ROTOTILLER_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.DIAMOND_ROTOTILLER_MODULE.get()),
+                Ingredient.of(Items.NETHERITE_INGOT), 2,
+                RecipeCategory.TOOLS,
+                MPSItems.NETHERITE_ROTOTILLER_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+        // Shovels --------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.STONE_SHOVEL_MODULE.get())
+            .pattern(" S ")
+            .pattern("WCW")
+            .pattern(" X ")
+            .define('S', Tags.Items.COBBLESTONE_NORMAL)
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('X', NuminaItems.SOLENOID.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_2_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.STONE_SHOVEL_MODULE.get()),
+                Ingredient.of(Items.IRON_INGOT), 1,
+                RecipeCategory.TOOLS,
+                MPSItems.IRON_SHOVEL_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_3_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.IRON_SHOVEL_MODULE.get()),
+                Ingredient.of(Items.DIAMOND), 1,
+                RecipeCategory.TOOLS,
+                MPSItems.DIAMOND_SHOVEL_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
+            .save(recipeOutput);
+
+        SmithingUpgradeRecipeBuilder.smithing(
+                Ingredient.of(NuminaItems.TIER_4_SMITHING_UPGRADE_TEMPLATE.get()),
+                Ingredient.of(MPSItems.DIAMOND_SHOVEL_MODULE.get()),
+                Ingredient.of(Items.NETHERITE_INGOT), 1,
+                RecipeCategory.TOOLS,
+                MPSItems.NETHERITE_SHOVEL_MODULE.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
+            .save(recipeOutput);
+
+        // Misc tools -----------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.LEAF_BLOWER_MODULE.get())
+            .pattern("I  ")
+            .pattern("WCW")
+            .pattern("IS ")
+            .define('I', Tags.Items.INGOTS_IRON)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.LUX_CAPACITOR_MODULE.get())
+            .pattern("IRI")
+            .pattern("WCW")
+            .pattern("GIG")
+            .define('R', Tags.Items.DUSTS_REDSTONE)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .define('G', Tags.Items.DUSTS_GLOWSTONE)
+            .define('I', Tags.Items.INGOTS_IRON)
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.SHEARS_MODULE.get())
+            .pattern("I I")
+            .pattern("WCW")
+            .pattern(" S ")
+            .define('I', Tags.Items.INGOTS_IRON)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.FLINT_AND_STEEL_MODULE.get())
+            .pattern(" F ")
+            .pattern("WCW")
+            .pattern("ISI")
+            .define('F', Items.FLINT)
+            .define('I', Tags.Items.INGOTS_IRON)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(recipeOutput);
+
+        // Vision ------------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.BINOCULARS_MODULE.get())
+            .pattern("WWW")
+            .pattern("WCW")
+            .pattern("WLW")
+            .define('L', NuminaItems.LASER_EMITTER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .unlockedBy(getHasName(NuminaItems.LASER_EMITTER.get()), has(NuminaItems.LASER_EMITTER.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.NIGHTVISION_MODULE.get())
+            .pattern("WLW")
+            .pattern("WCW")
+            .pattern("WLW")
+            .define('L', NuminaItems.LASER_EMITTER.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .unlockedBy(getHasName(NuminaItems.LASER_EMITTER.get()), has(NuminaItems.LASER_EMITTER.get()))
+            .save(recipeOutput);
+
+        // Weapons ----------------------------------------------------------------------------------------------
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.BLADE_LAUNCHER_MODULE.get())
+            .pattern("WMW")
+            .pattern("WCW")
+            .pattern("WSW")
+            .define('S', NuminaItems.SERVO.get())
+            .define('M', NuminaItems.CAPACITOR_2.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .unlockedBy(getHasName(NuminaItems.SERVO.get()), has(NuminaItems.SERVO.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.LIGHTNING_SUMMONER_MODULE.get())
+            .pattern("WHW")
+            .pattern("WFW")
+            .pattern("WSW")
+            .define('H', NuminaItems.CAPACITOR_4.get())
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('F', NuminaItems.FIELD_EMITTER.get())
+            .define('W', NuminaItems.WIRING_GOLD.get())
+            .unlockedBy(getHasName(NuminaItems.SOLENOID.get()), has(NuminaItems.SOLENOID.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.MELEE_ASSIST_MODULE.get())
+            .pattern(" S ")
+            .pattern(" C ")
+            .pattern("I I")
+            .define('S', NuminaItems.SERVO.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .define('I', Tags.Items.INGOTS_GOLD)
+            .unlockedBy(getHasName(NuminaItems.FIELD_EMITTER.get()), has(NuminaItems.FIELD_EMITTER.get()))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.PLASMA_CANNON_MODULE.get())
+            .pattern("SGC")
+            .pattern("SMC")
+            .pattern("SGC")
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .define('G', Tags.Items.INGOTS_GOLD)
+            .define('M', NuminaItems.CONTROL_CIRCUIT_3.get())
+            .unlockedBy(getHasName(Items.GOLD_INGOT), has(Items.GOLD_INGOT))
+            .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MPSItems.RAILGUN_MODULE.get())
+            .pattern("SOC")
+            .pattern("CMS")
+            .pattern("SOC")
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('C', NuminaItems.COMPUTER_CHIP.get())
+            .define('M', NuminaItems.CONTROL_CIRCUIT_4.get())
+            .define('O', Tags.Items.INGOTS_GOLD)
+            .unlockedBy(getHasName(NuminaItems.FIELD_EMITTER.get()), has(NuminaItems.FIELD_EMITTER.get()))
+            .save(recipeOutput);
+/*
+    public static final DeferredHolder<Item, SonicWeaponModule> SONIC_WEAPON_MODULE = MPS_ITEMS.register(MPSConstants.SONIC_WEAPON_MODULE.getPath(),
+            SonicWeaponModule::new);
+ */
+    }
+}

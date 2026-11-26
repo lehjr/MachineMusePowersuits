@@ -15,7 +15,7 @@ public class MPSMenuTypes {
     /**
      * AbstractContainerMenu Types ----------------------------------------------------------------------------
      */
-    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MPSConstants.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MPS_MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MPSConstants.MOD_ID);
 
 //    // Module crafting/install/salvage GUI
 //    public static final RegistryObject<MenuType<InstallSalvageCraftAbstractContainerMenu>> SALVAGE_CRAFT_CONTAINER_TYPE =
@@ -23,7 +23,7 @@ public class MPSMenuTypes {
 //                    () -> IForgeMenuType.create((windowId, inv, data) -> new InstallSalvageCraftAbstractContainerMenu(windowId, inv)));
 
     public static final RegistryObject<MenuType<InstallSalvageMenu>> INSTALL_SALVAGE_MENU_TYPE =
-            CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CONTAINER_TYPE,
+            MPS_MENU_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CONTAINER_TYPE,
                     () -> IForgeMenuType.create((windowId, inv, data) -> {
 //                        NuminaLogger.logError("doing something with install/salvage");
 

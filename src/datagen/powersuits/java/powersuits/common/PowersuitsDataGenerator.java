@@ -10,9 +10,13 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import powersuits.client.lang.MPSLanguageProvider__EN_US;
+import powersuits.client.lang.MPSLanguageProvider_EN_US;
+import powersuits.client.model.block.MPSBlockModelProvider;
+import powersuits.client.model.block.MPSBlockStateProvider;
+import powersuits.client.model.item.MPSItemModelProvider;
 import powersuits.common.loot.MPSBlockLoot;
 import powersuits.common.loot.MPSBlockTagProvider;
+import powersuits.common.recipes.MPSRecipeGenerator;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,14 +34,20 @@ public class PowersuitsDataGenerator {
         ExistingFileHelper helper = event.getExistingFileHelper();
 
         //Client side data generators
-        generator.addProvider(event.includeClient(), new MPSLanguageProvider__EN_US(output));
-//        translator.quit();
+        generator.addProvider(event.includeClient(), new MPSLanguageProvider_EN_US(output));
+        generator.addProvider(event.includeClient(), new MPSItemModelProvider(output, helper));
+        generator.addProvider(event.includeClient(), new MPSBlockModelProvider(output, helper));
+        generator.addProvider(event.includeClient(), new MPSBlockStateProvider(output, helper));
 
         //Server side data generators
 //        generator.addProvider(event.includeServer(), new MPSLootTableProvider(generator));
         generator.addProvider(event.includeServer(), new MPSBlockTagProvider(output, lookupProvider, helper));
 
-        generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(),
+        generator.addProvider(event.includeServer(), new LootTableProvider(
+                output,
+                Collections.emptySet(),
                 List.of(new LootTableProvider.SubProviderEntry(MPSBlockLoot::new, LootContextParamSets.BLOCK))));
+
+        generator.addProvider(event.includeServer(), new MPSRecipeGenerator(output));
     }
 }

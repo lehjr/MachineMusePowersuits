@@ -167,6 +167,6 @@ public class ElectricItemUtils {
      */
     static double getMaxEnergyForComparison() {
 //        return 0;
-        return (0.8 * new ItemStack(NuminaItems.BASIC_BATTERY.get()).getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored() ).orElse(0));
+        return (0.8 * new ItemStack(NuminaItems.BATTERY_1.get()).getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored() ).orElse(0));
     }
 }

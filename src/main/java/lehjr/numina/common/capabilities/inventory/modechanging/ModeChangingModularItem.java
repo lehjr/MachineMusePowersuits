@@ -154,7 +154,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         if (!modes.isEmpty()) {
             int newindex = clampMode(modes.indexOf(this.getActiveMode()) + dMode, modes.size());
             int newmode = modes.get(newindex);
-            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(newmode));
+            NuminaPackets.sendToServer(new ModeChangeRequestPacketServerBound(newmode));
 //            this.setActiveMode(newmode, player.getInventory());
         }
     }

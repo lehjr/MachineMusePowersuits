@@ -1,0 +1,7 @@
+
+#General settings
+[General]
+	#Maximum flight speed (in m/s)
+	#Range: 0.0 ~ 3.4028234663852886E38
+	maximumFlyingSpeedmps = 25.0
+

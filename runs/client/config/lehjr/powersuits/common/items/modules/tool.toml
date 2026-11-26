@@ -1,0 +1,34 @@
+
+[Tool_Modules]
+
+	[Tool_Modules.Miscellaneous]
+
+		[Tool_Modules.Miscellaneous.Flint_And_Steel_Module]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			energyConBase = 10000.0
+
+		[Tool_Modules.Miscellaneous.Leaf_Blower_Module]
+			isAllowed = true
+			#Range: 3 ~ 50
+			radiusMax = 10
+			#Range: 0.0 ~ 1.0E7
+			energyConBase = 500.0
+			#Range: 0.0 ~ 1.0E7
+			energyConradius_Multiplier = 9500.0
+
+		[Tool_Modules.Miscellaneous.Lux_Capacitor_Module]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			energyConBase = 1000.0
+
+		[Tool_Modules.Miscellaneous.Shears_Module]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			energyConBase = 1000.0
+			#Range: 0.0 ~ 100.0
+			harvestSpeedBase = 4.0
+
+		[Tool_Modules.Miscellaneous.Crafting_Table_As_Module]
+			isAllowed = true
+

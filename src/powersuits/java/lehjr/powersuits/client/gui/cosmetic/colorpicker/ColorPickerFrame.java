@@ -151,14 +151,13 @@ public class ColorPickerFrame extends ScrollableFrame {
                     // set full default render tag instead of just part of it.
                     if (renderTag == null || renderTag.isEmpty()) {
                         this.itemSelector.selectedType().ifPresent(slotType ->
-                                NuminaPackets.CHANNEL_INSTANCE.sendToServer(
-                                        new CosmeticInfoPacketServerBound(slotType, TagConstants.RENDER, spec.getDefaultRenderTag())));
+                                NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, TagConstants.RENDER, spec.getDefaultRenderTag())));
                     } else  {
                         int[] colors = spec.getColorArray();
 
                         int[] defaultColors = spec.getColorArrayOrDefault();
                         if (colors.length == 0) {
-                            this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacketServerBound(slotType,
+                            this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.sendToServer(new ColorInfoPacketServerBound(slotType,
                                     defaultColors.length > 0 ? defaultColors : newColorArray)));
                         }
                         return new IntArrayTag(spec.getColorArray());
@@ -174,7 +173,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                 .map(spec -> {
                     CompoundTag renderSpec = spec.getRenderTag();
                     renderSpec.put(TagConstants.COLORS, new IntArrayTag(intList));
-                    this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacketServerBound(slotType, this.colors())));
+                    this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.sendToServer(new ColorInfoPacketServerBound(slotType, this.colors())));
                     return (IntArrayTag) renderSpec.get(TagConstants.COLORS);
 
                 }).orElse(new IntArrayTag(new int[]{-1}));
@@ -292,7 +291,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                     slider.setValueByMouse(mousex);
                     if (colors().length > selectedColor) {
                         colors()[selectedColor] = Color.getARGBInt((float) ((VanillaSlider)rects.get(1)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(3)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(5)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(7)).getSliderInternalValue());
-                        this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacketServerBound(slotType, this.colors())));
+                        this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.sendToServer(new ColorInfoPacketServerBound(slotType, this.colors())));
                     }});
                 // this just sets up the sliders on selecting an item
             } else if (!itemSelector.getModularItemOrEmpty().isEmpty() && colors().length > 0) {
@@ -352,7 +351,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                     if (selectedColor == getIntArray(IntArrayTag).length) {
                         selectedColor = selectedColor - 1;
                     }
-                    itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacketServerBound(slotType, IntArrayTag.getAsIntArray())));
+                    itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.sendToServer(new ColorInfoPacketServerBound(slotType, IntArrayTag.getAsIntArray())));
                 }
                 return true;
             }

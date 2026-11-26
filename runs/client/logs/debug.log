@@ -1,0 +1,1052 @@
+[25Nov2026 21:54:11.911] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientuserdev, --version, MOD_DEV, --assetIndex, 5, --assetsDir, /home/lehjr/.gradle/caches/neoformruntime/assets, --gameDir, ., --fml.forgeVersion, 47.2.30, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --mixin.config, numina.mixins.json]
+[25Nov2026 21:54:11.914] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.10+10.0.10+main.22f00f84 starting: java version 17.0.21.1 by Amazon.com Inc.; OS Linux arch amd64 version 7.3.5-300.fc45.x86_64
+[25Nov2026 21:54:11.977] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[25Nov2026 21:54:12.041] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[25Nov2026 21:54:12.155] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[25Nov2026 21:54:12.213] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/home/lehjr/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23175!/ Service=ModLauncher Env=CLIENT
+[25Nov2026 21:54:12.247] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce GTX 1070 Ti/PCIe/SSE2 GL version 4.6.0 NVIDIA 580.196.07, NVIDIA Corporation
+[25Nov2026 21:54:12.358] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/lehjr/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.2.30/34b7d69dcc2b769d597be488ba457877f9d57cd9/fmlcore-1.20.1-47.2.30.jar is missing mods.toml file
+[25Nov2026 21:54:12.359] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/lehjr/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.2.30/306080746b55301f533d17a1f75c0416bfa6425d/javafmllanguage-1.20.1-47.2.30.jar is missing mods.toml file
+[25Nov2026 21:54:12.360] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/lehjr/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.2.30/ed4251688f57da24ffceb91f85693e28171bc4de/lowcodelanguage-1.20.1-47.2.30.jar is missing mods.toml file
+[25Nov2026 21:54:12.360] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/lehjr/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.2.30/66fae321e7c1e488bb0a63661153f415efa06665/mclanguage-1.20.1-47.2.30.jar is missing mods.toml file
+[25Nov2026 21:54:12.432] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[25Nov2026 21:54:13.661] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[25Nov2026 21:54:13.661] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientuserdev' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/lehjr/.gradle/caches/neoformruntime/assets, --assetIndex, 5]
+[25Nov2026 21:54:13.853] [main/DEBUG] [io.netty.util.internal.logging.InternalLoggerFactory/]: Using SLF4J as the default logging framework
+[25Nov2026 21:54:13.854] [main/DEBUG] [io.netty.util.ResourceLeakDetector/]: -Dio.netty.leakDetection.level: simple
+[25Nov2026 21:54:13.854] [main/DEBUG] [io.netty.util.ResourceLeakDetector/]: -Dio.netty.leakDetection.targetRecords: 4
+[25Nov2026 21:54:13.928] [main/DEBUG] [oshi.util.FileUtil/]: No oshi.properties file found from ClassLoader cpw.mods.modlauncher.TransformingClassLoader@73ae0257
+[25Nov2026 21:54:13.963] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /proc/self/auxv
+[25Nov2026 21:54:13.964] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /proc/self/auxv
+[25Nov2026 21:54:13.967] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /proc/stat
+[25Nov2026 21:54:13.974] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/core_id
+[25Nov2026 21:54:13.974] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/core_id
+[25Nov2026 21:54:13.974] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/physical_package_id
+[25Nov2026 21:54:13.974] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/physical_package_id
+[25Nov2026 21:54:13.974] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cpu_capacity
+[25Nov2026 21:54:13.974] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cpu_capacity
+[25Nov2026 21:54:13.976] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/core_id
+[25Nov2026 21:54:13.976] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/core_id
+[25Nov2026 21:54:13.976] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/physical_package_id
+[25Nov2026 21:54:13.976] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/physical_package_id
+[25Nov2026 21:54:13.977] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cpu_capacity
+[25Nov2026 21:54:13.977] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cpu_capacity
+[25Nov2026 21:54:13.977] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/topology/core_id
+[25Nov2026 21:54:13.977] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/topology/core_id
+[25Nov2026 21:54:13.977] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/topology/physical_package_id
+[25Nov2026 21:54:13.977] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/topology/physical_package_id
+[25Nov2026 21:54:13.978] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/cpu_capacity
+[25Nov2026 21:54:13.978] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/cpu_capacity
+[25Nov2026 21:54:13.978] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/topology/core_id
+[25Nov2026 21:54:13.978] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/topology/core_id
+[25Nov2026 21:54:13.978] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/topology/physical_package_id
+[25Nov2026 21:54:13.978] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/topology/physical_package_id
+[25Nov2026 21:54:13.978] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/cpu_capacity
+[25Nov2026 21:54:13.979] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/cpu_capacity
+[25Nov2026 21:54:13.979] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/core_id
+[25Nov2026 21:54:13.979] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/core_id
+[25Nov2026 21:54:13.979] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/physical_package_id
+[25Nov2026 21:54:13.979] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/physical_package_id
+[25Nov2026 21:54:13.979] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cpu_capacity
+[25Nov2026 21:54:13.979] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cpu_capacity
+[25Nov2026 21:54:13.980] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/core_id
+[25Nov2026 21:54:13.980] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/core_id
+[25Nov2026 21:54:13.980] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/physical_package_id
+[25Nov2026 21:54:13.980] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/physical_package_id
+[25Nov2026 21:54:13.980] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cpu_capacity
+[25Nov2026 21:54:13.980] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cpu_capacity
+[25Nov2026 21:54:13.981] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/topology/core_id
+[25Nov2026 21:54:13.981] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/topology/core_id
+[25Nov2026 21:54:13.981] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/topology/physical_package_id
+[25Nov2026 21:54:13.981] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/topology/physical_package_id
+[25Nov2026 21:54:13.981] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/cpu_capacity
+[25Nov2026 21:54:13.981] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/cpu_capacity
+[25Nov2026 21:54:13.982] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/topology/core_id
+[25Nov2026 21:54:13.982] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/topology/core_id
+[25Nov2026 21:54:13.982] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/topology/physical_package_id
+[25Nov2026 21:54:13.982] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/topology/physical_package_id
+[25Nov2026 21:54:13.982] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/cpu_capacity
+[25Nov2026 21:54:13.982] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/cpu_capacity
+[25Nov2026 21:54:13.982] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/topology/core_id
+[25Nov2026 21:54:13.982] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/topology/core_id
+[25Nov2026 21:54:13.983] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/topology/physical_package_id
+[25Nov2026 21:54:13.983] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/topology/physical_package_id
+[25Nov2026 21:54:13.983] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/cpu_capacity
+[25Nov2026 21:54:13.983] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/cpu_capacity
+[25Nov2026 21:54:13.983] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/topology/core_id
+[25Nov2026 21:54:13.983] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/topology/core_id
+[25Nov2026 21:54:13.983] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/topology/physical_package_id
+[25Nov2026 21:54:13.983] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/topology/physical_package_id
+[25Nov2026 21:54:13.984] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/cpu_capacity
+[25Nov2026 21:54:13.984] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/cpu_capacity
+[25Nov2026 21:54:13.984] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/topology/core_id
+[25Nov2026 21:54:13.984] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/topology/core_id
+[25Nov2026 21:54:13.984] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/topology/physical_package_id
+[25Nov2026 21:54:13.984] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/topology/physical_package_id
+[25Nov2026 21:54:13.984] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/cpu_capacity
+[25Nov2026 21:54:13.984] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/cpu_capacity
+[25Nov2026 21:54:13.985] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/topology/core_id
+[25Nov2026 21:54:13.985] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/topology/core_id
+[25Nov2026 21:54:13.985] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/topology/physical_package_id
+[25Nov2026 21:54:13.985] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/topology/physical_package_id
+[25Nov2026 21:54:13.985] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/cpu_capacity
+[25Nov2026 21:54:13.985] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/cpu_capacity
+[25Nov2026 21:54:13.987] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /proc/cpuinfo
+[25Nov2026 21:54:14.095] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /proc/self/auxv
+[25Nov2026 21:54:14.096] [main/DEBUG] [oshi.util.FileUtil/]: No oshi.architecture.properties file found from ClassLoader cpw.mods.modlauncher.TransformingClassLoader@73ae0257
+[25Nov2026 21:54:14.138] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /proc/meminfo
+[25Nov2026 21:54:14.138] [main/DEBUG] [oshi.util.FileUtil/]: Reading file /proc/meminfo
+[25Nov2026 21:54:14.269] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/EntityType
+[25Nov2026 21:54:14.529] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/block/LiquidBlock
+[25Nov2026 21:54:14.565] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/block/StairBlock
+[25Nov2026 21:54:14.611] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/block/FlowerPotBlock
+[25Nov2026 21:54:15.082] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/item/ItemStack
+[25Nov2026 21:54:15.442] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/animal/frog/Tadpole
+[25Nov2026 21:54:15.469] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/item/BucketItem
+[25Nov2026 21:54:15.962] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/Spider
+[25Nov2026 21:54:15.998] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/Zombie
+[25Nov2026 21:54:16.009] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 188 Datafixer optimizations took 93 milliseconds
+[25Nov2026 21:54:16.035] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/ZombieVillager
+[25Nov2026 21:54:16.074] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/Evoker$EvokerSummonSpellGoal
+[25Nov2026 21:54:16.087] [pool-4-thread-1/DEBUG] [mixin/]: Mixing common.item.MixinUseOnContext from numina.mixins.json into net.minecraft.world.item.context.UseOnContext
+[25Nov2026 21:54:16.169] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/animal/horse/SkeletonTrapGoal
+[25Nov2026 21:54:16.183] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/Strider
+[25Nov2026 21:54:16.248] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/npc/Villager
+[25Nov2026 21:54:16.301] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/effect/MobEffectInstance
+[25Nov2026 21:54:16.625] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/Structure
+[25Nov2026 21:54:16.646] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/structures/OceanRuinPieces$OceanRuinPiece
+[25Nov2026 21:54:16.654] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/structures/SwampHutPiece
+[25Nov2026 21:54:16.661] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/structures/OceanMonumentPieces$OceanMonumentPiece
+[25Nov2026 21:54:16.672] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/structures/WoodlandMansionPieces$WoodlandMansionPiece
+[25Nov2026 21:54:16.731] [pool-4-thread-1/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/biome/Biome
+[25Nov2026 21:54:16.996] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/build/moddev/artifacts/forge-1.20.1-47.2.30.jar%23177!/assets/.mcassetsroot' uses unexpected schema
+[25Nov2026 21:54:16.996] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/build/moddev/artifacts/forge-1.20.1-47.2.30.jar%23177!/data/.mcassetsroot' uses unexpected schema
+[25Nov2026 21:54:17.006] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[25Nov2026 21:54:17.009] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[25Nov2026 21:54:17.066] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.1 build 7
+[25Nov2026 21:54:17.101] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/core_id
+[25Nov2026 21:54:17.101] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/core_id
+[25Nov2026 21:54:17.101] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/physical_package_id
+[25Nov2026 21:54:17.101] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/physical_package_id
+[25Nov2026 21:54:17.101] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cpu_capacity
+[25Nov2026 21:54:17.101] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cpu_capacity
+[25Nov2026 21:54:17.102] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/core_id
+[25Nov2026 21:54:17.102] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/core_id
+[25Nov2026 21:54:17.102] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/physical_package_id
+[25Nov2026 21:54:17.102] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/physical_package_id
+[25Nov2026 21:54:17.102] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cpu_capacity
+[25Nov2026 21:54:17.102] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cpu_capacity
+[25Nov2026 21:54:17.103] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/topology/core_id
+[25Nov2026 21:54:17.103] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/topology/core_id
+[25Nov2026 21:54:17.103] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/topology/physical_package_id
+[25Nov2026 21:54:17.103] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/topology/physical_package_id
+[25Nov2026 21:54:17.103] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/cpu_capacity
+[25Nov2026 21:54:17.103] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu10/cpu_capacity
+[25Nov2026 21:54:17.104] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/topology/core_id
+[25Nov2026 21:54:17.104] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/topology/core_id
+[25Nov2026 21:54:17.104] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/topology/physical_package_id
+[25Nov2026 21:54:17.104] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/topology/physical_package_id
+[25Nov2026 21:54:17.104] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/cpu_capacity
+[25Nov2026 21:54:17.104] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu11/cpu_capacity
+[25Nov2026 21:54:17.104] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/core_id
+[25Nov2026 21:54:17.104] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/core_id
+[25Nov2026 21:54:17.104] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/physical_package_id
+[25Nov2026 21:54:17.105] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/physical_package_id
+[25Nov2026 21:54:17.105] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cpu_capacity
+[25Nov2026 21:54:17.105] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cpu_capacity
+[25Nov2026 21:54:17.105] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/core_id
+[25Nov2026 21:54:17.105] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/core_id
+[25Nov2026 21:54:17.105] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/physical_package_id
+[25Nov2026 21:54:17.105] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/physical_package_id
+[25Nov2026 21:54:17.105] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cpu_capacity
+[25Nov2026 21:54:17.105] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cpu_capacity
+[25Nov2026 21:54:17.106] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/topology/core_id
+[25Nov2026 21:54:17.106] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/topology/core_id
+[25Nov2026 21:54:17.106] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/topology/physical_package_id
+[25Nov2026 21:54:17.106] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/topology/physical_package_id
+[25Nov2026 21:54:17.106] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/cpu_capacity
+[25Nov2026 21:54:17.106] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu4/cpu_capacity
+[25Nov2026 21:54:17.106] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/topology/core_id
+[25Nov2026 21:54:17.107] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/topology/core_id
+[25Nov2026 21:54:17.107] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/topology/physical_package_id
+[25Nov2026 21:54:17.107] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/topology/physical_package_id
+[25Nov2026 21:54:17.107] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/cpu_capacity
+[25Nov2026 21:54:17.107] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu5/cpu_capacity
+[25Nov2026 21:54:17.107] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/topology/core_id
+[25Nov2026 21:54:17.107] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/topology/core_id
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/topology/physical_package_id
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/topology/physical_package_id
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/cpu_capacity
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu6/cpu_capacity
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/topology/core_id
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/topology/core_id
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/topology/physical_package_id
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/topology/physical_package_id
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/cpu_capacity
+[25Nov2026 21:54:17.108] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu7/cpu_capacity
+[25Nov2026 21:54:17.109] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/topology/core_id
+[25Nov2026 21:54:17.109] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/topology/core_id
+[25Nov2026 21:54:17.109] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/topology/physical_package_id
+[25Nov2026 21:54:17.109] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/topology/physical_package_id
+[25Nov2026 21:54:17.109] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/cpu_capacity
+[25Nov2026 21:54:17.109] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu8/cpu_capacity
+[25Nov2026 21:54:17.110] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/topology/core_id
+[25Nov2026 21:54:17.110] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/topology/core_id
+[25Nov2026 21:54:17.110] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/topology/physical_package_id
+[25Nov2026 21:54:17.110] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/topology/physical_package_id
+[25Nov2026 21:54:17.110] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/cpu_capacity
+[25Nov2026 21:54:17.110] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /sys/devices/system/cpu/cpu9/cpu_capacity
+[25Nov2026 21:54:17.110] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /proc/cpuinfo
+[25Nov2026 21:54:17.234] [Render thread/DEBUG] [oshi.util.FileUtil/]: Reading file /proc/self/auxv
+[25Nov2026 21:54:17.296] [Render thread/DEBUG] [net.minecraftforge.common.ForgeI18n/CORE]: Loading I18N data entries: 6430
+[25Nov2026 21:54:17.317] [Render thread/DEBUG] [net.minecraftforge.fml.ModWorkManager/LOADING]: Using 12 threads for parallel mod-loading
+[25Nov2026 21:54:17.326] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@73ae0257 - got cpw.mods.cl.ModuleClassLoader@6bcbf05b
+[25Nov2026 21:54:17.326] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for net.minecraftforge.common.ForgeMod
+[25Nov2026 21:54:17.332] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@73ae0257 - got cpw.mods.cl.ModuleClassLoader@6bcbf05b
+[25Nov2026 21:54:17.332] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for net.mezzdev.config.forge.ConfigForge
+[25Nov2026 21:54:17.333] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@73ae0257 - got cpw.mods.cl.ModuleClassLoader@6bcbf05b
+[25Nov2026 21:54:17.333] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for mezz.jei.forge.JustEnoughItems
+[25Nov2026 21:54:17.333] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@73ae0257 - got cpw.mods.cl.ModuleClassLoader@6bcbf05b
+[25Nov2026 21:54:17.333] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for lehjr.numina.common.base.Numina
+[25Nov2026 21:54:17.334] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@73ae0257 - got cpw.mods.cl.ModuleClassLoader@6bcbf05b
+[25Nov2026 21:54:17.334] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for lehjr.powersuits.common.base.ModularPowersuits
+[25Nov2026 21:54:17.427] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.forge.ForgeVersion/CORE]: Forge Version package package net.minecraftforge.versions.forge, Forge, version 47.2 from cpw.mods.modlauncher.TransformingClassLoader@73ae0257
+[25Nov2026 21:54:17.431] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.forge.ForgeVersion/CORE]: Found Forge version 47.2.30
+[25Nov2026 21:54:17.431] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.forge.ForgeVersion/CORE]: Found Forge spec 47.2
+[25Nov2026 21:54:17.431] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.forge.ForgeVersion/CORE]: Found Forge group net.minecraftforge
+[25Nov2026 21:54:17.431] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.mcp.MCPVersion/CORE]: MCP Version package package net.minecraftforge.versions.mcp, Minecraft, version 1.20.1 from cpw.mods.modlauncher.TransformingClassLoader@73ae0257
+[25Nov2026 21:54:17.431] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.mcp.MCPVersion/CORE]: Found MC version information 1.20.1
+[25Nov2026 21:54:17.432] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.mcp.MCPVersion/CORE]: Found MCP version information 20230612.114412
+[25Nov2026 21:54:17.432] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.2.30, for MC 1.20.1 with MCP 20230612.114412
+[25Nov2026 21:54:17.432] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.2.30 Initialized
+[25Nov2026 21:54:17.531] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/mezz_config/client/default/settings.ini
+[25Nov2026 21:54:17.542] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-client-only.toml for numina tracking
+[25Nov2026 21:54:17.544] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for mezz_config
+[25Nov2026 21:54:17.547] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-common.toml for numina tracking
+[25Nov2026 21:54:17.548] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for numina
+[25Nov2026 21:54:17.555] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.client.config.NuminaClientConfig to FORGE
+[25Nov2026 21:54:17.557] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: -Dio.netty.noUnsafe: false
+[25Nov2026 21:54:17.557] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: Java version: 17
+[25Nov2026 21:54:17.557] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: sun.misc.Unsafe.theUnsafe: available
+[25Nov2026 21:54:17.558] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: sun.misc.Unsafe.copyMemory: available
+[25Nov2026 21:54:17.558] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: sun.misc.Unsafe.storeFence: available
+[25Nov2026 21:54:17.558] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.client.sound.SoundDictionary to FORGE
+[25Nov2026 21:54:17.558] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: java.nio.Buffer.address: available
+[25Nov2026 21:54:17.558] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.client.event.NuminaClientEventBusSubscriber to MOD
+[25Nov2026 21:54:17.559] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: direct buffer constructor: unavailable
+java.lang.UnsupportedOperationException: Reflective setAccessible(true) disabled
+	at io.netty.util.internal.ReflectionUtil.trySetAccessible(ReflectionUtil.java:31) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent0$5.run(PlatformDependent0.java:288) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at java.security.AccessController.doPrivileged(AccessController.java:318) ~[?:?]
+	at io.netty.util.internal.PlatformDependent0.<clinit>(PlatformDependent0.java:282) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent.isAndroid(PlatformDependent.java:333) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent.<clinit>(PlatformDependent.java:88) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.ConstantPool.<init>(ConstantPool.java:34) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.AttributeKey$1.<init>(AttributeKey.java:27) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.AttributeKey.<clinit>(AttributeKey.java:27) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at net.minecraftforge.network.NetworkConstants.<clinit>(NetworkConstants.java:34) ~[forge-1.20.1-47.2.30.jar%23176%23184!/:?]
+	at net.minecraftforge.common.ForgeMod.<init>(ForgeMod.java:429) ~[forge-1.20.1-47.2.30.jar%23176%23184!/:?]
+	at jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:?]
+	at java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500) ~[?:?]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:481) ~[?:?]
+	at net.minecraftforge.fml.javafmlmod.FMLModContainer.constructMod(FMLModContainer.java:70) ~[javafmllanguage-1.20.1-47.2.30.jar%23179!/:?]
+	at net.minecraftforge.fml.ModContainer.lambda$buildTransitionHandler$4(ModContainer.java:124) ~[fmlcore-1.20.1-47.2.30.jar%23178!/:?]
+	at java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804) ~[?:?]
+	at java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1796) ~[?:?]
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373) ~[?:?]
+	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182) ~[?:?]
+	at java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655) ~[?:?]
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622) ~[?:?]
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165) ~[?:?]
+[25Nov2026 21:54:17.560] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: java.nio.Bits.unaligned: available, true
+[25Nov2026 21:54:17.560] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable
+java.lang.IllegalAccessException: class io.netty.util.internal.PlatformDependent0$7 (in module io.netty.common) cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to module io.netty.common
+	at jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:392) ~[?:?]
+	at java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:674) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:561) ~[?:?]
+	at io.netty.util.internal.PlatformDependent0$7.run(PlatformDependent0.java:410) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at java.security.AccessController.doPrivileged(AccessController.java:318) ~[?:?]
+	at io.netty.util.internal.PlatformDependent0.<clinit>(PlatformDependent0.java:401) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent.isAndroid(PlatformDependent.java:333) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent.<clinit>(PlatformDependent.java:88) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.ConstantPool.<init>(ConstantPool.java:34) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.AttributeKey$1.<init>(AttributeKey.java:27) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.AttributeKey.<clinit>(AttributeKey.java:27) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at net.minecraftforge.network.NetworkConstants.<clinit>(NetworkConstants.java:34) ~[forge-1.20.1-47.2.30.jar%23176%23184!/:?]
+	at net.minecraftforge.common.ForgeMod.<init>(ForgeMod.java:429) ~[forge-1.20.1-47.2.30.jar%23176%23184!/:?]
+	at jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:?]
+	at java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500) ~[?:?]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:481) ~[?:?]
+	at net.minecraftforge.fml.javafmlmod.FMLModContainer.constructMod(FMLModContainer.java:70) ~[javafmllanguage-1.20.1-47.2.30.jar%23179!/:?]
+	at net.minecraftforge.fml.ModContainer.lambda$buildTransitionHandler$4(ModContainer.java:124) ~[fmlcore-1.20.1-47.2.30.jar%23178!/:?]
+	at java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804) ~[?:?]
+	at java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1796) ~[?:?]
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373) ~[?:?]
+	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182) ~[?:?]
+	at java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655) ~[?:?]
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622) ~[?:?]
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165) ~[?:?]
+[25Nov2026 21:54:17.562] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: java.nio.DirectByteBuffer.<init>(long, int): unavailable
+[25Nov2026 21:54:17.562] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: sun.misc.Unsafe: available
+[25Nov2026 21:54:17.563] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: maxDirectMemory: 8392802304 bytes (maybe)
+[25Nov2026 21:54:17.563] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.tmpdir: /tmp (java.io.tmpdir)
+[25Nov2026 21:54:17.563] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.bitMode: 64 (sun.arch.data.model)
+[25Nov2026 21:54:17.563] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.maxDirectMemory: -1 bytes
+[25Nov2026 21:54:17.564] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.uninitializedArrayAllocationThreshold: -1
+[25Nov2026 21:54:17.564] [modloading-worker-0/DEBUG] [io.netty.util.internal.CleanerJava9/]: java.nio.ByteBuffer.cleaner(): available
+[25Nov2026 21:54:17.564] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.noPreferDirect: false
+[25Nov2026 21:54:17.572] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.common.base.NuminaObjects to MOD
+[25Nov2026 21:54:17.572] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.common.config.NuminaCommonConfig to FORGE
+[25Nov2026 21:54:17.574] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/powersuits-client-only.toml for powersuits tracking
+[25Nov2026 21:54:17.575] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/general.toml for powersuits tracking
+[25Nov2026 21:54:17.576] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/armor.toml for powersuits tracking
+[25Nov2026 21:54:17.577] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/powerfist.toml for powersuits tracking
+[25Nov2026 21:54:17.578] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/armor.toml for powersuits tracking
+[25Nov2026 21:54:17.578] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/cosmetic.toml for powersuits tracking
+[25Nov2026 21:54:17.579] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_axe.toml for powersuits tracking
+[25Nov2026 21:54:17.582] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/energy_generation.toml for powersuits tracking
+[25Nov2026 21:54:17.589] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/mezz_config/client/default/settings.ini
+[25Nov2026 21:54:17.589] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/environmental.toml for powersuits tracking
+[25Nov2026 21:54:17.591] [modloading-worker-0/DEBUG] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Loading Network data for FML net version: FML3
+[25Nov2026 21:54:17.600] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/fluid_storage.toml for powersuits tracking
+[25Nov2026 21:54:17.605] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_rototiller.toml for powersuits tracking
+[25Nov2026 21:54:17.608] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enchantment.toml for powersuits tracking
+[25Nov2026 21:54:17.612] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enhancement.toml for powersuits tracking
+[25Nov2026 21:54:17.616] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/movement.toml for powersuits tracking
+[25Nov2026 21:54:17.618] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_pickaxe.toml for powersuits tracking
+[25Nov2026 21:54:17.620] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_shovels.toml for powersuits tracking
+[25Nov2026 21:54:17.621] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool.toml for powersuits tracking
+[25Nov2026 21:54:17.622] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/vision.toml for powersuits tracking
+[25Nov2026 21:54:17.623] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/weapon.toml for powersuits tracking
+[25Nov2026 21:54:17.623] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for powersuits
+[25Nov2026 21:54:17.624] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.client.event.ClientEventBusSubscriber to MOD
+[25Nov2026 21:54:17.626] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file forge-client.toml for forge tracking
+[25Nov2026 21:54:17.628] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file forge-server.toml for forge tracking
+[25Nov2026 21:54:17.628] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.ModLoadingContext/]: Attempted to register an empty config for type COMMON on mod forge
+[25Nov2026 21:54:17.642] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.client.sound.MPSSoundDictionary to FORGE
+[25Nov2026 21:54:17.643] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.client.config.MPSClientConfig to FORGE
+[25Nov2026 21:54:17.643] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.common.registration.MPSConfigurations to FORGE
+[25Nov2026 21:54:17.644] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.common.registration.MPSItems to MOD
+[25Nov2026 21:54:17.644] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.common.config.MPSCommonConfig to FORGE
+[25Nov2026 21:54:17.644] [modloading-worker-0/DEBUG] [mezz.jei.common.platform.Services/]: Loaded mezz.jei.forge.platform.PlatformHelper@6b6867f8 for service interface mezz.jei.common.platform.IPlatformHelper
+[25Nov2026 21:54:17.650] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for forge
+[25Nov2026 21:54:17.650] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.client.ClientForgeMod to MOD
+[25Nov2026 21:54:17.652] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/jei/client/default/jei-debug.ini
+[25Nov2026 21:54:17.652] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.client.ForgeHooksClient$ClientEvents to MOD
+[25Nov2026 21:54:17.659] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.client.model.data.ModelDataManager to FORGE
+[25Nov2026 21:54:17.660] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.common.ForgeSpawnEggItem$ColorRegisterHandler to MOD
+[25Nov2026 21:54:17.663] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/jei/client/default/jei-mod-id-format.ini
+[25Nov2026 21:54:17.664] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.common.ForgeSpawnEggItem$CommonHandler to MOD
+[25Nov2026 21:54:17.673] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/jei/client/default/jei-colors.ini
+[25Nov2026 21:54:17.698] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/jei/client/default/jei-client.ini
+[25Nov2026 21:54:17.728] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager...
+[25Nov2026 21:54:17.729] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: jei:minecraft...
+[25Nov2026 21:54:17.729] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: jei:gui...
+[25Nov2026 21:54:17.729] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: jei:forge_gui...
+[25Nov2026 21:54:17.729] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: jei:internal...
+[25Nov2026 21:54:17.730] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager took 1.131 milliseconds
+[25Nov2026 21:54:17.740] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for jei
+[25Nov2026 21:54:17.777] [Render thread/DEBUG] [net.minecraftforge.common.capabilities.CapabilityManager/CAPABILITIES]: Attempting to automatically register: Lnet/minecraftforge/energy/IEnergyStorage;
+[25Nov2026 21:54:17.777] [Render thread/DEBUG] [net.minecraftforge.common.capabilities.CapabilityManager/CAPABILITIES]: Attempting to automatically register: Lnet/minecraftforge/fluids/capability/IFluidHandler;
+[25Nov2026 21:54:17.777] [Render thread/DEBUG] [net.minecraftforge.common.capabilities.CapabilityManager/CAPABILITIES]: Attempting to automatically register: Lnet/minecraftforge/fluids/capability/IFluidHandlerItem;
+[25Nov2026 21:54:17.777] [Render thread/DEBUG] [net.minecraftforge.common.capabilities.CapabilityManager/CAPABILITIES]: Attempting to automatically register: Lnet/minecraftforge/items/IItemHandler;
+[25Nov2026 21:54:17.993] [Render thread/DEBUG] [net.minecraftforge.client.loading.ClientModLoader/CORE]: Generating PackInfo named mod:forge for mod file /
+[25Nov2026 21:54:17.993] [Render thread/DEBUG] [net.minecraftforge.client.loading.ClientModLoader/CORE]: Generating PackInfo named mod:mezz_config for mod file /home/lehjr/.gradle/caches/8.8/transforms/bb20a1db7b49adcccf1c76364626cb22/transformed/mezz_config-1.20.1-forge-0.6.10.jar
+[25Nov2026 21:54:17.993] [Render thread/DEBUG] [net.minecraftforge.client.loading.ClientModLoader/CORE]: Generating PackInfo named mod:jei for mod file /home/lehjr/.gradle/caches/8.8/transforms/f7955b3d1ccbdd14f4add0a9bccc4638/transformed/jei-1.20.1-forge-15.75.0.242.jar
+[25Nov2026 21:54:17.993] [Render thread/DEBUG] [net.minecraftforge.client.loading.ClientModLoader/CORE]: Generating PackInfo named mod:numina for mod file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/build/classes/java/main
+[25Nov2026 21:54:17.994] [Render thread/DEBUG] [net.minecraftforge.client.loading.ClientModLoader/CORE]: Generating PackInfo named mod:powersuits for mod file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/build/classes/java/powersuits
+[25Nov2026 21:54:18.252] [Render thread/INFO] [net.minecraftforge.gametest.ForgeGameTestHooks/]: Enabled Gametest Namespaces: []
+[25Nov2026 21:54:18.366] [Render thread/DEBUG] [mixin/]: Mixing common.item.MixinRangedWrapper from numina.mixins.json into net.minecraftforge.items.wrapper.RangedWrapper
+[25Nov2026 21:54:18.480] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources
+[25Nov2026 21:54:18.490] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Loading configs type CLIENT
+[25Nov2026 21:54:18.491] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-client-only.toml
+[25Nov2026 21:54:18.491] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-client-only.toml
+[25Nov2026 21:54:18.493] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-client-only.toml for changes
+[25Nov2026 21:54:18.496] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-client-only.toml changed, sending notifies
+[25Nov2026 21:54:18.496] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/powersuits-client-only.toml
+[25Nov2026 21:54:18.496] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-client-only.toml changed, sending notifies
+[25Nov2026 21:54:18.497] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/powersuits-client-only.toml
+[25Nov2026 21:54:18.497] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/powersuits-client-only.toml for changes
+[25Nov2026 21:54:18.498] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/powersuits-client-only.toml changed, sending notifies
+[25Nov2026 21:54:18.499] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/forge-client.toml
+[25Nov2026 21:54:18.499] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/powersuits-client-only.toml changed, sending notifies
+[25Nov2026 21:54:18.499] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/forge-client.toml
+[25Nov2026 21:54:18.500] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/forge-client.toml for changes
+[25Nov2026 21:54:18.500] [modloading-worker-0/DEBUG] [net.minecraftforge.common.ForgeConfig/FORGEMOD]: Loaded forge config file forge-client.toml
+[25Nov2026 21:54:18.501] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Loading configs type COMMON
+[25Nov2026 21:54:18.501] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-common.toml
+[25Nov2026 21:54:18.501] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file forge-client.toml changed, sending notifies
+[25Nov2026 21:54:18.501] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-common.toml
+[25Nov2026 21:54:18.501] [Thread-3/DEBUG] [net.minecraftforge.common.ForgeConfig/FORGEMOD]: Forge config just got changed on the file system!
+[25Nov2026 21:54:18.502] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-common.toml for changes
+[25Nov2026 21:54:18.502] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/general.toml
+[25Nov2026 21:54:18.503] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/general.toml
+[25Nov2026 21:54:18.503] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/numina/numina-common.toml changed, sending notifies
+[25Nov2026 21:54:18.509] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/general.toml for changes
+[25Nov2026 21:54:18.509] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/armor.toml
+[25Nov2026 21:54:18.510] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/armor.toml
+[25Nov2026 21:54:18.513] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/armor.toml for changes
+[25Nov2026 21:54:18.515] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/powerfist.toml
+[25Nov2026 21:54:18.515] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/powerfist.toml
+[25Nov2026 21:54:18.516] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/powerfist.toml for changes
+[25Nov2026 21:54:18.516] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/armor.toml
+[25Nov2026 21:54:18.517] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/armor.toml changed, sending notifies
+[25Nov2026 21:54:18.518] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/armor.toml
+[25Nov2026 21:54:18.519] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/armor.toml for changes
+[25Nov2026 21:54:18.519] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/armor.toml changed, sending notifies
+[25Nov2026 21:54:18.520] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/cosmetic.toml
+[25Nov2026 21:54:18.520] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/cosmetic.toml
+[25Nov2026 21:54:18.520] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/cosmetic.toml for changes
+[25Nov2026 21:54:18.520] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/armor.toml changed, sending notifies
+[25Nov2026 21:54:18.520] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_axe.toml
+[25Nov2026 21:54:18.521] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/cosmetic.toml changed, sending notifies
+[25Nov2026 21:54:18.521] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_axe.toml
+[25Nov2026 21:54:18.521] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_axe.toml for changes
+[25Nov2026 21:54:18.522] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_axe.toml changed, sending notifies
+[25Nov2026 21:54:18.522] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_axe.toml changed, sending notifies
+[25Nov2026 21:54:18.522] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/energy_generation.toml
+[25Nov2026 21:54:18.523] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/energy_generation.toml
+[25Nov2026 21:54:18.523] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/energy_generation.toml for changes
+[25Nov2026 21:54:18.524] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/energy_generation.toml changed, sending notifies
+[25Nov2026 21:54:18.524] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/environmental.toml
+[25Nov2026 21:54:18.525] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/environmental.toml
+[25Nov2026 21:54:18.525] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/environmental.toml for changes
+[25Nov2026 21:54:18.526] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/fluid_storage.toml
+[25Nov2026 21:54:18.526] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/energy_generation.toml changed, sending notifies
+[25Nov2026 21:54:18.526] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/fluid_storage.toml
+[25Nov2026 21:54:18.526] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/fluid_storage.toml for changes
+[25Nov2026 21:54:18.527] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/fluid_storage.toml changed, sending notifies
+[25Nov2026 21:54:18.527] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_rototiller.toml
+[25Nov2026 21:54:18.528] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/fluid_storage.toml changed, sending notifies
+[25Nov2026 21:54:18.528] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_rototiller.toml
+[25Nov2026 21:54:18.529] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_rototiller.toml for changes
+[25Nov2026 21:54:18.531] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_rototiller.toml changed, sending notifies
+[25Nov2026 21:54:18.531] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enchantment.toml
+[25Nov2026 21:54:18.531] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enchantment.toml
+[25Nov2026 21:54:18.532] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enchantment.toml for changes
+[25Nov2026 21:54:18.532] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_rototiller.toml changed, sending notifies
+[25Nov2026 21:54:18.532] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enhancement.toml
+[25Nov2026 21:54:18.532] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enhancement.toml
+[25Nov2026 21:54:18.532] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enchantment.toml changed, sending notifies
+[25Nov2026 21:54:18.532] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enhancement.toml for changes
+[25Nov2026 21:54:18.533] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/movement.toml
+[25Nov2026 21:54:18.534] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/movement.toml
+[25Nov2026 21:54:18.534] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/movement.toml for changes
+[25Nov2026 21:54:18.535] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_pickaxe.toml
+[25Nov2026 21:54:18.535] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/mining_enhancement.toml changed, sending notifies
+[25Nov2026 21:54:18.535] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_pickaxe.toml
+[25Nov2026 21:54:18.536] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_pickaxe.toml for changes
+[25Nov2026 21:54:18.536] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_shovels.toml
+[25Nov2026 21:54:18.537] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_shovels.toml
+[25Nov2026 21:54:18.537] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_shovels.toml for changes
+[25Nov2026 21:54:18.538] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool.toml
+[25Nov2026 21:54:18.538] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_shovels.toml changed, sending notifies
+[25Nov2026 21:54:18.538] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool.toml
+[25Nov2026 21:54:18.538] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool.toml for changes
+[25Nov2026 21:54:18.538] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool_shovels.toml changed, sending notifies
+[25Nov2026 21:54:18.539] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool.toml changed, sending notifies
+[25Nov2026 21:54:18.539] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/vision.toml
+[25Nov2026 21:54:18.539] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/vision.toml
+[25Nov2026 21:54:18.539] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/tool.toml changed, sending notifies
+[25Nov2026 21:54:18.539] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/vision.toml for changes
+[25Nov2026 21:54:18.540] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/weapon.toml
+[25Nov2026 21:54:18.540] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/weapon.toml
+[25Nov2026 21:54:18.540] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/lehjr/powersuits/common/items/modules/weapon.toml for changes
+[25Nov2026 21:54:18.542] [Worker-Main-4/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.0.06.hex, loading
+[25Nov2026 21:54:18.769] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[25Nov2026 21:54:18.774] [Render thread/DEBUG] [net.minecraftforge.fml.DeferredWorkQueue/LOADING]: Dispatching synchronous work for work queue COMMON_SETUP: 1 jobs
+[25Nov2026 21:54:18.779] [Render thread/DEBUG] [net.minecraftforge.fml.DeferredWorkQueue/LOADING]: Synchronous work queue completed in 4.624 ms
+[25Nov2026 21:54:18.867] [Render thread/DEBUG] [net.minecraftforge.fml.DeferredWorkQueue/LOADING]: Dispatching synchronous work for work queue SIDED_SETUP: 2 jobs
+[25Nov2026 21:54:18.925] [Render thread/DEBUG] [net.minecraftforge.fml.DeferredWorkQueue/LOADING]: Synchronous work queue completed in 55.57 ms
+[25Nov2026 21:54:19.129] [Forge Version Check/DEBUG] [net.minecraftforge.fml.VersionChecker/]: [forge] Received version check data:
+{
+  "homepage": "https://files.minecraftforge.net/net/minecraftforge/forge/",
+  "promos": {
+    "1.1-latest": "1.3.4.29",
+    "1.2.3-latest": "1.4.1.64",
+    "1.2.4-latest": "2.0.0.68",
+    "1.2.5-latest": "3.4.9.171",
+    "1.3.2-latest": "4.3.5.318",
+    "1.4.0-latest": "5.0.0.326",
+    "1.4.1-latest": "6.0.0.329",
+    "1.4.2-latest": "6.0.1.355",
+    "1.4.3-latest": "6.2.1.358",
+    "1.4.4-latest": "6.3.0.378",
+    "1.4.5-latest": "6.4.2.448",
+    "1.4.6-latest": "6.5.0.489",
+    "1.4.7-latest": "6.6.2.534",
+    "1.5-latest": "7.7.0.598",
+    "1.5.1-latest": "7.7.2.682",
+    "1.5.2-latest": "7.8.1.738",
+    "1.5.2-recommended": "7.8.1.738",
+    "1.6.1-latest": "8.9.0.775",
+    "1.6.2-latest": "9.10.1.871",
+    "1.6.2-recommended": "9.10.1.871",
+    "1.6.3-latest": "9.11.0.878",
+    "1.6.4-latest": "9.11.1.1345",
+    "1.6.4-recommended": "9.11.1.1345",
+    "1.7.2-latest": "10.12.2.1161",
+    "1.7.2-recommended": "10.12.2.1161",
+    "1.7.10-latest": "10.13.4.1614",
+    "1.7.10-recommended": "10.13.4.1614",
+    "1.8-latest": "11.14.4.1577",
+    "1.8-recommended": "11.14.4.1563",
+    "1.8.8-latest": "11.15.0.1655",
+    "1.8.9-latest": "11.15.1.2318",
+    "1.8.9-recommended": "11.15.1.2318",
+    "1.9-latest": "12.16.1.1938",
+    "1.9-recommended": "12.16.1.1887",
+    "1.9.4-latest": "12.17.0.2317",
+    "1.9.4-recommended": "12.17.0.2317",
+    "1.10-latest": "12.18.0.2000",
+    "1.10.2-latest": "12.18.3.2511",
+    "1.10.2-recommended": "12.18.3.2511",
+    "1.11-latest": "13.19.1.2199",
+    "1.11-recommended": "13.19.1.2189",
+    "1.11.2-latest": "13.20.1.2588",
+    "1.11.2-recommended": "13.20.1.2588",
+    "1.12-latest": "14.21.1.2443",
+    "1.12-recommended": "14.21.1.2387",
+    "1.12.1-latest": "14.22.1.2485",
+    "1.12.1-recommended": "14.22.1.2478",
+    "1.12.2-latest": "14.23.5.2864",
+    "1.12.2-recommended": "14.23.5.2859",
+    "1.13.2-latest": "25.0.223",
+    "1.14.2-latest": "26.0.63",
+    "1.14.3-latest": "27.0.60",
+    "1.14.4-latest": "28.2.30",
+    "1.14.4-recommended": "28.2.26",
+    "1.15-latest": "29.0.4",
+    "1.15.1-latest": "30.0.51",
+    "1.15.2-latest": "31.2.62",
+    "1.15.2-recommended": "31.2.57",
+    "1.16.1-latest": "32.0.108",
+    "1.16.2-latest": "33.0.61",
+    "1.16.3-latest": "34.1.42",
+    "1.16.3-recommended": "34.1.0",
+    "1.16.4-latest": "35.1.37",
+    "1.16.4-recommended": "35.1.4",
+    "1.16.5-latest": "36.2.42",
+    "1.16.5-recommended": "36.2.34",
+    "1.17.1-latest": "37.1.1",
+    "1.17.1-recommended": "37.1.1",
+    "1.18-latest": "38.0.17",
+    "1.18.1-latest": "39.1.2",
+    "1.18.1-recommended": "39.1.0",
+    "1.18.2-recommended": "40.3.0",
+    "1.18.2-latest": "40.3.12",
+    "1.19-latest": "41.1.0",
+    "1.19-recommended": "41.1.0",
+    "1.19.1-latest": "42.0.9",
+    "1.19.2-recommended": "43.5.0",
+    "1.19.2-latest": "43.5.2",
+    "1.19.3-latest": "44.1.23",
+    "1.19.3-recommended": "44.1.0",
+    "1.19.4-recommended": "45.4.0",
+    "1.19.4-latest": "45.4.5",
+    "1.20-latest": "46.0.14",
+    "1.20.1-recommended": "47.4.28",
+    "1.20.1-latest": "47.4.29",
+    "1.20.2-latest": "48.1.0",
+    "1.20.2-recommended": "48.1.0",
+    "1.20.3-latest": "49.0.2",
+    "1.20.4-latest": "49.2.13",
+    "1.20.4-recommended": "49.2.13",
+    "1.20.6-latest": "50.2.15",
+    "1.20.6-recommended": "50.2.14",
+    "1.21-latest": "51.0.33",
+    "1.21.1-latest": "52.1.21",
+    "1.21.1-recommended": "52.1.20",
+    "1.21.3-latest": "53.1.16",
+    "1.21.3-recommended": "53.1.16",
+    "1.21.4-latest": "54.1.22",
+    "1.21.4-recommended": "54.1.22",
+    "1.21.5-latest": "55.1.18",
+    "1.21.5-recommended": "55.1.18",
+    "1.21.6-latest": "56.0.9",
+    "1.21.7-latest": "57.0.3",
+    "1.21.8-latest": "58.1.26",
+    "1.21.8-recommended": "58.1.26",
+    "1.21.9-latest": "59.0.5",
+    "1.21.10-latest": "60.1.18",
+    "1.21.10-recommended": "60.1.18",
+    "1.21.11-latest": "61.2.5",
+    "1.21.11-recommended": "61.2.4",
+    "26.1-latest": "62.0.9",
+    "26.1.1-latest": "63.0.2",
+    "26.1.2-latest": "64.1.6",
+    "26.1.2-recommended": "64.1.5",
+    "26.2-latest": "65.1.6",
+    "26.2-recommended": "65.1.5",
+    "26.3-latest": "66.1.9",
+    "26.3-recommended": "66.1.9"
+  }
+}
+[25Nov2026 21:54:19.130] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: OUTDATED Current: 47.2.30 Target: 47.4.28
+[25Nov2026 21:54:19.348] [Worker-Main-2/WARN] [MachineMuse/]: armor2 already a member!
+[25Nov2026 21:54:19.348] [Worker-Main-2/WARN] [MachineMuse/]: leggray already a member!
+[25Nov2026 21:54:19.348] [Worker-Main-2/WARN] [MachineMuse/]: legbit already a member!
+[25Nov2026 21:54:19.348] [Worker-Main-2/WARN] [MachineMuse/]: legglow already a member!
+[25Nov2026 21:54:19.348] [Worker-Main-2/WARN] [MachineMuse/]: leggray1 already a member!
+[25Nov2026 21:54:19.348] [Worker-Main-2/WARN] [MachineMuse/]: legbit1 already a member!
+[25Nov2026 21:54:19.348] [Worker-Main-2/WARN] [MachineMuse/]: legglow1 already a member!
+[25Nov2026 21:54:19.348] [Worker-Main-2/WARN] [MachineMuse/]: bootmain1 already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: bootglow1 already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: bootmain already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: bootglow already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: chestgray already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: chestmain already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: chestback1 already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: chestglowfront already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: chestglowback already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: armglow1 already a member!
+[25Nov2026 21:54:19.349] [Worker-Main-2/WARN] [MachineMuse/]: armmain1 already a member!
+[25Nov2026 21:54:19.350] [Worker-Main-2/WARN] [MachineMuse/]: armgray1 already a member!
+[25Nov2026 21:54:19.350] [Worker-Main-2/WARN] [MachineMuse/]: armglow already a member!
+[25Nov2026 21:54:19.350] [Worker-Main-2/WARN] [MachineMuse/]: armmain already a member!
+[25Nov2026 21:54:19.350] [Worker-Main-2/WARN] [MachineMuse/]: armgray already a member!
+[25Nov2026 21:54:19.350] [Worker-Main-2/WARN] [MachineMuse/]: helmetglow1 already a member!
+[25Nov2026 21:54:19.350] [Worker-Main-2/WARN] [MachineMuse/]: helmetmain already a member!
+[25Nov2026 21:54:19.350] [Worker-Main-2/WARN] [MachineMuse/]: citizenjoe_armorskin already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: mps_helm already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: helm_main already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: visor already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: helm_tubes already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: helm_tube_entry1 already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: helm_tube_entry2 already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: mps_chest already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: backpack already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: polySurface36 already a member!
+[25Nov2026 21:54:19.351] [Worker-Main-2/WARN] [MachineMuse/]: belt already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: chest_padding already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: crystal_belt already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: chest_main already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: jetpack already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: jetpack5 already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: jetpack_glow already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: mps_arms already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: crystal_shoulder_2 already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: arms3 already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: crystal_shoulder_1 already a member!
+[25Nov2026 21:54:19.352] [Worker-Main-2/WARN] [MachineMuse/]: arms2 already a member!
+[25Nov2026 21:54:19.353] [Worker-Main-2/WARN] [MachineMuse/]: mps_pantaloons already a member!
+[25Nov2026 21:54:19.353] [Worker-Main-2/WARN] [MachineMuse/]: leg2 already a member!
+[25Nov2026 21:54:19.353] [Worker-Main-2/WARN] [MachineMuse/]: leg1 already a member!
+[25Nov2026 21:54:19.353] [Worker-Main-2/WARN] [MachineMuse/]: mps_boots already a member!
+[25Nov2026 21:54:19.353] [Worker-Main-2/WARN] [MachineMuse/]: boots1 already a member!
+[25Nov2026 21:54:19.353] [Worker-Main-2/WARN] [MachineMuse/]: boots2 already a member!
+[25Nov2026 21:54:19.353] [Worker-Main-2/WARN] [MachineMuse/]: default_armorskin already a member!
+[25Nov2026 21:54:19.353] [Worker-Main-2/WARN] [MachineMuse/]: powerfist already a member!
+[25Nov2026 21:54:19.834] [Worker-Main-2/WARN] [net.minecraft.client.resources.model.ModelManager/]: Missing textures in model powersuits:entity/plasma:
+    minecraft:textures/atlas/blocks.png:numina:models/white
+[25Nov2026 21:54:20.661] [Render thread/DEBUG] [net.minecraftforge.common.ForgeI18n/CORE]: Loading I18N data entries: 7561
+[25Nov2026 21:54:20.681] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[25Nov2026 21:54:20.682] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[25Nov2026 21:54:20.698] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device JACK Default
+[25Nov2026 21:54:20.698] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[25Nov2026 21:54:20.783] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x1024x4 minecraft:textures/atlas/blocks.png-atlas
+[25Nov2026 21:54:20.797] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[25Nov2026 21:54:20.797] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[25Nov2026 21:54:20.798] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[25Nov2026 21:54:20.798] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[25Nov2026 21:54:20.803] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[25Nov2026 21:54:20.803] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[25Nov2026 21:54:20.804] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[25Nov2026 21:54:20.804] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[25Nov2026 21:54:20.873] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[25Nov2026 21:54:20.908] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/particles.png-atlas
+[25Nov2026 21:54:20.909] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
+[25Nov2026 21:54:20.909] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[25Nov2026 21:54:20.910] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 jei:textures/atlas/gui.png-atlas
+[25Nov2026 21:54:20.913] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x256x0 numina:textures/atlas/gui.png-atlas
+[25Nov2026 21:54:21.084] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient/]: Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: 0
+[25Nov2026 21:54:34.928] [Render thread/DEBUG] [net.minecraftforge.server.ServerLifecycleHooks/CORE]: Generating PackInfo named mod:forge for mod file /
+[25Nov2026 21:54:34.928] [Render thread/DEBUG] [net.minecraftforge.server.ServerLifecycleHooks/CORE]: Generating PackInfo named mod:mezz_config for mod file /home/lehjr/.gradle/caches/8.8/transforms/bb20a1db7b49adcccf1c76364626cb22/transformed/mezz_config-1.20.1-forge-0.6.10.jar
+[25Nov2026 21:54:34.929] [Render thread/DEBUG] [net.minecraftforge.server.ServerLifecycleHooks/CORE]: Generating PackInfo named mod:jei for mod file /home/lehjr/.gradle/caches/8.8/transforms/f7955b3d1ccbdd14f4add0a9bccc4638/transformed/jei-1.20.1-forge-15.75.0.242.jar
+[25Nov2026 21:54:34.929] [Render thread/DEBUG] [net.minecraftforge.server.ServerLifecycleHooks/CORE]: Generating PackInfo named mod:numina for mod file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/build/classes/java/main
+[25Nov2026 21:54:34.929] [Render thread/DEBUG] [net.minecraftforge.server.ServerLifecycleHooks/CORE]: Generating PackInfo named mod:powersuits for mod file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/build/classes/java/powersuits
+[25Nov2026 21:54:35.382] [Render thread/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/server/commands/SummonCommand
+[25Nov2026 21:54:35.559] [Worker-Main-2/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/raid/Raid
+[25Nov2026 21:54:35.737] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 7 recipes
+[25Nov2026 21:54:35.814] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 1396 advancements
+[25Nov2026 21:54:36.176] [Render thread/DEBUG] [net.minecraftforge.common.ForgeHooks/WP]: Gathering id map for writing to world save Another shitty world
+[25Nov2026 21:54:36.189] [Render thread/DEBUG] [net.minecraftforge.common.ForgeHooks/WP]: ID Map collection complete Another shitty world
+[25Nov2026 21:54:36.231] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.20.1
+[25Nov2026 21:54:36.232] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[25Nov2026 21:54:36.292] [Server thread/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Loading configs type SERVER
+[25Nov2026 21:54:36.293] [Server thread/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Built TOML config for ./saves/Another shitty world/serverconfig/forge-server.toml
+[25Nov2026 21:54:36.293] [Server thread/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Loaded TOML config file ./saves/Another shitty world/serverconfig/forge-server.toml
+[25Nov2026 21:54:36.293] [Server thread/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Watching TOML config file ./saves/Another shitty world/serverconfig/forge-server.toml for changes
+[25Nov2026 21:54:36.294] [Server thread/DEBUG] [net.minecraftforge.common.ForgeConfig/FORGEMOD]: Loaded forge config file forge-server.toml
+[25Nov2026 21:54:36.294] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file forge-server.toml changed, sending notifies
+[25Nov2026 21:54:36.294] [Thread-3/DEBUG] [net.minecraftforge.common.ForgeConfig/FORGEMOD]: Forge config just got changed on the file system!
+[25Nov2026 21:54:36.294] [Thread-3/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file forge-server.toml changed, sending notifies
+[25Nov2026 21:54:36.294] [Thread-3/DEBUG] [net.minecraftforge.common.ForgeConfig/FORGEMOD]: Forge config just got changed on the file system!
+[25Nov2026 21:54:36.317] [Server thread/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/PhantomSpawner
+[25Nov2026 21:54:36.323] [Server thread/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/PatrolSpawner
+[25Nov2026 21:54:36.327] [Server thread/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/npc/CatSpawner
+[25Nov2026 21:54:36.331] [Server thread/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/ai/village/VillageSiege
+[25Nov2026 21:54:37.185] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[25Nov2026 21:54:38.378] [Server thread/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate
+[25Nov2026 21:54:39.249] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[25Nov2026 21:54:39.249] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[25Nov2026 21:54:39.249] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[25Nov2026 21:54:39.249] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[25Nov2026 21:54:39.250] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[25Nov2026 21:54:39.711] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 49%
+[25Nov2026 21:54:39.892] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[25Nov2026 21:54:39.893] [Server thread/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/client/config/jei/server/world/default/jei-server.ini
+[25Nov2026 21:54:39.894] [Server thread/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: saves/Another shitty world/serverconfig/jei/jei-server.ini
+[25Nov2026 21:54:39.895] [Server thread/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Saving config file: saves/Another shitty world/serverconfig/jei/jei-server.ini
+[25Nov2026 21:54:39.898] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 2699 ms
+[25Nov2026 21:54:39.932] [Server thread/DEBUG] [io.netty.buffer.AbstractByteBuf/]: -Dio.netty.buffer.checkAccessible: true
+[25Nov2026 21:54:39.932] [Server thread/DEBUG] [io.netty.buffer.AbstractByteBuf/]: -Dio.netty.buffer.checkBounds: true
+[25Nov2026 21:54:39.932] [Server thread/DEBUG] [io.netty.util.ResourceLeakDetectorFactory/]: Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@57cf39bb
+[25Nov2026 21:54:39.946] [Server thread/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/NaturalSpawner
+[25Nov2026 21:54:39.978] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[25Nov2026 21:54:39.980] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[25Nov2026 21:54:39.988] [Render thread/DEBUG] [io.netty.channel.MultithreadEventLoopGroup/]: -Dio.netty.eventLoopThreads: 24
+[25Nov2026 21:54:39.997] [Render thread/DEBUG] [io.netty.util.internal.InternalThreadLocalMap/]: -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+[25Nov2026 21:54:39.998] [Render thread/DEBUG] [io.netty.util.internal.InternalThreadLocalMap/]: -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+[25Nov2026 21:54:40.000] [Render thread/DEBUG] [io.netty.channel.nio.NioEventLoop/]: -Dio.netty.noKeySetOptimization: false
+[25Nov2026 21:54:40.000] [Render thread/DEBUG] [io.netty.channel.nio.NioEventLoop/]: -Dio.netty.selectorAutoRebuildThreshold: 512
+[25Nov2026 21:54:40.004] [Render thread/DEBUG] [io.netty.util.internal.PlatformDependent/]: org.jctools-core.MpscChunkedArrayQueue: available
+[25Nov2026 21:54:40.011] [Render thread/DEBUG] [io.netty.channel.DefaultChannelId/]: -Dio.netty.processId: 86540 (auto-detected)
+[25Nov2026 21:54:40.012] [Render thread/WARN] [io.netty.util.internal.SystemPropertyUtil/]: Unable to parse the boolean system property 'java.net.preferIPv6Addresses':system - using the default value: false
+[25Nov2026 21:54:40.012] [Render thread/DEBUG] [io.netty.util.NetUtil/]: -Djava.net.preferIPv4Stack: false
+[25Nov2026 21:54:40.012] [Render thread/DEBUG] [io.netty.util.NetUtil/]: -Djava.net.preferIPv6Addresses: false
+[25Nov2026 21:54:40.013] [Render thread/DEBUG] [io.netty.util.NetUtilInitializations/]: Loopback interface: lo (lo, 0:0:0:0:0:0:0:1%lo)
+[25Nov2026 21:54:40.013] [Render thread/DEBUG] [io.netty.util.NetUtil/]: /proc/sys/net/core/somaxconn: 4096
+[25Nov2026 21:54:40.014] [Render thread/DEBUG] [io.netty.channel.DefaultChannelId/]: -Dio.netty.machineId: 02:21:78:ff:fe:97:6b:cd (auto-detected)
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.numHeapArenas: 24
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.numDirectArenas: 24
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.pageSize: 8192
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.maxOrder: 9
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.chunkSize: 4194304
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.smallCacheSize: 256
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.normalCacheSize: 64
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.cacheTrimInterval: 8192
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.useCacheForAllThreads: false
+[25Nov2026 21:54:40.023] [Render thread/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+[25Nov2026 21:54:40.030] [Render thread/DEBUG] [io.netty.buffer.ByteBufUtil/]: -Dio.netty.allocator.type: pooled
+[25Nov2026 21:54:40.030] [Render thread/DEBUG] [io.netty.buffer.ByteBufUtil/]: -Dio.netty.threadLocalDirectBufferSize: 0
+[25Nov2026 21:54:40.030] [Render thread/DEBUG] [io.netty.buffer.ByteBufUtil/]: -Dio.netty.maxThreadLocalCharBufferSize: 16384
+[25Nov2026 21:54:40.046] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Starting local connection.
+[25Nov2026 21:54:40.110] [Netty Local Client IO #0/DEBUG] [io.netty.util.Recycler/]: -Dio.netty.recycler.maxCapacityPerThread: 4096
+[25Nov2026 21:54:40.110] [Netty Local Client IO #0/DEBUG] [io.netty.util.Recycler/]: -Dio.netty.recycler.ratio: 8
+[25Nov2026 21:54:40.110] [Netty Local Client IO #0/DEBUG] [io.netty.util.Recycler/]: -Dio.netty.recycler.chunkSize: 32
+[25Nov2026 21:54:40.110] [Netty Local Client IO #0/DEBUG] [io.netty.util.Recycler/]: -Dio.netty.recycler.blocking: false
+[25Nov2026 21:54:40.116] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Starting local connection.
+[25Nov2026 21:54:40.157] [Server thread/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Sending ticking packet info 'net.minecraftforge.network.HandshakeMessages$S2CModData' to 'fml:handshake' sequence 0
+[25Nov2026 21:54:40.161] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 0
+[25Nov2026 21:54:40.182] [Server thread/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Sending ticking packet info 'net.minecraftforge.network.HandshakeMessages$S2CModList' to 'fml:handshake' sequence 1
+[25Nov2026 21:54:40.182] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 1
+[25Nov2026 21:54:40.183] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Logging into server with mod list [minecraft, forge, mezz_config, jei, numina, powersuits]
+[25Nov2026 21:54:40.183] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'numina:data' : Version test of '1' from server : ACCEPTED
+[25Nov2026 21:54:40.183] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'mezz_config:server_config' : Version test of '2' from server : ACCEPTED
+[25Nov2026 21:54:40.183] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'fml:loginwrapper' : Version test of 'FML3' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'forge:tier_sorting' : Version test of '1.0' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'fml:handshake' : Version test of 'FML3' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'jei:channel' : Version test of '1.0.0' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'jei:recipe_transfer_result_channel' : Version test of '1.0.0' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'powersuits:data' : Version test of '1' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'minecraft:unregister' : Version test of 'FML3' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'fml:play' : Version test of 'FML3' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'minecraft:register' : Version test of 'FML3' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'forge:split' : Version test of '1.1' from server : ACCEPTED
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Accepting channel list from server
+[25Nov2026 21:54:40.184] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.LoginWrapper/FMLHANDSHAKE]: Dispatching wrapped packet reply for channel fml:handshake with index 1
+[25Nov2026 21:54:40.185] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Accepted server connection
+[25Nov2026 21:54:40.185] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 1
+[25Nov2026 21:54:40.185] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Received client indexed reply 1 of type net.minecraftforge.network.HandshakeMessages$C2SModListReply
+[25Nov2026 21:54:40.185] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Received client connection with modlist [minecraft, forge, mezz_config, jei, numina, powersuits]
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'numina:data' : Version test of '1' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'mezz_config:server_config' : Version test of '2' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'fml:loginwrapper' : Version test of 'FML3' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'forge:tier_sorting' : Version test of '1.0' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'fml:handshake' : Version test of 'FML3' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'jei:channel' : Version test of '1.0.0' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'jei:recipe_transfer_result_channel' : Version test of '1.0.0' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'powersuits:data' : Version test of '1' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'minecraft:unregister' : Version test of 'FML3' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'fml:play' : Version test of 'FML3' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'minecraft:register' : Version test of 'FML3' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channel 'forge:split' : Version test of '1.1' from client : ACCEPTED
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Accepting channel list from client
+[25Nov2026 21:54:40.186] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Accepted client connection mod list
+[25Nov2026 21:54:40.205] [Server thread/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Sending ticking packet info 'Config forge-server.toml' to 'fml:handshake' sequence 2
+[25Nov2026 21:54:40.205] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 2
+[25Nov2026 21:54:40.205] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Received config sync from server
+[25Nov2026 21:54:40.205] [Netty Local Client IO #0/DEBUG] [net.minecraftforge.network.LoginWrapper/FMLHANDSHAKE]: Dispatching wrapped packet reply for channel fml:handshake with index 2
+[25Nov2026 21:54:40.206] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 2
+[25Nov2026 21:54:40.206] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Received client indexed reply 2 of type net.minecraftforge.network.HandshakeMessages$C2SAcknowledge
+[25Nov2026 21:54:40.206] [Netty Server IO #1/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Received acknowledgement from client
+[25Nov2026 21:54:40.223] [Server thread/DEBUG] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Handshake complete!
+[25Nov2026 21:54:40.265] [Netty Local Client IO #0/INFO] [net.minecraftforge.network.NetworkHooks/]: Connected to a modded server.
+[25Nov2026 21:54:40.294] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:c09043e4] logged in with entity id 151 at (-15.62312360328483, 65.0, 5.067563425733929)
+[25Nov2026 21:54:40.334] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[25Nov2026 21:54:40.424] [Render thread/DEBUG] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received event: class net.minecraftforge.client.event.ClientPlayerNetworkEvent$LoggingIn
+[25Nov2026 21:54:40.554] [Render thread/DEBUG] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received event: class net.minecraftforge.client.event.RecipesUpdatedEvent
+[25Nov2026 21:54:40.564] [Render thread/DEBUG] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received event: class net.minecraftforge.event.TagsUpdatedEvent
+[25Nov2026 21:54:40.565] [Render thread/DEBUG] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from LISTENING to JEI_STARTED
+[25Nov2026 21:54:40.566] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Starting JEI...
+[25Nov2026 21:54:40.566] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Configuring JEI...
+[25Nov2026 21:54:40.566] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Configuring JEI: jei:minecraft...
+[25Nov2026 21:54:40.566] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Configuring JEI: jei:gui...
+[25Nov2026 21:54:40.566] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Configuring JEI: jei:forge_gui...
+[25Nov2026 21:54:40.566] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Configuring JEI: jei:internal...
+[25Nov2026 21:54:40.567] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Configuring JEI took 589.6 microseconds
+[25Nov2026 21:54:40.572] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering item subtypes...
+[25Nov2026 21:54:40.572] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering item subtypes: jei:minecraft...
+[25Nov2026 21:54:40.574] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering item subtypes: jei:gui...
+[25Nov2026 21:54:40.574] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering item subtypes: jei:forge_gui...
+[25Nov2026 21:54:40.574] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering item subtypes: jei:internal...
+[25Nov2026 21:54:40.574] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering item subtypes took 2.048 milliseconds
+[25Nov2026 21:54:40.574] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering fluid subtypes...
+[25Nov2026 21:54:40.574] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering fluid subtypes: jei:minecraft...
+[25Nov2026 21:54:40.575] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering fluid subtypes: jei:gui...
+[25Nov2026 21:54:40.575] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering fluid subtypes: jei:forge_gui...
+[25Nov2026 21:54:40.575] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering fluid subtypes: jei:internal...
+[25Nov2026 21:54:40.575] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering fluid subtypes took 266.4 microseconds
+[25Nov2026 21:54:40.576] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering ingredients...
+[25Nov2026 21:54:40.576] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering ingredients: jei:minecraft...
+[25Nov2026 21:54:40.587] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added  348/ 348 new items from 'Building Blocks' creative tab's displayItems
+[25Nov2026 21:54:40.589] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added  198/ 198 new items from 'Colored Blocks' creative tab's displayItems
+[25Nov2026 21:54:40.591] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added  202/ 226 new items from 'Natural Blocks' creative tab's displayItems
+[25Nov2026 21:54:40.594] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added  117/ 196 new items from 'Functional Blocks' creative tab's displayItems
+[25Nov2026 21:54:40.595] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added    0/ 196 new items from 'Functional Blocks' creative tab's searchTabDisplayItems
+[25Nov2026 21:54:40.595] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added   28/  62 new items from 'Redstone Blocks' creative tab's displayItems
+[25Nov2026 21:54:40.595] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Skipping creative tab: 'Saved Hotbars' because it is type: HOTBAR
+[25Nov2026 21:54:40.595] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Skipping creative tab: 'Search Items' because it is type: SEARCH
+[25Nov2026 21:54:40.597] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added   97/ 109 new items from 'Tools & Utilities' creative tab's displayItems
+[25Nov2026 21:54:40.600] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added   86/  97 new items from 'Combat' creative tab's displayItems
+[25Nov2026 21:54:40.603] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added  173/ 176 new items from 'Food & Drinks' creative tab's displayItems
+[25Nov2026 21:54:40.609] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added  157/ 171 new items from 'Ingredients' creative tab's displayItems
+[25Nov2026 21:54:40.609] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added   74/ 245 new items from 'Ingredients' creative tab's searchTabDisplayItems
+[25Nov2026 21:54:40.610] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added   76/  76 new items from 'Spawn Eggs' creative tab's displayItems
+[25Nov2026 21:54:40.610] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Item Group has no display items and no search tab display items. Items from this group will be missing from the JEI ingredient list. Operator Utilities
+[25Nov2026 21:54:40.610] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Skipping creative tab: 'Survival Inventory' because it is type: INVENTORY
+[25Nov2026 21:54:40.611] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added   36/  36 new items from 'Numina' creative tab's displayItems
+[25Nov2026 21:54:40.611] [Render thread/DEBUG] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Added   90/  90 new items from 'powersuits.creative.tab' creative tab's displayItems
+[25Nov2026 21:54:40.650] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering ingredients: jei:minecraft took 73.50 milliseconds
+[25Nov2026 21:54:40.650] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering ingredients: jei:gui...
+[25Nov2026 21:54:40.650] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering ingredients: jei:forge_gui...
+[25Nov2026 21:54:40.650] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering ingredients: jei:internal...
+[25Nov2026 21:54:40.650] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering ingredients took 74.09 milliseconds
+[25Nov2026 21:54:40.650] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering extra ingredients...
+[25Nov2026 21:54:40.651] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering extra ingredients: jei:minecraft...
+[25Nov2026 21:54:40.651] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering extra ingredients: jei:gui...
+[25Nov2026 21:54:40.651] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering extra ingredients: jei:forge_gui...
+[25Nov2026 21:54:40.651] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering extra ingredients: jei:internal...
+[25Nov2026 21:54:40.651] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering extra ingredients took 414.9 microseconds
+[25Nov2026 21:54:40.651] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering search ingredient aliases...
+[25Nov2026 21:54:40.652] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering search ingredient aliases: jei:minecraft...
+[25Nov2026 21:54:40.652] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering search ingredient aliases: jei:gui...
+[25Nov2026 21:54:40.652] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering search ingredient aliases: jei:forge_gui...
+[25Nov2026 21:54:40.652] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering search ingredient aliases: jei:internal...
+[25Nov2026 21:54:40.652] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering search ingredient aliases took 285.9 microseconds
+[25Nov2026 21:54:40.656] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Mod Info...
+[25Nov2026 21:54:40.656] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Mod Info: jei:minecraft...
+[25Nov2026 21:54:40.657] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Mod Info: jei:gui...
+[25Nov2026 21:54:40.657] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Mod Info: jei:forge_gui...
+[25Nov2026 21:54:40.657] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Mod Info: jei:internal...
+[25Nov2026 21:54:40.657] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Mod Info took 350.1 microseconds
+[25Nov2026 21:54:40.666] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering categories...
+[25Nov2026 21:54:40.666] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering categories: jei:minecraft...
+[25Nov2026 21:54:40.680] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering categories: jei:minecraft took 13.68 milliseconds
+[25Nov2026 21:54:40.680] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering categories: jei:gui...
+[25Nov2026 21:54:40.680] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering categories: jei:forge_gui...
+[25Nov2026 21:54:40.680] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering categories: jei:internal...
+[25Nov2026 21:54:40.684] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering categories took 17.68 milliseconds
+[25Nov2026 21:54:40.685] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering vanilla category extensions...
+[25Nov2026 21:54:40.685] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering vanilla category extensions: jei:minecraft...
+[25Nov2026 21:54:40.687] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering vanilla category extensions: jei:gui...
+[25Nov2026 21:54:40.687] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering vanilla category extensions: jei:forge_gui...
+[25Nov2026 21:54:40.687] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering vanilla category extensions: jei:internal...
+[25Nov2026 21:54:40.687] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering vanilla category extensions took 2.539 milliseconds
+[25Nov2026 21:54:40.688] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipe catalysts...
+[25Nov2026 21:54:40.688] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipe catalysts: jei:minecraft...
+[25Nov2026 21:54:40.689] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipe catalysts: jei:gui...
+[25Nov2026 21:54:40.689] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipe catalysts: jei:forge_gui...
+[25Nov2026 21:54:40.689] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipe catalysts: jei:internal...
+[25Nov2026 21:54:40.689] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipe catalysts took 1.395 milliseconds
+[25Nov2026 21:54:40.690] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Building recipe registry...
+[25Nov2026 21:54:40.699] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Building recipe registry took 8.718 milliseconds
+[25Nov2026 21:54:40.699] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced plugins...
+[25Nov2026 21:54:40.700] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering advanced plugins: jei:minecraft...
+[25Nov2026 21:54:40.701] [Render thread/INFO] [mezz.jei.library.load.registration.AdvancedRegistration/]: Added typed recipe manager plugin: class mezz.jei.library.plugins.vanilla.crafting.FireworkStarRecipeManagerPlugin
+[25Nov2026 21:54:40.701] [Render thread/INFO] [mezz.jei.library.load.registration.AdvancedRegistration/]: Added typed recipe manager plugin: class mezz.jei.library.plugins.vanilla.crafting.FireworkRocketRecipeManagerPlugin
+[25Nov2026 21:54:40.701] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering advanced plugins: jei:gui...
+[25Nov2026 21:54:40.701] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering advanced plugins: jei:forge_gui...
+[25Nov2026 21:54:40.701] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering advanced plugins: jei:internal...
+[25Nov2026 21:54:40.701] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced plugins took 1.872 milliseconds
+[25Nov2026 21:54:40.702] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes...
+[25Nov2026 21:54:40.702] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: jei:minecraft...
+[25Nov2026 21:54:40.715] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:crafting, recipeClass=interface net.minecraft.world.item.crafting.CraftingRecipe]
+[25Nov2026 21:54:40.764] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:crafting, recipeClass=interface net.minecraft.world.item.crafting.CraftingRecipe]
+[25Nov2026 21:54:40.768] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:stonecutting, recipeClass=class net.minecraft.world.item.crafting.StonecutterRecipe]
+[25Nov2026 21:54:40.771] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:furnace, recipeClass=class net.minecraft.world.item.crafting.SmeltingRecipe]
+[25Nov2026 21:54:40.773] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:furnace, recipeClass=class net.minecraft.world.item.crafting.SmeltingRecipe]
+[25Nov2026 21:54:40.773] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:smoking, recipeClass=class net.minecraft.world.item.crafting.SmokingRecipe]
+[25Nov2026 21:54:40.774] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:blasting, recipeClass=class net.minecraft.world.item.crafting.BlastingRecipe]
+[25Nov2026 21:54:40.774] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:campfire, recipeClass=class net.minecraft.world.item.crafting.CampfireCookingRecipe]
+[25Nov2026 21:54:40.776] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:fuel, recipeClass=interface mezz.jei.api.recipe.vanilla.IJeiFuelingRecipe]
+[25Nov2026 21:54:40.889] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:anvil, recipeClass=interface mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe]
+[25Nov2026 21:54:40.929] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:smithing, recipeClass=interface net.minecraft.world.item.crafting.SmithingRecipe]
+[25Nov2026 21:54:40.946] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:compostable, recipeClass=interface mezz.jei.api.recipe.vanilla.IJeiCompostingRecipe]
+[25Nov2026 21:54:40.989] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:brewing, recipeClass=interface mezz.jei.api.recipe.vanilla.IJeiBrewingRecipe]
+[25Nov2026 21:54:41.095] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:grindstone, recipeClass=interface mezz.jei.api.recipe.vanilla.IJeiGrindstoneRecipe]
+[25Nov2026 21:54:41.103] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: jei:minecraft took 400.6 milliseconds
+[25Nov2026 21:54:41.103] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: jei:gui...
+[25Nov2026 21:54:41.103] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: jei:forge_gui...
+[25Nov2026 21:54:41.103] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: jei:internal...
+[25Nov2026 21:54:41.104] [Render thread/DEBUG] [mezz.jei.library.plugins.jei.tags.TagInfoRecipeMaker/]: No valid ingredients found for minecraft:block tag: #minecraft:candle_cakes (minecraft:candle_cakes)
+[25Nov2026 21:54:41.107] [Render thread/DEBUG] [mezz.jei.library.plugins.jei.tags.TagInfoRecipeMaker/]: No valid ingredients found for minecraft:block tag: #minecraft:strider_warm_blocks (minecraft:strider_warm_blocks)
+[25Nov2026 21:54:41.107] [Render thread/DEBUG] [mezz.jei.library.plugins.jei.tags.TagInfoRecipeMaker/]: No valid ingredients found for minecraft:block tag: #minecraft:portals (minecraft:portals)
+[25Nov2026 21:54:41.107] [Render thread/DEBUG] [mezz.jei.library.plugins.jei.tags.TagInfoRecipeMaker/]: No valid ingredients found for minecraft:block tag: #minecraft:fire (minecraft:fire)
+[25Nov2026 21:54:41.109] [Render thread/DEBUG] [mezz.jei.library.plugins.jei.tags.TagInfoRecipeMaker/]: No valid ingredients found for minecraft:block tag: #forge:enderman_place_on_blacklist (forge:enderman_place_on_blacklist)
+[25Nov2026 21:54:41.110] [Render thread/DEBUG] [mezz.jei.library.plugins.jei.tags.TagInfoRecipeMaker/]: No valid ingredients found for minecraft:block tag: #minecraft:invalid_spawn_inside (minecraft:invalid_spawn_inside)
+[25Nov2026 21:54:41.111] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:tag_recipes/block, recipeClass=interface mezz.jei.library.plugins.jei.tags.ITagInfoRecipe]
+[25Nov2026 21:54:41.117] [Render thread/DEBUG] [mezz.jei.library.plugins.jei.tags.TagInfoRecipeMaker/]: No valid ingredients found for minecraft:fluid tag: #forge:milk (forge:milk)
+[25Nov2026 21:54:41.117] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:tag_recipes/fluid, recipeClass=interface mezz.jei.library.plugins.jei.tags.ITagInfoRecipe]
+[25Nov2026 21:54:41.119] [Render thread/DEBUG] [mezz.jei.library.recipes.RecipeManagerInternal/]: Adding recipes: RecipeType[uid=minecraft:tag_recipes/item, recipeClass=interface mezz.jei.library.plugins.jei.tags.ITagInfoRecipe]
+[25Nov2026 21:54:41.123] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: jei:internal took 19.55 milliseconds
+[25Nov2026 21:54:41.123] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes took 420.9 milliseconds
+[25Nov2026 21:54:41.129] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes transfer handlers...
+[25Nov2026 21:54:41.129] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes transfer handlers: jei:minecraft...
+[25Nov2026 21:54:41.131] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes transfer handlers: jei:gui...
+[25Nov2026 21:54:41.131] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes transfer handlers: jei:forge_gui...
+[25Nov2026 21:54:41.131] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes transfer handlers: jei:internal...
+[25Nov2026 21:54:41.131] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes transfer handlers took 1.980 milliseconds
+[25Nov2026 21:54:41.135] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Building runtime...
+[25Nov2026 21:54:41.137] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering gui handlers...
+[25Nov2026 21:54:41.138] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering gui handlers: jei:minecraft...
+[25Nov2026 21:54:41.139] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering gui handlers: jei:gui...
+[25Nov2026 21:54:41.143] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering gui handlers: jei:forge_gui...
+[25Nov2026 21:54:41.143] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering gui handlers: jei:internal...
+[25Nov2026 21:54:41.143] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering gui handlers took 6.050 milliseconds
+[25Nov2026 21:54:41.145] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced search...
+[25Nov2026 21:54:41.145] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering advanced search: jei:minecraft...
+[25Nov2026 21:54:41.145] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering advanced search: jei:gui...
+[25Nov2026 21:54:41.145] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering advanced search: jei:forge_gui...
+[25Nov2026 21:54:41.145] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering advanced search: jei:internal...
+[25Nov2026 21:54:41.146] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced search took 249.2 microseconds
+[25Nov2026 21:54:41.148] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Runtime...
+[25Nov2026 21:54:41.148] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Runtime: jei:minecraft...
+[25Nov2026 21:54:41.148] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Runtime: jei:gui...
+[25Nov2026 21:54:41.148] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Runtime: jei:forge_gui...
+[25Nov2026 21:54:41.149] [Render thread/INFO] [mezz.jei.gui.startup.JeiGuiStarter/]: Starting JEI GUI
+[25Nov2026 21:54:41.150] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Building ingredient list...
+[25Nov2026 21:54:41.151] [Render thread/DEBUG] [mezz.jei.gui.ingredients.IngredientListElementFactory/]: Registering ingredients: ItemStack
+[25Nov2026 21:54:41.174] [Render thread/DEBUG] [mezz.jei.gui.ingredients.IngredientListElementFactory/]: Registering ingredients: FluidStack
+[25Nov2026 21:54:41.174] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Building ingredient list took 23.92 milliseconds
+[25Nov2026 21:54:41.174] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Building ingredient filter...
+[25Nov2026 21:54:41.544] [Render thread/DEBUG] [io.netty.util.internal.ThreadLocalRandom/]: -Dio.netty.initialSeedUniquifier: 0xb831e21b1f37bc6c
+[25Nov2026 21:54:41.577] [Render thread/INFO] [mezz.jei.gui.ingredients.IngredientFilter/]: Adding 1687 ingredients
+[25Nov2026 21:54:41.586] [Render thread/INFO] [mezz.jei.gui.ingredients.IngredientFilter/]: Added 1687 ingredients
+[25Nov2026 21:54:41.587] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Building ingredient filter took 412.5 milliseconds
+[25Nov2026 21:54:41.660] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Runtime: jei:forge_gui took 511.8 milliseconds
+[25Nov2026 21:54:41.660] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Runtime: jei:internal...
+[25Nov2026 21:54:41.660] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Runtime took 512.4 milliseconds
+[25Nov2026 21:54:41.661] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Building runtime took 525.7 milliseconds
+[25Nov2026 21:54:41.661] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime...
+[25Nov2026 21:54:41.661] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime: jei:minecraft...
+[25Nov2026 21:54:41.661] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime: jei:gui...
+[25Nov2026 21:54:41.661] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime: jei:forge_gui...
+[25Nov2026 21:54:41.661] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime: jei:internal...
+[25Nov2026 21:54:41.661] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime took 243.5 microseconds
+[25Nov2026 21:54:41.661] [Render thread/INFO] [mezz.jei.common.util.LoggedTimer/]: Starting JEI took 1.095 seconds
+[25Nov2026 21:54:41.751] [Render thread/WARN] [net.minecraft.client.multiplayer.ClientPacketListener/]: Unknown custom packet identifier: powersuits:data
+[25Nov2026 21:54:41.938] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 3 advancements
+[25Nov2026 21:54:53.239] [Render thread/ERROR] [mezz.jei.forge.platform.ItemStackHelper/]: Error while testing for mod name formatting
+java.lang.NoSuchMethodError: 'java.util.List net.minecraftforge.client.ForgeHooksClient.gatherTooltipComponentsFromElements(net.minecraft.world.item.ItemStack, java.util.List, int, int, int, net.minecraft.client.gui.Font)'
+	at mezz.jei.forge.platform.ItemStackHelper.getTestTooltip(ItemStackHelper.java:64) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.library.config.ModIdFormatConfig.detectModNameTooltipFormatting(ModIdFormatConfig.java:89) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.library.config.ModIdFormatDetectionHelper.detectModNameTooltipFormatting(ModIdFormatDetectionHelper.java:17) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.library.config.ModIdFormatConfig.getOverride(ModIdFormatConfig.java:65) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.library.config.ModIdFormatConfig.getModNameFormat(ModIdFormatConfig.java:72) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.library.helpers.ModIdHelper.isDisplayingModNameEnabled(ModIdHelper.java:46) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.library.helpers.ModIdHelper.getModNameForTooltip(ModIdHelper.java:68) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.common.gui.JeiTooltip.prepareForIngredientTooltip(JeiTooltip.java:284) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.common.gui.JeiTooltip.draw(JeiTooltip.java:225) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.gui.overlay.ingredients.IngredientGrid.drawTooltip(IngredientGrid.java:244) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.gui.overlay.ingredients.IngredientGrid.lambda$drawTooltips$6(IngredientGrid.java:228) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at java.util.Optional.ifPresent(Optional.java:178) ~[?:?]
+	at mezz.jei.gui.overlay.ingredients.IngredientGrid.drawTooltips(IngredientGrid.java:228) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.gui.overlay.ingredients.IngredientGridWithNavigation.drawTooltips(IngredientGridWithNavigation.java:351) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.gui.overlay.IngredientListOverlay.drawTooltips(IngredientListOverlay.java:257) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.gui.events.GuiEventHandler.onDrawScreenPost(GuiEventHandler.java:143) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.forge.startup.EventRegistration.lambda$registerGuiHandler$21(EventRegistration.java:132) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.forge.startup.EventRegistration.runWithIdentityPose(EventRegistration.java:155) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.forge.startup.EventRegistration.lambda$registerGuiHandler$22(EventRegistration.java:132) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at mezz.jei.common.util.WeakConsumer.accept(WeakConsumer.java:17) ~[jei-1.20.1-forge-15.75.0.242.jar:15.75.0.242]
+	at net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260) ~[eventbus-6.0.5.jar:?]
+	at net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252) ~[eventbus-6.0.5.jar:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreenInternal(ForgeHooksClient.java:428) ~[forge-1.20.1-47.2.30.jar:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:420) ~[forge-1.20.1-47.2.30.jar:?]
+	at net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:971) ~[forge-1.20.1-47.2.30.jar:?]
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1164) ~[forge-1.20.1-47.2.30.jar:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:733) ~[forge-1.20.1-47.2.30.jar:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[forge-1.20.1-47.2.30.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.2.30.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.2.30.jar:?]
+	at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.2.30.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.2.30.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.10.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.10.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.10.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.10.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.10.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.10.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.10.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) ~[?:?]
+[25Nov2026 21:54:59.645] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[25Nov2026 21:54:59.649] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[Another shitty world]'/minecraft:overworld
+[25Nov2026 21:54:59.663] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[Another shitty world]'/minecraft:the_nether
+[25Nov2026 21:54:59.664] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[Another shitty world]'/minecraft:the_end
+[25Nov2026 21:54:59.665] [Server thread/DEBUG] [net.minecraftforge.common.ForgeHooks/WP]: Gathering id map for writing to world save Another shitty world
+[25Nov2026 21:54:59.677] [Server thread/DEBUG] [net.minecraftforge.common.ForgeHooks/WP]: ID Map collection complete Another shitty world
+[25Nov2026 21:57:20.636] [Render thread/DEBUG] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received event: class net.minecraftforge.client.event.ClientPlayerNetworkEvent$LoggingOut
+[25Nov2026 21:57:20.636] [Render thread/DEBUG] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from JEI_STARTED to LISTENING
+[25Nov2026 21:57:20.636] [Render thread/INFO] [mezz.jei.library.startup.JeiStarter/]: Stopping JEI
+[25Nov2026 21:57:20.636] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable...
+[25Nov2026 21:57:20.636] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime Unavailable: jei:minecraft...
+[25Nov2026 21:57:20.636] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime Unavailable: jei:gui...
+[25Nov2026 21:57:20.636] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime Unavailable: jei:forge_gui...
+[25Nov2026 21:57:20.637] [Render thread/INFO] [mezz.jei.forge.plugins.forge.ForgeGuiPlugin/]: Stopping JEI GUI
+[25Nov2026 21:57:20.640] [Render thread/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime Unavailable: jei:internal...
+[25Nov2026 21:57:20.640] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable took 3.733 milliseconds
+[25Nov2026 21:57:20.704] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[25Nov2026 21:57:20.704] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[25Nov2026 21:57:20.707] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[25Nov2026 21:57:20.747] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[25Nov2026 21:57:20.747] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[25Nov2026 21:57:20.747] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[25Nov2026 21:57:21.071] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[Another shitty world]'/minecraft:overworld
+[25Nov2026 21:57:21.153] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[Another shitty world]'/minecraft:the_nether
+[25Nov2026 21:57:21.154] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[Another shitty world]'/minecraft:the_end
+[25Nov2026 21:57:21.155] [Server thread/DEBUG] [net.minecraftforge.common.ForgeHooks/WP]: Gathering id map for writing to world save Another shitty world
+[25Nov2026 21:57:21.169] [Server thread/DEBUG] [net.minecraftforge.common.ForgeHooks/WP]: ID Map collection complete Another shitty world
+[25Nov2026 21:57:21.175] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (Another shitty world): All chunks are saved
+[25Nov2026 21:57:21.176] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[25Nov2026 21:57:21.176] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[25Nov2026 21:57:21.176] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[25Nov2026 21:57:21.509] [Server thread/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Unloading configs type SERVER
+[25Nov2026 21:58:27.305] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!

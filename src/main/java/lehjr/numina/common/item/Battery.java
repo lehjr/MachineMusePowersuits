@@ -50,24 +50,11 @@ public class Battery extends Item {
                 .setNoRepair());
     }
 
-
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new BatteryCapabilityProvider(stack);
     }
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level worldIn, List<Component> tooltips, TooltipFlag flagIn) {

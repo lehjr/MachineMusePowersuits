@@ -23,8 +23,7 @@ public record ColorInfoPacketServerBound(EquipmentSlot slotType, int[] tagData) 
     }
 
     public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, int[] tagData) {
-        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
-                new ColorInfoPacketClientBound(slotType, tagData));
+        NuminaPackets.sendToPlayer( new ColorInfoPacketClientBound(slotType, tagData), entity);
     }
 
     public static class Handler {

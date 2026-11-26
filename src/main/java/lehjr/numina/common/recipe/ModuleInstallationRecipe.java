@@ -1,10 +1,9 @@
 package lehjr.numina.common.recipe;
 
-import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.registration.NuminaCapabilities;
+import lehjr.numina.common.registration.RecipeSerializersRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -14,10 +13,9 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
-import javax.annotation.Nonnull;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModuleInstallationRecipe extends CustomRecipe {
 
@@ -27,162 +25,103 @@ public class ModuleInstallationRecipe extends CustomRecipe {
 
     @Override
     public boolean matches(CraftingContainer container, Level level) {
-        ItemStack modularItem = ItemStack.EMPTY;
-        NonNullList<ItemStack> modules = NonNullList.create();
+        List<Integer> modularItemSlots = new ArrayList<>();
+        List<Integer> moduleSlots = new ArrayList<>();
 
-        // filter the list of items
         for (int i = 0; i < container.getContainerSize(); i++) {
-            ItemStack stack = container.getItem(i);
-            if (!stack.isEmpty()) {
-                if (isModularItem(stack)) {
-                    // should only be one modular item in the recipe
-                    if (!modularItem.isEmpty()) {
-                        return false;
-                    }
-                    modularItem = stack;
-
-                } else if (isModule(stack)) {
-                    if (listContains(stack, modules)) {
-                        return false;
-                    }
-                    modules.add(stack);
-
-                // if item is not a module or modular item
+            ItemStack itemStack = container.getItem(i);
+            if(!itemStack.isEmpty()) {
+                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(itemStack);
+                IPowerModule pm = itemStack.getCapability(NuminaCapabilities.Module.POWER_MODULE).resolve().orElse(null);
+                if(iModularItem != null) {
+                    modularItemSlots.add(i);
+                } else if (pm != null) {
+                    moduleSlots.add(i);
                 } else {
                     return false;
                 }
             }
         }
-
-        if (modularItem.isEmpty() || modules.isEmpty()) {
+        if (modularItemSlots.size() != 1 || moduleSlots.isEmpty()) {
             return false;
         }
 
-        return getModularItemCap(modularItem).map(iModularItem -> {
-            for (ItemStack module: modules) {
-
-                if (!iModularItem.isModuleValid(module)) {
+        ItemStack modularItem = container.getItem(modularItemSlots.get(0));
+        IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItem);
+        if(iModularItem != null) {
+            return moduleSlots.stream().allMatch(index-> {
+                ItemStack module = container.getItem(index);
+                if(iModularItem.isModuleInstalled(module)) {
                     return false;
                 }
-                // todo: allow replace?
-                if(iModularItem.isModuleInstalled(module)){
-                    return false;
-                }
-
-                Optional<IPowerModule> pm = getPowerModuleCap(module);
-                if(pm.isPresent()) {
-                    ModuleCategory category = getCategory(pm);
-                    int tier = getTier(pm);
-                    Pair<Integer, Integer> range = iModularItem.getRangeForCategory(category);
-                    if (range != null) {
-                        for (int i = range.getFirst(); i< range.getSecond(); i++) {
-                            ItemStack tesStack = iModularItem.getStackInSlot(i);
-                            if (tesStack.isEmpty()) {
-                                return true;
-                            }
-
-                            if (tier < -1) {
-                                Optional<IPowerModule> pmcapTest = getPowerModuleCap(tesStack);
-                                ModuleCategory testCategory = getCategory(pmcapTest);
-                                int testTier = getTier(pmcapTest);
-                                if (testCategory.equals(category)) {
-                                    return tier > testTier;
-                                }
-                            }
-                        }
-                    } else {
-                        boolean canInstall = false;
-                        for(int i = 0; i< iModularItem.getSlots(); i++) {
-                            if(iModularItem.isItemValid(i, module) && iModularItem.getStackInSlot(i).isEmpty()) {
-                                canInstall = true;
-                                break;
-                            }
-                        }
-                        if(!canInstall) {
-                            return false;
-                        }
+                for (int i=0; i< iModularItem.getSlots(); i++) {
+                    if(iModularItem.isModuleValidForPlacement(i, module)){
+                        return true;
                     }
                 }
-            }
-            return true;
-        }).orElse(false) && !modularItem.isEmpty() && !modules.isEmpty();
-    }
-
-    @Override
-    public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
-        ItemStack modularItem = ItemStack.EMPTY;
-        NonNullList<ItemStack> modules = NonNullList.create();
-
-        for (int i = 0; i < container.getContainerSize(); i++) {
-            ItemStack stack = container.getItem(i);
-            if (!stack.isEmpty()) {
-                if (isModularItem(stack) && modularItem.isEmpty()) {
-                    modularItem = stack;
-                } else if (isModule(stack)){
-                    modules.add(stack);
-                }
-            }
-        }
-
-        ItemStack copy = modularItem.copy();
-        Optional<IModularItem> modularItemCap = getModularItemCap(copy);
-        modularItemCap.ifPresent(iModularItem -> {
-            modules.forEach(module -> {
-                for (int i=0; i<iModularItem.getSlots(); i++) {
-                    if (iModularItem.isItemValid(i, module)) {
-                        iModularItem.insertItem(i, module, false);
-                        break;
-                    }
-                }
+                return false;
             });
-        });
-
-        return copy;
-    }
-
-    boolean listContains(@Nonnull ItemStack test, NonNullList<ItemStack> stackList) {
-        if (stackList.isEmpty()) {
-            return false;
-        }
-        for(int i=0; i < stackList.size(); i++){
-            if (ItemStack.isSameItemSameTags(test, stackList.get(i))){
-                return true;
-            }
         }
         return false;
     }
 
-    Optional<IPowerModule> getPowerModuleCap(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(NuminaCapabilities.Module.POWER_MODULE)
-                .filter(IPowerModule.class::isInstance)
-                .map(IPowerModule.class::cast);
-    }
+    @Override
+    public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+        List<Integer> modularItemSlots = new ArrayList<>();
+        List<Integer> moduleSlots = new ArrayList<>();
 
-    ModuleCategory getCategory(Optional<IPowerModule> pmcap) {
-        return pmcap.map(IPowerModule::getCategory).orElse(ModuleCategory.NONE);
-    }
+        for (int i = 0; i < container.getContainerSize(); i++) {
+            ItemStack itemStack = container.getItem(i);
+            if(!itemStack.isEmpty()) {
+                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(itemStack);
+                if(iModularItem != null) {
+                    modularItemSlots.add(i);
+                }
+                IPowerModule pm = itemStack.getCapability(NuminaCapabilities.Module.POWER_MODULE).resolve().orElse(null);
+                if(pm != null) {
+                    moduleSlots.add(i);
+                }
+            }
+        }
 
-    int getTier(Optional<IPowerModule> pmcap) {
-        return pmcap.map(IPowerModule::getTier).orElse(-1);
+        ItemStack modularItem = container.getItem(modularItemSlots.get(0)).copy();
+        IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItem);
+        if(iModularItem != null) {
+            for(Integer index : moduleSlots) {
+                ItemStack module = container.getItem(index);
+                if(iModularItem.isModuleInstalled(module)) {
+                    return ItemStack.EMPTY;
+                } else {
+                    for (int i=0; i< iModularItem.getSlots(); i++) {
+                        if(iModularItem.isModuleValidForPlacement(i, module)){
+                            iModularItem.insertItem(i, module, false);
+                            break;
+                        }
+                    }
+                }
+            }
+            return iModularItem.getModularItemStack().copy();
+        }
+
+//        // single module install
+//        ItemStack modularItem = container.getItem(modularItemSlots.getFirst()).copy();
+//        IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItem);
+//        if(iModularItem != null) {
+//            ItemStack module = container.getItem(moduleSlots.getFirst());
+//            for (int i=0; i< iModularItem.getSlots(); i++) {
+//                if(iModularItem.isModuleValidForPlacement(i, module)){
+//                    iModularItem.insertItem(i, module, false);
+//                    break;
+//                }
+//            }
+//            return iModularItem.getModularItemStack().copy();
+//        }
+        return ItemStack.EMPTY;
     }
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return width * height >= 2;
-    }
-
-    public boolean isModule(@Nonnull ItemStack itemStack) {
-        return getPowerModuleCap(itemStack).isPresent();
-    }
-
-    Optional<IModularItem> getModularItemCap(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast);
-    }
-
-    public boolean isModularItem(ItemStack itemStack) {
-        return getModularItemCap(itemStack).isPresent();
     }
 
     @Override

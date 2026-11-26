@@ -27,6 +27,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -51,6 +52,14 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         this.playerInventory = playerInventory;
     }
 
+    public void restoreMouse() {
+        if(menu.preserveMouse()) {
+            Minecraft mc = Minecraft.getInstance();
+            long windowHandle = mc.getWindow().getWindow();
+            GLFW.glfwSetCursorPos(windowHandle, menu.getMouseX(), menu.getMouseY());
+        }
+    }
+
     @Override
     public void init() {
         super.init();
@@ -73,7 +82,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         moduleSelectFrame = new CompatibleModuleDisplayFrame(itemSelectFrame, new Rect(leftPos + 8, topPos + 13, leftPos + 172, topPos + 208));
         itemSelectFrame.getCreativeInstallButton().setOnPressed(pressed -> {
             itemSelectFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
-            moduleSelectFrame.getSelectedModule().ifPresent(clickie -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(clickie.getModule()))));
+            moduleSelectFrame.getSelectedModule().ifPresent(clickie -> MPSPackets.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(clickie.getModule()))));
         });
 
         // not perfect but better than nothing, I think
@@ -88,7 +97,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
                         ModuleCategory category = powerModule.map(IPowerModule::getCategory).orElse(ModuleCategory.NONE);
                         int tier = powerModule.map(IPowerModule::getTier).orElse(0);
                         if(tier == -1 || (tier >= 4 &&(category == ModuleCategory.ARMOR || category == ModuleCategory.ENERGY_STORAGE))) {
-                            MPSPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(module)));
+                            MPSPackets.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(module)));
                         }
                     }
                 }

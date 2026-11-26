@@ -15,19 +15,19 @@ public class MPSEntities {
     /**
      * Entity Types ------------------------------------------------------------------------------
      */
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MPSConstants.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> MPS_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<EntityType<LuxCapacitorEntity>> LUX_CAPACITOR_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
+    public static final RegistryObject<EntityType<LuxCapacitorEntity>> LUX_CAPACITOR_ENTITY_TYPE = MPS_ENTITY_TYPES.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
             ()-> EntityType.Builder.<LuxCapacitorEntity>of(LuxCapacitorEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .build(MPSRegistryNames.LUX_CAPACITOR.toString()));
 
-    public static final RegistryObject<EntityType<SpinningBladeEntity>> SPINNING_BLADE_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.SPINNING_BLADE.getPath(),
+    public static final RegistryObject<EntityType<SpinningBladeEntity>> SPINNING_BLADE_ENTITY_TYPE = MPS_ENTITY_TYPES.register(MPSRegistryNames.SPINNING_BLADE.getPath(),
             ()-> EntityType.Builder.<SpinningBladeEntity>of(SpinningBladeEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F) // FIXME! check size
                     .build(MPSRegistryNames.SPINNING_BLADE.toString()));
 
-    public static final RegistryObject<EntityType<PlasmaBallEntity>> PLASMA_BALL_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.PLASMA_BALL.getPath(),
+    public static final RegistryObject<EntityType<PlasmaBallEntity>> PLASMA_BALL_ENTITY_TYPE = MPS_ENTITY_TYPES.register(MPSRegistryNames.PLASMA_BALL.getPath(),
             ()-> EntityType.Builder.<PlasmaBallEntity>of(PlasmaBallEntity::new, MobCategory.MISC)
 //                    .size(0.25F, 0.25F)
                     .build(MPSRegistryNames.PLASMA_BALL.toString()));

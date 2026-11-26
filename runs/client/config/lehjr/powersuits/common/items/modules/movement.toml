@@ -1,0 +1,115 @@
+
+[Movement_Modules]
+
+	[Movement_Modules.Blink_Drive]
+		isAllowed = true
+		#Range: 0.0 ~ 400000.0
+		energyConBase = 10000.0
+		#Range: 0.0 ~ 1000.0
+		rangeBase = 5.0
+		#Range: 0.0 ~ 1000000.0
+		energyConRangeMultiplier = 140000.0
+		#Range: 0.0 ~ 10000.0
+		rangeMultiplier = 95.0
+
+	[Movement_Modules.Climb_Assist]
+		isAllowed = true
+
+	[Movement_Modules.Dimensional_Rift]
+		isAllowed = true
+		#Range: 0.0 ~ 10000.0
+		rangeMultiplier = 55.0
+		#Range: 0.0 ~ 1000000.0
+		energyConBase = 200000.0
+
+	[Movement_Modules.Flight_Control]
+		isAllowed = true
+
+	[Movement_Modules.Glider]
+		isAllowed = true
+
+	[Movement_Modules.JetBoots]
+		isAllowed = true
+		#Range: 0.0 ~ 1.0E7
+		energyConBase = 0.0
+		#Range: 0.0 ~ 0.01
+		thrust = 0.0
+		#Range: 0.0 ~ 1.0E7
+		energyConThrustMultiplier = 750.0
+		#Range: 0.0 ~ 0.4
+		thrustMultiplier = 0.06
+
+	[Movement_Modules.JetPack]
+		isAllowed = true
+		#Range: 0.0 ~ 1.0E7
+		energyConBase = 0.0
+		#Range: 0.0 ~ 0.01
+		thrust = 0.0
+		#Range: 0.0 ~ 1.0E7
+		energyConThrustMultiplier = 15000.0
+		#Range: 0.0 ~ 0.16
+		thrustMultiplier = 0.08
+
+	[Movement_Modules.Jump_Assist]
+		isAllowed = true
+		#Range: 0.0 ~ 1.0E7
+		energyConBase = 0.0
+		#Range: 0.0 ~ 1.0E7
+		energyConPowerMultiplier = 250.0
+		#Range: 0.0 ~ 1.0E7
+		jumpBoostBase = 0.0
+		#Range: 0.0 ~ 1.0E7
+		jumpBoostPowerMultiplier = 4.0
+		#Range: 0.0 ~ 1.0E7
+		energyConCompensationMultiplier = 50.0
+		#Range: 0.0 ~ 1.0E7
+		exhaustionCompBase = 0.0
+		#Range: 0.0 ~ 1.0E7
+		exhaustionCompCompensationMultiplier = 1.0
+
+	[Movement_Modules.Parachute]
+		isAllowed = true
+
+	[Movement_Modules.Shock_Absorber]
+		isAllowed = true
+		#Range: 0.0 ~ 1.0E7
+		energyConBase = 0.0
+		#Range: 0.0 ~ 1.0E7
+		energyConPowerMultiplier = 100.0
+		#Range: 0.0 ~ 1.0E7
+		distanceReductionBase = 0.0
+		#Range: 0.0 ~ 1.0E7
+		distanceReductionPowerMultiplier = 10.0
+
+	[Movement_Modules.Sprint_Assist]
+		isAllowed = true
+		#Range: 0.0 ~ 1.0E7
+		sprintEnergyConBase = 0.0
+		#Range: 0.0 ~ 1.0E7
+		sprintEnergyConsprintAssistMultiplier = 100.0
+		#Range: 0.0 ~ 100.0
+		sprintSpeedMultBase = 0.01
+		#Range: 0.0 ~ 10000.0
+		sprintSpeedMultsprintAssistMultiplier = 2.49
+		#Range: 0.0 ~ 1.0E7
+		exhaustionCompBase = 0.0
+		#Range: 0.0 ~ 100000.0
+		exhaustionCompenergyConMultiplier = 20.0
+		#Range: 0.0 ~ 10000.0
+		exhaustionCompCompensationMultiplier = 1.0
+		#Range: 0.0 ~ 10000.0
+		walkingEnergyConBase = 0.0
+		#Range: 0.0 ~ 1.0E7
+		walkingEnergyConwalkingAssistMultiplier = 100.0
+		#Range: 0.0 ~ 100000.0
+		walkingSpeedMultBase = 0.01
+		#Range: 0.0 ~ 10000.0
+		walkingSpeedMultwalkingAssistMultiplier = 1.99
+
+	[Movement_Modules.Swim_Assist]
+		isAllowed = true
+		#Range: 0.0 ~ 1000000.0
+		energyConThrustMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		THRUSTunderwaterMovBoostMultiplier = 1.0
+

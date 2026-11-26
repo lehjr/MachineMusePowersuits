@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -107,5 +108,23 @@ public class NuminaCapabilities {
 
     public static HolderLookup.Provider getProvider(@Nonnull Level level) {
         return level.registryAccess();
+    }
+
+
+    public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
+        event.register(IHeatStorage.class);
+        event.register(IColorTag.class);
+
+        event.register(IModularItem.class);
+        event.register(IModeChangingItem.class);
+
+        // Modules
+        event.register(IPowerModule.class);
+        event.register(IModelSpec.class);
+        event.register(IHighlight.class);
+        event.register(IChameleon.class);
+
+        // Player
+        event.register(IPlayerKeyStates.class);
     }
 }

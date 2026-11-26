@@ -1,0 +1,61 @@
+
+[Rototillers]
+
+	[Rototillers.Stone_Rototiller_Module]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 500.0
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 1.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 3.0
+		#Range: 0 ~ 100
+		radius_Multiplier = 8
+		#Range: 0.0 ~ 100000.0
+		energyCon_radius_Multiplier = 9500.0
+
+	[Rototillers.Iron_Rototiller_Module]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 600.0
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 6.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 40.0
+		#Range: 0 ~ 100
+		radius_Multiplier = 8
+		#Range: 0.0 ~ 100000.0
+		energyCon_radius_Multiplier = 9500.0
+
+	[Rototillers.Diamond_Rototiller_Module]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 600.0
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 6.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 40.0
+		#Range: 0 ~ 100
+		radius_Multiplier = 8
+		#Range: 0.0 ~ 100000.0
+		energyCon_radius_Multiplier = 9500.0
+
+	[Rototillers."Netherite Rototiller"]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 600.0
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 6.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 40.0
+		#Range: 0 ~ 100
+		radius_Multiplier = 8
+

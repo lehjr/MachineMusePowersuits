@@ -1,0 +1,15 @@
+plugins {
+    id 'groovy'
+}
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'org.ajoberstar.grgit:grgit-gradle:5.3.2'
+    // Keep any other dependencies that were already in buildSrc/build.gradle (like pngtastic)
+}

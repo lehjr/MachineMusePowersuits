@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import lehjr.numina.common.registration.RecipeSerializersRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -180,53 +181,5 @@ public class ShapedEnchantmentRecipe extends ShapedRecipe {
                     ingredients,
                     result);
         }
-
-
-//        public static Ingredient fromNetwork(FriendlyByteBuf pBuffer) {
-//            var size = pBuffer.readVarInt();
-//            if (size == -1) return net.minecraftforge.common.crafting.CraftingHelper.getIngredient(pBuffer.readResourceLocation(), pBuffer);
-//            final ItemStack ingStack = enchantmentFixer(pBuffer.readItem());
-//            return Ingredient.fromValues(Stream.generate(() -> new Ingredient.ItemValue(ingStack)).limit(size));
-//        }
-
-        // TODO: check if anything needed here
-//        @Override
-//        public void toNetwork(FriendlyByteBuf pBuffer, ShapedRecipe pRecipe) {
-//            super.toNetwork(pBuffer, pRecipe);
-//        }
-
-        // FIXME: is this needed?
-//        @Override
-//        public ShapedEnchantmentRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
-//            NuminaLogger.logDebug("from network");
-//
-//
-//            int i = pBuffer.readVarInt();
-//            int j = pBuffer.readVarInt();
-//            String s = pBuffer.readUtf();
-//            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i * j, Ingredient.EMPTY);
-//
-//            for(int k = 0; k < nonnulllist.size(); ++k) {
-//                // FIXME: check if ingredient has enchantment tag and delegate to corresponding handler
-//                Ingredient ing = fromNetwork(pBuffer);
-//                if (!ing.isEmpty()) {
-//                    ItemStack[] ingItems = ing.getItems();
-//                    // todo: parse list and check for enchantment book. Then parse the enchantments and repair them
-//
-//                }
-//
-//
-//
-//                nonnulllist.set(k, ing); // FIXME: check if
-//            }
-//
-//            ItemStack itemstack = pBuffer.readItem();
-//            return new ShapedEnchantmentRecipe(pRecipeId, s, i, j, nonnulllist, itemstack);
-//
-//
-//
-//
-////            return new ShapedEnchantmentRecipe(super.fromNetwork(pRecipeId, pBuffer));
-//        }
     }
 }

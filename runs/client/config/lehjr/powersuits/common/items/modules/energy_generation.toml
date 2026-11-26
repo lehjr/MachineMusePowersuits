@@ -1,0 +1,111 @@
+
+[Energy_Generation]
+
+	[Energy_Generation.Thermal_Generators]
+
+		[Energy_Generation.Thermal_Generators.Thermal_Energy_Generator_Module_1]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			thermoelectricEnergyGeneration = 250.0
+			#Range: 1.0 ~ 100000.0
+			steamWaterConsumptionBase = 150.0
+			#Range: 1.0 ~ 100000.0
+			steamWaterConsumptionMultiplier = 150.0
+			#Range: 1.0 ~ 100000.0
+			steamEnergyGenerationBase = 10.0
+			#Range: 0.0 ~ 100000.0
+			steamEnergyGenerationMultiplier = 490.0
+
+		[Energy_Generation.Thermal_Generators.Thermal_Energy_Generator_Module_2]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			thermoelectricEnergyGeneration = 500.0
+			#Range: 10.0 ~ 100000.0
+			steamWaterConsumptionBase = 150.0
+			#Range: 10.0 ~ 100000.0
+			steamWaterConsumptionMultiplier = 300.0
+			#Range: 10.0 ~ 100000.0
+			steamEnergyGenerationBase = 50.0
+			#Range: 0.0 ~ 100000.0
+			steamEnergyGenerationMultiplier = 950.0
+
+		[Energy_Generation.Thermal_Generators.Thermal_Energy_Generator_Module_3]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			thermoelectricEnergyGeneration = 750.0
+			#Range: 10.0 ~ 100000.0
+			steamWaterConsumptionBase = 150.0
+			#Range: 10.0 ~ 100000.0
+			steamWaterConsumptionMultiplier = 450.0
+			#Range: 10.0 ~ 100000.0
+			steamEnergyGenerationBase = 150.0
+			#Range: 0.0 ~ 100000.0
+			steamEnergyGenerationMultiplier = 1350.0
+
+		[Energy_Generation.Thermal_Generators.Thermal_Energy_Generator_Module_4]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			thermoelectricEnergyGeneration = 1000.0
+			#Range: 10.0 ~ 100000.0
+			steamWaterConsumptionBase = 150.0
+			#Range: 10.0 ~ 100000.0
+			steamWaterConsumptionMultiplier = 600.0
+			#Range: 10.0 ~ 100000.0
+			steamEnergyGenerationBase = 450.0
+			#Range: 0.0 ~ 100000.0
+			steamEnergyGenerationMultiplier = 1550.0
+
+	[Energy_Generation.Kinetic_Generators]
+
+		[Energy_Generation.Kinetic_Generators.Kinetic_Energy_Generator_Module_1]
+			isAllowed = true
+
+		[Energy_Generation.Kinetic_Generators.Kinetic_Energy_Generator_Module_2]
+			isAllowed = true
+
+	[Energy_Generation.Solar_Generators]
+
+		[Energy_Generation.Solar_Generators.Solar_Energy_Generator_Module_1]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			daytimeEnergyGenBase = 12500.0
+			#Range: 0.0 ~ 100000.0
+			nightTimeEnergyGenBase = 1500.0
+			#Range: 0.0 ~ 100000.0
+			daytimeHeatGenBase = 15.0
+			#Range: 0.0 ~ 100000.0
+			nightTimeHeatGenBase = 5.0
+
+		[Energy_Generation.Solar_Generators.Solar_Energy_Generator_Module_2]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			daytimeEnergyGenBase = 25000.0
+			#Range: 0.0 ~ 100000.0
+			nightTimeEnergyGenBase = 1800.0
+			#Range: 0.0 ~ 100000.0
+			daytimeHeatGenBase = 18.0
+			#Range: 0.0 ~ 100000.0
+			nightTimeHeatGenBase = 7.0
+
+		[Energy_Generation.Solar_Generators.Solar_Energy_Generator_Module_3]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			daytimeEnergyGenBase = 50000.0
+			#Range: 0.0 ~ 100000.0
+			nightTimeEnergyGenBase = 2000.0
+			#Range: 0.0 ~ 100000.0
+			daytimeHeatGenBase = 20.0
+			#Range: 0.0 ~ 100000.0
+			nightTimeHeatGenBase = 9.0
+
+		[Energy_Generation.Solar_Generators.Solar_Energy_Generator_Module_4]
+			isAllowed = true
+			#Range: 0.0 ~ 100000.0
+			daytimeEnergyGenBase = 10000.0
+			#Range: 0.0 ~ 100000.0
+			nightTimeEnergyGenBase = 3000.0
+			#Range: 0.0 ~ 100000.0
+			daytimeHeatGenBase = 22.0
+			#Range: 0.0 ~ 100000.0
+			nightTimeHeatGenBase = 10.0
+

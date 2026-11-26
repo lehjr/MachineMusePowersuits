@@ -29,9 +29,7 @@ package lehjr.powersuits.common.item.electric.tool;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.AdditionalInfo;
-import lehjr.powersuits.common.capability.legacy.PowerFistLegacyCap;
 import lehjr.powersuits.common.capability.tool.PowerFistCap;
-import lehjr.powersuits.common.registration.MPSItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -108,9 +106,6 @@ public class AbstractElectricTool extends DiggerItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        if(stack.is(MPSItems.POWER_FIST_LEGACY.get())) {
-            return new PowerFistLegacyCap(stack);
-        }
         return new PowerFistCap(stack);
     }
 

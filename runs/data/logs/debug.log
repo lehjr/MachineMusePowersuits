@@ -1,0 +1,226 @@
+[25Nov2026 21:19:09.595] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, /home/lehjr/.gradle/caches/neoformruntime/assets, --gameDir, ., --fml.forgeVersion, 47.2.30, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --all, --output, /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/src/datagen/generated, --mod, numina, --existing, /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/src/main/resources, --mod, powersuits, --existing, /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/src/powersuits/resources]
+[25Nov2026 21:19:09.598] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.10+10.0.10+main.22f00f84 starting: java version 17.0.21.1 by Amazon.com Inc.; OS Linux arch amd64 version 7.3.5-300.fc45.x86_64
+[25Nov2026 21:19:09.673] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgedatauserdev
+[25Nov2026 21:19:09.703] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/home/lehjr/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23175!/ Service=ModLauncher Env=CLIENT
+[25Nov2026 21:19:09.832] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/lehjr/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.2.30/34b7d69dcc2b769d597be488ba457877f9d57cd9/fmlcore-1.20.1-47.2.30.jar is missing mods.toml file
+[25Nov2026 21:19:09.833] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/lehjr/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.2.30/306080746b55301f533d17a1f75c0416bfa6425d/javafmllanguage-1.20.1-47.2.30.jar is missing mods.toml file
+[25Nov2026 21:19:09.834] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/lehjr/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.2.30/ed4251688f57da24ffceb91f85693e28171bc4de/lowcodelanguage-1.20.1-47.2.30.jar is missing mods.toml file
+[25Nov2026 21:19:09.834] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/lehjr/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.2.30/66fae321e7c1e488bb0a63661153f415efa06665/mclanguage-1.20.1-47.2.30.jar is missing mods.toml file
+[25Nov2026 21:19:09.895] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[25Nov2026 21:19:11.082] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, /home/lehjr/.gradle/caches/neoformruntime/assets, --assetIndex, 5, --all, --output, /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/src/datagen/generated, --mod, numina, --existing, /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/src/main/resources, --mod, powersuits, --existing, /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/src/powersuits/resources]
+[25Nov2026 21:19:11.148] [main/DEBUG] [io.netty.util.internal.logging.InternalLoggerFactory/]: Using SLF4J as the default logging framework
+[25Nov2026 21:19:11.149] [main/DEBUG] [io.netty.util.ResourceLeakDetector/]: -Dio.netty.leakDetection.level: simple
+[25Nov2026 21:19:11.149] [main/DEBUG] [io.netty.util.ResourceLeakDetector/]: -Dio.netty.leakDetection.targetRecords: 4
+[25Nov2026 21:19:11.233] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [powersuits, numina]
+[25Nov2026 21:19:11.383] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/EntityType
+[25Nov2026 21:19:11.668] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/block/LiquidBlock
+[25Nov2026 21:19:11.698] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/block/StairBlock
+[25Nov2026 21:19:11.745] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/block/FlowerPotBlock
+[25Nov2026 21:19:12.227] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/item/ItemStack
+[25Nov2026 21:19:12.639] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/animal/frog/Tadpole
+[25Nov2026 21:19:12.674] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/item/BucketItem
+[25Nov2026 21:19:13.090] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/Spider
+[25Nov2026 21:19:13.123] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/Zombie
+[25Nov2026 21:19:13.153] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/ZombieVillager
+[25Nov2026 21:19:13.187] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/Evoker$EvokerSummonSpellGoal
+[25Nov2026 21:19:13.275] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/animal/horse/SkeletonTrapGoal
+[25Nov2026 21:19:13.288] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/monster/Strider
+[25Nov2026 21:19:13.344] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/entity/npc/Villager
+[25Nov2026 21:19:13.394] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/effect/MobEffectInstance
+[25Nov2026 21:19:13.682] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/Structure
+[25Nov2026 21:19:13.713] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/structures/OceanRuinPieces$OceanRuinPiece
+[25Nov2026 21:19:13.720] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/structures/SwampHutPiece
+[25Nov2026 21:19:13.727] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/structures/OceanMonumentPieces$OceanMonumentPiece
+[25Nov2026 21:19:13.739] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/levelgen/structure/structures/WoodlandMansionPieces$WoodlandMansionPiece
+[25Nov2026 21:19:13.809] [main/DEBUG] [net.minecraftforge.coremod.transformer.CoreModBaseTransformer/COREMOD]: Transforming net/minecraft/world/level/biome/Biome
+[25Nov2026 21:19:13.974] [main/DEBUG] [net.minecraftforge.fml.ModWorkManager/LOADING]: Using 12 threads for parallel mod-loading
+[25Nov2026 21:19:13.978] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@6af5bbd0 - got cpw.mods.cl.ModuleClassLoader@1e6b9a95
+[25Nov2026 21:19:13.978] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for net.minecraftforge.common.ForgeMod
+[25Nov2026 21:19:13.983] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@6af5bbd0 - got cpw.mods.cl.ModuleClassLoader@1e6b9a95
+[25Nov2026 21:19:13.983] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for net.mezzdev.config.forge.ConfigForge
+[25Nov2026 21:19:13.984] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@6af5bbd0 - got cpw.mods.cl.ModuleClassLoader@1e6b9a95
+[25Nov2026 21:19:13.984] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for mezz.jei.forge.JustEnoughItems
+[25Nov2026 21:19:13.984] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@6af5bbd0 - got cpw.mods.cl.ModuleClassLoader@1e6b9a95
+[25Nov2026 21:19:13.984] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for lehjr.numina.common.base.Numina
+[25Nov2026 21:19:13.985] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@6af5bbd0 - got cpw.mods.cl.ModuleClassLoader@1e6b9a95
+[25Nov2026 21:19:13.985] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for lehjr.powersuits.common.base.ModularPowersuits
+[25Nov2026 21:19:14.008] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.forge.ForgeVersion/CORE]: Forge Version package package net.minecraftforge.versions.forge, Forge, version 47.2 from cpw.mods.modlauncher.TransformingClassLoader@6af5bbd0
+[25Nov2026 21:19:14.009] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.forge.ForgeVersion/CORE]: Found Forge version 47.2.30
+[25Nov2026 21:19:14.009] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.forge.ForgeVersion/CORE]: Found Forge spec 47.2
+[25Nov2026 21:19:14.009] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.forge.ForgeVersion/CORE]: Found Forge group net.minecraftforge
+[25Nov2026 21:19:14.010] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.mcp.MCPVersion/CORE]: MCP Version package package net.minecraftforge.versions.mcp, Minecraft, version 1.20.1 from cpw.mods.modlauncher.TransformingClassLoader@6af5bbd0
+[25Nov2026 21:19:14.010] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.mcp.MCPVersion/CORE]: Found MC version information 1.20.1
+[25Nov2026 21:19:14.010] [modloading-worker-0/DEBUG] [net.minecraftforge.versions.mcp.MCPVersion/CORE]: Found MCP version information 20230612.114412
+[25Nov2026 21:19:14.010] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.2.30, for MC 1.20.1 with MCP 20230612.114412
+[25Nov2026 21:19:14.011] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.2.30 Initialized
+[25Nov2026 21:19:14.038] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/numina/numina-client-only.toml for numina tracking
+[25Nov2026 21:19:14.040] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/numina/numina-common.toml for numina tracking
+[25Nov2026 21:19:14.041] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for numina
+[25Nov2026 21:19:14.044] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing numina.common.NuminaDataGenerator to MOD
+[25Nov2026 21:19:14.045] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/mezz_config/client/default/settings.ini
+[25Nov2026 21:19:14.047] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.client.config.NuminaClientConfig to FORGE
+[25Nov2026 21:19:14.047] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for mezz_config
+[25Nov2026 21:19:14.050] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.client.sound.SoundDictionary to FORGE
+[25Nov2026 21:19:14.050] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.client.event.NuminaClientEventBusSubscriber to MOD
+[25Nov2026 21:19:14.054] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: -Dio.netty.noUnsafe: false
+[25Nov2026 21:19:14.054] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: Java version: 17
+[25Nov2026 21:19:14.055] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: sun.misc.Unsafe.theUnsafe: available
+[25Nov2026 21:19:14.055] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: sun.misc.Unsafe.copyMemory: available
+[25Nov2026 21:19:14.055] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: sun.misc.Unsafe.storeFence: available
+[25Nov2026 21:19:14.055] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: java.nio.Buffer.address: available
+[25Nov2026 21:19:14.061] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: direct buffer constructor: unavailable
+java.lang.UnsupportedOperationException: Reflective setAccessible(true) disabled
+	at io.netty.util.internal.ReflectionUtil.trySetAccessible(ReflectionUtil.java:31) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent0$5.run(PlatformDependent0.java:288) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at java.security.AccessController.doPrivileged(AccessController.java:318) ~[?:?]
+	at io.netty.util.internal.PlatformDependent0.<clinit>(PlatformDependent0.java:282) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent.isAndroid(PlatformDependent.java:333) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent.<clinit>(PlatformDependent.java:88) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.ConstantPool.<init>(ConstantPool.java:34) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.AttributeKey$1.<init>(AttributeKey.java:27) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.AttributeKey.<clinit>(AttributeKey.java:27) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at net.minecraftforge.network.NetworkConstants.<clinit>(NetworkConstants.java:34) ~[forge-1.20.1-47.2.30.jar%23176%23184!/:?]
+	at net.minecraftforge.common.ForgeMod.<init>(ForgeMod.java:429) ~[forge-1.20.1-47.2.30.jar%23176%23184!/:?]
+	at jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:?]
+	at java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500) ~[?:?]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:481) ~[?:?]
+	at net.minecraftforge.fml.javafmlmod.FMLModContainer.constructMod(FMLModContainer.java:70) ~[javafmllanguage-1.20.1-47.2.30.jar%23179!/:?]
+	at net.minecraftforge.fml.ModContainer.lambda$buildTransitionHandler$4(ModContainer.java:124) ~[fmlcore-1.20.1-47.2.30.jar%23178!/:?]
+	at java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804) ~[?:?]
+	at java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1796) ~[?:?]
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373) ~[?:?]
+	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182) ~[?:?]
+	at java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655) ~[?:?]
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622) ~[?:?]
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165) ~[?:?]
+[25Nov2026 21:19:14.071] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: java.nio.Bits.unaligned: available, true
+[25Nov2026 21:19:14.072] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable
+java.lang.IllegalAccessException: class io.netty.util.internal.PlatformDependent0$7 (in module io.netty.common) cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to module io.netty.common
+	at jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:392) ~[?:?]
+	at java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:674) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:561) ~[?:?]
+	at io.netty.util.internal.PlatformDependent0$7.run(PlatformDependent0.java:410) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at java.security.AccessController.doPrivileged(AccessController.java:318) ~[?:?]
+	at io.netty.util.internal.PlatformDependent0.<clinit>(PlatformDependent0.java:401) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent.isAndroid(PlatformDependent.java:333) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.internal.PlatformDependent.<clinit>(PlatformDependent.java:88) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.ConstantPool.<init>(ConstantPool.java:34) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.AttributeKey$1.<init>(AttributeKey.java:27) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at io.netty.util.AttributeKey.<clinit>(AttributeKey.java:27) ~[netty-common-4.1.82.Final.jar%23113!/:4.1.82.Final]
+	at net.minecraftforge.network.NetworkConstants.<clinit>(NetworkConstants.java:34) ~[forge-1.20.1-47.2.30.jar%23176%23184!/:?]
+	at net.minecraftforge.common.ForgeMod.<init>(ForgeMod.java:429) ~[forge-1.20.1-47.2.30.jar%23176%23184!/:?]
+	at jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:?]
+	at java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500) ~[?:?]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:481) ~[?:?]
+	at net.minecraftforge.fml.javafmlmod.FMLModContainer.constructMod(FMLModContainer.java:70) ~[javafmllanguage-1.20.1-47.2.30.jar%23179!/:?]
+	at net.minecraftforge.fml.ModContainer.lambda$buildTransitionHandler$4(ModContainer.java:124) ~[fmlcore-1.20.1-47.2.30.jar%23178!/:?]
+	at java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804) ~[?:?]
+	at java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1796) ~[?:?]
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373) ~[?:?]
+	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182) ~[?:?]
+	at java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655) ~[?:?]
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622) ~[?:?]
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165) ~[?:?]
+[25Nov2026 21:19:14.073] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: java.nio.DirectByteBuffer.<init>(long, int): unavailable
+[25Nov2026 21:19:14.073] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: sun.misc.Unsafe: available
+[25Nov2026 21:19:14.074] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: maxDirectMemory: 8392802304 bytes (maybe)
+[25Nov2026 21:19:14.074] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.tmpdir: /tmp (java.io.tmpdir)
+[25Nov2026 21:19:14.074] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.bitMode: 64 (sun.arch.data.model)
+[25Nov2026 21:19:14.074] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.maxDirectMemory: -1 bytes
+[25Nov2026 21:19:14.075] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.uninitializedArrayAllocationThreshold: -1
+[25Nov2026 21:19:14.075] [modloading-worker-0/DEBUG] [io.netty.util.internal.CleanerJava9/]: java.nio.ByteBuffer.cleaner(): available
+[25Nov2026 21:19:14.075] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.noPreferDirect: false
+[25Nov2026 21:19:14.080] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.common.base.NuminaObjects to MOD
+[25Nov2026 21:19:14.081] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.numina.common.config.NuminaCommonConfig to FORGE
+[25Nov2026 21:19:14.088] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/mezz_config/client/default/settings.ini
+[25Nov2026 21:19:14.093] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/powersuits-client-only.toml for powersuits tracking
+[25Nov2026 21:19:14.094] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/general.toml for powersuits tracking
+[25Nov2026 21:19:14.097] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/armor.toml for powersuits tracking
+[25Nov2026 21:19:14.097] [modloading-worker-0/DEBUG] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Loading Network data for FML net version: FML3
+[25Nov2026 21:19:14.098] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/powerfist.toml for powersuits tracking
+[25Nov2026 21:19:14.100] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/armor.toml for powersuits tracking
+[25Nov2026 21:19:14.100] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/cosmetic.toml for powersuits tracking
+[25Nov2026 21:19:14.102] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/tool_axe.toml for powersuits tracking
+[25Nov2026 21:19:14.105] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/energy_generation.toml for powersuits tracking
+[25Nov2026 21:19:14.107] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/environmental.toml for powersuits tracking
+[25Nov2026 21:19:14.109] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/fluid_storage.toml for powersuits tracking
+[25Nov2026 21:19:14.110] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file forge-client.toml for forge tracking
+[25Nov2026 21:19:14.110] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file forge-server.toml for forge tracking
+[25Nov2026 21:19:14.110] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.ModLoadingContext/]: Attempted to register an empty config for type COMMON on mod forge
+[25Nov2026 21:19:14.111] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/tool_rototiller.toml for powersuits tracking
+[25Nov2026 21:19:14.112] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/mining_enchantment.toml for powersuits tracking
+[25Nov2026 21:19:14.113] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/mining_enhancement.toml for powersuits tracking
+[25Nov2026 21:19:14.115] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/movement.toml for powersuits tracking
+[25Nov2026 21:19:14.117] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/tool_pickaxe.toml for powersuits tracking
+[25Nov2026 21:19:14.118] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/tool_shovels.toml for powersuits tracking
+[25Nov2026 21:19:14.120] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/tool.toml for powersuits tracking
+[25Nov2026 21:19:14.121] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/vision.toml for powersuits tracking
+[25Nov2026 21:19:14.122] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Config file /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/lehjr/powersuits/common/items/modules/weapon.toml for powersuits tracking
+[25Nov2026 21:19:14.122] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for powersuits
+[25Nov2026 21:19:14.122] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing powersuits.common.PowersuitsDataGenerator to MOD
+[25Nov2026 21:19:14.123] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.client.event.ClientEventBusSubscriber to MOD
+[25Nov2026 21:19:14.123] [modloading-worker-0/DEBUG] [mezz.jei.common.platform.Services/]: Loaded mezz.jei.forge.platform.PlatformHelper@688dd50c for service interface mezz.jei.common.platform.IPlatformHelper
+[25Nov2026 21:19:14.130] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for forge
+[25Nov2026 21:19:14.131] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.client.ClientForgeMod to MOD
+[25Nov2026 21:19:14.135] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.client.ForgeHooksClient$ClientEvents to MOD
+[25Nov2026 21:19:14.144] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.client.model.data.ModelDataManager to FORGE
+[25Nov2026 21:19:14.145] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.common.ForgeSpawnEggItem$ColorRegisterHandler to MOD
+[25Nov2026 21:19:14.149] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.minecraftforge.common.ForgeSpawnEggItem$CommonHandler to MOD
+[25Nov2026 21:19:14.151] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.client.sound.MPSSoundDictionary to FORGE
+[25Nov2026 21:19:14.151] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.client.config.MPSClientConfig to FORGE
+[25Nov2026 21:19:14.151] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.common.registration.MPSConfigurations to FORGE
+[25Nov2026 21:19:14.152] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.common.registration.MPSItems to MOD
+[25Nov2026 21:19:14.152] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing lehjr.powersuits.common.config.MPSCommonConfig to FORGE
+[25Nov2026 21:19:14.171] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/jei/client/default/jei-debug.ini
+[25Nov2026 21:19:14.180] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/jei/client/default/jei-mod-id-format.ini
+[25Nov2026 21:19:14.188] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/jei/client/default/jei-colors.ini
+[25Nov2026 21:19:14.212] [modloading-worker-0/DEBUG] [net.mezzdev.config.file.ConfigSerializer/]: Loading config file: /home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/runs/data/config/jei/client/default/jei-client.ini
+[25Nov2026 21:19:14.248] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager...
+[25Nov2026 21:19:14.250] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: jei:minecraft...
+[25Nov2026 21:19:14.250] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: jei:gui...
+[25Nov2026 21:19:14.251] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: jei:forge_gui...
+[25Nov2026 21:19:14.251] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: jei:internal...
+[25Nov2026 21:19:14.252] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager took 1.694 milliseconds
+[25Nov2026 21:19:14.266] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for jei
+[25Nov2026 21:19:14.305] [main/DEBUG] [net.minecraftforge.common.capabilities.CapabilityManager/CAPABILITIES]: Attempting to automatically register: Lnet/minecraftforge/energy/IEnergyStorage;
+[25Nov2026 21:19:14.306] [main/DEBUG] [net.minecraftforge.common.capabilities.CapabilityManager/CAPABILITIES]: Attempting to automatically register: Lnet/minecraftforge/fluids/capability/IFluidHandler;
+[25Nov2026 21:19:14.306] [main/DEBUG] [net.minecraftforge.common.capabilities.CapabilityManager/CAPABILITIES]: Attempting to automatically register: Lnet/minecraftforge/fluids/capability/IFluidHandlerItem;
+[25Nov2026 21:19:14.306] [main/DEBUG] [net.minecraftforge.common.capabilities.CapabilityManager/CAPABILITIES]: Attempting to automatically register: Lnet/minecraftforge/items/IItemHandler;
+[25Nov2026 21:19:14.514] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/build/moddev/artifacts/forge-1.20.1-47.2.30.jar%23177!/assets/.mcassetsroot' uses unexpected schema
+[25Nov2026 21:19:14.515] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/lehjr/Development/Minecraft/1.20.1/MPS-Forge/build/moddev/artifacts/forge-1.20.1-47.2.30.jar%23177!/data/.mcassetsroot' uses unexpected schema
+[25Nov2026 21:19:14.617] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Languages: en_us
+[25Nov2026 21:19:14.626] [main/INFO] [net.minecraft.data.DataGenerator/]: Languages: en_us finished after 8 ms
+[25Nov2026 21:19:14.626] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: numina
+[25Nov2026 21:19:14.637] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: numina finished after 10 ms
+[25Nov2026 21:19:14.638] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: numina
+[25Nov2026 21:19:14.798] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: numina finished after 160 ms
+[25Nov2026 21:19:14.799] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
+[25Nov2026 21:19:14.852] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 52 ms
+[25Nov2026 21:19:14.852] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:block mod id numina
+[25Nov2026 21:19:14.860] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:block mod id numina finished after 7 ms
+[25Nov2026 21:19:14.860] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Recipes
+[25Nov2026 21:19:14.883] [main/INFO] [net.minecraft.data.DataGenerator/]: Recipes finished after 23 ms
+[25Nov2026 21:19:14.883] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Registries
+[25Nov2026 21:19:14.889] [main/INFO] [net.minecraft.data.DataGenerator/]: Registries finished after 5 ms
+[25Nov2026 21:19:14.890] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 273 ms
+[25Nov2026 21:19:14.893] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 115, old count: 115, new count: 116, removed stale: 0, written: 0
+[25Nov2026 21:19:14.895] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Languages: en_us
+[25Nov2026 21:19:14.898] [main/INFO] [net.minecraft.data.DataGenerator/]: Languages: en_us finished after 2 ms
+[25Nov2026 21:19:14.898] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: powersuits
+[25Nov2026 21:19:14.913] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: powersuits finished after 15 ms
+[25Nov2026 21:19:14.914] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block Models: powersuits
+[25Nov2026 21:19:14.915] [main/INFO] [net.minecraft.data.DataGenerator/]: Block Models: powersuits finished after 1 ms
+[25Nov2026 21:19:14.915] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: powersuits
+[25Nov2026 21:19:14.921] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: powersuits finished after 5 ms
+[25Nov2026 21:19:14.921] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: MPSBlockTagProvider
+[25Nov2026 21:19:14.922] [main/INFO] [net.minecraft.data.DataGenerator/]: MPSBlockTagProvider finished after 0 ms
+[25Nov2026 21:19:14.922] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
+[25Nov2026 21:19:14.923] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 0 ms
+[25Nov2026 21:19:14.923] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Recipes
+[25Nov2026 21:19:14.957] [main/INFO] [net.minecraft.data.DataGenerator/]: Recipes finished after 33 ms
+[25Nov2026 21:19:14.957] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 62 ms
+[25Nov2026 21:19:14.961] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 276, old count: 276, new count: 277, removed stale: 0, written: 0

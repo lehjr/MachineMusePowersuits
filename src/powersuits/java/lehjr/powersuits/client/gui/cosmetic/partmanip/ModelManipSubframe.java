@@ -330,35 +330,35 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             this.colorButtons = new ArrayList<>();
 
             /** Transparent (turns rendering off for part) */
-            transparent = new RadioButton(IconUtils.INSTANCE.getIcon().transparentArmor, 8, 8, 0,0);
+            transparent = new RadioButton(IconUtils.getIcon().transparentArmor, 8, 8, 0,0);
             transparent.setOnPressed(pressed -> {
                 tagdata = new CompoundTag();
                 itemSelector.selectedType().ifPresent(slotType -> {
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
+                    NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                 });
             });
             buttons.add(transparent);
 
             /** Normal (enables rendering of part with normal lighting) */
-            normal = new RadioButton(IconUtils.INSTANCE.getIcon().normalArmor, 8, 8, 0,0);
+            normal = new RadioButton(IconUtils.getIcon().normalArmor, 8, 8, 0,0);
             normal.setOnPressed(pressed -> {
                 tagdata = getOrMakeSpecTag(partSpec);
                 partSpec.setGlow(tagdata, false);
                 itemSelector.selectedType().ifPresent(slotType -> {
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
+                    NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                 });
             });
             normal.setRightOf(transparent);
             buttons.add(normal);
 
             /** Glow (enables rendering of part with full brightness ) */
-            glow = new RadioButton(IconUtils.INSTANCE.getIcon().glowArmor, 8, 8, 0,0);
+            glow = new RadioButton(IconUtils.getIcon().glowArmor, 8, 8, 0,0);
             glow.setOnPressed(pressed -> {
                 tagname = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
                 tagdata = getOrMakeSpecTag(partSpec);
                 partSpec.setGlow(tagdata, true);
                 itemSelector.selectedType().ifPresent(slotType -> {
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
+                            NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                         }
                 );
             });
@@ -404,7 +404,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     }
 
                     itemSelector.selectedType().ifPresent(slotType -> {
-                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
+                        NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                     });
                 }
             }
@@ -416,7 +416,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 int index  = colorButtons.indexOf(colorRadioButton);
                 partSpec.setColorIndex(tagdata, index);
                 itemSelector.selectedType().ifPresent(slotType -> {
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
+                    NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                 });
             });
 

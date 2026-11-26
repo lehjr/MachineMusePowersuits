@@ -59,12 +59,17 @@ public enum ModelBakeEventHandler {
     public MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
 
     public static final ModelResourceLocation powerFistIconLocation = new ModelResourceLocation(MPSRegistryNames.POWER_FIST, "inventory");
+    public static final ModelResourceLocation powerFistIconLocation1 = new ModelResourceLocation(MPSConstants.POWER_FIST_1, "inventory");
+    public static final ModelResourceLocation powerFistIconLocation2 = new ModelResourceLocation(MPSConstants.POWER_FIST_2, "inventory");
+    public static final ModelResourceLocation powerFistIconLocation3 = new ModelResourceLocation(MPSConstants.POWER_FIST_3, "inventory");
+    public static final ModelResourceLocation powerFistIconLocation4 = new ModelResourceLocation(MPSConstants.POWER_FIST_4, "inventory");
+
 
     RandomSource rand = RandomSource.create();
 
 
     @SubscribeEvent
-    public void onModelBake(ModelEvent.ModifyBakingResult event) {
+    public void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> registry = event.getModels();
         for (Direction facing : Direction.values()) {
             BakedModel model = registry.get(new ModelResourceLocation(new ResourceLocation("powersuits:luxcapacitor"), "facing=" + facing + ",waterlogged=true"));
@@ -84,8 +89,19 @@ public enum ModelBakeEventHandler {
         });
 
         BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
+
+        BakedModel powerFistIcon1 = event.getModels().get(powerFistIconLocation1);
+        BakedModel powerFistIcon2 = event.getModels().get(powerFistIconLocation2);
+        BakedModel powerFistIcon3 = event.getModels().get(powerFistIconLocation3);
+        BakedModel powerFistIcon4 = event.getModels().get(powerFistIconLocation4);
+
         if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
             event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
+
+            event.getModels().put(powerFistIconLocation1, new PowerFistModelWrapper(powerFistIcon1));
+            event.getModels().put(powerFistIconLocation2, new PowerFistModelWrapper(powerFistIcon2));
+            event.getModels().put(powerFistIconLocation3, new PowerFistModelWrapper(powerFistIcon3));
+            event.getModels().put(powerFistIconLocation4, new PowerFistModelWrapper(powerFistIcon4));
         }
     }
 
@@ -104,9 +120,10 @@ public enum ModelBakeEventHandler {
     }
 
     @SubscribeEvent
-    public void onAddAdditional(ModelEvent.RegisterAdditional e) {
+    public static void onAddAdditional(ModelEvent.RegisterAdditional e) {
+        // java.lang.IllegalArgumentException: Side-loaded models must use the 'standalone' variant
         e.register(plasmaBall);
-        locations.forEach(location -> e.register(location));
+        locations.forEach(e::register);
     }
 
     public static List<ResourceLocation> locations = new ArrayList<>();

@@ -1,0 +1,27 @@
+
+[Power_Fist]
+
+	[Power_Fist.Tier_1]
+		#Range: 0 ~ 10
+		inventorySlots = 7
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 50.0
+
+	[Power_Fist.Tier_2]
+		#Range: 0 ~ 60
+		inventorySlots = 12
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 50.0
+
+	[Power_Fist.Tier_3]
+		#Range: 0 ~ 100
+		inventorySlots = 30
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 50.0
+
+	[Power_Fist.Tier_4]
+		#Range: 0 ~ 180
+		inventorySlots = 60
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 50.0
+

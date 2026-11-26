@@ -71,7 +71,7 @@ public class MPSKeyMapping extends KeyMapping {
 
         toggleVal = online;
 
-        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacketServerBound(registryName, toggleVal));
+        NuminaPackets.sendToServer(new ToggleRequestPacketServerBound(registryName, toggleVal));
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             IModularItem modularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
             if (modularItem != null) {

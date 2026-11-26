@@ -29,7 +29,7 @@ package lehjr.numina.common.event;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.config.NuminaCommonConfig;
-import lehjr.numina.common.player.PlayerUtils;
+import lehjr.numina.common.utils.PlayerUtils;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.HeatUtils;
 import lehjr.numina.common.utils.ItemUtils;

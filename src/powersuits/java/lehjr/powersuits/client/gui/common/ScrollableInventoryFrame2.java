@@ -52,7 +52,7 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
             if (selected != tab) {
                 selected = tab;
                 EquipmentSlot type = tab.getSlotType();
-                MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(type));
+                MPSPackets.sendToServer(new ContainerGuiOpenPacket(type));
             }
         });
         super.update(mouseX, mouseY);

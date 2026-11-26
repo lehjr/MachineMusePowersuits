@@ -1,7 +1,7 @@
 package numina.common.loot;
 
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.registration.NuminaBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
@@ -18,6 +18,6 @@ public class NuminaBlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(NuminaObjects.CHARGING_BASE_BLOCK.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(NuminaBlocks.CHARGING_BASE_BLOCK.get());
     }
 }

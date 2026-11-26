@@ -1,0 +1,44 @@
+
+[Environmental]
+
+	[Environmental.Active_Camouflage]
+		isAllowed = true
+		#Range: 0 ~ 100
+		energyConBase = 5
+
+	[Environmental.Auto_Feeder]
+		isAllowed = true
+		useOldAutoFeeder = false
+		#Range: 0.0 ~ 1000000.0
+		energyConBase = 100.0
+		#Range: 0.0 ~ 1000000.0
+		autoFeederEfficiencyBase = 50.0
+		#Range: 0.0 ~ 1000000.0
+		efficiencyenergyConMultiplier = 1000.0
+		#Range: 0.0 ~ 1000000.0
+		efficiencyautoFeederEfficiencyMultiplier = 50.0
+
+	[Environmental.Magnet]
+		isAllowed = true
+		#Range: 0 ~ 100
+		radius = 1
+		#Range: 0 ~ 100
+		radius_Multiplier = 9
+		#Range: 0 ~ 100
+		energyConBase = 5
+		#Range: 0 ~ 100000
+		energyCon_radius_Multiplier = 2000
+
+	[Environmental.Mob_Repulsor]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 2500.0
+
+	[Environmental.Piglin_Pacification]
+		isAllowed = true
+
+	[Environmental.Water_Electrolyzer]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 1000.0
+

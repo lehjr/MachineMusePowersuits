@@ -35,8 +35,7 @@ public record CosmeticInfoPacketServerBound(EquipmentSlot slotType, String tagNa
     }
 
     public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, String tagName, CompoundTag tagData) {
-        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
-                new CosmeticInfoPacketClientBound(slotType, tagName, tagData));
+        NuminaPackets.sendToPlayer(new CosmeticInfoPacketClientBound(slotType, tagName, tagData), entity);
     }
 
     public static class Handler {

@@ -1,0 +1,38 @@
+
+[Mining_Enhancement]
+
+	[Mining_Enhancement.Selective_Miner]
+		isAllowed = true
+		#Range: 1 ~ 1000
+		energyConBase = 64
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 1.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 3.0
+
+	[Mining_Enhancement.Tunnel_Bore]
+		isAllowed = true
+		#Range: 0.0 ~ 100000.0
+		energyConBase = 500.0
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 1.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 3.0
+		#Range: 3 ~ 21
+		miningDiameterMax = 7
+
+	[Mining_Enhancement.Vein_Miner]
+		isAllowed = true
+		#Range: 1 ~ 1000
+		energyConBase = 64
+		#Range: 0.0 ~ 100000.0
+		energyConOverclockMultiplier = 1000.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedBase = 1.0
+		#Range: 0.0 ~ 100.0
+		harvestSpeedOverclockMultiplier = 3.0
+

@@ -50,22 +50,12 @@ import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
 public class NuminaFOVUpdateEventHandler {
-
-
-    public NuminaFOVUpdateEventHandler() {
-
-    }
-
     public static final Lazy<KeyMapping> fovToggleKey = Lazy.of(()-> new KeyMapping("key..numina.fovfixtoggle", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + NuminaConstants.MOD_ID));
 
-    public boolean fovIsActive = NuminaClientConfig.fovFixDefaultState;
-
-
-
-
+    public static boolean fovIsActive = NuminaClientConfig.fovFixDefaultState;
 
     @SubscribeEvent
-    public void onFOVUpdate(ComputeFovModifierEvent e) {
+    public static void onFOVUpdate(ComputeFovModifierEvent e) {
         if (NuminaClientConfig.useFovFix) {
             LocalPlayer player = Minecraft.getInstance().player;
             if (fovToggleKey.get().consumeClick()) {

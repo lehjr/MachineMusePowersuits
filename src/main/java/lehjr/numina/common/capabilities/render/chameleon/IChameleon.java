@@ -24,10 +24,10 @@ public interface IChameleon extends CapabilityUpdate {
     }
 
     default void setTargetBlockStateByPos(BlockPos pos) {
-        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new BlockPositionPacketServerBound(pos));
+        NuminaPackets.sendToServer(new BlockPositionPacketServerBound(pos));
     }
 
     default void setClearTargetBlockState() {
-        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new BlockStateClearPacketServerBound());
+        NuminaPackets.sendToServer(new BlockStateClearPacketServerBound());
     }
 }

@@ -177,7 +177,7 @@ public class PickaxeModule extends AbstractPowerModule {
             if(stack.is(MPSItems.IRON_PICKAXE_MODULE.get())) {
                 return 2;
             }
-            if(stack.is(MPSItems.DIAMOND_PICK_UPGRADE_MODULE_LEGACY.get())) {
+            if(stack.is(MPSItems.DIAMOND_PICKAXE_MODULE.get())) {
                 return 3;
             }
             if (stack.is(MPSItems.NETHERITE_PICKAXE_MODULE.get())) {

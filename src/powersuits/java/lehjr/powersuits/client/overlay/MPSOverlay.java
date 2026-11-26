@@ -1,32 +1,15 @@
 package lehjr.powersuits.client.overlay;
 
-import com.google.common.util.concurrent.AtomicDouble;
-import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
-import lehjr.numina.client.gui.geometry.DrawableRect;
-import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.math.Color;
-import lehjr.numina.common.utils.ItemUtils;
-import lehjr.numina.common.utils.StringUtils;
 import lehjr.powersuits.client.config.MPSClientConfig;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.control.MPSKeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MPSOverlay {
     static List<KBDisplay> kbDisplayList = new ArrayList<>();

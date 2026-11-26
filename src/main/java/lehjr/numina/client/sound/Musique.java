@@ -38,6 +38,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 
 /**
@@ -67,9 +68,9 @@ public class Musique {
         return player.getUUID().toString() + soundname;
     }
 
-    public static void playerSound(Player player, SoundEvent soundEvt, SoundSource categoryIn, float volume, Float pitch, Boolean continuous) {
+    public static void playerSound(Player player, SoundEvent soundEvt, SoundSource categoryIn, float volume, @Nullable Float pitch, @Nullable Boolean continuous) {
         pitch = (pitch != null) ? pitch : 1.0F;
-        continuous = (continuous != null) ? continuous : true;
+        continuous = continuous == null || continuous;
         if (NuminaClientConfig.useSounds && soundEvt != null) {
             String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);
@@ -89,6 +90,15 @@ public class Musique {
         }
     }
 
+    static void stopPlayerSound(String soundID) {
+        MovingSoundPlayer sound = soundMap.get(soundID);
+        if (sound != null) {
+            sound.stopPlaying();
+            mcsound().stop(sound);
+        }
+        soundMap.remove(soundID);
+    }
+
     public static void stopPlayerSound(Player player, SoundEvent soundEvt) {
         if (NuminaClientConfig.useSounds) {
             String soundID = makeSoundString(player, soundEvt);
@@ -98,7 +108,12 @@ public class Musique {
                 mcsound().stop(sound);
             }
             soundMap.remove(soundID);
-//             NuminaLogger.logDebug("Sound stopped: " + soundEvt.getLocation());
+        }
+    }
+
+    public static void stopAllPlayerSounds() {
+        for(String soundID : soundMap.keySet()) {
+            stopPlayerSound(soundID);
         }
     }
 }

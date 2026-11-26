@@ -218,7 +218,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
         if (selectedSlider != null) {
             selectedSlider.mouseReleased(mouseX, mouseY, button);
             itemTarget.selectedType().ifPresent(type-> moduleTarget.getModuleCap().ifPresent(pm-> {
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(
+                    NuminaPackets.sendToServer(
                             new TweakRequestDoublePacketServerBound(
                                     type,
                                     ItemUtils.getRegistryName(pm.getModule()),

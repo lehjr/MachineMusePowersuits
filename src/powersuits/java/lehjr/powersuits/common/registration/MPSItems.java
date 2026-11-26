@@ -1,15 +1,13 @@
 package lehjr.powersuits.common.registration;
 
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.item.block.TinkerTableItem;
-import lehjr.powersuits.common.item.electric.armor.*;
+import lehjr.powersuits.common.item.electric.armor.ElectricArmor;
 import lehjr.powersuits.common.item.electric.tool.PowerFist;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
-import lehjr.powersuits.common.item.module.energy_generation.KineticGeneratorModule;
 import lehjr.powersuits.common.item.module.energy_generation.solar.SolarGeneratorModule;
 import lehjr.powersuits.common.item.module.energy_generation.thermal.ThermalGeneratorModule;
 import lehjr.powersuits.common.item.module.environmental.*;
@@ -31,7 +29,6 @@ import lehjr.powersuits.common.item.module.weapon.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -198,110 +195,12 @@ public class MPSItems {
     public static final RegistryObject<Item> RAILGUN_MODULE = MPS_ITEMS.register(MPSConstants.RAILGUN_MODULE.getPath(), RailgunModule::new);
 
 
-
-
-
-
-
-
-
-
-    /**
-     *  Legacy Compat ------------------------------------------------------------------------------
-     */
-    // TODO: disable legacy modular items but add upgrade path through crafting, remove the old recipes
-    public static final RegistryObject<Item> POWER_FIST_LEGACY = MPS_ITEMS.register(MPSRegistryNames.POWER_FIST.getPath(), PowerFist::new);
-
-    public static final RegistryObject<Item> POWER_ARMOR_HELMET_LEGACY = MPS_ITEMS.register(MPSRegistryNames.POWER_ARMOR_HELMET.getPath(), PowerArmorHelmet::new);
-    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE_LEGACY = MPS_ITEMS.register(MPSRegistryNames.POWER_ARMOR_CHESTPLATE.getPath(), PowerArmorChestplate::new);
-    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS_LEGACY = MPS_ITEMS.register(MPSRegistryNames.POWER_ARMOR_LEGGINGS.getPath(), PowerArmorLeggings::new);
-    public static final RegistryObject<Item> POWER_ARMOR_BOOTS_LEGACY = MPS_ITEMS.register(MPSRegistryNames.POWER_ARMOR_BOOTS.getPath(), PowerArmorBoots::new);
-
-    public static final RegistryObject<Item> AXE_MODULE_LEGACY = MPS_ITEMS.register(MPSRegistryNames.AXE_MODULE.getPath(), AxeModule::new);
-    public static final RegistryObject<Item> DIAMOND_PICK_UPGRADE_MODULE_LEGACY = MPS_ITEMS.register(MPSRegistryNames.DIAMOND_PICK_UPGRADE_MODULE.getPath(), DiamondPickUpgradeModulePlaceHolder::new);
-    public static final RegistryObject<Item> HOE_MODULE_LEGACY = MPS_ITEMS.register(MPSRegistryNames.HOE_MODULE.getPath(), HoeModule::new);
-    public static final RegistryObject<Item> PICKAXE_MODULE_ = MPS_ITEMS.register(MPSRegistryNames.PICKAXE_MODULE.getPath(), PickaxeModule::new);
-    public static final RegistryObject<Item> SHOVEL_MODULE_LEGACY = MPS_ITEMS.register(MPSRegistryNames.SHOVEL_MODULE.getPath(), ShovelModule::new);
-
-    // Energy Generation --------------------------------------------------------------------------
-    // TODO: disable item but add upgrade path through crafting, remove the old recipes (make a tier 1)
-    public static final RegistryObject<Item> SOLAR_GENERATOR_MODULE = MPS_ITEMS.register(MPSRegistryNames.SOLAR_GENERATOR_MODULE.getPath(), SolarGeneratorModule::new);
-    // TODO: disable item but add upgrade path through crafting, remove the old recipes (make a tier 2)
-    public static final RegistryObject<Item> ADVANCED_SOLAR_GENERATOR_MODULE = MPS_ITEMS.register(MPSRegistryNames.ADVANCED_SOLAR_GENERATOR_MODULE.getPath(), SolarGeneratorModule::new);
-    // TODO: not sure yet
-    public static final RegistryObject<Item> KINETIC_GENERATOR_MODULE = MPS_ITEMS.register(MPSRegistryNames.KINETIC_GENERATOR_MODULE.getPath(), KineticGeneratorModule::new);
-    // TODO: disable item but add upgrade path through crafting, remove the old recipes (make a tier 1)
-    public static final RegistryObject<Item> THERMAL_GENERATOR_MODULE = MPS_ITEMS.register(MPSRegistryNames.THERMAL_GENERATOR_MODULE.getPath(), ThermalGeneratorModule::new);
-
-    /* Modules ------------------------------------------------------------------------------------ */
-
-
-    // disable and offer upgrade to thermal generator
-    public static final RegistryObject<Item> COOLING_SYSTEM_MODULE = MPS_ITEMS.register(MPSRegistryNames.COOLING_SYSTEM_MODULE.getPath(),
-            ThermalGeneratorModule::new);
-
-    // disable and offer upgrade to coolant tank
-    public static final RegistryObject<Item> FLUID_TANK_MODULE = MPS_ITEMS.register(MPSRegistryNames.FLUID_TANK_MODULE.getPath(), CoolantTankModule::new);
-
-    // Mining Enhancements ------------------------------------------------------------------------
-    // just replace this with selective miner
-    public static final RegistryObject<Item> SELECTIVE_MINER = MPS_ITEMS.register(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE2.getPath(),
-            SelectiveMiner::new);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Debug --------------------------------------------------------------------------------------
-//    public static final RegistryObject<Item>, DebugModule> DEBUG_MODULE = MPS_ITEMS.register("debugmodule", DebugModule::new);
-//
-
-
-
-    // TODO
-    // Trying to come up with ideas that make sense and fit, not just with this mod, but other mods
-
-
-
-
-
-
-
-
-
-
-    //    public static final RegistryObject<Item>, SonicWeaponModule> SONIC_WEAPON_MODULE = MPS_ITEMS.register(MPSConstants.SONIC_WEAPON_MODULE.getPath(),
-    //            SonicWeaponModule::new);
-
     // Creative Mode Tab --------------------------------------------------------------------------
     public static final DeferredRegister<CreativeModeTab> MPS_CREATIVE_MODE_TAB = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MPSConstants.MOD_ID);
 
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
-            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MPSConstants.MOD_ID);
-
-    public static final RegistryObject<CreativeModeTab> MPS_TAB = CREATIVE_MODE_TABS.register("creative.mode.tab",
-            ()-> CreativeModeTab.builder().icon(()->new ItemStack(POWER_ARMOR_HELMET_LEGACY.get()))
-                    .title(Component.translatable(NuminaConstants.CREATIVE_TAB_TRANSLATION_KEY))
+    public static final RegistryObject<CreativeModeTab> MPS_TAB = MPS_CREATIVE_MODE_TAB.register("creative.mode.tab",
+            ()-> CreativeModeTab.builder().icon(()->new ItemStack(POWER_ARMOR_HELMET_1.get()))
+                    .title(Component.translatable(MPSConstants.CREATIVE_TAB_TRANSLATION_KEY))
                     .displayItems((parameters, output) -> MPS_ITEMS.getEntries().forEach(item -> output.accept(item.get())))
                     .build());
-
-    public static void register(IEventBus eventBus){
-        CREATIVE_MODE_TABS.register(eventBus);
-    }
 }

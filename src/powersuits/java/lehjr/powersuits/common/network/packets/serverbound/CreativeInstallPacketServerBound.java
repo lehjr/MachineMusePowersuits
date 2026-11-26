@@ -32,14 +32,13 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
     }
 
     public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, ResourceLocation regName) {
-        MPSPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
-                new CreativeInstallPacketClientBound(slotType, regName));
+        MPSPackets.sendToPlayer(new CreativeInstallPacketClientBound(slotType, regName), entity);
     }
 
     public static class Handler {
         public static void handle(CreativeInstallPacketServerBound message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
-                final Player player = ctx.get().getSender();
+                final ServerPlayer player = ctx.get().getSender();
                 EquipmentSlot slotType = message.slotType;
                 ResourceLocation regName = message.regName;
                 Item item = ForgeRegistries.ITEMS.getValue(regName);
@@ -81,7 +80,7 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
                     }
                 }
                 if (player instanceof ServerPlayer) {
-                    sendToClient((ServerPlayer) player, slotType, regName);
+                    sendToClient(player, slotType, regName);
                 }
             });
             ctx.get().setPacketHandled(true);

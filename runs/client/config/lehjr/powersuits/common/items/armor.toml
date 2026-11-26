@@ -1,0 +1,105 @@
+
+[Helm]
+
+	[Helm.Tier_1]
+		#Range: 0 ~ 10
+		inventorySlots = 4
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 2.5
+
+	[Helm.Tier_2]
+		#Range: 0 ~ 12
+		inventorySlots = 6
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 5.0
+
+	[Helm.Tier_3]
+		#Range: 0 ~ 16
+		inventorySlots = 8
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 10.0
+
+	[Helm.Tier_4]
+		#Range: 0 ~ 20
+		inventorySlots = 12
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 20.0
+
+[ChestPlate]
+
+	[ChestPlate.Tier_1]
+		#Range: 0 ~ 10
+		inventorySlots = 6
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 5.0
+
+	[ChestPlate.Tier_2]
+		#Range: 0 ~ 20
+		inventorySlots = 8
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 10.0
+
+	[ChestPlate.Tier_3]
+		#Range: 0 ~ 40
+		inventorySlots = 16
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 20.0
+
+	[ChestPlate.Tier_4]
+		#Range: 0 ~ 50
+		inventorySlots = 20
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 40.0
+
+[Leggings]
+
+	[Leggings.Tier_1]
+		#Range: 0 ~ 10
+		inventorySlots = 4
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 3.0
+
+	[Leggings.Tier_2]
+		#Range: 0 ~ 10
+		inventorySlots = 6
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 6.0
+
+	[Leggings.Tier_3]
+		#Range: 0 ~ 10
+		inventorySlots = 8
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 12.0
+
+	[Leggings.Tier_4]
+		#Range: 0 ~ 10
+		inventorySlots = 10
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 24.0
+
+[Boots]
+
+	[Boots.Tier_1]
+		#Range: 0 ~ 10
+		inventorySlots = 2
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 2.0
+
+	[Boots.Tier_2]
+		#Range: 0 ~ 10
+		inventorySlots = 4
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 4.0
+
+	[Boots.Tier_3]
+		#Range: 0 ~ 10
+		inventorySlots = 8
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 8.0
+
+	[Boots.Tier_4]
+		#Range: 0 ~ 10
+		inventorySlots = 10
+		#Range: 0.0 ~ 1000.0
+		maxHeat = 16.0
+

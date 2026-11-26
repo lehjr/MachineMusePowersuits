@@ -2,6 +2,9 @@ package numina.common.loot;
 
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.registration.NuminaBlockEntities;
+import lehjr.numina.common.registration.NuminaBlocks;
+import lehjr.numina.common.registration.NuminaEntities;
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -20,7 +23,7 @@ import java.util.stream.Collectors;
 public class NuminaBockLoot extends VanillaBlockLoot {
     @Override
     protected void generate() {
-        this.add(NuminaObjects.CHARGING_BASE_BLOCK.get(), createChargedInventoryLoot(NuminaObjects.CHARGING_BASE_BLOCK.get()));
+        this.add(NuminaBlocks.CHARGING_BASE_BLOCK.get(), createChargedInventoryLoot(NuminaBlocks.CHARGING_BASE_BLOCK.get()));
     }
 
     protected LootTable.Builder createChargedInventoryLoot(Block block) {
@@ -32,7 +35,7 @@ public class NuminaBockLoot extends VanillaBlockLoot {
                                 .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
                                         .copy("inv", "BlockEntityTag.inv")
                                         .copy("energy", "BlockEntityTag.energy"))
-                                .apply(SetContainerContents.setContents(NuminaObjects.CHARGING_BASE_BLOCK_ENTITY.get())))));
+                                .apply(SetContainerContents.setContents(NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get())))));
 //                                        .withEntry(DynamicLoot.dynamicEntry(ShulkerBoxBlock.CONTENTS))))));
     }
 

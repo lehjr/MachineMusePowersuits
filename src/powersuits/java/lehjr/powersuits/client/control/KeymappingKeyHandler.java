@@ -144,7 +144,7 @@ public class KeymappingKeyHandler {
             byte byteOut = MathUtils.boolArrayToByte(boolArray);
 
             if (markForSync) {
-                NuminaPackets.CHANNEL_INSTANCE.sendToServer(new PlayerUpdatePacketServerBound(byteOut));
+                NuminaPackets.sendToServer(new PlayerUpdatePacketServerBound(byteOut));
             }
         });
     }
