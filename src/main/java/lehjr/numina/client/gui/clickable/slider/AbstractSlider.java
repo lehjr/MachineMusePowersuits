@@ -1,11 +1,18 @@
 package lehjr.numina.client.gui.clickable.slider;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -221,21 +228,14 @@ public abstract class AbstractSlider extends Clickable implements ISlider {
 
     void drawSingleLine(GuiGraphics gfx, double xStart, double yStart, double xEnd, double yEnd, Color color) {
         NuminaLogger.logDebug("fixme Abstract slider line");
-//        PoseStack poseStack = gfx.pose();
-//        Tesselator tessellator = Tesselator.getInstance();
-//        BufferBuilder builder = tessellator.getBuilder();
-//        Matrix4f matrix4f = poseStack.last().pose();
-//
-//        preDraw(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
-//        RenderSystem.lineWidth(1);
-//        builder.addVertex(matrix4f, (float) xStart, (float) yStart, getZLevel()).setColor(color.r, color.g, color.b, color.a);
-//        builder.addVertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).setColor(color.r, color.g, color.b, color.a);
-//        builder.end();
-//        postDraw(builder);
+        PoseStack poseStack = gfx.pose();
+        Matrix4f matrix4f = poseStack.last().pose();
+        BufferBuilder builder = preDraw(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        RenderSystem.lineWidth(1);
+        builder.addVertex(matrix4f, (float) xStart, (float) yStart, getZLevel()).setColor(color.r, color.g, color.b, color.a);
+        builder.addVertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).setColor(color.r, color.g, color.b, color.a);
+        postDraw(builder);
     }
-
-
-
 
     public IUpdated updated;
 

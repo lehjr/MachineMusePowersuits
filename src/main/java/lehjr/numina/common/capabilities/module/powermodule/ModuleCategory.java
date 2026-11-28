@@ -91,7 +91,4 @@ public enum ModuleCategory {
     public boolean usesNuminaGuiIcons() {
         return usesNuminaGuiIcons;
     }
-
-
-
 }

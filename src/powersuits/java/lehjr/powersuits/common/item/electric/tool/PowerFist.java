@@ -115,14 +115,7 @@ public class PowerFist extends AbstractElectricTool {
 
     // sets a base block breaking speed based on the module's emulated tool
     // FIXME:
-    @Override
-    public float getDestroySpeed(ItemStack itemStack, BlockState state) {
-        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(itemStack);
-        if(mci != null) {
-            return mci.getDestroySpeed(itemStack, state);
-        }
-        return 1F;
-    }
+
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity entity, InteractionHand hand) {
@@ -174,14 +167,13 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof Player) {
+        if (attacker instanceof Player player) {
             IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(itemStack);
             if(mci != null) {
                 int index = mci.findInstalledModule(MPSConstants.MELEE_ASSIST_MODULE);
-                if(index > -1) {
+                if(mci.isSlotValid(index)) {
                     IPowerModule pm = mci.getModuleCapability(mci.getStackInSlot(index));
                     if(pm != null) {
-                        Player player = (Player) attacker;
                         double drain = pm.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         if (ElectricItemUtils.getPlayerEnergy(player) > drain) {
                             ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);

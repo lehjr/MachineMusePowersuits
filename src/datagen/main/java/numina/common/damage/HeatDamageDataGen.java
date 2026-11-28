@@ -18,35 +18,6 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class HeatDamageDataGen {
-
-//    // In your datagen class
-//    @SubscribeEvent // on the mod event bus
-//    public static void onGatherData(GatherDataEvent event) {
-//        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-//        event.getGenerator().addProvider(event.includeServer(),
-//            output ->
-//            new DatapackBuiltinEntriesProvider(output, lookupProvider,
-//
-//            new RegistrySetBuilder()
-//            // Add a datapack builtin entry provider for damage types. If this lambda becomes longer,
-//            // this should probably be extracted into a separate method for the sake of readability.
-//            .add(Registries.DAMAGE_TYPE, bootstrap -> {
-//                // Use new DamageType() to create an in-code representation of a damage type.
-//                // The parameters map to the values of the JSON file, in the order seen above.
-//                // All parameters except for the message id and the exhaustion value are optional.
-//                bootstrap.register(HeatUtils.OVERHEAT_DAMAGE,
-//                    new DamageType(HeatUtils.OVERHEAT_DAMAGE.location(), DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1f, DamageEffects.HURT,
-//                        DeathMessageType.DEFAULT));
-//            }),
-//            // Add datapack providers for other datapack entries, if applicable.
-//                            .add(...),
-//            Set.of(NuminaConstants.MOD_ID)
-//
-//        ));
-//    }
-
-
-    // In your datagen class
     @SubscribeEvent // on the mod event bus
     public static void onGatherData(GatherDataEvent event) {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();

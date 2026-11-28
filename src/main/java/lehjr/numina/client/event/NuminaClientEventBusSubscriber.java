@@ -66,16 +66,6 @@ public class NuminaClientEventBusSubscriber {
     public static void modelRegistry(ModelEvent.RegisterGeometryLoaders event) {
         event.register(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "obj"), NuminaObjLoader.INSTANCE);
     }
-    //
-    //    @SubscribeEvent
-    //    public static void renderLayer(RenderGuiLayerEvent event) {
-    //        LayeredDraw.Layer layer = event.getLayer();
-    //        GuiGraphics gfx = event.getGuiGraphics();
-    //        ResourceLocation name = event.getName();
-    //        float partialTick = event.getPartialTick();
-    //
-    //
-    //    }
 
     @SubscribeEvent
     public static void registerOverlay(RegisterGuiLayersEvent event) {
@@ -142,20 +132,6 @@ public class NuminaClientEventBusSubscriber {
     public static void doClientStuff(final FMLClientSetupEvent event) {
         NeoForge.EVENT_BUS.register(NuminaFOVUpdateEventHandler.class);
     }
-
-    //
-    ////        NeoForge.EVENT_BUS.register(new ToolTipEvent());
-    ////        event.enqueueWork(() -> {
-    ////            MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
-    ////            MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
-    ////            //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
-    ////        });
-    //
-    ////        MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
-    //////            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
-    ////        });
-    //    }
-
 
     @SubscribeEvent
     public static void clientExtensionEvent(RegisterClientExtensionsEvent event) {

@@ -100,22 +100,6 @@ public class NuminaPackets {
                 TweakRequestDoublePacketClientBound.ID,
                 TweakRequestDoublePacketClientBound.STREAM_CODEC,
                 TweakRequestDoublePacketClientBound::handle);
-
-//        //------------------------------------------------------
-//        registrar.play(
-//                i++,
-//                PlayerHandStorageSyncResponseClientBound.ID,
-//                PlayerHandStorageSyncResponseClientBound::create,
-//                PlayerHandStorageSyncResponseClientBound.Handler::handle,
-//                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-//        //------------------------------------------------------
-//        registrar.play(
-//                i++,
-//                PlayerHandStorageSyncRequestServerBound.ID,
-//                PlayerHandStorageSyncRequestServerBound::create,
-//                PlayerHandStorageSyncRequestServerBound.Handler::handle,
-//                Optional.of(NetworkDirection.PLAY_TO_SERVER));
-
     }
 
     public static void sendToServer(CustomPacketPayload message) {

@@ -110,9 +110,6 @@ public class ModuleInstallationRecipe extends CustomRecipe {
             return iModularItem.getModularItemStack().copy();
         }
 
-
-
-
 //        // single module install
 //        ItemStack modularItem = container.getItem(modularItemSlots.getFirst()).copy();
 //        IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItem);

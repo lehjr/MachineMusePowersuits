@@ -247,16 +247,5 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
         return itemStack;
     }
-
-
-    abstract static class IconSlot extends HideableSlot implements IIConProvider {
-        public IconSlot(Container container, int parent, int index, int xPosition, int yPosition) {
-            super(container, parent, index, xPosition, yPosition);
-        }
-
-        public IconSlot(Container container, int parent, int index, int xPosition, int yPosition, boolean isEnabled) {
-            super(container, parent, index, xPosition, yPosition, isEnabled);
-        }
-    }
 }
 

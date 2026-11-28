@@ -112,7 +112,7 @@ public enum ModelSpecLoader {
         } catch (Exception e) {
             NuminaLogger.logException("failed to load ModelSpec", e);
         }
-//        NuminaLogger.logDebug("Finished loading model specs");
+        NuminaLogger.logDebug("Finished loading model specs");
     }
 
     void parseFile(JsonObject json) {
@@ -121,7 +121,7 @@ public enum ModelSpecLoader {
         SpecType specType = SpecType.getTypeFromName(specTypeString);
         boolean isDefault = json.has(DEFAULT) && json.get(DEFAULT).getAsBoolean();
         if (specType == null) {
-//            NuminaLogger.logDebug("model spec loader spec type: NULL " + json);
+            NuminaLogger.logDebug("model spec loader spec type: NULL " + json);
             return;
         }
 
@@ -408,5 +408,4 @@ public enum ModelSpecLoader {
         }
         return path;
     }
-
 }

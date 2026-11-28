@@ -27,6 +27,7 @@ import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ModularItem extends ComponentItemHandler implements IModularItem {
     final boolean isTool;
@@ -226,7 +227,6 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         if(pm != null) {
             return pm.isModuleOnline() && pm.isAllowed();
         }
-//        NuminaLogger.logDebug("pm cap is null for " + module);
         return false;
     }
 
@@ -372,18 +372,6 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         return findInstalledModule(item) > -1;
     }
 
-    @Override
-    public int findInstalledModule(Item item) {
-        if(item != Items.AIR) {
-            for (int i = 0; i < getSlots(); i++) {
-                if(getStackInSlot(i).is(item)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
     /**
      * returns the module capability only if the module is present and online
      * @param moduleName
@@ -415,6 +403,18 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
             }
         }
         return null;
+    }
+
+    @Override
+    public int findInstalledModule(Item item) {
+        if(item != Items.AIR) {
+            for (int i = 0; i < getSlots(); i++) {
+                if(getStackInSlot(i).is(item)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     @Override

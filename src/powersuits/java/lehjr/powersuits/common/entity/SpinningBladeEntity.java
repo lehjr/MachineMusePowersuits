@@ -54,7 +54,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
             if(mci != null) {
                 int index = mci.findInstalledModule(MPSConstants.BLADE_LAUNCHER_MODULE);
                 if (index >= 0) {
-                    IPowerModule pm = mci.getStackInSlot(index).getCapability(NuminaCapabilities.Module.POWER_MODULE);
+                    IPowerModule pm = mci.getModuleCapability(mci.getStackInSlot(index));
                     if(pm != null) {
                         damage = pm.applyPropertyModifiers(MPSConstants.BLADE_DAMAGE);
                     }

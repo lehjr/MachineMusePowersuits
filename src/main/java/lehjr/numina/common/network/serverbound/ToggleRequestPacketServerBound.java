@@ -34,13 +34,13 @@ public record ToggleRequestPacketServerBound(ResourceLocation registryName, bool
         );
     }
 
-    public static void handle(ToggleRequestPacketServerBound data, IPayloadContext ctx) {
+    public static void handle(ToggleRequestPacketServerBound message, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             Player player = ctx.player();
                 for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                     IModularItem modularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
                     if(modularItem != null) {
-                        modularItem.toggleModule(data.registryName, data.toggleval);
+                        modularItem.toggleModule(message.registryName, message.toggleval);
                     }
                 }
         });

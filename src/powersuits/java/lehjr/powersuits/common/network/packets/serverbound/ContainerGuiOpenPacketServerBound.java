@@ -14,18 +14,18 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 /**
  * A packet for sending a containerGui open request from the client side.
  */
-public record ContainerGuiOpenPacket(EquipmentSlot slotType, boolean shouldpreserve, double mouseX, double mouseY) implements CustomPacketPayload {
-    public static final Type<ContainerGuiOpenPacket> ID = new Type<>(ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "container_gui_open_to_server"));
+public record ContainerGuiOpenPacketServerBound(EquipmentSlot slotType, boolean shouldpreserve, double mouseX, double mouseY) implements CustomPacketPayload {
+    public static final Type<ContainerGuiOpenPacketServerBound> ID = new Type<>(ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "container_gui_open_to_server"));
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, ContainerGuiOpenPacket> STREAM_CODEC =
-            StreamCodec.ofMember(ContainerGuiOpenPacket::write, ContainerGuiOpenPacket::new);
+    public static final StreamCodec<RegistryFriendlyByteBuf, ContainerGuiOpenPacketServerBound> STREAM_CODEC =
+            StreamCodec.ofMember(ContainerGuiOpenPacketServerBound::write, ContainerGuiOpenPacketServerBound::new);
 
-    public ContainerGuiOpenPacket(RegistryFriendlyByteBuf packetBuffer) {
+    public ContainerGuiOpenPacketServerBound(RegistryFriendlyByteBuf packetBuffer) {
         this(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readBoolean(), packetBuffer.readDouble(),  packetBuffer.readDouble());
     }
 
@@ -36,12 +36,8 @@ public record ContainerGuiOpenPacket(EquipmentSlot slotType, boolean shouldprese
         packetBuffer.writeDouble(mouseY);
     }
 
-    public static void handle(ContainerGuiOpenPacket data, IPayloadContext ctx) {
+    public static void handle(ContainerGuiOpenPacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
-//            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) ->
-//                        new InstallSalvageMenu(id, inventory, data.slotType),
-//                        Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE));
-
             ctx.player().openMenu(new SimpleMenuProvider((id, inventory, player) ->
                 new InstallSalvageMenu(id, inventory, data.slotType),
                 Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE)), buf -> {

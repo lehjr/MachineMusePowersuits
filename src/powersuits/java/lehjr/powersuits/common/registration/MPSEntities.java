@@ -15,19 +15,19 @@ public class MPSEntities {
     /**
      * Entity Types ------------------------------------------------------------------------------
      */
-    public static final DeferredRegister<EntityType<?>> MPS_ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, MPSConstants.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> MPS_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, MPSConstants.MOD_ID);
 
-    public static final Supplier<EntityType<LuxCapacitorEntity>> LUX_CAPACITOR_ENTITY_TYPE = MPS_ENTITIES.register(MPSConstants.LUX_CAPACITOR.getPath(),
+    public static final Supplier<EntityType<LuxCapacitorEntity>> LUX_CAPACITOR_ENTITY_TYPE = MPS_ENTITY_TYPES.register(MPSConstants.LUX_CAPACITOR.getPath(),
             ()-> EntityType.Builder.<LuxCapacitorEntity>of(LuxCapacitorEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .build(MPSConstants.LUX_CAPACITOR.toString()));
 
-    public static final Supplier<EntityType<SpinningBladeEntity>> SPINNING_BLADE_ENTITY_TYPE = MPS_ENTITIES.register(MPSConstants.SPINNING_BLADE.getPath(),
+    public static final Supplier<EntityType<SpinningBladeEntity>> SPINNING_BLADE_ENTITY_TYPE = MPS_ENTITY_TYPES.register(MPSConstants.SPINNING_BLADE.getPath(),
             ()-> EntityType.Builder.<SpinningBladeEntity>of(SpinningBladeEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F) // FIXME! check size
                     .build(MPSConstants.SPINNING_BLADE.toString()));
 
-    public static final Supplier<EntityType<PlasmaBallEntity>> PLASMA_BALL_ENTITY_TYPE = MPS_ENTITIES.register(MPSConstants.PLASMA_BALL.getPath(),
+    public static final Supplier<EntityType<PlasmaBallEntity>> PLASMA_BALL_ENTITY_TYPE = MPS_ENTITY_TYPES.register(MPSConstants.PLASMA_BALL.getPath(),
             ()-> EntityType.Builder.<PlasmaBallEntity>of(PlasmaBallEntity::new, MobCategory.MISC)
 //                    .size(0.25F, 0.25F)
                     .build(MPSConstants.PLASMA_BALL.toString()));

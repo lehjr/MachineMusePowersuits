@@ -3,7 +3,7 @@ package lehjr.powersuits.common.network;
 import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
 import lehjr.powersuits.common.network.packets.clientbound.SetSprintAssistDoubleClientBound;
 import lehjr.powersuits.common.network.packets.clientbound.ToggleableModuleListClientBound;
-import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacket;
+import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacketServerBound;
 import lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
 import lehjr.powersuits.common.network.packets.serverbound.SetSprintAssistDoubleAndDrainServerBound;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -31,14 +31,13 @@ public class MPSPackets {
 
 
         registrar.playToServer(
-            ContainerGuiOpenPacket.ID,
-            ContainerGuiOpenPacket.STREAM_CODEC,
-            ContainerGuiOpenPacket::handle);
+            ContainerGuiOpenPacketServerBound.ID,
+            ContainerGuiOpenPacketServerBound.STREAM_CODEC,
+            ContainerGuiOpenPacketServerBound::handle);
 
         registrar.playToClient(ToggleableModuleListClientBound.ID,
             ToggleableModuleListClientBound.STREAM_CODEC,
             ToggleableModuleListClientBound::handle);
-
 
         registrar.playToServer(SetSprintAssistDoubleAndDrainServerBound.ID,
             SetSprintAssistDoubleAndDrainServerBound.STREAM_CODEC,

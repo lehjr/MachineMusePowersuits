@@ -8,6 +8,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -24,13 +25,9 @@ public class NuminaFOVUpdateEventHandler {
     @SubscribeEvent
     public static void onFOVUpdate(ComputeFovModifierEvent e) {
         if (NuminaClientConfig.useFovFix) {
-            LocalPlayer player = Minecraft.getInstance().player;
+            Player player = e.getPlayer();
             if (fovToggleKey.get().consumeClick()) {
                 fovIsActive = !fovIsActive;
-                if (player == null) {
-                    return;
-                }
-
                 if (fovIsActive) {
                     player.sendSystemMessage(Component.translatable("message.numina.fovfixtoggle.disabled"));//, player.getUUID());
                 } else {

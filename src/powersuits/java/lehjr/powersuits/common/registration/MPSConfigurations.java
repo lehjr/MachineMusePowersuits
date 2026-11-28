@@ -97,6 +97,8 @@ public class MPSConfigurations {
 
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
+
+
         MPSCommonConfig.onLoad(event);
         // Modular Items
         ArmorConfig.onLoad(event);

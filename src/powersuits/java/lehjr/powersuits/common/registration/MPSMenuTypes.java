@@ -14,10 +14,10 @@ public class MPSMenuTypes {
     /**
      * AbstractContainerMenu Types ----------------------------------------------------------------------------
      */
-    public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, MPSConstants.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MPS_MENU_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, MPSConstants.MOD_ID);
 
     public static final Supplier<MenuType<InstallSalvageMenu>> INSTALL_SALVAGE_MENU_TYPE =
-            MENU_TYPES.register(MPSConstants.INSTALL_SALVAGE_CONTAINER_TYPE,
+            MPS_MENU_TYPES.register(MPSConstants.INSTALL_SALVAGE_CONTAINER_TYPE,
                     () -> IMenuTypeExtension.create((windowId, inv, data) -> {
                         EquipmentSlot slot = data.readEnum(EquipmentSlot.class);
                         boolean preserveMouse = data.readBoolean();

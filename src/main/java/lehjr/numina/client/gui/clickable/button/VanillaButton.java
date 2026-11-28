@@ -86,26 +86,6 @@ public class VanillaButton extends Clickable {
         return i;
     }
 
-//    public void renderButton(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-//        Minecraft minecraft = Minecraft.getInstance();
-//        Font fontrenderer = minecraft.font;
-//
-//        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-//        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-////        RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_LOCATION); // FIXME!!!: see vanilla's AbstractButton
-//        int i = this.getYImage(containsPoint(mouseX, mouseY));
-//        RenderSystem.enableBlend();
-//        RenderSystem.defaultBlendFunc();
-//        RenderSystem.enableDepthTest();
-//
-//        // FIXME: still needed or able to use screen version?
-//        IconUtils.INSTANCE.blit(gfx.pose(), this.left(), this.top(), 0, 46 + i * 20, this.width() / 2, this.height());
-//        IconUtils.INSTANCE.blit(gfx.pose(), this.left() + this.width() / 2, this.top(), 200 - this.width() / 2, 46 + i * 20, this.width() / 2, this.height());
-//        this.renderBg(gfx, mouseX, mouseY, partialTicks);
-//        int j = getFGColor();
-//        gfx.drawCenteredString(fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(this.alpha * 255.0F) << 24);
-//    }
-
     protected void renderButton(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
         gfx.setColor(1.0F, 1.0F, 1.0F, this.alpha);
@@ -119,20 +99,10 @@ public class VanillaButton extends Clickable {
         }
         gfx.blitSprite(resourceLocation, (int)this.left(), (int)this.top(), (int)this.width(), (int)this.height());
         gfx.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-//        int i = getFGColor();
-//        this.renderString(gfx, minecraft.font, i | Mth.ceil(this.alpha * 255.0F) << 24);
         int i = getFGColor();
 
         gfx.drawCenteredString(StringUtils.getFontRenderer(), this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), i | Mth.ceil(this.alpha * 255.0F) << 24);
     }
-
-
-
-
-
-
-
-
 
     protected void renderBg(GuiGraphics gfx, int pMouseX, int pMouseY, float frameTime) {
     }
@@ -144,7 +114,6 @@ public class VanillaButton extends Clickable {
     public Component getLabel() {
         return label;
     }
-
 
     @Override
     public List<Component> getToolTip(int x, int y) {

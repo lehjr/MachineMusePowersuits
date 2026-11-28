@@ -162,7 +162,7 @@ public class KeymappingKeyHandler {
                 }
             }
 
-            /**  TODO: server config option to disable these and enforce tinker table requirement */
+                /**  TODO: server config option to disable these and enforce tinker table requirement */
         /*
         if (openKeybindGUI.isDown()) {
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);

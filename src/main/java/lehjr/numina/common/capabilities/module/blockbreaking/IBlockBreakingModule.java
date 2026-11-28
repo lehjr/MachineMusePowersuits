@@ -50,19 +50,4 @@ public interface IBlockBreakingModule extends IPowerModule {
     default boolean canPerformAction(ItemAbility toolAction) {
         return getEmulatedTool().canPerformAction(toolAction);
     }
-
-    default boolean blockCheckAndHarvest(Player player, Level world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-
-        if (block == null || world.isEmptyBlock(pos) || block == Blocks.BEDROCK)
-            return false;
-        if ((block instanceof IShearable || block instanceof BushBlock || block instanceof LeavesBlock)
-                && block.canHarvestBlock(state, world, pos, player) || block == Blocks.SNOW || block == Blocks.SNOW_BLOCK) {
-            block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.IRON_SHOVEL));
-            world.removeBlock(pos, false);
-            return true;
-        }
-        return false;
-    }
 }

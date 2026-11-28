@@ -14,28 +14,24 @@ public interface IEnchantmentModule extends IPlayerTickModule {
     /**
      * enable enchantment
      */
-    @Nonnull
-    default ItemStack addEnchantment(@Nonnull ItemStack itemStack, Level level) {
+    default void addEnchantment(ItemStack itemStack, Level level) {
         // get stored enchantments (NonNull)
         ItemEnchantments itemenchantments = itemStack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
         ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(itemenchantments);
         mutable.set(getEnchantment(level), getLevel());
         ItemEnchantments itemenchantments1 = mutable.toImmutable();
         itemStack.set(DataComponents.ENCHANTMENTS, itemenchantments1);
-        return itemStack;
     }
 
     /**
      * disable enchantment
      */
-    @Nonnull
-    default ItemStack removeEnchantment(@Nonnull ItemStack itemStack, Level level) {
+    default void removeEnchantment(ItemStack itemStack, Level level) {
         ItemEnchantments itemenchantments = itemStack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
         ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(itemenchantments);
         mutable.set(getEnchantment(level), -1);
         ItemEnchantments itemenchantments1 = mutable.toImmutable();
         itemStack.set(DataComponents.ENCHANTMENTS, itemenchantments1);
-        return itemStack;
     }
 
     void setAdded(boolean added);

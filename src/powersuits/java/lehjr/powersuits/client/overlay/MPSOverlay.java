@@ -1,6 +1,5 @@
 package lehjr.powersuits.client.overlay;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.platform.Window;
 import lehjr.powersuits.client.config.MPSClientConfig;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
@@ -28,23 +27,23 @@ public class MPSOverlay {
         float scaledHeight = screen.getHeight()/guiScale;
         MPSMeterOverlay.render(player, gfx, deltaTracker, scaledWidth, scaledHeight);
 
-        AtomicDouble top = new AtomicDouble(MPSClientConfig.hud_keybind_y);
+        double top = MPSClientConfig.hud_keybind_y;
         if (MPSClientConfig.hud_display_keybindings_hud) {// && isModularItemEquipped(player)) {
             for(KBDisplay kbDisplay : kbDisplayList) {
                 kbDisplay.refreshKBList();
 
                 if (!kbDisplay.keybindsToRender.isEmpty()) {
                     kbDisplay.setLeft(MPSClientConfig.hud_keybind_x);
-                    kbDisplay.setTop(top.get());
-                    kbDisplay.setBottom(top.get() + 16);
+                    kbDisplay.setTop(top);
+                    kbDisplay.setBottom(top + 16);
                     kbDisplay.render(gfx, 0, 0, 0);
-                    top.getAndAdd(16);
+                    top += 16;
                 }
             }
         }
 
-        top.getAndAdd(4);
-        MPSHUD.render(player, gfx, (float)top.get(), (float)MPSClientConfig.hud_keybind_x);
+        top += 4;
+        MPSHUD.render(player, gfx, (float)top, (float)MPSClientConfig.hud_keybind_x);
     });
 
     /**

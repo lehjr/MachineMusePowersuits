@@ -35,12 +35,12 @@ public class MPSMeterOverlay {
     /**
      *
      * @param player
-     * @param poseStack
+     * @param gfx
      * @param deltaTracker unused, left for potential future "features"
      * @param scaledWidth
      * @param scaledHeight
      */
-    public static void render(Player player, GuiGraphics poseStack, DeltaTracker deltaTracker, float scaledWidth, float scaledHeight) {
+    public static void render(Player player, GuiGraphics gfx, DeltaTracker deltaTracker, float scaledWidth, float scaledHeight) {
         float top = scaledHeight / 2.0F - 16F;
         float left = scaledWidth - 36;
         double stringX = left - 2;
@@ -151,26 +151,26 @@ public class MPSMeterOverlay {
             //but including it won't hurt and this makes it easier to swap them around.
 
             if (energyMeter != null) {
-                energyMeter.draw(poseStack, left, top + (totalMeters - numMeters) * 9, (float)(currEnergy / maxEnergy));
-                StringUtils.drawRightAlignedShadowedString(poseStack, currEnergyStr, stringX, meterTextOffsetY + top);
+                energyMeter.draw(gfx, left, top + (totalMeters - numMeters) * 9, (float)(currEnergy / maxEnergy));
+                StringUtils.drawRightAlignedShadowedString(gfx, currEnergyStr, stringX, meterTextOffsetY + top);
                 numMeters--;
             }
 
             if (heatMeter != null) {
-                heatMeter.draw(poseStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat);
-                StringUtils.drawRightAlignedShadowedString(poseStack, currHeatStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+                heatMeter.draw(gfx, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat);
+                StringUtils.drawRightAlignedShadowedString(gfx, currHeatStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                 numMeters--;
             }
 
             if (waterMeter != null) {
-                waterMeter.draw(poseStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currWater, 0, maxWater) / maxWater);
-                StringUtils.drawRightAlignedShadowedString(poseStack, currWaterStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+                waterMeter.draw(gfx, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currWater, 0, maxWater) / maxWater);
+                StringUtils.drawRightAlignedShadowedString(gfx, currWaterStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                 numMeters--;
             }
 
             if (plasmaMeter != null) {
-                plasmaMeter.draw(poseStack, left, top + (totalMeters - numMeters) * 9, currentPlasma / maxPlasma);
-                StringUtils.drawRightAlignedShadowedString(poseStack, currPlasmaStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+                plasmaMeter.draw(gfx, left, top + (totalMeters - numMeters) * 9, currentPlasma / maxPlasma);
+                StringUtils.drawRightAlignedShadowedString(gfx, currPlasmaStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
             }
 
         } else {
@@ -178,20 +178,20 @@ public class MPSMeterOverlay {
 
             int numReadouts = 0;
             if (maxEnergy > 0) {
-                StringUtils.drawRightAlignedShadowedString(poseStack, currEnergyStr + '/' + maxEnergyStr, stringX, top);
+                StringUtils.drawRightAlignedShadowedString(gfx, currEnergyStr + '/' + maxEnergyStr, stringX, top);
                 numReadouts += 1;
             }
 
-            StringUtils.drawRightAlignedShadowedString(poseStack, currHeatStr + '/' + maxHeatStr + " C", stringX, top + (numReadouts * 9));
+            StringUtils.drawRightAlignedShadowedString(gfx, currHeatStr + '/' + maxHeatStr + " C", stringX, top + (numReadouts * 9));
             numReadouts += 1;
 
             if (maxWater > 0) {
-                StringUtils.drawRightAlignedShadowedString(poseStack, currWaterStr + '/' + maxWaterStr + " buckets", stringX, top + (numReadouts * 9));
+                StringUtils.drawRightAlignedShadowedString(gfx, currWaterStr + '/' + maxWaterStr + " buckets", stringX, top + (numReadouts * 9));
                 numReadouts += 1;
             }
 
             if (maxPlasma > 0 /* && drawPlasmaMeter */) {
-                StringUtils.drawRightAlignedShadowedString(poseStack, currPlasmaStr + '/' + maxPlasmaStr + "%", stringX, top + (numReadouts * 9));
+                StringUtils.drawRightAlignedShadowedString(gfx, currPlasmaStr + '/' + maxPlasmaStr + "%", stringX, top + (numReadouts * 9));
             }
         }
     };

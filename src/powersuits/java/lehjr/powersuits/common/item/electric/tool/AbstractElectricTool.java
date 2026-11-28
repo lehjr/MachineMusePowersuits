@@ -59,22 +59,6 @@ import java.util.List;
         return 7200;
     }
 
-    /** Durability bar for showing energy level ------------------------------------------------------------------ */
-    @Override
-    public boolean isBarVisible(ItemStack stack) {
-         return stack.getCapability(Capabilities.EnergyStorage.ITEM) != null;
-    }
-
-    @Override
-    public int getBarWidth(ItemStack stack) {
-        double retVal = 1;
-        IEnergyStorage iEnergyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        if(iEnergyStorage != null) {
-            retVal =  iEnergyStorage.getEnergyStored() * 13D / iEnergyStorage.getMaxEnergyStored();
-        }
-        return (int) retVal;
-    }
-
     /**
      * Item.releaseUsing(ItemStack, Level, LivingEntity, int) (ItemStack, Level, LivingEntity)} for when the player releases but the full timer has not passed
      * @param stack
@@ -87,7 +71,7 @@ import java.util.List;
 
         IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
         if(mci != null) {
-//            NuminaLogger.logDebug("releaseUsing tool, timeleft: " + timeLeft);
+            //            NuminaLogger.logDebug("releaseUsing tool, timeleft: " + timeLeft);
             mci.releaseUsing(stack, level, entityLiving, timeLeft);
         }
     }
@@ -103,12 +87,27 @@ import java.util.List;
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
         IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(stack);
         if(mci != null) {
-//            NuminaLogger.logDebug("finishUsing tool");
+            //            NuminaLogger.logDebug("finishUsing tool");
             return mci.finishUsingItem(stack, level, livingEntity);
         }
         return stack;
     }
 
+    /** Durability bar for showing energy level ------------------------------------------------------------------ */
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+         return stack.getCapability(Capabilities.EnergyStorage.ITEM) != null;
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+        double retVal = 1;
+        IEnergyStorage iEnergyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        if(iEnergyStorage != null) {
+            retVal =  iEnergyStorage.getEnergyStored() * 13D / iEnergyStorage.getMaxEnergyStored();
+        }
+        return (int) retVal;
+    }
 
     @Override
     public int getBarColor(ItemStack stack) {

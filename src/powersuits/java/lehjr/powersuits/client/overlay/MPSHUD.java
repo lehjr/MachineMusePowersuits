@@ -29,7 +29,7 @@ public class MPSHUD {
         int yOffsetString = 18;
         float yOffsetIcon = 16.0F;
         // Misc Overlay Items ---------------------------------------------------------------------------------
-        AtomicInteger index = new AtomicInteger(0);
+        int index = 0;
         // Helmet modules with overlay
         IModularItem iModularItem = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
         if(iModularItem != null) {
@@ -44,10 +44,10 @@ public class MPSHUD {
                             int foodLevel =  (int) AutoFeederModule.getFoodLevel(module);
 
                             String num = StringUtils.formatNumberShort(foodLevel);
-                            StringUtils.drawShadowedString(gfx, num, 17, 4 + top + (yOffsetString * index.get()));
+                            StringUtils.drawShadowedString(gfx, num, 17, 4 + top + (yOffsetString * index));
                             // FIXME
-                            IconUtils.drawItemAt(gfx, -1.0, top + (yOffsetIcon * index.get()), food, Color.WHITE);
-                            index.addAndGet(1);
+                            IconUtils.drawItemAt(gfx, -1.0, top + (yOffsetIcon * index), food, Color.WHITE);
+                            index += 1;
 
                             // Clock
                         } else if (Objects.equals(ItemUtils.getRegistryName(module), ItemUtils.getRegistryName(Items.CLOCK))) {
@@ -80,14 +80,14 @@ public class MPSHUD {
                                         ampm = " AM";
                                     }
                                 }
-                                StringUtils.drawShadowedString(gfx, hour + ampm, left + 17, 4 + top + (yOffsetString * index.get()));
-                                IconUtils.drawItemAt(gfx, left - 1.0, top + (yOffsetIcon * index.get()), module, Color.WHITE);
-                                index.addAndGet(1);
+                                StringUtils.drawShadowedString(gfx, hour + ampm, left + 17, 4 + top + (yOffsetString * index));
+                                IconUtils.drawItemAt(gfx, left - 1.0, top + (yOffsetIcon * index), module, Color.WHITE);
+                                index += 1;
                             }
                             // Generic modules
                         } else if (pm instanceof IHudModule) {
-                            IconUtils.drawItemAt(gfx, left - 1.0, top + (yOffsetIcon * index.get()), module, Color.WHITE);
-                            index.addAndGet(1);
+                            IconUtils.drawItemAt(gfx, left - 1.0, top + (yOffsetIcon * index), module, Color.WHITE);
+                            index +=1;
                         }
                     }
                 }

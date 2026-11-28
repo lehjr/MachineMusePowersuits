@@ -10,7 +10,6 @@ import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.serverbound.ModeChangeRequestPacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
@@ -36,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ModeChangingModularItem extends ModularItem implements IModeChangingItem {
     protected static int activeMode = -1;
@@ -44,13 +42,6 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public ModeChangingModularItem(@Nonnull ItemStack modularItem, int tier, int size) {
         super(modularItem, tier, size, true);
         activeMode = TagUtils.getModularItemIntOrDefault(modularItem, TAG_MODE, -1);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Nullable
-    @Override
-    public BakedModel getInventoryModel() {
-        return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(getActiveModule());
     }
 
     @Override
@@ -64,11 +55,6 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             }
         }
         return moduleIndexes;
-    }
-
-    @Override
-    public boolean isValidMode(ResourceLocation mode) {
-        return false;
     }
 
     @Override
@@ -103,22 +89,13 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
 
     @Override
     public boolean hasActiveModule(Item item) {
-        final int activeModeIndex = getActiveMode();
-
-        if(activeModeIndex >=0 && activeModeIndex < getSlots()) {
-            ItemStack module = getStackInSlot(activeModeIndex);
-            if(module.is(item)) {
-                return isModuleOnline(module);
-            }
-        }
-        return false;
+        return hasActiveModule(getActiveMode(), item);
     }
 
     @Override
     public boolean hasActiveModule(int index, Item item) {
         final int activeModeIndex = getActiveMode();
-
-        if(activeModeIndex >=0 && activeModeIndex < getSlots()  && index == activeModeIndex) {
+        if(isSlotValid(activeModeIndex)  && index == activeModeIndex) {
             ItemStack module = getStackInSlot(activeModeIndex);
             if(module.is(item)) {
                 return isModuleOnline(module);
@@ -126,8 +103,6 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         }
         return false;
     }
-
-
 
     @Override
     public boolean hasActiveModule(ResourceLocation regName) {
@@ -170,6 +145,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         return (selection > 0) ? (selection % modesSize) : ((selection + modesSize * -selection) % modesSize);
     }
 
+    @Override
     public boolean isModuleActiveAndOnline(Item module) {
         int activeModeIndex = getActiveMode();
         if(activeModeIndex >= 0 && activeModeIndex < getSlots()) {
@@ -232,37 +208,20 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) {
         IPowerModule pm = getModuleCapability(getActiveModule());
-//        NuminaLogger.logDebug("releaseUsing mci, timeLeft " + timeLeft);
-
-
         if (pm instanceof IRightClickModule rightClickModule) {
-//            NuminaLogger.logDebug("releaseUsing mci, activeModule " + getActiveModule());
             rightClickModule.releaseUsing(stack, level, entityLiving, timeLeft);
-        } else {
-//            NuminaLogger.logDebug(getActiveModule() + " mci not IRightClick?");
         }
     }
 
     // Fixme: maybe just call releaseUsing with 0 timeLeft?
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-//        NuminaLogger.logDebug("finishUsing " + getActiveModule());
-
         IPowerModule pm = getModuleCapability(getActiveModule());
         if (pm instanceof IRightClickModule rightClickModule) {
             rightClickModule.finishUsingItem(stack, level, livingEntity);
         }
         return getModularItemStack();
     }
-
-
-
-    //    @Override
-    //    public boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining) {
-    //        return NuminaCapabilities.getCapability(getActiveModule(), NuminaCapabilities.Module.POWER_MODULE)
-    //                .filter(IOtherModItemsAsModules.class::isInstance)
-    //                .map(IOtherModItemsAsModules.class::cast).map(iOtherModItemsAsModules -> iOtherModItemsAsModules.onUseTick(level, entity, ticksRemaining)).orElse(true);
-    //    }
 
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, BlockHitResult hitResult, Player player, Level level) {
@@ -317,21 +276,6 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             }
         }
         return false;
-    }
-
-    @Override
-    public void setModuleFloat(ResourceLocation moduleName, String key, float value) {
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && Objects.equals(ItemUtils.getRegistryName(module), moduleName)) {
-                IPowerModule pm = getModuleCapability(module);
-                if (pm != null) {
-                    TagUtils.setModuleFloat(module, key, value);
-                    updateModuleInSlot(i, module);
-                    break;
-                }
-            }
-        }
     }
 
     @Override

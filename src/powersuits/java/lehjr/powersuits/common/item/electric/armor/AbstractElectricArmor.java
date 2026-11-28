@@ -106,10 +106,6 @@ public class AbstractElectricArmor extends ArmorItem {
                                             /*
                                                 toughness for diamond = 2 per
                                             */
-
-
-
-
                                 }
                             }
                         }
@@ -128,20 +124,17 @@ public class AbstractElectricArmor extends ArmorItem {
 
 
 
-                if (slotType == EquipmentSlot.LEGS) {
-                    for (int i = 0; i < iModularItem.getSlots(); i++) {
-                        /** Note: attribute should already be removed when module is offline */
-                        IPowerModule iPowerModule = iModularItem.getStackInSlot(i).getCapability(NuminaCapabilities.Module.POWER_MODULE);
-                        if(iPowerModule != null) {
-//                            movementResistance += iPowerModule.applyPropertyModifiers(MPSConstants.MOVEMENT_RESISTANCE);
-//                            iPowerModule.getModule().getAttributeModifiers(slotType).get(Attributes.MOVEMENT_SPEED).forEach(attributeModifier -> speed.getAndAdd(attributeModifier.getAmount()));
-//                            iPowerModule.getModule().getAttributeModifiers(slotType).get(NeoForgeMod.SWIM_SPEED)).forEach(attributeModifier -> {
-//                                swimBoost.getAndAdd(attributeModifier.getAmount());
-//                            });
-//                            if (!iPowerModule.getModule().getAttributeModifiers(iPowerModule.getModule()).get(Attributes.STEP_HEIGHT).isEmpty()) {
-//                                stepHeight =0.5F;
-//                            }
+                if(slotType == EquipmentSlot.LEGS) {
+                    int index = iModularItem.findInstalledModule(MPSConstants.CLIMB_ASSIST_MODULE);
+                    if (iModularItem.isSlotValid(index)) {
+                        IPowerModule pm = iModularItem.getModuleCapability(iModularItem.getStackInSlot(index));
+                        if (pm != null && pm.isAllowed() && pm.isModuleOnline()) {
+                            stepHeight = (float) pm.applyPropertyModifiers(MPSConstants.STEP_HEIGHT);
+                        } else {
+                            stepHeight = 0.5F;
                         }
+                    } else {
+                        stepHeight = 0.5F;
                     }
                 }
             }
@@ -236,7 +229,7 @@ public class AbstractElectricArmor extends ArmorItem {
     public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
         // FIXME: module? also address frostbite
 
-        return super.canWalkOnPowderedSnow(stack, wearer);
+        return this.type == Type.BOOTS;
     }
 
     @Override

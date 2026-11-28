@@ -1,10 +1,13 @@
 package lehjr.numina.common.container;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.container.slot.CategoryIconSlotItemHandler;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.registration.NuminaBlocks;
 import lehjr.numina.common.registration.NuminaMenus;
+import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,10 +35,10 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
 
             // slot 0
             addSlot(new CategoryIconSlotItemHandler(chargingBase.getItems(), -1, SLOT, 79, 35, ModuleCategory.ENERGY_STORAGE) {
-//                @Override
-//                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-//                    IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
-//                }
+                @Override
+                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
+                    IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
+                }
             });
 
             // Setup syncing of power from server to client so that the GUI can show the amount of power in the block

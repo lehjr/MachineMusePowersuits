@@ -8,8 +8,9 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import lehjr.powersuits.common.network.MPSPackets;
-import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacket;
+import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacketServerBound;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -43,6 +44,16 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
     }
 
     @Override
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        super.render(gfx, mouseX, mouseY, partialTick);
+    }
+
+    @Override
+    public void renderBackgroundRect(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        super.renderBackgroundRect(gfx, mouseX, mouseY, partialTicks);
+    }
+
+    @Override
     public void update(double mouseX, double mouseY) {
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
             if (selected != tab) {
@@ -57,7 +68,7 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
                 double[] yPos = new double[1];
                 long windowHandle = mc.getWindow().getWindow();
                 GLFW.glfwGetCursorPos(windowHandle, xPos, yPos);
-                MPSPackets.sendToServer(new ContainerGuiOpenPacket(type, true, xPos[0], yPos[0]));
+                MPSPackets.sendToServer(new ContainerGuiOpenPacketServerBound(type, true, xPos[0], yPos[0]));
             }
         });
         super.update(mouseX, mouseY);

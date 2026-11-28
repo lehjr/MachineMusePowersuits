@@ -36,10 +36,6 @@ public interface IModeChangingItem extends IModularItem {
 //    String UNIQUE_ID = "unique_ID";
 
     @OnlyIn(Dist.CLIENT)
-    @Nullable
-    BakedModel getInventoryModel();
-
-    @OnlyIn(Dist.CLIENT)
     default void drawModeChangeIcon(LocalPlayer player, int hotbarIndex, GuiGraphics gfx, int screenWidth, int screenHeight) {
         ItemStack module = getActiveModule();
         if (!module.isEmpty()) {
@@ -100,8 +96,6 @@ public interface IModeChangingItem extends IModularItem {
 
     List<Integer> getValidModes();
 
-    boolean isValidMode(ResourceLocation mode);
-
     boolean isValidMode(@Nonnull ItemStack module);
 
     int getActiveMode();
@@ -122,6 +116,8 @@ public interface IModeChangingItem extends IModularItem {
 
     int prevMode();
 
+    boolean isModuleActiveAndOnline(Item module);
+
     boolean isModuleActiveAndOnline(ResourceLocation moduleName);
 
     InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, InteractionResultHolder<ItemStack> fallback);
@@ -136,14 +132,6 @@ public interface IModeChangingItem extends IModularItem {
     InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context, InteractionResult fallback);
 
     InteractionResult useOn(UseOnContext context, InteractionResult fallback);
-
-//    default ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
-//        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
-//                .filter(IRightClickModule.class::isInstance)
-//                .map(IRightClickModule.class::cast)
-//                .map(m -> m.finishUsingItem(stack, worldIn, entity))
-//                .orElse(stack);
-//    }
 
     /**
      * Item.releaseUsing(ItemStack, Level, LivingEntity, int) (ItemStack, Level, LivingEntity)} for when the player releases but the full timer has not passed
@@ -169,20 +157,9 @@ public interface IModeChangingItem extends IModularItem {
         return true;
     }
 
-//    /**
-//     * Not entirely sure this does what was intended. It was supposed to be for using other mod's items as modules, but probably was a failed experiment
-//     * @param level
-//     * @param entity
-//     * @param ticksRemaining
-//     * @return
-//     */
-//    @Deprecated(forRemoval = true)
-//    boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining);
-
     boolean onBlockStartBreak(ItemStack itemstack, BlockHitResult hitResult, Player player, Level level);
 
     boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving);
-
 
 
     /**
@@ -196,16 +173,6 @@ public interface IModeChangingItem extends IModularItem {
     boolean canPerformAction(ItemAbility toolAction);
 
     boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state);
-
-    default ItemStack getActiveExternalModule() {
-        ItemStack module = getActiveModule();
-        IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
-        if(pm instanceof IOtherModItemsAsModules) {
-            return module;
-        }
-        return getModularItemStack();
-    }
-
 
     boolean returnForeignModuleToModularItem(@Nonnull ItemStack module);
 }

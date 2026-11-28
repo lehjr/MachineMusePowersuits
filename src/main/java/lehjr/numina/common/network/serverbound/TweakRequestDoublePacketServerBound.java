@@ -48,15 +48,15 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
         NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(slotType, moduleRegName, tweakName, tweakValue), entity);
     }
 
-    public static void handle(TweakRequestDoublePacketServerBound data, IPayloadContext ctx) {
+    public static void handle(TweakRequestDoublePacketServerBound message, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             Player player = ctx.player();
-            if (data.moduleRegName != null && data.tweakName != null) {
-                ItemStack stack = ItemUtils.getItemFromEntitySlot(player, data.slotType);
+            if (message.moduleRegName != null && message.tweakName != null) {
+                ItemStack stack = ItemUtils.getItemFromEntitySlot(player, message.slotType);
                 IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(stack);
                 if (iModularItem != null) {
-                    iModularItem.setModuleDouble(data.moduleRegName, data.tweakName, data.tweakValue);
-                    sendToClient((ServerPlayer) player, data.slotType, data.moduleRegName, data.tweakName, data.tweakValue);
+                    iModularItem.setModuleDouble(message.moduleRegName, message.tweakName, message.tweakValue);
+                    sendToClient((ServerPlayer) player, message.slotType, message.moduleRegName, message.tweakName, message.tweakValue);
                 }
             }
         });

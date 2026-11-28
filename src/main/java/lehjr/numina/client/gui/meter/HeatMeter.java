@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import lehjr.numina.client.config.IMeterConfig;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,18 +18,23 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Matrix4f;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 public class HeatMeter {
-    final ResourceLocation TEXTURE_LOCATION = ResourceLocation.withDefaultNamespace("block/magma");
+    final FluidStack fluidStack = new FluidStack(Fluids.FLOWING_LAVA, 1000);
+    final ResourceLocation TEXTURE_LOCATION = IClientFluidTypeExtensions.of(Fluids.FLOWING_LAVA).getFlowingTexture(fluidStack);
 
     final int xsize = 32;
     final int ysize = 8;
-    float meterStart, meterLevel;
 
     Callable<IMeterConfig> config;
 
@@ -40,7 +46,6 @@ public class HeatMeter {
         this.config = () -> new IMeterConfig() {};
     }
 
-    List<Integer> frames = new ArrayList<>();
     // this "should" work
     public TextureAtlasSprite getTexture() {
         return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE_LOCATION);
@@ -68,34 +73,77 @@ public class HeatMeter {
     public void drawAdditional(GuiGraphics gfx, float xpos, float ypos, float value) {
     }
 
-    public void drawFluid(GuiGraphics gfx, float xpos, float ypos, float value, TextureAtlasSprite icon) {
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        int argbColor = getConfig().getBarColor().getARGBInt();
-        if(frames.isEmpty()) {
-            icon.contents().getUniqueFrames().forEach(frame -> frames.add(frame));
-        }
+//    public void drawFluid(GuiGraphics gfx, float left, float top, float value, TextureAtlasSprite icon) {
+//        RenderSystem.enableBlend();
+//        RenderSystem.defaultBlendFunc();
+//        int argbColor = getConfig().getBarColor().getARGBInt();
+//        if(frames.isEmpty()) {
+//            icon.contents().getUniqueFrames().forEach(frame -> frames.add(frame));
+//        }
+//
+//        value = Math.min(value, 1F);
+//        gfx.pose().pushPose();
+//        gfx.pose().scale(0.5F, 0.5F, 0.5F);
+//        // New: Horizontal, fill from left.
+//        meterStart = left;
+//        meterLevel = (left + xsize * value);
+//        while (meterStart + 8 < meterLevel) {
+//            IconUtils.drawIconAt(gfx.pose(), meterStart * 2, top * 2, icon, argbColor);
+//            meterStart += 8;
+//        }
+//        IconUtils.drawIconPartial(gfx.pose(), meterStart * 2, top * 2, icon, argbColor,
+//            0, 0, (meterLevel - meterStart) * 2, 16);
+//        gfx.pose().popPose();
+//        RenderSystem.disableBlend();
+//    }
 
-        value = Math.min(value, 1F);
-        gfx.pose().pushPose();
-        gfx.pose().scale(0.5F, 0.5F, 0.5F);
-        // New: Horizontal, fill from left.
-        meterStart = xpos;
-        meterLevel = (xpos + xsize * value);
-        while (meterStart + 8 < meterLevel) {
-            IconUtils.drawIconAt(gfx.pose(), meterStart * 2, ypos * 2, icon, argbColor);
-            meterStart += 8;
+    public void drawFluid(GuiGraphics gfx, float left, float top, float value, @Nullable TextureAtlasSprite icon) {
+        if(value > 0) {
+            if (icon == null) {
+                icon = IconUtils.getMissingIcon();
+            }
+
+            value = Mth.clamp(value, 0.0F, 1.0F);
+            if (value <= 0.0F) {
+                return;
+            }
+
+            Color color = getConfig().getBarColor();
+
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.setShaderTexture(0, icon.atlasLocation());
+            RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+
+            gfx.pose().pushPose();
+            gfx.pose().scale(0.5F, 0.5F, 0.5F);
+
+            Matrix4f matrix4f = gfx.pose().last().pose();
+            BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+
+            float meterStart = left;
+            float meterLevel = left + xsize * value;
+
+            while (meterStart + 8 < meterLevel) {
+                IconUtils.appendIconPartial(bufferBuilder, matrix4f, meterStart * 2, top * 2, icon, color, 0, 0, 16, 16);
+                meterStart += 8;
+            }
+            if (meterLevel > meterStart) {
+                IconUtils.appendIconPartial(bufferBuilder, matrix4f, meterStart * 2, top * 2, icon, color, 0, 0, (meterLevel - meterStart) * 2, 16);
+            }
+
+            BufferUploader.drawWithShader(Objects.requireNonNull(bufferBuilder.build()));
+            gfx.pose().popPose();
         }
-        IconUtils.drawIconPartial(gfx.pose(), meterStart * 2, ypos * 2, icon, argbColor,
-            0, 0, (meterLevel - meterStart) * 2, 16);
-        gfx.pose().popPose();
-        RenderSystem.disableBlend();
     }
+
+
+
 
     /**
      *
      */
-    public void drawGlass(GuiGraphics gfx, float xpos, float ypos) {
+    public void drawGlass(GuiGraphics gfx, float left, float top) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         int glassColor = getConfig().getGlassColor().getARGBInt();
@@ -105,9 +153,7 @@ public class HeatMeter {
         float maxV = 1F;
 
         float blitOffset = 0;
-        float left = xpos;
         float right = left + xsize;
-        float top = ypos;
         float bottom = top + ysize;
 
         RenderSystem.setShaderTexture(0, NuminaConstants.GLASS_TEXTURE);

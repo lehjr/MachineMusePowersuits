@@ -43,14 +43,12 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public class LuxCapacitorModule extends AbstractPowerModule {
     public static class RightClickie extends PlayerTickModule implements IRightClickModule {
-        public RightClickie(@Nonnull ItemStack module) {
+        public RightClickie(ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.luxCapacitorEnergyConsumptionBase, "FE");
             addTradeoffProperty(MPSConstants.RED, MPSConstants.RED_HUE, 1.0, "%");
@@ -60,12 +58,12 @@ public class LuxCapacitorModule extends AbstractPowerModule {
         }
 
         @Override
-        public boolean onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn, int moduleIndex) {
+        public boolean onPlayerTickActive(Player player, Level level, ItemStack itemStackIn, int moduleIndex) {
             return onPlayerTickInactive(player, level, itemStackIn,  moduleIndex);
         }
 
         @Override
-        public boolean onPlayerTickInactive(Player player, Level level, @NotNull ItemStack itemStackIn,  int moduleIndex) {
+        public boolean onPlayerTickInactive(Player player, Level level, ItemStack itemStackIn,  int moduleIndex) {
             double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
             if (timer > 0) {
                 TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, timer - 1 > 0 ? timer - 1 : 0);
@@ -85,7 +83,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
         }
 
         @Override
-        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
+        public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
             double energyConsumption = getEnergyUsage();
             double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
 
@@ -106,17 +104,12 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                             HeatUtils.heatPlayer(playerIn, energyConsumption / 500);
                             ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption, false);
 //                            NuminaLogger.logDebug("Lux Capacitor Entity added to world: ");
-                        } else {
-//                            NuminaLogger.logDebug("Lux Capacitor Entity failed to launch?: " + (Objects.isNull(luxCapacitor)));
                         }
                     });
                 }
 
                 InteractionResultHolder<ItemStack> test = InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
-//                NuminaLogger.logDebug("sided success: " + test.getResult().name());
-
                 return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
-                //                return InteractionResultHolder.consume(itemStackIn);
             }
             return InteractionResultHolder.fail(itemStackIn);
         }

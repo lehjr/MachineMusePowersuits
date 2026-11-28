@@ -10,7 +10,7 @@ import lehjr.powersuits.client.gui.cosmetic.CosmeticGui;
 import lehjr.powersuits.client.gui.keymap.TinkerKeymapGui;
 import lehjr.powersuits.client.gui.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.common.network.MPSPackets;
-import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacket;
+import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacketServerBound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -40,7 +40,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
         button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.install.salvage"), active != 0);
         button.setOnPressed(onPressed->{
             Musique.playClientUISound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
-            MPSPackets.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.MAINHAND, false, -1, -1));
+            MPSPackets.sendToServer(new ContainerGuiOpenPacketServerBound(EquipmentSlot.MAINHAND, false, -1, -1));
         });
         buttons.add(button);
 

@@ -13,16 +13,14 @@ public class ModelBakeEventHandler {
     public static void onAddAdditional(ModelEvent.RegisterAdditional e) {
         ModelSpecLoader.INSTANCE.parse();
 
-        locations.forEach(location -> {
-            e.register(location);
-        });
+        locations.forEach(e::register);
     }
 
     public static void addLocation(ModelResourceLocation location) {
         locations.add(location);
     }
 
-    private static List<ModelResourceLocation> locations = new ArrayList<>();
+    private static final List<ModelResourceLocation> locations = new ArrayList<>();
 
     public static BakedModel getBakedItemModel(ModelResourceLocation location) {
         return  Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(location);

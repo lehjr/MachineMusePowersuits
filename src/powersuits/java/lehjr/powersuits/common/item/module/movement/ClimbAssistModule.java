@@ -4,6 +4,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.powersuits.common.config.module.MovementModuleConfig;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.item.ItemStack;
 
@@ -13,6 +14,7 @@ public class ClimbAssistModule extends AbstractPowerModule {
     public static class ClimbAssistCap extends ToggleableModule {
         public ClimbAssistCap(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY);
+            addBaseProperty(MPSConstants.STEP_HEIGHT, 1.01); // not adjustable for a reason
         }
 
         @Override

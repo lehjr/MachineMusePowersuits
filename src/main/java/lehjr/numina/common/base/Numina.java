@@ -33,12 +33,13 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 public class Numina {
 
     public Numina(IEventBus modEventBus, ModContainer modContainer) {
-        NuminaBlocks.NUMINA_BLOCKS.register(modEventBus);
-        NuminaBlockEntities.BLOCKENTITY_TYPES.register(modEventBus);
-        NuminaEntities.ENTITY_TYPES.register(modEventBus);
 
         NuminaItems.NUMINA_ITEMS.register(modEventBus);
         NuminaItems.NUMINA_CREATIVE_MODE_TAB.register(modEventBus);
+
+        NuminaBlocks.NUMINA_BLOCKS.register(modEventBus);
+        NuminaBlockEntities.BLOCKENTITY_TYPES.register(modEventBus);
+        NuminaEntities.ENTITY_TYPES.register(modEventBus);
 
         NuminaMenus.MENU_TYPES.register(modEventBus);
 
