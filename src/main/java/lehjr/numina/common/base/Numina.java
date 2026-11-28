@@ -35,7 +35,6 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.event.HarvestEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.registration.RecipeSerializersRegistry;
 import lehjr.numina.common.registration.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -44,7 +43,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -94,6 +92,6 @@ public class Numina {
         if (!(event.getObject() instanceof Player) || event.getObject() == null) {
             return;
         }
-        event.addCapability(ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "player_keystates1"), new PlayerKeyStateWrapper((Player) event.getObject()));
+        event.addCapability(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "player_keystates1"), new PlayerKeyStateWrapper((Player) event.getObject()));
     }
 }

@@ -37,7 +37,7 @@
 //public class NBT2Json {
 //    public static JsonObject CompoundTag2Json(CompoundTag nbt, JsonObject jsonObjectIn) {
 //        for (String key : nbt.getAllKeys()) {
-//            NuminaLogger.logDebug("key: " + key +", type: " + nbt.getTagType(key));
+//            NuminaLogger.logDebug("key: " + key +", slotType: " + nbt.getTagType(key));
 //
 //            // attempt to get KV pairs
 //            switch(nbt.getTagType(key)) {

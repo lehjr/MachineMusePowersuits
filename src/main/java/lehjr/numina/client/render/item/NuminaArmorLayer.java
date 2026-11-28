@@ -51,7 +51,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -202,14 +201,14 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
         }
     }
 
-    final ResourceLocation powersuitsTransparentArmor = ResourceLocation.tryBuild("powersuits", "transparent_armor");
+    final ResourceLocation powersuitsTransparentArmor = ResourceLocation.fromNamespaceAndPath("powersuits", "transparent_armor");
 
-    boolean doesBypassRender(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .map(handler -> handler.isModuleOnline(powersuitsTransparentArmor))
-                .orElse(false);
+    boolean doesBypassRender(ItemStack itemStack) {
+        IModularItem iModularItem = NuminaCapabilities.getModularItem(itemStack);
+        if (iModularItem != null && powersuitsTransparentArmor != null) {
+            return iModularItem.isModuleOnline(powersuitsTransparentArmor);
+        }
+        return false;
     }
 }
 

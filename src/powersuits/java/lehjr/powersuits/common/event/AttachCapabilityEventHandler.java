@@ -35,8 +35,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AttachCapabilityEventHandler {
     public static NonNullList<ResourceLocation> toggleable = NonNullList.create();
@@ -94,7 +92,7 @@ public class AttachCapabilityEventHandler {
             });
 
             // AE2 Meteorite Compass (WIP only handheld model shows needle direction)
-        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.AE2_METEOR_COMPASS) && event.getObject().getItem().equals(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse("ae2:meteorite_compass")))) {
+        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.AE2_METEOR_COMPASS) && event.getObject().getItem().equals(ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("ae2:meteorite_compass")))) {
             IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY);
             event.addCapability(MPSRegistryNames.AE2_METEOR_COMPASS, new ICapabilityProvider() {
 

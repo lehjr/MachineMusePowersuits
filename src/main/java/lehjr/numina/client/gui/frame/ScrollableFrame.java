@@ -1,8 +1,11 @@
 package lehjr.numina.client.gui.frame;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.utils.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -19,12 +22,33 @@ public class ScrollableFrame extends AbstractGuiFrame implements IScrollable {
     @Override
     public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (isVisible()) {
+            NuminaLogger.logDebug("renderingscrollable frame");
+
             renderBackgroundRect(gfx, mouseX, mouseY, partialTick);
             super.render(gfx, mouseX, mouseY, partialTick);
             preRender(gfx, mouseX, mouseY, partialTick);
             postRender(gfx, mouseX, mouseY, partialTick);
+        } else {
+            NuminaLogger.logDebug("scrollable frame not visible");
         }
+
     }
+
+//    public void renderTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int uOffset, int vOffset, int textureDifference, int width, int height, int textureWidth, int textureHeight) {
+//        int i = vOffset;
+//        if (!this.isActive()) {
+//            i = vOffset + textureDifference * 2;
+//        } else if (this.isHoveredOrFocused()) {
+//            i = vOffset + textureDifference;
+//        }
+//
+//        RenderSystem.enableDepthTest();
+//        guiGraphics.blit(texture, x, y, (float)uOffset, (float)i, width, height, textureWidth, textureHeight);
+//    }
+
+
+
+
 
     @Override
     public void setTotalSize(int totalSize) {

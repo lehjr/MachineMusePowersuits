@@ -60,13 +60,13 @@ public class NuminaConstants {
    * Textures -----------------------------------------------------------------------------------
    */
   public static final String TEXTURE_PREFIX = "textures/";
-  public static final ResourceLocation LOCATION_NUMINA_GUI_TEXTURE_ATLAS = ResourceLocation.tryBuild(MOD_ID, "textures/atlas/gui.png");
-  public static final ResourceLocation GLASS_TEXTURE = ResourceLocation.tryBuild(MOD_ID, TEXTURE_PREFIX + "gui/glass.png");
-  public static final ResourceLocation BLANK_ARMOR_MODEL_PATH = ResourceLocation.tryBuild(MOD_ID,TEXTURE_PREFIX + "item/armor/blankarmor.png");
-  public static final ResourceLocation WEAPON_SLOT_BACKGROUND = ResourceLocation.tryBuild(MOD_ID,TEXTURE_PREFIX + "gui/weapon.png");
-  public static final ResourceLocation TEXTURE_WHITE_SHORT = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "models/white");
-  public static final ResourceLocation TEXTURE_WHITE = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "textures/models/white.png");
-  public static final ResourceLocation TEXTURE_ARMOR_STAND = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "textures/models/armorstand2.png");
+  public static final ResourceLocation LOCATION_NUMINA_GUI_TEXTURE_ATLAS = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/atlas/gui.png");
+  public static final ResourceLocation GLASS_TEXTURE = ResourceLocation.fromNamespaceAndPath(MOD_ID, TEXTURE_PREFIX + "gui/glass.png");
+  public static final ResourceLocation BLANK_ARMOR_MODEL_PATH = ResourceLocation.fromNamespaceAndPath(MOD_ID,TEXTURE_PREFIX + "item/armor/blankarmor.png");
+  public static final ResourceLocation WEAPON_SLOT_BACKGROUND = ResourceLocation.fromNamespaceAndPath(MOD_ID,TEXTURE_PREFIX + "gui/weapon.png");
+  public static final ResourceLocation TEXTURE_WHITE_SHORT = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "models/white");
+  public static final ResourceLocation TEXTURE_WHITE = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "textures/models/white.png");
+  public static final ResourceLocation TEXTURE_ARMOR_STAND = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "textures/models/armorstand2.png");
 
   /**
    * Tag Constants ------------------------------------------------------------------------------
@@ -118,34 +118,34 @@ public class NuminaConstants {
   static final ChatFormatting TITLE_FORMAT = ChatFormatting.GRAY;
 
   public static final ResourceLocation TIER_2_SMITHING_TEMPLATE = getRegName("tier_2_smithing_template");
-  public static final Component TIER_2_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.tryParse("tier_2_upgrade"))).withStyle(TITLE_FORMAT);
-  public static final Component TIER_2_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_2_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
-  public static final Component TIER_2_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_2_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
-  public static final Component TIER_2_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_2_upgrade.base_slot_description")));
-  public static final Component TIER_2_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_2_upgrade.additions_slot_description")));
+  public static final Component TIER_2_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("tier_2_upgrade"))).withStyle(TITLE_FORMAT);
+  public static final Component TIER_2_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_2_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+  public static final Component TIER_2_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_2_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+  public static final Component TIER_2_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_2_upgrade.base_slot_description")));
+  public static final Component TIER_2_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_2_upgrade.additions_slot_description")));
 
   public static final ResourceLocation TIER_3_SMITHING_TEMPLATE = getRegName("tier_3_smithing_template");
-  public static final Component TIER_3_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.tryParse("tier_3_upgrade"))).withStyle(TITLE_FORMAT);
-  public static final Component TIER_3_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_3_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
-  public static final Component TIER_3_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_3_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
-  public static final Component TIER_3_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_3_upgrade.base_slot_description")));
-  public static final Component TIER_3_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_3_upgrade.additions_slot_description")));
+  public static final Component TIER_3_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("tier_3_upgrade"))).withStyle(TITLE_FORMAT);
+  public static final Component TIER_3_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_3_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+  public static final Component TIER_3_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_3_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+  public static final Component TIER_3_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_3_upgrade.base_slot_description")));
+  public static final Component TIER_3_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_3_upgrade.additions_slot_description")));
 
   public static final ResourceLocation TIER_4_SMITHING_TEMPLATE =  getRegName("tier_4_smithing_template");
-  public static final Component TIER_4_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.tryParse("tier_4_upgrade"))).withStyle(TITLE_FORMAT);
-  public static final Component TIER_4_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_4_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
-  public static final Component TIER_4_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_4_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
-  public static final Component TIER_4_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_4_upgrade.base_slot_description")));
-  public static final Component TIER_4_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.tryParse("smithing_template.tier_4_upgrade.additions_slot_description")));
+  public static final Component TIER_4_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", ResourceLocation.withDefaultNamespace("tier_4_upgrade"))).withStyle(TITLE_FORMAT);
+  public static final Component TIER_4_UPGRADE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_4_upgrade.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+  public static final Component TIER_4_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_4_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+  public static final Component TIER_4_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_4_upgrade.base_slot_description")));
+  public static final Component TIER_4_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", ResourceLocation.withDefaultNamespace("smithing_template.tier_4_upgrade.additions_slot_description")));
 
   /**
    * Registry Names -----------------------------------------------------------------------------
    */
   // Mode Changing ... (it's in the name)
-  public static final ResourceLocation MODE_CHANGING_ICON_RENDERER = ResourceLocation.tryBuild(MOD_ID, "numina_mode_changing_icon");
+  public static final ResourceLocation MODE_CHANGING_ICON_RENDERER = ResourceLocation.fromNamespaceAndPath(MOD_ID, "numina_mode_changing_icon");
 
-  // Overheat damage type
-  public static final ResourceLocation OVERHEAT_DAMAGE_REGANAME = ResourceLocation.tryBuild(MOD_ID, "overheat");
+  // Overheat damage slotType
+  public static final ResourceLocation OVERHEAT_DAMAGE_REGANAME = ResourceLocation.fromNamespaceAndPath(MOD_ID, "overheat");
 
   // Armor Stand
   public static final String ARMORSTAND_REGNAME = "armor_stand";
@@ -225,17 +225,17 @@ public class NuminaConstants {
     return new StringBuilder("gui.").append(MOD_ID).append(".").append(guiString).toString();
   }
 
-  public static final ResourceLocation ENERGY_STORAGE_ICON = ResourceLocation.tryBuild(MOD_ID, "energystorage");
-  public static final ResourceLocation ENERGY_GENERATION_ICON = ResourceLocation.tryBuild(MOD_ID, "energygeneration");
-  public static final ResourceLocation FLUID_STORAGE_ICON = ResourceLocation.tryBuild(MOD_ID, "droplet");
+  public static final ResourceLocation ENERGY_STORAGE_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energystorage");
+  public static final ResourceLocation ENERGY_GENERATION_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "energygeneration");
+  public static final ResourceLocation FLUID_STORAGE_ICON = ResourceLocation.fromNamespaceAndPath(MOD_ID, "droplet");
 
-  public static final ResourceLocation EMPTY_SLOT_HELMET = ResourceLocation.tryParse("item/empty_armor_slot_helmet");
-  public static final ResourceLocation EMPTY_SLOT_CHESTPLATE = ResourceLocation.tryParse("item/empty_armor_slot_chestplate");
-  public static final ResourceLocation EMPTY_SLOT_LEGGINGS = ResourceLocation.tryParse("item/empty_armor_slot_leggings");
-  public static final ResourceLocation EMPTY_SLOT_BOOTS = ResourceLocation.tryParse("item/empty_armor_slot_boots");
+  public static final ResourceLocation EMPTY_SLOT_HELMET = ResourceLocation.withDefaultNamespace("item/empty_armor_slot_helmet");
+  public static final ResourceLocation EMPTY_SLOT_CHESTPLATE = ResourceLocation.withDefaultNamespace("item/empty_armor_slot_chestplate");
+  public static final ResourceLocation EMPTY_SLOT_LEGGINGS = ResourceLocation.withDefaultNamespace("item/empty_armor_slot_leggings");
+  public static final ResourceLocation EMPTY_SLOT_BOOTS = ResourceLocation.withDefaultNamespace("item/empty_armor_slot_boots");
 
   public static ResourceLocation getRegName(String regNameString) {
-    return ResourceLocation.tryBuild(MOD_ID, regNameString);
+    return ResourceLocation.fromNamespaceAndPath(MOD_ID, regNameString);
   }
 }
 
@@ -253,10 +253,10 @@ public class NuminaConstants {
 //  // Misc
 //  public static final String RESOURCE_PREFIX = MOD_ID + ":";
 //  public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
-//  public static final ResourceLocation GLASS_TEXTURE = ResourceLocation.tryBuild(TEXTURE_PREFIX + "gui/glass.png");
-//  public static final ResourceLocation LOCATION_NUMINA_GUI_TEXTURE_ATLAS = ResourceLocation.tryBuild(MOD_ID, "textures/atlas/gui.png");
-//  public static final ResourceLocation BLANK_ARMOR_MODEL_PATH = ResourceLocation.tryBuild(TEXTURE_PREFIX + "item/armor/blankarmor.png");
-//  public static final ResourceLocation WEAPON_SLOT_BACKGROUND = ResourceLocation.tryBuild(TEXTURE_PREFIX + "gui/weapon.png");
+//  public static final ResourceLocation GLASS_TEXTURE = ResourceLocation.fromNamespaceAndPath(TEXTURE_PREFIX + "gui/glass.png");
+//  public static final ResourceLocation LOCATION_NUMINA_GUI_TEXTURE_ATLAS = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/atlas/gui.png");
+//  public static final ResourceLocation BLANK_ARMOR_MODEL_PATH = ResourceLocation.fromNamespaceAndPath(TEXTURE_PREFIX + "item/armor/blankarmor.png");
+//  public static final ResourceLocation WEAPON_SLOT_BACKGROUND = ResourceLocation.fromNamespaceAndPath(TEXTURE_PREFIX + "gui/weapon.png");
 //
 //  // Config
 //  public static final String CONFIG_PREFIX = "config." + MOD_ID + ".";
@@ -268,7 +268,7 @@ public class NuminaConstants {
 //  public static final String CONFIG_PREFIX_RECIPES = CONFIG_PREFIX + "recipes.";
 //  public static final String CONFIG_RECIPES_USE_VANILLA = CONFIG_PREFIX_RECIPES + "useVanilla";
 //
-//  public static final ResourceLocation OVERHEAT_DAMAGE_REGANAME = ResourceLocation.tryBuild(MOD_ID, "overheat");
+//  public static final ResourceLocation OVERHEAT_DAMAGE_REGANAME = ResourceLocation.fromNamespaceAndPath(MOD_ID, "overheat");
 //
 //  // RegistryNames
 //  public static final String CHARGING_BASE_REGNAME = "charging_base";
@@ -320,9 +320,9 @@ public class NuminaConstants {
 //    return new StringBuilder("tooltip.").append(NuminaConstants.MOD_ID).append(".").append(tooltipName).toString();
 //  }
 //
-//  public static final ResourceLocation TEXTURE_WHITE_SHORT = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "models/white");
-//  public static final ResourceLocation TEXTURE_WHITE = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "textures/models/white.png");
-//  public static final ResourceLocation TEXTURE_ARMOR_STAND = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "textures/models/armorstand2.png");
+//  public static final ResourceLocation TEXTURE_WHITE_SHORT = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "models/white");
+//  public static final ResourceLocation TEXTURE_WHITE = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "textures/models/white.png");
+//  public static final ResourceLocation TEXTURE_ARMOR_STAND = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "textures/models/armorstand2.png");
 //
 //  public static final String GUI_CREATIVE_INSTALL = getGUI("creative.install");
 //  public static final String GUI_CREATIVE_INSTALL_DESC = getGUI("creative.install.desc");

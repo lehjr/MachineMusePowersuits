@@ -70,7 +70,7 @@ public class SmithingUpgradeRecipeBuilder {
 
     public void save(Consumer<FinishedRecipe> consumer) {
         ResourceLocation loc = getDefaultRecipeId(result);
-        this.save(consumer, ResourceLocation.tryBuild(loc.getNamespace(), loc.getPath() + "_smithing_upgrade"));
+        this.save(consumer, ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), loc.getPath() + "_smithing_upgrade"));
     }
 
     static ResourceLocation getDefaultRecipeId(ItemLike itemLike) {
@@ -78,7 +78,7 @@ public class SmithingUpgradeRecipeBuilder {
     }
 
     public void save(Consumer<FinishedRecipe> consumer, String recipeId) {
-        this.save(consumer, ResourceLocation.tryBuild(recipeId));
+        this.save(consumer, ResourceLocation.parse(recipeId));
     }
 
     public void save(Consumer<FinishedRecipe> consumer, ResourceLocation recipeId) {

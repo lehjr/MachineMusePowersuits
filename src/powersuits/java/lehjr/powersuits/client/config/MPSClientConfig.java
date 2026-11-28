@@ -31,13 +31,14 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.MathUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 
-@Mod.EventBusSubscriber(modid = MPSConstants.MOD_ID)
+@Mod.EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class MPSClientConfig {
 
     /**

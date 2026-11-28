@@ -31,10 +31,7 @@ import com.mojang.blaze3d.vertex.*;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
@@ -89,7 +86,7 @@ public class NuminaIcons {
     }
 
     private DrawableIcon registerIcon(String name, int width, int height) {
-        ResourceLocation location = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, name);
+        ResourceLocation location = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, name);
         return registerIcon(location, width, height);
     }
 
@@ -215,23 +212,6 @@ public class NuminaIcons {
             }
         }
 
-        public void drawLightning(MultiBufferSource bufferIn, PoseStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Color color) {
-            TextureAtlasSprite icon = getSprite();
-            bindTexture();
-            drawLightningTextured(bufferIn.getBuffer(RenderType.lightning()),
-                    matrixStack.last().pose(),
-                    x1,
-                    y1,
-                    z1,
-                    x2,
-                    y2,
-                    z2,
-                    color,
-                    icon,
-                    this.width,
-                    this.height);
-        }
-    }
 
     /**
      *
@@ -304,7 +284,6 @@ public class NuminaIcons {
         Minecraft minecraft = Minecraft.getInstance();
         RenderSystem.setShaderTexture(0, location);
         RenderSystem.enableBlend();
-//        RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
         innerBlit(matrixStack, left, right, top, bottom, zLevel, iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, color);
         RenderSystem.disableBlend();
@@ -345,7 +324,7 @@ public class NuminaIcons {
      * @param right the right most position of the drawing rectangle
      * @param top the top most position of the drawing rectangle
      * @param bottom the bottom most position of the drawing rectangle
-     * @param zLevel the depth position of the drawing rectangle
+     * @param blitOffset the depth position of the drawing rectangle
      * Note: UV positions are scaled (0.0 - 1.0)
      * @param minU the left most UV mapped position
      * @param maxU the right most UV mapped position
@@ -353,32 +332,66 @@ public class NuminaIcons {
      * @param maxV the bottom most UV mapped position
      * @param color the Color to apply to the texture
      */
-    private static void innerBlit(Matrix4f matrix4f, double left, double right, double top, double bottom, float zLevel, float minU, float maxU, float minV, float maxV, Color color) {
+    private static void innerBlit(Matrix4f matrix4f, double left, double right, double top, double bottom, float blitOffset, float minU, float maxU, float minV, float maxV, Color color) {
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        color.setShaderColor();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-
-        // bottom left
-        bufferbuilder.vertex(matrix4f, (float)left, (float)bottom, zLevel).uv(minU, maxV)
-                .color(color.r, color.g, color.b, color.a)
-                .endVertex();
-
-        // bottom right
-        bufferbuilder.vertex(matrix4f, (float)right, (float)bottom, zLevel).uv(maxU, maxV)
-                .color(color.r, color.g, color.b, color.a)
-                .endVertex();
-
-        // top right
-        bufferbuilder.vertex(matrix4f, (float)right, (float)top, zLevel).uv(maxU, minV)
-                .color(color.r, color.g, color.b, color.a)
-                .endVertex();
-
-        // top left
-        bufferbuilder.vertex(matrix4f, (float)left, (float)top, zLevel).uv(minU, minV)
-                .color(color.r, color.g, color.b, color.a)
-                .endVertex();
-
+//        color.setShaderColor();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+        bufferbuilder.vertex(matrix4f, (float)left, (float)top, blitOffset).color(color.r, color.g, color.b, color.a).uv(minU, minV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)left, (float)bottom, blitOffset).color(color.r, color.g, color.b, color.a).uv(minU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)right, (float)bottom, blitOffset).color(color.r, color.g, color.b, color.a).uv(maxU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)right, (float)top, blitOffset).color(color.r, color.g, color.b, color.a).uv(maxU, minV).endVertex();
         BufferUploader.drawWithShader(bufferbuilder.end());
+    }
+
+    void innerBlit(Matrix4f matrix4f, ResourceLocation atlasLocation, int left, int right, int top, int bottom, int blitOffset, float minU, float maxU, float minV, float maxV, Color color) {
+        RenderSystem.setShaderTexture(0, atlasLocation);
+        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+        RenderSystem.enableBlend();
+        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+        bufferbuilder.vertex(matrix4f, (float)left, (float)top, (float)blitOffset).color(color.r, color.g, color.b, color.a).uv(minU, minV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)left, (float)bottom, (float)blitOffset).color(color.r, color.g, color.b, color.a).uv(minU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)right, (float)bottom, (float)blitOffset).color(color.r, color.g, color.b, color.a).uv(maxU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)right, (float)top, (float)blitOffset).color(color.r, color.g, color.b, color.a).uv(maxU, minV).endVertex();
+        BufferUploader.drawWithShader(bufferbuilder.end());
+        RenderSystem.disableBlend();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void drawLightning(MultiBufferSource bufferIn, PoseStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Color color) {
+            TextureAtlasSprite icon = getSprite();
+            bindTexture();
+//            drawLightningTextured(bufferIn.getBuffer(RenderType.lightning()),
+                    drawLightningTextured(bufferIn.getBuffer(texturedLightning(icon.atlasLocation())),
+
+                    matrixStack.last().pose(),
+                    x1,
+                    y1,
+                    z1,
+                    x2,
+                    y2,
+                    z2,
+                    color,
+                    icon,
+                    this.width,
+                    this.height);
+        }
     }
 
     public void drawLightningTextured(VertexConsumer bufferIn, Matrix4f matrix4f, float x1, float y1, float z1, float x2, float y2, float z2, Color color, TextureAtlasSprite icon, float textureWidth, float textureHeight) {
@@ -410,6 +423,8 @@ public class NuminaIcons {
         }
     }
 
+    // fixme: needs DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP
+
     void drawLightningBetweenPointsFast(VertexConsumer bufferIn,
                                         Matrix4f matrix4f,
                                         float x1,
@@ -423,24 +438,24 @@ public class NuminaIcons {
         float px = (y1 - y2) * 0.125F;
         float py = (x2 - x1) * 0.125F;
 
-        bufferIn.vertex(matrix4f, x1 - px, y1 - py, z1) // top left front
+        bufferIn.vertex(matrix4f, x1 - px, y1 - py, z1)
                 .color(color.r, color.g, color.b, color.a)
                 .uv(minU, minV)
                 .uv2(0x00F000F0).endVertex();
 
-        bufferIn.vertex(matrix4f, x1 + px, y1 + py, z1) // bottom right front
+        bufferIn.vertex(matrix4f, x1 + px, y1 + py, z1)
                 .color(color.r, color.g, color.b, color.a)
-                .uv(maxU, minV) // right top
+                .uv(maxU, minV)
                 .uv2(0x00F000F0).endVertex();
 
-        bufferIn.vertex(matrix4f, x2 - px, y2 - py, z2) //  top left back
+        bufferIn.vertex(matrix4f, x2 + px, y2 + py, z2) // Swapped to keep perimeter order
                 .color(color.r, color.g, color.b, color.a)
-                .uv(minU, maxV) // left bottom
+                .uv(maxU, maxV)
                 .uv2(0x00F000F0).endVertex();
 
-        bufferIn.vertex(matrix4f, x2 + px, y2 + py, z2) // bottom right back
+        bufferIn.vertex(matrix4f, x2 - px, y2 - py, z2) // Swapped to keep perimeter order
                 .color(color.r, color.g, color.b, color.a)
-                .uv(maxU, maxV) // right bottom
+                .uv(minU, maxV)
                 .uv2(0x00F000F0).endVertex();
     }
 
@@ -456,7 +471,21 @@ public class NuminaIcons {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-//    public void unRotate() {
-//        BillboardHelper.unRotate();
-//    }
+    public static RenderType texturedLightning(ResourceLocation texture) {
+        return RenderType.create(
+                "textured_lightning",
+                DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
+                VertexFormat.Mode.QUADS,
+                256,
+                false,
+                true,
+                RenderType.CompositeState.builder()
+                        .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeTextShader)) // Matches POSITION_COLOR_TEX_LIGHTMAP
+                        .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+                        .setTransparencyState(RenderStateShard.ADDITIVE_TRANSPARENCY) // Or TRANSLUCENT_TRANSPARENCY
+                        .setLightmapState(RenderStateShard.LIGHTMAP)
+                        .setCullState(RenderStateShard.NO_CULL)
+                        .createCompositeState(false));
+    }
+
 }

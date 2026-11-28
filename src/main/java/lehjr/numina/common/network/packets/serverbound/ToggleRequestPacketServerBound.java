@@ -3,12 +3,12 @@ package lehjr.numina.common.network.packets.serverbound;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.clientbound.ToggleRequestPacketClientBound;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -21,7 +21,7 @@ public record ToggleRequestPacketServerBound(ResourceLocation registryName, bool
 
     public static ToggleRequestPacketServerBound decode(FriendlyByteBuf packetBuffer) {
         return new ToggleRequestPacketServerBound(
-                ResourceLocation.tryParse(packetBuffer.readUtf(500)),
+                ResourceLocation.parse(packetBuffer.readUtf(500)),
                 packetBuffer.readBoolean()
         );
     }
@@ -42,10 +42,10 @@ public record ToggleRequestPacketServerBound(ResourceLocation registryName, bool
                 boolean toggleval = message.toggleval;
 
                 for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                    player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                            .filter(IModularItem.class::isInstance)
-                            .map(IModularItem.class::cast)
-                            .ifPresent(handler -> handler.toggleModule(registryName, toggleval));
+                    IModularItem modularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
+                    if(modularItem != null) {
+                        modularItem.toggleModule(message.registryName, message.toggleval);
+                    }
                 }
                 sendToClient(player, registryName, toggleval);
             });

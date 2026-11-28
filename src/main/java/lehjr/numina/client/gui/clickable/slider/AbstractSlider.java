@@ -1,7 +1,10 @@
 package lehjr.numina.client.gui.clickable.slider;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.math.Color;

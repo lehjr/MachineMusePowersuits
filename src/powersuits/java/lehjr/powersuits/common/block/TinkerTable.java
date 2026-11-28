@@ -89,7 +89,7 @@ public class TinkerTable extends HorizontalDirectionalBlock implements SimpleWat
     @OnlyIn(Dist.CLIENT)
     public void openGui(Level world) {
         if (world.isClientSide) {
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+            Musique.playClientUISound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
             Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(Component.translatable("gui.tinkertable"))));
         }
     }

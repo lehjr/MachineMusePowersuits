@@ -19,7 +19,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class MPSHUD {
 static final ItemStack food = new ItemStack(Items.COOKED_BEEF);

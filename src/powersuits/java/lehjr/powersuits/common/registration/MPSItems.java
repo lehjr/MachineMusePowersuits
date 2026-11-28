@@ -58,35 +58,35 @@ public class MPSItems {
      * Modular Items ------------------------------------------------------------------------------
      */
     // Tools ==========================================================================================================
-    public static final RegistryObject<Item> POWER_FIST_1 = MPS_ITEMS.register(MPSConstants.POWER_FIST_1.getPath(), PowerFist::new);
-    public static final RegistryObject<Item> POWER_FIST_2 = MPS_ITEMS.register(MPSConstants.POWER_FIST_2.getPath(), PowerFist::new);
-    public static final RegistryObject<Item> POWER_FIST_3 = MPS_ITEMS.register(MPSConstants.POWER_FIST_3.getPath(), PowerFist::new);
-    public static final RegistryObject<Item> POWER_FIST_4 = MPS_ITEMS.register(MPSConstants.POWER_FIST_4.getPath(), PowerFist::new);
+    public static final RegistryObject<Item> POWER_FIST_1 = MPS_ITEMS.register(MPSConstants.POWER_FIST_1.getPath(), ()-> new PowerFist(1));
+    public static final RegistryObject<Item> POWER_FIST_2 = MPS_ITEMS.register(MPSConstants.POWER_FIST_2.getPath(), ()-> new PowerFist(2));
+    public static final RegistryObject<Item> POWER_FIST_3 = MPS_ITEMS.register(MPSConstants.POWER_FIST_3.getPath(), ()-> new PowerFist(3));
+    public static final RegistryObject<Item> POWER_FIST_4 = MPS_ITEMS.register(MPSConstants.POWER_FIST_4.getPath(), ()-> new PowerFist(4));
 
     // Armor ==========================================================================================================
     // Helmets
-    public static final RegistryObject<Item> POWER_ARMOR_HELMET_1 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_HELMET_1.getPath(), () -> new ElectricArmor(ArmorItem.Type.HELMET));
-    public static final RegistryObject<Item> POWER_ARMOR_HELMET_2 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_HELMET_2.getPath(), () -> new ElectricArmor(ArmorItem.Type.HELMET));
-    public static final RegistryObject<Item> POWER_ARMOR_HELMET_3 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_HELMET_3.getPath(), () -> new ElectricArmor(ArmorItem.Type.HELMET));
-    public static final RegistryObject<Item> POWER_ARMOR_HELMET_4 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_HELMET_4.getPath(), () -> new ElectricArmor(ArmorItem.Type.HELMET));
+    public static final RegistryObject<Item> POWER_ARMOR_HELMET_1 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_HELMET_1.getPath(), () -> new ElectricArmor(ArmorItem.Type.HELMET, 1));
+    public static final RegistryObject<Item> POWER_ARMOR_HELMET_2 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_HELMET_2.getPath(), () -> new ElectricArmor(ArmorItem.Type.HELMET, 2));
+    public static final RegistryObject<Item> POWER_ARMOR_HELMET_3 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_HELMET_3.getPath(), () -> new ElectricArmor(ArmorItem.Type.HELMET, 3));
+    public static final RegistryObject<Item> POWER_ARMOR_HELMET_4 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_HELMET_4.getPath(), () -> new ElectricArmor(ArmorItem.Type.HELMET, 4));
 
     // Chestplates
-    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE_1 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_CHESTPLATE_1.getPath(), () -> new ElectricArmor(ArmorItem.Type.CHESTPLATE));
-    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE_2 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_CHESTPLATE_2.getPath(), () -> new ElectricArmor(ArmorItem.Type.CHESTPLATE));
-    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE_3 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_CHESTPLATE_3.getPath(), () -> new ElectricArmor(ArmorItem.Type.CHESTPLATE));
-    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE_4 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_CHESTPLATE_4.getPath(), () -> new ElectricArmor(ArmorItem.Type.CHESTPLATE));
+    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE_1 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_CHESTPLATE_1.getPath(), () -> new ElectricArmor(ArmorItem.Type.CHESTPLATE, 1));
+    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE_2 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_CHESTPLATE_2.getPath(), () -> new ElectricArmor(ArmorItem.Type.CHESTPLATE, 2));
+    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE_3 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_CHESTPLATE_3.getPath(), () -> new ElectricArmor(ArmorItem.Type.CHESTPLATE, 3));
+    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE_4 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_CHESTPLATE_4.getPath(), () -> new ElectricArmor(ArmorItem.Type.CHESTPLATE, 4));
 
     // Leggings
-    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS_1 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_LEGGINGS_1.getPath(), () -> new ElectricArmor(ArmorItem.Type.LEGGINGS));
-    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS_2 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_LEGGINGS_2.getPath(), () -> new ElectricArmor(ArmorItem.Type.LEGGINGS));
-    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS_3 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_LEGGINGS_3.getPath(), () -> new ElectricArmor(ArmorItem.Type.LEGGINGS));
-    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS_4 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_LEGGINGS_4.getPath(), () -> new ElectricArmor(ArmorItem.Type.LEGGINGS));
+    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS_1 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_LEGGINGS_1.getPath(), () -> new ElectricArmor(ArmorItem.Type.LEGGINGS, 1));
+    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS_2 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_LEGGINGS_2.getPath(), () -> new ElectricArmor(ArmorItem.Type.LEGGINGS, 2));
+    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS_3 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_LEGGINGS_3.getPath(), () -> new ElectricArmor(ArmorItem.Type.LEGGINGS, 3));
+    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS_4 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_LEGGINGS_4.getPath(), () -> new ElectricArmor(ArmorItem.Type.LEGGINGS,4));
 
     // Boots
-    public static final RegistryObject<Item> POWER_ARMOR_BOOTS_1 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_BOOTS_1.getPath(), () -> new ElectricArmor(ArmorItem.Type.BOOTS));
-    public static final RegistryObject<Item> POWER_ARMOR_BOOTS_2 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_BOOTS_2.getPath(), () -> new ElectricArmor(ArmorItem.Type.BOOTS));
-    public static final RegistryObject<Item> POWER_ARMOR_BOOTS_3 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_BOOTS_3.getPath(), () -> new ElectricArmor(ArmorItem.Type.BOOTS));
-    public static final RegistryObject<Item> POWER_ARMOR_BOOTS_4 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_BOOTS_4.getPath(), () -> new ElectricArmor(ArmorItem.Type.BOOTS));
+    public static final RegistryObject<Item> POWER_ARMOR_BOOTS_1 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_BOOTS_1.getPath(), () -> new ElectricArmor(ArmorItem.Type.BOOTS, 1));
+    public static final RegistryObject<Item> POWER_ARMOR_BOOTS_2 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_BOOTS_2.getPath(), () -> new ElectricArmor(ArmorItem.Type.BOOTS, 2));
+    public static final RegistryObject<Item> POWER_ARMOR_BOOTS_3 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_BOOTS_3.getPath(), () -> new ElectricArmor(ArmorItem.Type.BOOTS, 3));
+    public static final RegistryObject<Item> POWER_ARMOR_BOOTS_4 = MPS_ITEMS.register(MPSConstants.POWER_ARMOR_BOOTS_4.getPath(), () -> new ElectricArmor(ArmorItem.Type.BOOTS, 4));
 
     /**
      * Modules ------------------------------------------------------------------------------------

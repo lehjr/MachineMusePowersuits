@@ -212,7 +212,7 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
 
         // Servo Motor ---------------------------------------------------------------------------------
         add(NuminaItems.SERVO.get(), "Servo Motor");
-        addItemDescriptions(NuminaItems.SERVO.get(), "A special type of motor which uses a pulse-modulated signal to enact very precise movements.");
+        addItemDescriptions(NuminaItems.SERVO.get(), "A special slotType of motor which uses a pulse-modulated signal to enact very precise movements.");
 
         // Solar Panel ---------------------------------------------------------------------------------
         add(NuminaItems.SOLAR_PANEL.get(), "Solar Panel");
@@ -224,7 +224,7 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
 
         // Wiring --------------------------------------------------------------------------------------
         add(NuminaItems.WIRING_COPPER.get(), "Wiring");
-        addItemDescriptions(NuminaItems.WIRING_COPPER.get(), "A special type of wiring with high voltaic capacity and precision, necessary for the sensitive electronics in power armor.");
+        addItemDescriptions(NuminaItems.WIRING_COPPER.get(), "A special slotType of wiring with high voltaic capacity and precision, necessary for the sensitive electronics in power armor.");
     }
 
     public void addItemUpgrades() {

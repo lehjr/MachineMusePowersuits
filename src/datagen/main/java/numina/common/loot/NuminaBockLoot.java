@@ -1,10 +1,8 @@
 package numina.common.loot;
 
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaBlockEntities;
 import lehjr.numina.common.registration.NuminaBlocks;
-import lehjr.numina.common.registration.NuminaEntities;
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;

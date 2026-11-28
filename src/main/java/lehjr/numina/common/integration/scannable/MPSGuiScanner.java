@@ -20,7 +20,7 @@
 // * Basically, just a copy of Scannable's GuiScanner simply because of the container
 // */
 //public class MPSGuiScanner extends AbstractContainerScreen<MPSAbstractContainerMenuScanner> {
-//    private static final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(API.MOD_ID, "textures/gui/container/scanner.png");
+//    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(API.MOD_ID, "textures/gui/container/scanner.png");
 //    private static final Component.translatable SCANNER_MODULES_TEXT = Component.translatable(Constants.GUI_SCANNER_MODULES);
 //    private static final Component.translatable SCANNER_MODULES_TOOLTIP = Component.translatable(Constants.GUI_SCANNER_MODULES_TOOLTIP);
 //    private static final Component.translatable SCANNER_MODULES_INACTIVE_TEXT = Component.translatable(Constants.GUI_SCANNER_MODULES_INACTIVE);
@@ -76,18 +76,18 @@
 //    }
 //
 //    @Override
-//    protected void func_184098_a(@Nullable final Slot slot, final int slotId, final int mouseButton, final ClickType type) {
+//    protected void func_184098_a(@Nullable final Slot slot, final int slotId, final int mouseButton, final ClickType slotType) {
 //        if (slot != null) {
 //            final ItemStack tool = field_213127_e.player.getItemInHand(container.getHand());
 //            if (slot.getItem() == tool) {
 //                return;
 //            }
-//            if (type == ClickType.SWAP && field_213127_e.getItem(mouseButton) == tool) {
+//            if (slotType == ClickType.SWAP && field_213127_e.getItem(mouseButton) == tool) {
 //                return;
 //            }
 //        }
 //
-//        super.func_184098_a(slot, slotId, mouseButton, type);
+//        super.func_184098_a(slot, slotId, mouseButton, slotType);
 //    }
 //
 //    @Override

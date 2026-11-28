@@ -32,16 +32,20 @@ import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.slot.IHideableSlot;
 import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.MathUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.TooltipFlag;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -132,7 +136,7 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
                 if (i >= slotIndexes.size()) {
                     return;
                 }
-                tiles.add(getNewRect(ul.plus(slot_ulShift)));//.setBorderShrinkValue(0.5F));
+                tiles.add(getNewRect(ul.plus(slot_ulShift), slotIndexes.get(i)));//.setBorderShrinkValue(0.5F));
                 if (i > 0) {
                     if (col > 0) {
                         this.tiles.get(i).setRightOf(this.tiles.get(i - 1));
@@ -155,8 +159,8 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
         }
     }
 
-    public SlotRect getNewRect(MusePoint2D ul) {
-        return new SlotRect(ul);
+    public SlotRect getNewRect(MusePoint2D ul, int slot) {
+        return new SlotRect(ul, slot);
     }
 
 
@@ -203,6 +207,8 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
 
     @Override
     public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        NuminaLogger.logDebug("Rendering Inventory Frame");
+
         if (this.tiles != null && !this.tiles.isEmpty()) {
             for (SlotRect tile : tiles) {
                 // add slight offset so the lines show up (this is why the param was added)
@@ -212,7 +218,18 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
     }
 
     @Override
-    public List<Component> getToolTip(int i, int i1) {
+    public List<Component> getToolTip(int x, int y) {
+        for (SlotRect rect : tiles) {
+            if (rect.containsPoint(x, y)) {
+                Slot slot = container.getSlot(rect.slot);
+                if (!slot.getItem().isEmpty()) {
+                    return slot.getItem().getTooltipLines(
+                            Minecraft.getInstance().player,
+                            Screen.hasShiftDown() ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL
+                    );
+                }
+            }
+        }
         return null;
     }
 
@@ -236,12 +253,15 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
         return ulGetter.getULShift().plus((offset - slotWidth) * 0.5, (offset - slotHeight) * 0.5);
     }
 
-    class SlotRect extends Rect implements IDrawableRect {
-        public final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "textures/gui/container/slot_rect.png");
-        float zLevel = 0;
 
-        public SlotRect(MusePoint2D ul) {
+    class SlotRect extends Rect implements IDrawableRect {
+        public final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "textures/gui/container/slot_rect.png");
+        float zLevel = 0;
+        int slot;
+
+        public SlotRect(MusePoint2D ul, int slot) {
             super(ul, ul.plus(slotWidth, slotHeight));
+            this.slot = slot;
         }
 
         @Override

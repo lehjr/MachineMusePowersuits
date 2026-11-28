@@ -3,6 +3,7 @@ package lehjr.numina.client.gui;
 import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.container.slot.IHideableSlot;
 import lehjr.numina.common.container.slot.IIConProvider;
 import lehjr.numina.common.math.Color;
@@ -47,6 +48,9 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
     }
 
     public void renderSlot(GuiGraphics gfx, Slot slot) {
+        NuminaLogger.logDebug("Rendering slot in extended abstract container screen " + slot.toString());
+
+
         if (slot!= null && slot instanceof IHideableSlot) {
             if (slot.isActive()) {
                 super.renderSlot(gfx, slot);
@@ -98,6 +102,8 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
      */
     @Override
     protected void renderBg(GuiGraphics gfx, float partialTick, int mouseX, int mouseY) {
+        NuminaLogger.logDebug("rendering bg in extended container screen");
+
         update(mouseX, mouseY);
         renderFrames(gfx, mouseX, mouseY, partialTick);
     }

@@ -92,7 +92,7 @@ public class MinEnchantedIngredient extends AbstractIngredient {
             if (json.has("enchantments")) {
                 JsonObject enchJson = GsonHelper.getAsJsonObject(json, "enchantments");
                 for (Map.Entry<String, JsonElement> entry : enchJson.entrySet()) {
-                    ResourceLocation id = ResourceLocation.tryParse(entry.getKey());
+                    ResourceLocation id = ResourceLocation.parse(entry.getKey());
                     Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(id);
                     if (ench == null) {
                         throw new JsonSyntaxException("Unknown enchantment '" + id + "'");
@@ -108,7 +108,7 @@ public class MinEnchantedIngredient extends AbstractIngredient {
             buffer.writeVarInt(ingredient.enchantments.size());
             for (Map.Entry<Enchantment, Integer> entry : ingredient.enchantments.entrySet()) {
                 ResourceLocation key = ForgeRegistries.ENCHANTMENTS.getKey(entry.getKey());
-                buffer.writeResourceLocation(key != null ? key : ResourceLocation.tryBuild("minecraft", "empty"));
+                buffer.writeResourceLocation(key != null ? key : ResourceLocation.withDefaultNamespace("empty"));
                 buffer.writeVarInt(entry.getValue());
             }
         }

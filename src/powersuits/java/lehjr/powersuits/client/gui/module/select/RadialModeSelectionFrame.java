@@ -35,14 +35,12 @@ import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.IconUtils;
-import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {

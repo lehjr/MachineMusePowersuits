@@ -27,15 +27,14 @@
 package lehjr.powersuits.common.network;
 
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
 import lehjr.powersuits.common.network.packets.clientbound.SetSprintAssistDoubleClientBound;
 import lehjr.powersuits.common.network.packets.clientbound.ToggleableModuleListClientBound;
+import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacketServerBound;
 import lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
 import lehjr.powersuits.common.network.packets.serverbound.SetSprintAssistDoubleAndDrainServerBound;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -47,7 +46,7 @@ public class MPSPackets {
     private static final String PROTOCOL_VERSION = "1";
 
     public static final SimpleChannel CHANNEL_INSTANCE = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.tryBuild(MPSConstants.MOD_ID, "data"),
+            ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "data"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
@@ -74,10 +73,10 @@ public class MPSPackets {
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                ContainerGuiOpenPacket.class,
-                ContainerGuiOpenPacket::write,
-                ContainerGuiOpenPacket::read,
-                ContainerGuiOpenPacket::handle,
+                ContainerGuiOpenPacketServerBound.class,
+                ContainerGuiOpenPacketServerBound::write,
+                ContainerGuiOpenPacketServerBound::read,
+                ContainerGuiOpenPacketServerBound::handle,
                 Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         CHANNEL_INSTANCE.registerMessage(

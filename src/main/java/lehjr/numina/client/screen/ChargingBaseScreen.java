@@ -40,7 +40,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ChargingBaseScreen extends AbstractContainerScreen<ChargingBaseMenu> {
-    public static final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "textures/gui/container/chargingbase.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "textures/gui/container/chargingbase.png");
     static final Component ENERGYSTRING = Component.translatable("numina.energy").append(": ");
     EnergyMeter energyMeter;
 

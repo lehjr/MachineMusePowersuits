@@ -54,11 +54,10 @@ import java.util.Map;
 
 public enum ModelBakeEventHandler {
     INSTANCE;
-    public static final ResourceLocation plasmaBall = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "entity/plasma");
+    public static final ResourceLocation plasmaBall = ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "entity/plasma");
 
     public MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
 
-    public static final ModelResourceLocation powerFistIconLocation = new ModelResourceLocation(MPSRegistryNames.POWER_FIST, "inventory");
     public static final ModelResourceLocation powerFistIconLocation1 = new ModelResourceLocation(MPSConstants.POWER_FIST_1, "inventory");
     public static final ModelResourceLocation powerFistIconLocation2 = new ModelResourceLocation(MPSConstants.POWER_FIST_2, "inventory");
     public static final ModelResourceLocation powerFistIconLocation3 = new ModelResourceLocation(MPSConstants.POWER_FIST_3, "inventory");
@@ -72,7 +71,7 @@ public enum ModelBakeEventHandler {
     public void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> registry = event.getModels();
         for (Direction facing : Direction.values()) {
-            BakedModel model = registry.get(new ModelResourceLocation(ResourceLocation.tryParse("powersuits:luxcapacitor"), "facing=" + facing + ",waterlogged=true"));
+            BakedModel model = registry.get(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "luxcapacitor"), "facing=" + facing + ",waterlogged=true"));
             if(model instanceof OBJBakedCompositeModel) {
                 HashMap<DIR, List<BakedQuad>> map = new HashMap<>();
                 for (DIR dir : DIR.values()) {
@@ -88,20 +87,22 @@ public enum ModelBakeEventHandler {
             }
         });
 
-        BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
-
         BakedModel powerFistIcon1 = event.getModels().get(powerFistIconLocation1);
         BakedModel powerFistIcon2 = event.getModels().get(powerFistIconLocation2);
         BakedModel powerFistIcon3 = event.getModels().get(powerFistIconLocation3);
         BakedModel powerFistIcon4 = event.getModels().get(powerFistIconLocation4);
 
-        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
-            event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
-
+        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon1)) {
             event.getModels().put(powerFistIconLocation1, new PowerFistModelWrapper(powerFistIcon1));
-            event.getModels().put(powerFistIconLocation2, new PowerFistModelWrapper(powerFistIcon2));
-            event.getModels().put(powerFistIconLocation3, new PowerFistModelWrapper(powerFistIcon3));
-            event.getModels().put(powerFistIconLocation4, new PowerFistModelWrapper(powerFistIcon4));
+        }
+        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon2)) {
+            event.getModels().put(powerFistIconLocation2, new PowerFistModelWrapper(powerFistIcon1));
+        }
+        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon3)) {
+            event.getModels().put(powerFistIconLocation3, new PowerFistModelWrapper(powerFistIcon1));
+        }
+        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon4)) {
+            event.getModels().put(powerFistIconLocation4, new PowerFistModelWrapper(powerFistIcon1));
         }
     }
 

@@ -45,5 +45,5 @@
 
 ["Development Settings"]
 	#Enable debugging info
-	enableDebugging = false
+	enableDebugging = true
 

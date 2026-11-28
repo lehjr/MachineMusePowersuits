@@ -12,12 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SlotBackgrounds {
-    public static final ResourceLocation EMPTY_SLOT_HOE = ResourceLocation.tryParse("item/empty_slot_hoe");
-    public static final ResourceLocation EMPTY_SLOT_AXE = ResourceLocation.tryParse("item/empty_slot_axe");
-    public static final ResourceLocation EMPTY_SLOT_SWORD = ResourceLocation.tryParse("item/empty_slot_sword");
-    public static final ResourceLocation EMPTY_SLOT_SHOVEL = ResourceLocation.tryParse("item/empty_slot_shovel");
-    public static final ResourceLocation EMPTY_SLOT_PICKAXE = ResourceLocation.tryParse("item/empty_slot_pickaxe");
-    public static final ResourceLocation EMPTY_SLOT_INGOT = ResourceLocation.tryParse("item/empty_slot_ingot");
+    public static final ResourceLocation EMPTY_SLOT_HOE = ResourceLocation.withDefaultNamespace("item/empty_slot_hoe");
+    public static final ResourceLocation EMPTY_SLOT_AXE = ResourceLocation.withDefaultNamespace("item/empty_slot_axe");
+    public static final ResourceLocation EMPTY_SLOT_SWORD = ResourceLocation.withDefaultNamespace("item/empty_slot_sword");
+    public static final ResourceLocation EMPTY_SLOT_SHOVEL = ResourceLocation.withDefaultNamespace("item/empty_slot_shovel");
+    public static final ResourceLocation EMPTY_SLOT_PICKAXE = ResourceLocation.withDefaultNamespace("item/empty_slot_pickaxe");
+    public static final ResourceLocation EMPTY_SLOT_INGOT = ResourceLocation.withDefaultNamespace("item/empty_slot_ingot");
 
     public static final Map<EquipmentSlot, ResourceLocation> ARMOR_SLOT_TEXTURES = new HashMap<>(){{
         put(EquipmentSlot.HEAD, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET);

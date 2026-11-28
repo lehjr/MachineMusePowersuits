@@ -9,11 +9,15 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.concurrent.Callable;
 
 public class EnergyMeter extends HeatMeter {
-    final ResourceLocation TEXTURE_LOCATION = ResourceLocation.parse("minecraft:block/water_still");
+    final FluidStack fluidStack = new FluidStack(Fluids.FLOWING_WATER, 1000);
+    final ResourceLocation TEXTURE_LOCATION = IClientFluidTypeExtensions.of(Fluids.FLOWING_WATER).getFlowingTexture(fluidStack);
 
     public EnergyMeter(Callable<IMeterConfig> config) {
         super(config);
@@ -23,14 +27,14 @@ public class EnergyMeter extends HeatMeter {
         return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(TEXTURE_LOCATION);
     }
 
-    public void draw(GuiGraphics gfx, float xpos, float ypos, float value) {
-        super.draw(gfx, xpos, ypos, value);
+    @Override
+    public void drawAdditional(GuiGraphics gfx, float left, float top, float value) {
         value = Mth.clamp(value + getConfig().getDebugValue(), 0F, 1F);
         if (value > 0) {
             IconUtils.drawMPDLightning(gfx,
-                    xpos + xsize * value, (float) (ypos + ysize * (Math.random() / 2F + 0.25)),
+                    left + xsize * value, (float) (top + ysize * (Math.random() / 2F + 0.25)),
                     1F,
-                    xpos, (float) (ypos + ysize * (Math.random() / 2 + 0.25)),
+                    left, (float) (top + ysize * (Math.random() / 2 + 0.25)),
                     1F, Color.WHITE,
                     4, 1);
         }

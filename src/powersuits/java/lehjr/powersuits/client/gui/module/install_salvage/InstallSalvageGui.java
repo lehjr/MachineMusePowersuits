@@ -2,14 +2,13 @@ package lehjr.powersuits.client.gui.module.install_salvage;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
-import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrameContainered;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.client.gui.common.ScrollableInventoryFrame2;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
@@ -31,25 +30,25 @@ import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
-import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMenu> {
     Component modularItemInventoryLabel = Component.translatable("gui." + MPSConstants.MOD_ID + ".modularitem.inventory");
     Component moduleSelectionFrameLabel = Component.translatable(MPSConstants.GUI_COMPATIBLE_MODULES);
-    public static final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
     protected TabSelectFrame tabSelectFrame;
     ModularItemSelectionFrameContainered<InstallSalvageMenu> itemSelectFrame;
 
     ScrollableInventoryFrame2<InstallSalvageMenu> modularItemInventory;
     protected CompatibleModuleDisplayFrame moduleSelectFrame;
-    VanillaButton button;
 
     Inventory playerInventory;
 
     public InstallSalvageGui(InstallSalvageMenu container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title, 352, 217);
         this.playerInventory = playerInventory;
+        NuminaLogger.logDebug("container slots: " + container.slots.size());
+
     }
 
     public void restoreMouse() {
@@ -117,7 +116,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
 
 
 
-                            String group = powerModule.getModuleGroup();
+//                            String group = powerModule.getModuleGroup();
 
                         }
                     }
@@ -184,7 +183,6 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         super.renderBackground(gfx);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-//        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         gfx.blit(BACKGROUND, i, j, 0, 0, imageWidth, imageHeight, 512, 512);

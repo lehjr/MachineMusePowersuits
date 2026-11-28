@@ -25,7 +25,7 @@
 //        final TickingScanner scanner = new TickingScanner(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, moduleConfigGetterIn);
 //        final LazyOptional<IPowerModule> scannerHolder = LazyOptional.of(()-> scanner);
 //
-//        event.addCapability(ResourceLocation.tryBuild("scannable:scanner"), new ICapabilityProvider() {
+//        event.addCapability(ResourceLocation.fromNamespaceAndPath("scannable:scanner"), new ICapabilityProvider() {
 //            @Nonnull
 //            @Override
 //            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {

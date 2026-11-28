@@ -163,7 +163,7 @@ public class SelectiveMiner extends AbstractPowerModule {
                 return MiningEnhancementModuleConfig.selectiveMinerModuleIsAllowed;
             }
 
-            // this only harvesting 1 type of block
+            // this only harvesting 1 slotType of block
             @Override
             public boolean onBlockStartBreak(ItemStack itemStack, BlockHitResult hitResult, Player player, Level level) {
                 // Don't cancel if this isn't online...

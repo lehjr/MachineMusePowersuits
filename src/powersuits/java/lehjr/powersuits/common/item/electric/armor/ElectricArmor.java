@@ -28,8 +28,8 @@ package lehjr.powersuits.common.item.electric.armor;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.datafixers.util.Pair;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -38,7 +38,8 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.numina.common.utils.AdditionalInfo;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.powersuits.common.capability.legacy.PowerArmorLegacyCap;
+import lehjr.powersuits.common.capability.armor.PowerArmorCap;
+import lehjr.powersuits.common.config.ArmorConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -62,12 +63,10 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class ElectricArmor extends ArmorItem {
@@ -77,11 +76,14 @@ public class ElectricArmor extends ArmorItem {
             UUID.randomUUID(),
             UUID.randomUUID()};
 
-    public ElectricArmor(ArmorItem.Type type) {
+    int tier;
+
+    public ElectricArmor(ArmorItem.Type type, int tier) {
         super(MPSArmorMaterial.EMPTY_ARMOR, type, new Item.Properties()
                 .stacksTo(1)
                 .durability(0)
                 .setNoRepair());
+        this.tier = tier;
     }
 
     @Override
@@ -259,18 +261,18 @@ public class ElectricArmor extends ArmorItem {
 
 
     //    /**
-//     * This will work for the vanilla type models. This will not work for high polly models due to how the rendering works
+//     * This will work for the vanilla slotType models. This will not work for high polly models due to how the rendering works
 //     *
 //     * @param armor
 //     * @param entity
 //     * @param equipmentSlotType
-//     * @param type
+//     * @param slotType
 //     * @return
 //     */
 //    @Nullable
 //    @Override
-//    public String getArmorTexture(ItemStack armor, Entity entity, EquipmentSlot equipmentSlotType, String type) {
-//        if (type == "overlay") { // this is to allow a tint to be applied tot the armor
+//    public String getArmorTexture(ItemStack armor, Entity entity, EquipmentSlot equipmentSlotType, String slotType) {
+//        if (slotType == "overlay") { // this is to allow a tint to be applied tot the armor
 //            return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
 //        }
 //
@@ -367,15 +369,18 @@ public class ElectricArmor extends ArmorItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (worldIn != null) {
-            AdditionalInfo.appendHoverText(stack, worldIn, tooltip, flagIn);
+            AdditionalInfo.appendHoverText(stack, tooltip);
         }
     }
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundTag nbt) {
-        assert stack != null;
-        return new PowerArmorLegacyCap(stack, this.type);
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        if(ArmorConfig.ARMOR_CONFIG_SPEC.isLoaded()) {
+            return new PowerArmorCap(stack, this.type, this.tier);
+        } else {
+            return super.initCapabilities(stack, nbt);
+        }
     }
 
     @Override

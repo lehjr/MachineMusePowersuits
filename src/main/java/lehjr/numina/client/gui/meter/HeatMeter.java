@@ -3,7 +3,9 @@ package lehjr.numina.client.gui.meter;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import lehjr.numina.client.config.IMeterConfig;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,6 +15,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -20,11 +25,11 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class HeatMeter {
-    final ResourceLocation TEXTURE_LOCATION = ResourceLocation.tryParse("block/magma");
+    final FluidStack fluidStack = new FluidStack(Fluids.FLOWING_LAVA, 1000);
+    final ResourceLocation TEXTURE_LOCATION = IClientFluidTypeExtensions.of(Fluids.FLOWING_LAVA).getFlowingTexture(fluidStack);
 
     final int xsize = 32;
     final int ysize = 8;
-    float meterStart, meterLevel;
 
     Callable<IMeterConfig> config;
 
@@ -52,46 +57,69 @@ public class HeatMeter {
         return new IMeterConfig() {};
     }
 
-    public void draw(GuiGraphics gfx, float xpos, float ypos, float value) {
+    public void draw(GuiGraphics gfx, float left, float top, float value) {
         value = Mth.clamp(value + getConfig().getDebugValue(), 0F, 1F);
+
         ShaderInstance oldShader = RenderSystem.getShader();
-        drawFluid(gfx,xpos, ypos, value, getTexture());
-        drawAdditional(gfx, xpos, ypos, value);
-        drawGlass(gfx, xpos, ypos);
-        RenderSystem.setShader(()->oldShader);
+        try {
+            drawFluid(gfx,left, top, value, getTexture());
+            drawAdditional(gfx, left, top, value);
+            drawGlass(gfx, left, top);
+        } finally {
+            if (oldShader != null) {
+                RenderSystem.setShader(()->oldShader);
+            }
+        }
     }
 
-    public void drawAdditional(GuiGraphics gfx, float xpos, float ypos, float value) {
+    public void drawAdditional(GuiGraphics gfx, float left, float top, float value) {
     }
 
-    public void drawFluid(GuiGraphics gfx, float xpos, float ypos, float value, TextureAtlasSprite icon) {
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        int argbColor = getConfig().getBarColor().getARGBInt();
-        if(frames.isEmpty()) {
-            icon.contents().getUniqueFrames().forEach(frame -> frames.add(frame));
-        }
+    public void drawFluid(GuiGraphics gfx, float left, float top, float value, TextureAtlasSprite icon) {
+        if(value > 0) {
+            if (icon == null) {
+                icon = IconUtils.getMissingIcon();
+            }
 
-        value = Math.min(value, 1F);
-        gfx.pose().pushPose();
-        gfx.pose().scale(0.5F, 0.5F, 0.5F);
-        // New: Horizontal, fill from left.
-        meterStart = xpos;
-        meterLevel = (xpos + xsize * value);
-        while (meterStart + 8 < meterLevel) {
-            IconUtils.drawIconAt(gfx.pose(), meterStart * 2, ypos * 2, icon, argbColor);
-            meterStart += 8;
+            value = Mth.clamp(value, 0.0F, 1.0F);
+            if (value <= 0.0F) {
+                return;
+            }
+
+            Color color = getConfig().getBarColor();
+
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.setShaderTexture(0, icon.atlasLocation());
+            RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+
+            gfx.pose().pushPose();
+            gfx.pose().scale(0.5F, 0.5F, 0.5F);
+
+            Matrix4f matrix4f = gfx.pose().last().pose();
+            BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+            bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+
+            float meterStart = left;
+            float meterLevel = left + xsize * value;
+
+            while (meterStart + 8 < meterLevel) {
+                IconUtils.appendIconPartial(bufferBuilder, matrix4f, meterStart * 2, top * 2, icon, color, 0, 0, 16, 16);
+                meterStart += 8;
+            }
+            if (meterLevel > meterStart) {
+                IconUtils.appendIconPartial(bufferBuilder, matrix4f, meterStart * 2, top * 2, icon, color, 0, 0, (meterLevel - meterStart) * 2, 16);
+            }
+
+            BufferUploader.drawWithShader(bufferBuilder.end());
+            gfx.pose().popPose();
         }
-        IconUtils.drawIconPartial(gfx.pose(), meterStart * 2, ypos * 2, icon, argbColor,
-                0, 0, (meterLevel - meterStart) * 2, 16);
-        gfx.pose().popPose();
-        RenderSystem.disableBlend();
     }
 
     /**
      *
      */
-    public void drawGlass(GuiGraphics gfx, float xpos, float ypos) {
+    public void drawGlass(GuiGraphics gfx, float left, float top) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         int glassColor = getConfig().getGlassColor().getARGBInt();
@@ -101,37 +129,39 @@ public class HeatMeter {
         float maxV = 1F;
 
         float blitOffset = 0;
-        float left = xpos;
         float right = left + xsize;
-        float top = ypos;
         float bottom = top + ysize;
 
         RenderSystem.setShaderTexture(0, NuminaConstants.GLASS_TEXTURE);
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
         Matrix4f matrix4f = gfx.pose().last().pose();
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tesselator.getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
 
         // bottom left
         bufferbuilder.vertex(matrix4f, left, bottom, blitOffset)
+                .color(glassColor)
                 .uv(maxU, maxV)
-                .color(glassColor);
+                .endVertex();
 
         // bottom right
         bufferbuilder.vertex(matrix4f, right, bottom, blitOffset)
+                .color(glassColor)
                 .uv(maxU, minV)
-                .color(glassColor);
+                .endVertex();
 
         // top right
         bufferbuilder.vertex(matrix4f, right, top, blitOffset)
+                .color(glassColor)
                 .uv(minU, minV)
-                .color(glassColor);
+                .endVertex();
 
         // top left
         bufferbuilder.vertex(matrix4f, left, top, blitOffset)
+                .color(glassColor)
                 .uv(minU, maxV)
-                .color(glassColor);
+                .endVertex();
 
         BufferUploader.drawWithShader(bufferbuilder.end());
         RenderSystem.disableBlend();

@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 public class LuxCapacitorModel2 extends Model {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.tryBuild("modid", "luxcapacitor"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("modid", "luxcapacitor"), "main");
     public final ModelPart baseLower;
     public final ModelPart baseUpper;
     public final ModelPart lens;

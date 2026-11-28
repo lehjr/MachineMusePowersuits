@@ -58,54 +58,26 @@ public class NuminaObjLoader implements IGeometryLoader<NuminaObjModel>, Resourc
         boolean emissiveAmbient = GsonHelper.getAsBoolean(jsonObject, "emissive_ambient", true);
         String mtlOverride = GsonHelper.getAsString(jsonObject, "mtl_override", null);
 
-        // TODO: Deprecated names. To be removed in 1.20
-        var deprecationWarningsBuilder = ImmutableMap.<String, String>builder();
-        if (jsonObject.has("detectCullableFaces")) {
-            automaticCulling = GsonHelper.getAsBoolean(jsonObject, "detectCullableFaces");
-            deprecationWarningsBuilder.put("detectCullableFaces", "automatic_culling");
-        }
-        if (jsonObject.has("diffuseLighting")) {
-            shadeQuads = GsonHelper.getAsBoolean(jsonObject, "diffuseLighting");
-            deprecationWarningsBuilder.put("diffuseLighting", "shade_quads");
-        }
-        if (jsonObject.has("flip-v")) {
-            flipV = GsonHelper.getAsBoolean(jsonObject, "flip-v");
-            deprecationWarningsBuilder.put("flip-v", "flip_v");
-        }
-        if (jsonObject.has("ambientToFullbright")) {
-            emissiveAmbient = GsonHelper.getAsBoolean(jsonObject, "ambientToFullbright");
-            deprecationWarningsBuilder.put("ambientToFullbright", "emissive_ambient");
-        }
-        if (jsonObject.has("materialLibraryOverride")) {
-            mtlOverride = GsonHelper.getAsString(jsonObject, "materialLibraryOverride");
-            deprecationWarningsBuilder.put("materialLibraryOverride", "mtl_override");
-        }
-
-        return loadModel(new NuminaObjModel.ModelSettings(
-                ResourceLocation.tryParse(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride), deprecationWarningsBuilder.build());
+        return loadModel(new NuminaObjModel.ModelSettings(ResourceLocation.parse(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride));
     }
 
-    public NuminaObjModel loadWithDefaultSettings(ResourceLocation location) {
-        return loadModel(
-                new NuminaObjModel.ModelSettings(
-                        location,
-                        true,
-                        true,
-                        false,
-                        true,
-                        null));
-    }
+//    public NuminaObjModel loadWithDefaultSettings(ResourceLocation location) {
+//        return loadModel(
+//                new NuminaObjModel.ModelSettings(
+//                        location,
+//                        true,
+//                        true,
+//                        false,
+//                        true,
+//                        null));
+//    }
 
     public NuminaObjModel loadModel(NuminaObjModel.ModelSettings settings) {
-        return loadModel(settings, Map.of());
-    }
-
-    private NuminaObjModel loadModel(NuminaObjModel.ModelSettings settings, Map<String, String> deprecationWarnings) {
         return modelCache.computeIfAbsent(settings, (data) -> {
-            NuminaLogger.logDebug("numinaOBJLoader model location: " + settings.modelLocation());
+//            NuminaLogger.logDebug("numinaOBJLoader model location: " + settings.modelLocation());
             Resource resource = manager.getResource(settings.modelLocation()).orElseThrow();
             try (ObjTokenizer tokenizer = new ObjTokenizer(resource.open())) {
-                return NuminaObjModel.parse(tokenizer, settings, deprecationWarnings);
+                return NuminaObjModel.parse(tokenizer, settings);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException("Could not find OBJ model", e);
             } catch (Exception e) {
@@ -113,6 +85,20 @@ public class NuminaObjLoader implements IGeometryLoader<NuminaObjModel>, Resourc
             }
         });
     }
+
+//    private NuminaObjModel loadModel(NuminaObjModel.ModelSettings settings, Map<String, String> deprecationWarnings) {
+//        return modelCache.computeIfAbsent(settings, (data) -> {
+//            NuminaLogger.logDebug("numinaOBJLoader model location: " + settings.modelLocation());
+//            Resource resource = manager.getResource(settings.modelLocation()).orElseThrow();
+//            try (ObjTokenizer tokenizer = new ObjTokenizer(resource.open())) {
+//                return NuminaObjModel.parse(tokenizer, settings, deprecationWarnings);
+//            } catch (FileNotFoundException e) {
+//                throw new RuntimeException("Could not find OBJ model", e);
+//            } catch (Exception e) {
+//                throw new RuntimeException("Could not read OBJ model", e);
+//            }
+//        });
+//    }
 
     public ObjMaterialLibrary loadMaterialLibrary(ResourceLocation materialLocation) {
         return materialCache.computeIfAbsent(materialLocation, (location) -> {
@@ -127,3 +113,4 @@ public class NuminaObjLoader implements IGeometryLoader<NuminaObjModel>, Resourc
         });
     }
 }
+

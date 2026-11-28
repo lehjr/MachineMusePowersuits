@@ -22,7 +22,7 @@
 // * Created by Eximius88 on 1/13/14.
 // */
 //public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFluidTermHandler {
-//    public static final ResourceLocation WIRELESS_TERMINAL_REG = ResourceLocation.tryBuild("appliedenergistics2:wireless_terminal");
+//    public static final ResourceLocation WIRELESS_TERMINAL_REG = ResourceLocation.fromNamespaceAndPath("appliedenergistics2:wireless_terminal");
 //
 //    private static final String TAG_ENCRYPTION_KEY = "encryptionKey";
 //    @Override

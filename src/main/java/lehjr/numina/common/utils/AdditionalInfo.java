@@ -26,138 +26,135 @@
 
 package lehjr.numina.common.utils;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.item.ComponentItem;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.glfw.GLFW;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
 public class AdditionalInfo {
-    /**
-     * Adds information to the item's tooltip when 'getting' it.
-     *
-     * @param stack            The itemstack to get the tooltip for
-     * @param worldIn          The world (unused)
-     * @param currentTipList   A list of strings containing the existing tooltip. When
-     *                         passed, it will just contain the id of the item;
-     *                         enchantments and lore are
-     *                         appended afterwards.
-     * @param advancedToolTips Whether or not the player has 'advanced tooltips' turned on in
-     *                         their settings.
-     */
-    public static void appendHoverText(@Nonnull ItemStack stack, Level worldIn, List currentTipList, TooltipFlag advancedToolTips) {
-        if (worldIn == null) {
-            return;
+    public static void appendHoverText(ItemStack stack, List<Component> components) {
+        boolean doAdditionalInfo = Screen.hasShiftDown();
+
+        List<Component> installed = new ArrayList<>();
+        Map<Component, FluidInfo> fluids = new HashMap<>();
+
+        // is this a Modular Item
+        IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(stack);
+        if(iModularItem != null) {
+            // Mode changing item such as power fist
+            if (iModularItem instanceof IModeChangingItem) {
+                ItemStack activeModule = ((IModeChangingItem) iModularItem).getActiveModule();
+                if (!activeModule.isEmpty()) {
+                    MutableComponent localizedName = (MutableComponent) activeModule.getDisplayName();
+                    components.add(
+                            Component.translatable(NuminaConstants.TOOLTIP_MODE)
+                                    .append(Component.literal(" "))
+                                    .append(localizedName.setStyle(Style.EMPTY.applyFormat(ChatFormatting.RED))));
+                } else {
+                    components.add(Component.translatable(NuminaConstants.TOOLTIP_CHANGE_MODES));
+                }
+            }
         }
 
-//        // TODO: remove enchantment labels.
-//        if (currentTipList.contains(I18n.get("silkTouch"))) {
-//            currentTipList.remove(I18n.get("silkTouch"));
-//        }
-
-        // Modular Item Check
-        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                // base class
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .ifPresent(iItemHandler -> {
-                    // Mode changing item such as power fist
-                    if (iItemHandler instanceof IModeChangingItem) {
-                        ItemStack activeModule = ((IModeChangingItem) iItemHandler).getActiveModule();
-                        if (!activeModule.isEmpty()) {
-
-                            // MutableComponent
-                            // Component.translatable
-                            MutableComponent localizedName = (MutableComponent) activeModule.getDisplayName();
-                            currentTipList.add(
-                                    Component.translatable(NuminaConstants.TOOLTIP_MODE)
-//                                        .appendString(" ")
-                                            .append(Component.literal(" "))
-                                            .append(localizedName.setStyle(Style.EMPTY.applyFormat(ChatFormatting.RED))));
-                        } else {
-                            currentTipList.add(Component.translatable(NuminaConstants.TOOLTIP_CHANGE_MODES));
-                        }
-                    }
-
-                    if (doAdditionalInfo()) {
-                        List<Component> installed = new ArrayList<>();
-                        Map<Component, FluidInfo> fluids = new HashMap<>();
-
-                        for (ItemStack module : iItemHandler.getInstalledModules()) {
-                            installed.add(((MutableComponent)module.getDisplayName()).setStyle(Style.EMPTY.applyFormat((ChatFormatting.LIGHT_PURPLE))));
-
-                            // check mpodule for fluid
-                            module.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(fluidHandler ->{
-                                int numTanks = fluidHandler.getTanks();
-
-                                for(int i=0; i < numTanks; i++) {
-                                    FluidStack fluidStack = fluidHandler.getFluidInTank(i);
-                                    if (fluidStack.isEmpty()) {
-                                        continue;
-                                    }
-                                    int capacity = fluidHandler.getTankCapacity(i);
-
-                                    Component fluidName = fluidHandler.getFluidInTank(i).getDisplayName();
-                                    FluidInfo fluidInfo = fluids.getOrDefault(fluidName, new FluidInfo(fluidName)).addAmmount(fluidStack.getAmount()).addMax(capacity);
-                                    fluids.put(fluidName, fluidInfo);
-                                }
-                            });
-                        }
-
-                        if (fluids.size() > 0) {
-                            for(FluidInfo info : fluids.values()) {
-                                currentTipList.add(info.getOutput());
-                            }
-                        }
-
-                        if (installed.size() == 0) {
-                            Component message = Component.translatable(NuminaConstants.TOOLTIP_NO_MODULES);
-                            currentTipList.addAll(StringUtils.wrapComponentToLength(message, 30));
-                        } else {
-                            currentTipList.add(Component.translatable(NuminaConstants.TOOLTIP_INSTALLED_MODULES));
-                            currentTipList.addAll(installed);
-                        }
-                    } else {
-                        currentTipList.add(additionalInfoInstructions());
-                    }
-                });
-
-        stack.getCapability(NuminaCapabilities.Module.POWER_MODULE).ifPresent(iPowerModule -> {
-            if (doAdditionalInfo()) {
-                Component description = Component.translatable( stack.getItem().getDescriptionId() + ".desc");
-                currentTipList.addAll(StringUtils.wrapComponentToLength(description, 30));
-            } else {
-                currentTipList.add(additionalInfoInstructions());
+        // is it a power module, or is it both (special case)?
+        IPowerModule pm = stack.getCapability(NuminaCapabilities.Module.POWER_MODULE).resolve().orElse(null);
+        if(iModularItem != null) {
+            for (ItemStack module : iModularItem.getInstalledModules()) {
+                installed.add(((MutableComponent) module.getDisplayName()).setStyle(Style.EMPTY.applyFormat((ChatFormatting.LIGHT_PURPLE))));
+                powerModuleFluidInfo(module, fluids);
             }
-        });
+        }
 
-        stack.getCapability(ForgeCapabilities.ENERGY).ifPresent(energyCap->
-                // FIXME use Component.translatable??? !!!
-                currentTipList.add(Component.literal(I18n.get(NuminaConstants.TOOLTIP_BATTERY_ENERGY,
-                        StringUtils.formatNumberShort(energyCap.getEnergyStored()),
-                        StringUtils.formatNumberShort(energyCap.getMaxEnergyStored())))
-                        .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA).withItalic(true))));
+        if(pm != null || stack.getItem() instanceof ComponentItem) {
+            addDesc(stack, components);
+            if(pm != null) {
+                powerModuleFluidInfo(stack, fluids);
+            }
+        }
+
+        if(iModularItem != null) {
+            if (doAdditionalInfo) {
+                if (installed.isEmpty()) {
+                    Component message = Component.translatable(NuminaConstants.TOOLTIP_NO_MODULES);
+                    components.addAll(StringUtils.wrapComponentToLength(message, 30));
+                } else {
+                    components.add(Component.translatable(NuminaConstants.TOOLTIP_INSTALLED_MODULES));
+                    components.addAll(installed);
+                }
+            } else {
+                components.add(additionalInfoInstructions());
+            }
+        }
+
+        if (!fluids.isEmpty()) {
+            for(FluidInfo info : fluids.values()) {
+                components.add(info.getOutput());
+            }
+        }
+
+        IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).resolve().orElse(null);
+        if(energyStorage != null) {
+            // FIXME use Component.translatable??? !!!
+            components.add(Component.literal(I18n.get(NuminaConstants.TOOLTIP_BATTERY_ENERGY,
+                            StringUtils.formatNumberShort(energyStorage.getEnergyStored()),
+                            StringUtils.formatNumberShort(energyStorage.getMaxEnergyStored())))
+                    .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA).withItalic(true)));
+        }
+    }
+
+    static void powerModuleFluidInfo(ItemStack module,
+                                     Map<Component, FluidInfo> fluids)  {
+
+        // check module for fluid
+        IFluidHandlerItem iFluidHandlerItem = module.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).resolve().orElse(null);
+        if(iFluidHandlerItem != null) {
+            int numTanks = iFluidHandlerItem.getTanks();
+            for(int i=0; i < numTanks; i++) {
+                FluidStack fluidStack = iFluidHandlerItem.getFluidInTank(i);
+                if (fluidStack.isEmpty()) {
+                    continue;
+                }
+                int capacity = iFluidHandlerItem.getTankCapacity(i);
+
+                Component fluidName = iFluidHandlerItem.getFluidInTank(i).getDisplayName();
+                FluidInfo fluidInfo = fluids.getOrDefault(fluidName, new FluidInfo(fluidName)).addAmmount(fluidStack.getAmount()).addMax(capacity);
+                fluids.put(fluidName, fluidInfo);
+            }
+        }
+        //        IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
+        //        if(pm != null || module.getItem() instanceof ComponentItem) {
+        //            addDesc(module, components, doAdditionalInfo);
+        //        }
+    }
+
+
+    public static void addDesc(ItemStack stack, List<Component> components) {
+        boolean doAdditionalInfo = Screen.hasShiftDown();
+
+        if (doAdditionalInfo) {
+            Component description = Component.translatable( stack.getItem().getDescriptionId() + ".desc");
+            components.addAll(StringUtils.wrapComponentToLength(description, 30));
+        } else {
+            components.add(additionalInfoInstructions());
+        }
     }
 
     static class FluidInfo {
@@ -192,7 +189,7 @@ public class AdditionalInfo {
         }
 
         public Component getOutput() {
-            return displayName.copy().append(Component.literal(": ")).append(Component.literal(new StringBuilder(currentAmount).append("/").append(maxAmount).toString()))
+            return displayName.copy().append(Component.literal(": ")).append("" +currentAmount).append(Component.literal("/" + maxAmount))
                     .setStyle(Style.EMPTY.applyFormat(ChatFormatting.DARK_AQUA).withItalic(true));
         }
     }
@@ -200,23 +197,5 @@ public class AdditionalInfo {
     public static Component additionalInfoInstructions() {
         return Component.translatable(NuminaConstants.TOOLTIP_PRESS_SHIFT)
                 .setStyle(Style.EMPTY.applyFormat(ChatFormatting.GRAY).withItalic(true));
-    }
-
-    public static List<Component> getItemInstalledModules(@Nonnull ItemStack stack) {
-        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .map(iItemHandler -> {
-            List<Component> moduleNames = new ArrayList<>();
-                for (ItemStack module : iItemHandler.getInstalledModules()) {
-                    moduleNames.add(((MutableComponent) module.getDisplayName()).setStyle(Style.EMPTY.applyFormat(ChatFormatting.LIGHT_PURPLE)));
-                }
-
-            return moduleNames;
-        }).orElse(new ArrayList<>());
-    }
-
-    public static boolean doAdditionalInfo() {
-        return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT);
     }
 }

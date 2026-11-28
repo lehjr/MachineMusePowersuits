@@ -5,6 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.concurrent.Callable;
 
@@ -13,7 +16,8 @@ import java.util.concurrent.Callable;
  * 4:30 PM 6/21/13
  */
 public class WaterMeter extends HeatMeter {
-    final ResourceLocation TEXTURE_LOCATION = ResourceLocation.tryParse( "block/water_still");
+    final FluidStack fluidStack = new FluidStack(Fluids.FLOWING_WATER, 1000);
+    final ResourceLocation TEXTURE_LOCATION = IClientFluidTypeExtensions.of(Fluids.FLOWING_WATER).getFlowingTexture(fluidStack);
 
     public WaterMeter(Callable<IMeterConfig> config) {
         super(config);

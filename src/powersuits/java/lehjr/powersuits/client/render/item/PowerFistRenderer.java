@@ -42,7 +42,7 @@
 //                if (renderSpec == null || renderSpec.isEmpty()) {
 //                    renderSpec = specNBTCap.getDefaultRenderTag();
 //
-//                    // first person transform type insures THIS client's player is the one holding the item rather than this
+//                    // first person transform slotType insures THIS client's player is the one holding the item rather than this
 //                    // client's player seeing another player holding it
 //                    if (renderSpec != null && !renderSpec.isEmpty() &&
 //                            (transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND ||
@@ -131,15 +131,15 @@
 //
 //
 //
-//                        <transformationMatrix type="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
-//                <transformationMatrix type="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
-//                <transformationMatrix type="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
+//                        <transformationMatrix slotType="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
+//                <transformationMatrix slotType="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
+//                <transformationMatrix slotType="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
 //
 //
 //                            <modelTransforms>
-//                <transformationMatrix type="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
-//                <transformationMatrix type="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
-//                <transformationMatrix type="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
+//                <transformationMatrix slotType="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
+//                <transformationMatrix slotType="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
+//                <transformationMatrix slotType="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
 //            </modelTransforms>
 //         */
 //

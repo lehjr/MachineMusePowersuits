@@ -5,45 +5,54 @@ import lehjr.numina.client.gui.clickable.ModularItemTabToggleWidget;
 import lehjr.numina.client.gui.frame.InventoryFrame;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrameContainered;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.base.Numina;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.utils.ItemUtils;
+import lehjr.powersuits.common.container.InstallSalvageMenu;
 import lehjr.powersuits.common.network.MPSPackets;
-import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
+import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacketServerBound;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import org.lwjgl.glfw.GLFW;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends InventoryFrame implements IContainerULOffSet {
-    ModularItemSelectionFrameContainered modularItemSelectionFrame;
+    ModularItemSelectionFrameContainered<InstallSalvageMenu> modularItemSelectionFrame;
     ModularItemTabToggleWidget selected;
 
     public ScrollableInventoryFrame2(C containerIn,
                                      Rect rect,
-                                     ModularItemSelectionFrameContainered modularItemSelectionFrame,
+                                     @Nonnull ModularItemSelectionFrameContainered<InstallSalvageMenu> modularItemSelectionFrame,
                                      IContainerULOffSet.ulGetter ulgetter) {
-        super(rect,
-                containerIn,
-                9,
-                new ArrayList<Integer>() {{
-                    modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
-                        EquipmentSlot type = tab.getSlotType();
-                        ItemUtils.getItemFromEntitySlot(Minecraft.getInstance().player, type)
-                        .getCapability(ForgeCapabilities.ITEM_HANDLER)
-                                .filter(IModularItem.class::isInstance)
-                                .map(IModularItem.class::cast)
-                                .ifPresent(iItemHandler -> {
-                                    IntStream.range(0, iItemHandler.getSlots()).forEach(i-> add(i));
-                                });
-
-                    });
-                }},
-                ulgetter);
+        super(rect, containerIn, 9, getSlotIndexes(modularItemSelectionFrame), ulgetter);
         this.modularItemSelectionFrame = modularItemSelectionFrame;
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab-> selected = tab);
+    }
+
+    static ArrayList<Integer> getSlotIndexes(ModularItemSelectionFrameContainered<InstallSalvageMenu> modularItemSelectionFrame) {
+        ArrayList<Integer> ret = new ArrayList<>();
+        IModularItem modularItem = modularItemSelectionFrame.getModularItemCapability();
+        if(modularItem != null) {
+            IntStream.range(0, modularItem.getSlots()).forEach(ret::add);
+        }
+        return ret;
+    }
+
+    @Override
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        NuminaLogger.logDebug("renderingscrollable frame2");
+        super.render(gfx, mouseX, mouseY, partialTick);
+    }
+
+    @Override
+    public void renderBackgroundRect(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        NuminaLogger.logDebug("renderingscrollable frame2 background");
+        super.renderBackgroundRect(gfx, mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -52,7 +61,16 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
             if (selected != tab) {
                 selected = tab;
                 EquipmentSlot type = tab.getSlotType();
-                MPSPackets.sendToServer(new ContainerGuiOpenPacket(type));
+                Minecraft mc = Minecraft.getInstance();
+
+                if (mc.screen == null) {
+                    return;
+                }
+                double[] xPos = new double[1];
+                double[] yPos = new double[1];
+                long windowHandle = mc.getWindow().getWindow();
+                GLFW.glfwGetCursorPos(windowHandle, xPos, yPos);
+                MPSPackets.sendToServer(new ContainerGuiOpenPacketServerBound(type, true, xPos[0], yPos[0]));
             }
         });
         super.update(mouseX, mouseY);

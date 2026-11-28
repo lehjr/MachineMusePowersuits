@@ -36,7 +36,7 @@ import net.minecraft.resources.ResourceLocation;
 public class NuminaSpriteUploader extends TextureAtlasHolder {
 
 
-    static final ResourceLocation GUI_ATLAS = ResourceLocation.tryBuild(NuminaConstants.MOD_ID,"gui");
+    static final ResourceLocation GUI_ATLAS = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID,"gui");
 
     public NuminaSpriteUploader(TextureManager textureManager) {
         super(textureManager, NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, GUI_ATLAS);

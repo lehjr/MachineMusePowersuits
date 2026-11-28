@@ -2,6 +2,7 @@ package lehjr.powersuits.common.capability.tool;
 
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.capabilities.heat.ModularItemHeatWrapper;
+import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.common.config.PowerFistConfig;
@@ -21,7 +22,7 @@ public class PowerFistCap implements ICapabilityProvider {
     final ItemStack itemStack;
     final EquipmentSlot targetSlot;
     final PowerFistModeChangingWrapper modularItem;
-    final LazyOptional<IItemHandler> modularItemHolder;
+    final LazyOptional<IModeChangingItem> modularItemHolder;
 
     final PowerFistRenderWrapper modelSpec;
     final LazyOptional<IModelSpec> modelSpecHolder;
@@ -29,11 +30,9 @@ public class PowerFistCap implements ICapabilityProvider {
     final ModularItemHeatWrapper heatStorage;
     final LazyOptional<IHeatStorage> heatHolder;
 
-    public PowerFistCap(ItemStack itemStackIn) {
+    public PowerFistCap(ItemStack itemStackIn, int tier) {
         this.itemStack = itemStackIn;
         this.targetSlot = EquipmentSlot.MAINHAND;
-
-        int tier = getTier(itemStack);
         int slots = getSlots(tier);
         double maxHeat = getMaxHeat(tier);
 
@@ -53,22 +52,6 @@ public class PowerFistCap implements ICapabilityProvider {
             heatStorage.loadCapValues();
             return heatStorage;
         });
-    }
-
-    static int getTier(ItemStack stack) {
-        if(stack.is(MPSItems.POWER_FIST_1.get())) {
-            return 1;
-        }
-        if(stack.is(MPSItems.POWER_FIST_2.get())) {
-            return 2;
-        }
-        if(stack.is(MPSItems.POWER_FIST_3.get())) {
-            return 3;
-        }
-        if (stack.is(MPSItems.POWER_FIST_4.get())) {
-            return 4;
-        }
-        return 0;
     }
 
     static int getSlots(int tier) {
@@ -97,7 +80,7 @@ public class PowerFistCap implements ICapabilityProvider {
             return LazyOptional.empty();
         }
 
-        final LazyOptional<T> modularItemCapability = ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, modularItemHolder);
+        final LazyOptional<T> modularItemCapability = NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM.orEmpty(cap, modularItemHolder);
         if (modularItemCapability.isPresent()) {
             return modularItemCapability;
         }

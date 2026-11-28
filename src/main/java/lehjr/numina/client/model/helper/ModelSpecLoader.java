@@ -26,10 +26,7 @@
 package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.mojang.math.Transformation;
 import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.common.base.NuminaLogger;
@@ -39,6 +36,7 @@ import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -120,7 +118,7 @@ public enum ModelSpecLoader {
 
         switch (specType) {
             case HANDHELD_OBJ_MODEL -> {
-                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_OBJ_MODEL " + json);
+//                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_OBJ_MODEL " + json);
                 if (json.has(MODELS) && json.get(MODELS).isJsonArray()) {
                     json.getAsJsonArray(MODELS).iterator().forEachRemaining(jsonElement -> {
                         parseObjModelSpec(jsonElement.getAsJsonObject(), SpecType.HANDHELD_OBJ_MODEL, specName, isDefault, false);
@@ -130,12 +128,12 @@ public enum ModelSpecLoader {
                 }
             }
             case ARMOR_SKIN -> {
-                NuminaLogger.logDebug("model spec loader spec type: ARMOR_SKIN " + json);
+//                NuminaLogger.logDebug("model spec loader spec type: ARMOR_SKIN " + json);
                 JavaModelSpec javaModel = new JavaModelSpec(specName, isDefault);
                 parseArmorJavaModelSpec(json, javaModel);
             }
             case ARMOR_OBJ_MODEL -> {
-                NuminaLogger.logDebug("model spec loader spec type: ARMOR_OBJ_MODEL " + json);
+//                NuminaLogger.logDebug("model spec loader spec type: ARMOR_OBJ_MODEL " + json);
                 if (json.has(MODELS) && json.get(MODELS).isJsonArray()) {
                     json.getAsJsonArray(MODELS).iterator().forEachRemaining(jsonElement -> {
                         // multiple models, a "model spec" for each
@@ -147,12 +145,12 @@ public enum ModelSpecLoader {
                 }
             }
             case HANDHELD_JAVA_MODEL -> {
-                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_JAVA_MODEL " + json);
+//                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_JAVA_MODEL " + json);
                 JavaModelSpec javaModel = new JavaModelSpec(specName, isDefault);
                 parseHandHeldJavaModel(javaModel, json);
             }
             case NONE -> {
-                NuminaLogger.logDebug("model spec loader found NONE");
+//                NuminaLogger.logDebug("model spec loader found NONE");
             }
         }
     }
@@ -162,8 +160,10 @@ public enum ModelSpecLoader {
      */
     void parseObjModelSpec(JsonObject modelJson, SpecType specType, String specName, boolean isDefault, boolean isSingle) {
         // Load model location
-        ResourceLocation modelLocation = ResourceLocation.tryParse(modelJson.get(FILE).getAsString());
-        ModelBakeEventHandler.INSTANCE.addLocation(modelLocation);
+        ResourceLocation modelLocation = ResourceLocation.parse(modelJson.get(FILE).getAsString());
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modelLocation, "standalone");
+
+        ModelBakeEventHandler.INSTANCE.addLocation(modelResourceLocation);
         if (!isSingle) {
             specName = specName(modelLocation);
         }
@@ -260,7 +260,7 @@ public enum ModelSpecLoader {
         }
     }
 
-    static final ResourceLocation ignored = ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "ignored");
+    static final ResourceLocation ignored = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "ignored");
     static void parseJavaModelPart(JavaModelSpec javaModel, JsonObject partJson, SpecBinding binding) {
         String name = partJson.get(NAME).getAsString();
         boolean glow = partJson.has(GLOW) && partJson.get(GLOW).getAsBoolean();
@@ -281,8 +281,8 @@ public enum ModelSpecLoader {
         Color bodyColor = bodyJson.has(COLOR) ? parseColor(bodyJson.get(COLOR).getAsString()) : Color.WHITE;
         Color legsColor = legsJson.has(COLOR) ? parseColor(legsJson.get(COLOR).getAsString()) : Color.WHITE;
 
-        ResourceLocation bodyTexture = ResourceLocation.tryParse(bodyJson.get(TEXTURE).getAsString());
-        ResourceLocation legsTexture = ResourceLocation.tryParse(legsJson.get(TEXTURE).getAsString());
+        ResourceLocation bodyTexture = ResourceLocation.parse(bodyJson.get(TEXTURE).getAsString());
+        ResourceLocation legsTexture = ResourceLocation.parse(legsJson.get(TEXTURE).getAsString());
 
         putJavaModelPartSpecs(false, existingspec, bodyTexture, bodyColor);
         putJavaModelPartSpecs(true, existingspec, legsTexture, legsColor);
@@ -353,11 +353,12 @@ public enum ModelSpecLoader {
         Vector3f scale = parseVector(transformationJson.get("scale"), ONE);
         return ModelHelper.getTransform(translation, rotation, scale);
     }
+
     /**
      * SpecBinding is a subset if settings for the ModelPartSpec
      */
     public static SpecBinding getBinding(JsonObject bindingJson) {
-        NuminaLogger.logDebug("bindingJson: " + bindingJson);
+//        NuminaLogger.logDebug("bindingJson: " + bindingJson);
         return new SpecBinding(bindingJson.has("target") ? MorphTarget.getMorph(bindingJson.get("target").getAsString()) : null,
                 bindingJson.has("itemSlot") ? EquipmentSlot.byName(bindingJson.get("itemSlot").getAsString().toLowerCase()) : null,
                 bindingJson.has("itemState") ? bindingJson.get("itemState").getAsString() : "all");
@@ -399,5 +400,4 @@ public enum ModelSpecLoader {
         }
         return path;
     }
-
 }

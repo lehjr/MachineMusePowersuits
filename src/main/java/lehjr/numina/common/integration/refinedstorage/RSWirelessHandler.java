@@ -38,8 +38,8 @@
 //    public static void attach(AttachCapabilitiesEvent<ItemStack> event, Callable<IConfig> moduleConfigGetterIn) {
 //        final ItemStack itemStack = event.getObject();
 //        final ResourceLocation regName = itemStack.getItem().getRegistryName();
-//        final ResourceLocation wireless_grid = ResourceLocation.tryBuild("refinedstorage:wireless_grid");
-//        final ResourceLocation wireless_fluid_grid = ResourceLocation.tryBuild("refinedstorage:wireless_fluid_grid");
+//        final ResourceLocation wireless_grid = ResourceLocation.fromNamespaceAndPath("refinedstorage:wireless_grid");
+//        final ResourceLocation wireless_fluid_grid = ResourceLocation.fromNamespaceAndPath("refinedstorage:wireless_fluid_grid");
 //            /*
 //            known possibilities
 //            --------------------

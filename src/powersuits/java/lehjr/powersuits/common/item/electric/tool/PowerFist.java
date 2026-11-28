@@ -36,7 +36,6 @@ import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -58,13 +57,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
 public class PowerFist extends AbstractElectricTool {
-    public PowerFist() {
-        super(new Item.Properties().stacksTo(1).defaultDurability(0));
+    public PowerFist(int tier) {
+        super(new Item.Properties().stacksTo(1).defaultDurability(0), tier);
     }
 
     /**
@@ -108,13 +106,13 @@ public class PowerFist extends AbstractElectricTool {
 //                .map(handler-> finishUsingItem(stack, worldIn, entity)).orElse(stack);
 //    }
 
-    @Override
-    public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .ifPresent(handler-> handler.releaseUsing(stack, worldIn, entityLiving, timeLeft));
-    }
+//    @Override
+//    public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+//        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                .filter(IModeChangingItem.class::isInstance)
+//                .map(IModeChangingItem.class::cast)
+//                .ifPresent(handler-> handler.releaseUsing(stack, worldIn, entityLiving, timeLeft));
+//    }
 
 
 

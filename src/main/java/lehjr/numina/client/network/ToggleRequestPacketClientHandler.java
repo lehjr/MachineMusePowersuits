@@ -2,6 +2,7 @@ package lehjr.numina.client.network;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.packets.clientbound.ToggleRequestPacketClientBound;
+import lehjr.numina.common.registration.NuminaCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -21,10 +22,10 @@ public class ToggleRequestPacketClientHandler {
             }
 
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                        .filter(IModularItem.class::isInstance)
-                        .map(IModularItem.class::cast)
-                        .ifPresent(handler -> handler.toggleModule(registryName, toggleval));
+                IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
+                if (iModularItem != null) {
+                    iModularItem.toggleModule(registryName, toggleval);
+                }
             }
         });
         ctx.get().setPacketHandled(true);

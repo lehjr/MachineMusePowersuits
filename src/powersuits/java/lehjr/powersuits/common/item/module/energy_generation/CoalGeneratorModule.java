@@ -20,7 +20,7 @@
 // * things to figure out:
 // * ---------------------
 //  - use all burnable fuel or just coal
-//  - draw from player inventory or set up some other type of slot?
+//  - draw from player inventory or set up some other slotType of slot?
 //  - charge player energy through electric item utils...
 //
 // *

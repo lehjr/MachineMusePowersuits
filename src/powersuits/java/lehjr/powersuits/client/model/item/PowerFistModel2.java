@@ -61,7 +61,7 @@ import java.util.Map;
  */
 @OnlyIn(Dist.CLIENT)
 public class PowerFistModel2 extends Model implements IJavaModelNBTParser {
-    public static final ResourceLocation TEXTURE = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "textures/models/powerfist.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "textures/models/powerfist.png");
 
     public int boltSize = 0;
     ModelPart mainarm;

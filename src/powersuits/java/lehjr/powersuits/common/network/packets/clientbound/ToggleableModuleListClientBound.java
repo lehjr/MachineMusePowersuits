@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.network.packets.clientbound;
 
-import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.network.packets.clienthandlers.ToggleableModuleListClientHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;

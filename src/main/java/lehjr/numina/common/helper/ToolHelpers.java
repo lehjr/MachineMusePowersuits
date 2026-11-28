@@ -57,8 +57,8 @@
 //        ToolType harvestTool = state.getBlock().getHarvestTool(state);
 //        if (harvestTool != null) {
 //            // this should be enough but nooooo, stairs still don't work here;
-//            for (ToolType type : emulatedTool.getItem().getToolTypes(emulatedTool)) {
-//                if (state.getBlock().isToolEffective(state, type) || (Objects.equals(harvestTool, type) &&
+//            for (ToolType slotType : emulatedTool.getItem().getToolTypes(emulatedTool)) {
+//                if (state.getBlock().isToolEffective(state, slotType) || (Objects.equals(harvestTool, slotType) &&
 //                        emulatedTool.getItem().getHarvestLevel(emulatedTool, harvestTool, null, null) >= state.getBlock().getHarvestLevel(state)))
 //                    return true;
 //            }

@@ -40,64 +40,64 @@ public class VanillaSlider extends AbstractSlider {
         this.active = active;
     }
 
-    @Override
-    public void renderBg(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
-        Font fontrenderer = getMinecraft().font;
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_LOCATION);
-
-        int i = 0;
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-        IconUtils.INSTANCE.blit(gfx.pose(),
-                this.left(), // left
-                this.top(), // top
-                0,                  // texture startx
-                46 + i * 20,        // texture starty
-                (this.width() * 0.5),
-                this.height());
-
-        IconUtils.INSTANCE.blit(gfx.pose(),
-                centerX(),
-                this.top(),
-                200 - this.width() * 0.5,
-                46 + i * 20,
-                this.width() * 0.5,
-                this.height());
-//            this.renderBg(matrixStack, mouseX, mouseY);
-        int j = getFGColor();
-        gfx.drawCenteredString(fontrenderer, this.getMessage(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(255.0F) << 24);
-    }
+//    @Override
+//    public void renderBg(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
+//        Font fontrenderer = getMinecraft().font;
+//        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+//        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_LOCATION);
+//
+//        int i = 0;
+//        RenderSystem.enableBlend();
+//        RenderSystem.defaultBlendFunc();
+//        RenderSystem.enableDepthTest();
+//        IconUtils.getIcon().blit(gfx.pose(),
+//                this.left(), // left
+//                this.top(), // top
+//                0,                  // texture startx
+//                46 + i * 20,        // texture starty
+//                (this.width() * 0.5),
+//                this.height());
+//
+//        IconUtils.getIcon().blit(gfx.pose(),
+//                centerX(),
+//                this.top(),
+//                200 - this.width() * 0.5,
+//                46 + i * 20,
+//                this.width() * 0.5,
+//                this.height());
+////            this.renderBg(matrixStack, mouseX, mouseY);
+//        int j = getFGColor();
+//        gfx.drawCenteredString(fontrenderer, this.getMessage(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(255.0F) << 24);
+//    }
 
     Component getMessage() {
         return message;
     }
-
-    @Override
-    public void renderKnob(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_LOCATION);
-        int i = (this.containsPoint(mouseX, mouseY) ? 2 : 1) * 20;
-        IconUtils.INSTANCE.blit(gfx.pose(),
-                (this.left() + (this.sliderValue * (this.width() - 8))),
-                this.top(),
-                0,
-                46 + i,
-                4,
-                20);
-        IconUtils.INSTANCE.blit(gfx.pose(),
-                (this.left() + (this.sliderValue * (this.width() - 8)) + 4),
-                this.top(),
-                196,
-                46 + i,
-                4,
-                20);
-
-        updateSlider();
-    }
+//
+//    @Override
+//    public void renderKnob(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
+//        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+//        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_LOCATION);
+//        int i = (this.containsPoint(mouseX, mouseY) ? 2 : 1) * 20;
+//        IconUtils.getIcon().blit(gfx.pose(),
+//                (this.left() + (this.sliderValue * (this.width() - 8))),
+//                this.top(),
+//                0,
+//                46 + i,
+//                4,
+//                20);
+//        IconUtils.getIcon().blit(gfx.pose(),
+//                (this.left() + (this.sliderValue * (this.width() - 8)) + 4),
+//                this.top(),
+//                196,
+//                46 + i,
+//                4,
+//                20);
+//
+//        updateSlider();
+//    }
 
     public void setDisplayString(Component dispString) {
         this.displayString = dispString;
@@ -147,5 +147,15 @@ public class VanillaSlider extends AbstractSlider {
         if (drawString) {
             setMessage(Component.empty().append(displayString).append(valString).append(suffix));
         }
+    }
+
+    @Override
+    public void renderBg(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
+
+    }
+
+    @Override
+    public void renderKnob(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
+
     }
 }

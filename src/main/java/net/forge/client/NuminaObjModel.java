@@ -125,9 +125,9 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
         if (materialLibraryOverrideLocation != null) {
             String lib = materialLibraryOverrideLocation;
             if (lib.contains(":"))
-                mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.tryParse(lib));
+                mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.parse(lib));
             else
-                mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.tryBuild(modelDomain, modelPath + lib));
+                mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.fromNamespaceAndPath(modelDomain, modelPath + lib));
         }
 
         String[] line;
@@ -140,9 +140,9 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
 
                     String lib = line[1];
                     if (lib.contains(":"))
-                        mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.tryParse(lib));
+                        mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.parse(lib));
                     else
-                        mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.tryBuild(modelDomain, modelPath + lib));
+                        mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.fromNamespaceAndPath(modelDomain, modelPath + lib));
                     break;
                 }
 
@@ -621,7 +621,7 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
             }
 
             ResourceLocation textureLocation = UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, configuration).texture();
-            ResourceLocation texturePath = ResourceLocation.tryBuild(textureLocation.getNamespace(), "textures/" + textureLocation.getPath() + ".png");
+            ResourceLocation texturePath = ResourceLocation.fromNamespaceAndPath(textureLocation.getNamespace(), "textures/" + textureLocation.getPath() + ".png");
 
             builder.addMesh(texturePath, quads);
         }

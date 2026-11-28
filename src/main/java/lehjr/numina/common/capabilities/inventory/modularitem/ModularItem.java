@@ -116,7 +116,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     public boolean isModuleValid (IPowerModule pm) {
         // follow tier requirements
         if(pm.isAllowed() && pm.getTier() <= getTier()) {
-            // check module target against item stack type
+            // check module target against item stack slotType
             switch (pm.getTarget()) {
                 case ALLITEMS-> {
                     return true;
@@ -504,10 +504,10 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
             IPowerModule pm = getModuleCapability(module);
             ModuleCategory category = pm == null ? ModuleCategory.NONE : pm.getCategory();
 
-            // Specfic module type for limited modules
+            // Specfic module slotType for limited modules
             RangedWrapper wrapper = getRangedWrappers().get(category);
 
-            // fallback on generic type if null
+            // fallback on generic slotType if null
             if (wrapper == null) {
                 wrapper = getRangedWrappers().get(ModuleCategory.NONE);
             }

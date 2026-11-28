@@ -2,6 +2,8 @@ package lehjr.powersuits.common.container;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
+import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.container.slot.*;
@@ -43,9 +45,20 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
         int parentSlot = slotType == EquipmentSlot.MAINHAND ? playerInventory.selected : equipmentSlotToParent(slotType);
         ItemStack modularItemStack = playerInventory.player.getItemBySlot(slotType);
 
-        IModularItem modularItemCapability = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItemStack);
+        IModularItem modularItemCapability = modularItemStack.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM).resolve().orElse(null);
+        IModeChangingItem iModeChangingItem = modularItemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM).resolve().orElse(null);
+
+        NuminaLogger.logDebug("is modularItem null; " + (modularItemCapability == null));
+        NuminaLogger.logDebug("is iModeChangingItem;" + (iModeChangingItem == null));
+
+
+
         if (modularItemCapability != null) {
             addSlots(modularItemCapability, parentSlot);
+
+            NuminaLogger.logDebug("adding slots");
+        } else {
+            NuminaLogger.logDebug("no modularItemCapability detected" );
         }
 
         mainInventoryStart = this.slots.size();

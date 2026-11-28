@@ -31,7 +31,6 @@ import lehjr.numina.common.network.packets.clientbound.*;
 import lehjr.numina.common.network.packets.serverbound.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -42,7 +41,7 @@ import java.util.Optional;
 public class NuminaPackets {
     private static final String PROTOCOL_VERSION = "1";
     private static final SimpleChannel CHANNEL_INSTANCE = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.tryBuild(NuminaConstants.MOD_ID, "data"),
+            ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "data"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals

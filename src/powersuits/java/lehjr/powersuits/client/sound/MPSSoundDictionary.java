@@ -55,6 +55,6 @@ public class MPSSoundDictionary {
 
     static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         return MPS_SOUND_EVENTS.register(name,
-                () -> SoundEvent.createVariableRangeEvent(ResourceLocation.tryBuild(MPSConstants.MOD_ID, name)));
+                () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, name)));
     }
 }

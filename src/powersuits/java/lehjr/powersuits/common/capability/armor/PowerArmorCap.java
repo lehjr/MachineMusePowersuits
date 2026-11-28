@@ -1,14 +1,13 @@
 package lehjr.powersuits.common.capability.armor;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.capabilities.heat.ModularItemHeatWrapper;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.registration.NuminaCapabilities;
-import lehjr.powersuits.common.capability.legacy.PowerArmorLegacyCap;
 import lehjr.powersuits.common.config.ArmorConfig;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import lehjr.powersuits.common.registration.MPSItems;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
@@ -38,12 +37,15 @@ public class PowerArmorCap implements ICapabilityProvider {
     int tier;
     double maxHeat;
 
-    public PowerArmorCap(@Nonnull ItemStack itemStackIn, ArmorItem.Type type) {
+    public PowerArmorCap(@Nonnull ItemStack itemStackIn, ArmorItem.Type type, int tier) {
         this.itemStack = itemStackIn;
         this.targetType = type;
-        this.tier = getTier(itemStackIn, type);
+        this.tier = tier;
+        int size = getActualSize(this.tier, type);
+        NuminaLogger.logDebug("slotType:" + type + ", tier: " + this.tier + ", size: " + size + ", itemStack: " + itemStackIn);
 
-        this.modularItem = new PowerArmorModularItemWrapper(itemStackIn, type, tier);
+
+        this.modularItem = new PowerArmorModularItemWrapper(itemStackIn, type, this.tier, size);
 
         this.modularItemHolder = LazyOptional.of(()-> {
             modularItem.loadCapValues();
@@ -57,7 +59,7 @@ public class PowerArmorCap implements ICapabilityProvider {
         heatHolder = LazyOptional.of(() -> {
             modularItem.loadCapValues();
 
-            final ModularItemHeatWrapper heatStorage = new PowerArmorHeatWrapper(itemStack, type, tier);
+            final ModularItemHeatWrapper heatStorage = new PowerArmorHeatWrapper(itemStack, type, this.tier);
             heatStorage.loadCapValues();
             return heatStorage;
         });
@@ -72,64 +74,97 @@ public class PowerArmorCap implements ICapabilityProvider {
         });
     }
 
-    static int getTier(ItemStack stack, ArmorItem.Type type) {
-        if(type == ArmorItem.Type.HELMET) {
-            if(stack.is(MPSItems.POWER_ARMOR_HELMET_1.get())) {
-                return 1;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_HELMET_2.get())) {
-                return 2;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_HELMET_3.get())) {
-                return 3;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_HELMET_4.get())) {
-                return 4;
-            }
+//    static int getTier(ItemStack stack, ArmorItem.Type slotType) {
+//        if(slotType == ArmorItem.Type.HELMET) {
+//            if(stack.is(MPSItems.POWER_ARMOR_HELMET_1.get())) {
+//                return 1;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_HELMET_2.get())) {
+//                return 2;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_HELMET_3.get())) {
+//                return 3;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_HELMET_4.get())) {
+//                return 4;
+//            }
+//
+//        } else if(slotType == ArmorItem.Type.CHESTPLATE) {
+//            if(stack.is(MPSItems.POWER_ARMOR_CHESTPLATE_1.get())) {
+//                return 1;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_CHESTPLATE_2.get())) {
+//                return 2;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_CHESTPLATE_3.get())) {
+//                return 3;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_CHESTPLATE_4.get())) {
+//                return 4;
+//            }
+//
+//        } else if(slotType == ArmorItem.Type.LEGGINGS) {
+//            if(stack.is(MPSItems.POWER_ARMOR_LEGGINGS_1.get())) {
+//                return 1;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_LEGGINGS_2.get())) {
+//                return 2;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_LEGGINGS_3.get())) {
+//                return 3;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_LEGGINGS_4.get())) {
+//                return 4;
+//            }
+//
+//        } else if(slotType == ArmorItem.Type.BOOTS) {
+//            if(stack.is(MPSItems.POWER_ARMOR_BOOTS_1.get())) {
+//                return 1;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_BOOTS_2.get())) {
+//                return 2;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_BOOTS_3.get())) {
+//                return 3;
+//            }
+//            if(stack.is(MPSItems.POWER_ARMOR_BOOTS_4.get())) {
+//                return 4;
+//            }
+//        }
+//        return 0;
+//    }
 
-        } else if(type == ArmorItem.Type.CHESTPLATE) {
-            if(stack.is(MPSItems.POWER_ARMOR_CHESTPLATE_1.get())) {
-                return 1;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_CHESTPLATE_2.get())) {
-                return 2;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_CHESTPLATE_3.get())) {
-                return 3;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_CHESTPLATE_4.get())) {
-                return 4;
-            }
-
-        } else if(type == ArmorItem.Type.LEGGINGS) {
-            if(stack.is(MPSItems.POWER_ARMOR_LEGGINGS_1.get())) {
-                return 1;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_LEGGINGS_2.get())) {
-                return 2;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_LEGGINGS_3.get())) {
-                return 3;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_LEGGINGS_4.get())) {
-                return 4;
-            }
-
-        } else if(type == ArmorItem.Type.BOOTS) {
-            if(stack.is(MPSItems.POWER_ARMOR_BOOTS_1.get())) {
-                return 1;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_BOOTS_2.get())) {
-                return 2;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_BOOTS_3.get())) {
-                return 3;
-            }
-            if(stack.is(MPSItems.POWER_ARMOR_BOOTS_4.get())) {
-                return 4;
-            }
-        }
-        return 0;
+    public static int getActualSize(int tier, ArmorItem.Type type) {
+        return switch (type) {
+            case HELMET -> switch (tier) {
+                case 1 -> ArmorConfig.helmInventorySlots1;
+                case 2 -> ArmorConfig.helmInventorySlots2;
+                case 3 -> ArmorConfig.helmInventorySlots3;
+                case 4 -> ArmorConfig.helmInventorySlots4;
+                default -> 0;
+            };
+            case CHESTPLATE -> switch (tier) {
+                case 1 -> ArmorConfig.chestPlateInventorySlots1;
+                case 2 -> ArmorConfig.chestPlateInventorySlots2;
+                case 3 -> ArmorConfig.chestPlateInventorySlots3;
+                case 4 -> ArmorConfig.chestPlateInventorySlots4;
+                default -> 0;
+            };
+            case LEGGINGS -> switch (tier) {
+                case 1 -> ArmorConfig.leggingsInventorySlots1;
+                case 2 -> ArmorConfig.leggingsInventorySlots2;
+                case 3 -> ArmorConfig.leggingsInventorySlots3;
+                case 4 -> ArmorConfig.leggingsInventorySlots4;
+                default -> 0;
+            };
+            case BOOTS -> switch (tier) {
+                case 1 -> ArmorConfig.bootsInventorySlots1;
+                case 2 -> ArmorConfig.bootsInventorySlots2;
+                case 3 -> ArmorConfig.bootsInventorySlots3;
+                case 4 -> ArmorConfig.bootsInventorySlots4;
+                default -> 0;
+            };
+        };
     }
 
     @Override

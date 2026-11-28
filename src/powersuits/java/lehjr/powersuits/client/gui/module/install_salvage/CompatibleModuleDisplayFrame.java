@@ -5,15 +5,12 @@ import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.client.gui.module.tweak.ModuleSelectionFrame;
 import lehjr.powersuits.client.gui.module.tweak.ModuleSelectionSubFrame;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 

@@ -17,7 +17,7 @@ public record ToggleRequestPacketClientBound(ResourceLocation registryName, bool
 
     public static ToggleRequestPacketClientBound decode(FriendlyByteBuf packetBuffer) {
         return new ToggleRequestPacketClientBound(
-                ResourceLocation.tryParse(packetBuffer.readUtf(500)),
+                ResourceLocation.parse(packetBuffer.readUtf(500)),
                 packetBuffer.readBoolean()
         );
     }

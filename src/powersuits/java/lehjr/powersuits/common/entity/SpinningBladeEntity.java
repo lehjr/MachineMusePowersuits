@@ -28,6 +28,7 @@ package lehjr.powersuits.common.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.registration.MPSEntities;
@@ -65,18 +66,23 @@ public class SpinningBladeEntity extends ThrowableProjectile {
     public SpinningBladeEntity(Level worldIn, LivingEntity shootingEntity) {
         super(MPSEntities.SPINNING_BLADE_ENTITY_TYPE.get(), shootingEntity, worldIn);
         this.setOwner(shootingEntity);
+        this.setNoGravity(true);
         if (shootingEntity instanceof Player) {
-            AtomicDouble atomicDamage = new AtomicDouble(0);
+
 
             this.shootingItem = ((Player) shootingEntity).getInventory().getSelected();
-            this.shootingItem.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModeChangingItem.class::isInstance)
-                    .map(IModeChangingItem.class::cast)
-                    .ifPresent(iModeChangingItem -> {
-                    iModeChangingItem.getActiveModule().getCapability(NuminaCapabilities.Module.POWER_MODULE)
-                            .ifPresent(m-> atomicDamage.getAndAdd(m.applyPropertyModifiers(MPSConstants.BLADE_DAMAGE)));
-            });
-            damage = atomicDamage.get();
+            IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(this.shootingItem);
+
+            damage = 0;
+            if(mci != null) {
+                int index = mci.findInstalledModule(MPSConstants.BLADE_LAUNCHER_MODULE);
+                if (index >= 0) {
+                    IPowerModule pm = mci.getModuleCapability(mci.getStackInSlot(index));
+                    if(pm != null) {
+                        damage = pm.applyPropertyModifiers(MPSConstants.BLADE_DAMAGE);
+                    }
+                }
+            }
         }
         Vec3 direction = shootingEntity.getLookAngle().normalize();
         double speed = 1.0;
@@ -134,7 +140,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
                     // onSheared(@Nullable Player player, @Nonnull ItemStack item, Level world, BlockPos pos, int fortune)
 
                     List<ItemStack> drops = target.onSheared((Player) this.getOwner(), this.shootingItem, world, result.getBlockPos(),
-                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(ResourceLocation.tryParse("fortune")), this.shootingItem));
+                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(ResourceLocation.withDefaultNamespace("fortune")), this.shootingItem));
                     Random rand = new Random();
 
                     for (ItemStack stack : drops) {
@@ -162,7 +168,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
                 if (target.isShearable(this.shootingItem, entity.level(), entity.blockPosition()) && this.getOwner() instanceof Player) {
                     List<ItemStack> drops = target.onSheared((Player) getOwner(), this.shootingItem, entity.level(),
                             entity.blockPosition(),
-                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(ResourceLocation.tryParse("fortune")), this.shootingItem));
+                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(ResourceLocation.withDefaultNamespace("fortune")), this.shootingItem));
 
                     Random rand = new Random();
                     for (ItemStack drop : drops) {

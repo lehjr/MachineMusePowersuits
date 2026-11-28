@@ -55,7 +55,7 @@
 //    @Override
 //    public JsonElement toJson() {
 //        JsonObject json = new JsonObject();
-//        json.addProperty("type", Serializer.ID.toString());
+//        json.addProperty("slotType", Serializer.ID.toString());
 //        JsonObject enchJson = new JsonObject();
 //        for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
 //            ResourceLocation key = ForgeRegistries.ENCHANTMENTS.getKey(entry.getKey());
@@ -68,7 +68,7 @@
 //    }
 //
 //    public static class Serializer implements IIngredientSerializer<EnchantedIngredient2> {
-//        public static final ResourceLocation ID = ResourceLocation.tryBuild("numina", "min_enchanted");
+//        public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath("numina", "min_enchanted");
 //        public static final Serializer INSTANCE = new Serializer();
 //
 //        @Override
@@ -91,7 +91,7 @@
 //            if (json.has("exclusive_set")) {
 //                JsonObject enchJson = GsonHelper.getAsJsonObject(json, "exclusive_set");
 //                for (Map.Entry<String, JsonElement> entry : enchJson.entrySet()) {
-//                    ResourceLocation id = ResourceLocation.tryBuild(entry.getKey());
+//                    ResourceLocation id = ResourceLocation.fromNamespaceAndPath(entry.getKey());
 //                    Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(id);
 //                    if (ench == null) {
 //                        throw new JsonSyntaxException("Unknown enchantment '" + id + "'");
@@ -107,7 +107,7 @@
 //            buffer.writeVarInt(ingredient.enchantments.size());
 //            for (Map.Entry<Enchantment, Integer> entry : ingredient.enchantments.entrySet()) {
 //                ResourceLocation key = ForgeRegistries.ENCHANTMENTS.getKey(entry.getKey());
-//                buffer.writeResourceLocation(key != null ? key : ResourceLocation.tryBuild("minecraft", "empty"));
+//                buffer.writeResourceLocation(key != null ? key : ResourceLocation.fromNamespaceAndPath("minecraft", "empty"));
 //                buffer.writeVarInt(entry.getValue());
 //            }
 //        }

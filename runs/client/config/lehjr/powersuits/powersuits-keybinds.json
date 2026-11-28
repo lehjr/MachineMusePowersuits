@@ -25,8 +25,18 @@
     "showOnHud": false,
     "defaultKey": -1
   },
+  "keybinding.powersuits.meteorite_compass": {
+    "registryName": "powersuits:meteorite_compass",
+    "showOnHud": false,
+    "defaultKey": -1
+  },
   "keybinding.powersuits.sprint_assist": {
     "registryName": "powersuits:sprint_assist",
+    "showOnHud": false,
+    "defaultKey": -1
+  },
+  "keybinding.minecraft.air": {
+    "registryName": "minecraft:air",
     "showOnHud": false,
     "defaultKey": -1
   },

@@ -43,7 +43,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
 public class Checkbox extends Clickable {
-    private static final ResourceLocation TEXTURE = ResourceLocation.tryParse("textures/gui/checkbox.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/gui/checkbox.png");
     private final boolean showLabel;
     protected boolean isChecked;
     protected CheckboxTile tile;
@@ -144,7 +144,7 @@ public class Checkbox extends Clickable {
 //            ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.enableBlend();
-            NuminaIcons.renderTextureWithColor(TEXTURE, gfx.pose(),
+            NuminaIcons.DrawableIcon.renderTextureWithColor(TEXTURE, gfx.pose(),
                     left(), right(), top(), bottom(), getZLevel(),
                     // int uWidth, int vHeight,
                     20, 20,

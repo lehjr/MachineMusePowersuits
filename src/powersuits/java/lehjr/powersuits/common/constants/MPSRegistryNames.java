@@ -149,6 +149,6 @@ public class MPSRegistryNames {
     public static final String MODULE_TWEAK_CONTAINER_TYPE = "module_tweak_container_type";
 
     public static ResourceLocation getRegName(String regNameString) {
-        return ResourceLocation.tryBuild(MPSConstants.MOD_ID, regNameString);
+        return ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, regNameString);
     }
 }

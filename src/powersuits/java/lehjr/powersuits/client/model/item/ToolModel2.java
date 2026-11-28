@@ -17,7 +17,7 @@ import net.minecraft.world.entity.Entity;
 
 public class ToolModel2<T extends Entity> extends EntityModel<T> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.tryBuild("modid", "toolmodel"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("modid", "toolmodel"), "main");
     private final ModelPart mainarm;
     private final ModelPart armorright;
     private final ModelPart armorleft;

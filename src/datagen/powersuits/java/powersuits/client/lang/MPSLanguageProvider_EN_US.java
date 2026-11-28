@@ -168,7 +168,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
         // Selective Miner -----------------------------------------------------------------------------
         add(MPSItems.SELECTIVE_MINER_MODULE.get(), "Selective Miner");
-        addItemDescriptions(MPSItems.SELECTIVE_MINER_MODULE.get(), "Breaks blocks similar to the vein miner, but selectively. Shift and click to select block type.");
+        addItemDescriptions(MPSItems.SELECTIVE_MINER_MODULE.get(), "Breaks blocks similar to the vein miner, but selectively. Shift and click to select block slotType.");
 
         // Movement ====================================================================================
         // Blink Drive ---------------------------------------------------------------------------------

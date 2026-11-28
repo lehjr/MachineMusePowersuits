@@ -67,7 +67,7 @@ public class TinkerTableBER implements BlockEntityRenderer<TinkerTableBlockEntit
                     break;
             }
         }
-        /** the render type used here prevents the translucent panels from culling other BER's like the chest */
+        /** the render slotType used here prevents the translucent panels from culling other BER's like the chest */
         model.renderToBuffer(poseStack, bufferSource.getBuffer(RenderType.itemEntityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
     }

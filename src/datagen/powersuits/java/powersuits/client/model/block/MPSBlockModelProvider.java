@@ -8,9 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
+import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
 
 public class MPSBlockModelProvider extends BlockModelProvider {
     public MPSBlockModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -20,14 +20,14 @@ public class MPSBlockModelProvider extends BlockModelProvider {
     @Override
     protected void registerModels() {
         getBuilder(MPSBlocks.LUX_CAPACITOR_BLOCK.get())
-            .parent(getExistingFile(ResourceLocation.tryBuild("block/block")))
-            .texture("particle", ResourceLocation.tryBuild("forge", "white"))
+            .parent(getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
+            .texture("particle", ResourceLocation.fromNamespaceAndPath("forge", "white"))
             // Pass a custom anonymous builder that manually appends extra properties to the json output
             .customLoader((parent, existingFileHelper) ->
-                    new CustomLoaderBuilder<>(ResourceLocation.tryBuild("numina", "obj"), parent, existingFileHelper) {
+                    new CustomLoaderBuilder<>(ResourceLocation.fromNamespaceAndPath("numina", "obj"), parent, existingFileHelper) {
                         @Override
                         public com.google.gson.JsonObject toJson(com.google.gson.JsonObject json) {
-                            // Always call super to ensure the loader type and visibility arrays are included
+                            // Always call super to ensure the loader slotType and visibility arrays are included
                             super.toJson(json);
 
                             // Manually append your custom loader parameters directly into the JSON root

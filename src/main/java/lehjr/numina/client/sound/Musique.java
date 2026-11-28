@@ -54,7 +54,7 @@ public class Musique {
         return Minecraft.getInstance().getSoundManager();
     }
 
-    public static void playClientSound(SoundEvent soundEvt, float volumeIn) {
+    public static void playClientUISound(SoundEvent soundEvt, float volumeIn) {
         if (NuminaClientConfig.useSounds) {
             mcsound().play(SimpleSoundInstance.forUI(soundEvt, volumeIn));
         }

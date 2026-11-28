@@ -9,8 +9,6 @@ import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
-
 public class ModularItemHeatWrapper extends HeatStorage {
     ItemStack stack;
     private final LazyOptional<IHeatStorage> holder = LazyOptional.of(() -> this);

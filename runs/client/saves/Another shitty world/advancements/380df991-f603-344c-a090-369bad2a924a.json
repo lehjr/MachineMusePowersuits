@@ -13,7 +13,7 @@
   },
   "powersuits:recipes/misc/generator_thermal1": {
     "criteria": {
-      "has_powerarmor_torso1": "2026-11-25 21:20:25 -0500"
+      "has_powerarmor_torso1": "2026-11-27 00:18:17 -0500"
     },
     "done": true
   },

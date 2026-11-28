@@ -93,7 +93,7 @@ public class ShearsModule extends AbstractPowerModule {
             });
         }
 
-        static final ResourceLocation CABLE_INSULATOR = ResourceLocation.tryBuild("energizedpower", "cable_insulator");
+        static final ResourceLocation CABLE_INSULATOR = ResourceLocation.fromNamespaceAndPath("energizedpower", "cable_insulator");
 
         public static class BlockBreaker extends ToggleableModule implements IBlockBreakingModule, IRightClickModule {
             public BlockBreaker(ItemStack module) {

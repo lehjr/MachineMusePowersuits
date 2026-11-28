@@ -114,7 +114,7 @@ public class ModuleSelectionSubFrame {
         if (border.containsPoint(x, y)) {
             for (ClickableModule module : moduleButtons) {
                 if (module.containsPoint((float) x, (float)y)) {
-                    Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+                    Musique.playClientUISound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
                     selectedModule = moduleButtons.indexOf(module);
                     if (selectedModule != oldSelected) {
                         oldSelected = selectedModule;

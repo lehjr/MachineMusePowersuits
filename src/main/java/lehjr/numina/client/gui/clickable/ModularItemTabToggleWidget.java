@@ -15,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nonnull;
 
@@ -39,7 +38,7 @@ public class ModularItemTabToggleWidget extends Clickable {
     public ModularItemTabToggleWidget(EquipmentSlot type) {
         super(0, 0, 35, 27, false);
         this.isStateActive = false;
-        this.initTextureValues(153, 2, 35, 0, ResourceLocation.tryParse("textures/gui/recipe_book.png"));
+        this.initTextureValues(153, 2, 35, 0, ResourceLocation.withDefaultNamespace("textures/gui/recipe_book.png"));
 
         this.type = type;
         Player player = getMinecraft().player;

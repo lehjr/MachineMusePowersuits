@@ -51,7 +51,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class AbstractElectricTool extends DiggerItem {
-    public AbstractElectricTool(Item.Properties properties) {
+    int tier;
+    public AbstractElectricTool(Item.Properties properties, int tier) {
         super(0.0F,
                 0.0F,
                 new Tier() {
@@ -87,6 +88,7 @@ public class AbstractElectricTool extends DiggerItem {
                 },
                 TagKey.create(Registries.BLOCK, BuiltInRegistries.BLOCK.getKey(Blocks.AIR)),
                 properties);
+        this.tier = tier;
     }
 
     @Override
@@ -99,14 +101,14 @@ public class AbstractElectricTool extends DiggerItem {
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (worldIn != null) {
             super.appendHoverText(stack, worldIn, tooltip, flagIn);
-            AdditionalInfo.appendHoverText(stack, worldIn, tooltip, flagIn);
+            AdditionalInfo.appendHoverText(stack, tooltip);
         }
     }
 
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new PowerFistCap(stack);
+        return new PowerFistCap(stack, this.tier);
     }
 
     @Override

@@ -113,9 +113,9 @@ public class MPSItemModelProvider extends AbstractItemModelProvider {
         // Append this inside your registerModels() method
         getBuilder(MPSEntities.PLASMA_BALL_ENTITY_TYPE.get())
             .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
-            .texture("particle", ResourceLocation.tryBuild("numina", "block/white"))
+            .texture("particle", ResourceLocation.fromNamespaceAndPath("numina", "block/white"))
             .customLoader((parent, existingFileHelper) ->
-                new CustomLoaderBuilder<>(ResourceLocation.tryBuild("numina", "obj"), parent, existingFileHelper) {
+                new CustomLoaderBuilder<>(ResourceLocation.fromNamespaceAndPath("numina", "obj"), parent, existingFileHelper) {
                     @Override
                     public com.google.gson.JsonObject toJson(com.google.gson.JsonObject json) {
                         super.toJson(json);
@@ -139,7 +139,7 @@ public class MPSItemModelProvider extends AbstractItemModelProvider {
         builder
             .customLoader((parent, existingFileHelper) ->
                 new CustomLoaderBuilder<>(
-                    ResourceLocation.tryBuild("forge", "elements"), parent, existingFileHelper) {
+                    ResourceLocation.fromNamespaceAndPath("forge", "elements"), parent, existingFileHelper) {
                     @Override
                     public com.google.gson.JsonObject toJson(com.google.gson.JsonObject json) {
                         super.toJson(json);

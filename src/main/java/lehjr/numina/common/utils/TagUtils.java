@@ -246,18 +246,6 @@ public class TagUtils {
     }
 
     // Misc -----------------------------------------------------------------------------------------------------------
-    public static void setModuleResourceLocation(@Nonnull ItemStack module, String string, ResourceLocation value) {
-        getModuleTag(module).putString(string, value.toString());
-    }
-
-    public static Optional<ResourceLocation> getModuleResourceLocation(@Nonnull ItemStack module, String string) {
-        CompoundTag moduleTag = getModuleTag(module);
-        if (moduleTag.contains(string, Tag.TAG_STRING)) {
-            return Optional.ofNullable(ResourceLocation.tryParse(moduleTag.getString(string)));
-        }
-        return Optional.empty();
-    }
-
     public static void setModuleBlockState(@Nonnull ItemStack module, BlockState mimicBlock) {
         if(mimicBlock != null) {
             getModuleTag(module).put(TagConstants.BLOCKSTATE, NbtUtils.writeBlockState(mimicBlock));

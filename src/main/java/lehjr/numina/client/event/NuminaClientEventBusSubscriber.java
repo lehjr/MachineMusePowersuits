@@ -27,7 +27,6 @@
 package lehjr.numina.client.event;
 
 
-import net.forge.client.NuminaObjLoader;
 import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.overlay.ModeChangingIconOverlay;
 import lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
@@ -39,6 +38,7 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.registration.NuminaEntities;
 import lehjr.numina.common.registration.NuminaMenus;
 import lehjr.numina.common.utils.IconUtils;
+import net.forge.client.NuminaObjLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
@@ -48,14 +48,11 @@ import net.minecraft.client.renderer.entity.layers.ElytraLayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -151,11 +148,9 @@ public class NuminaClientEventBusSubscriber {
     @SubscribeEvent
     public static void doClientStuff(final FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(NuminaFOVUpdateEventHandler.class);
-//        MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
         event.enqueueWork(() -> {
             MenuScreens.register(NuminaMenus.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
             MenuScreens.register(NuminaMenus.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
-            //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
         });
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.register(NuminaClientEventBusSubscriber.class);

@@ -7,10 +7,7 @@ import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsMod
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
 import lehjr.numina.common.capabilities.render.IModelSpec;
-import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
 import lehjr.numina.common.capabilities.render.color.IColorTag;
-import lehjr.numina.common.capabilities.render.highlight.IHighlight;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,12 +37,7 @@ public class NuminaCapabilities {
 
     public static final Capability<IModelSpec> RENDER = CapabilityManager.get(new CapabilityToken<>(){});
 
-    public static final Capability<IHighlight> HIGHLIGHT = CapabilityManager.get(new CapabilityToken<>(){});
-
-    public static final Capability<IChameleon> CHAMELEON = CapabilityManager.get(new CapabilityToken<>(){});
-
     public static final Capability<IPlayerKeyStates> PLAYER_KEYSTATES = CapabilityManager.get(new CapabilityToken<>(){});
-
 
     @Nullable
     public static IModeChangingItem getModeChangingModularItem(ItemStack modularItem) {
@@ -106,13 +98,9 @@ public class NuminaCapabilities {
         return modularItem.getCapability(Inventory.MODULAR_ITEM).resolve().orElse(null);
     }
 
-    public static HolderLookup.Provider getProvider(@Nonnull Level level) {
-        return level.registryAccess();
-    }
-
-
     public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
         event.register(IHeatStorage.class);
+
         event.register(IColorTag.class);
 
         event.register(IModularItem.class);
@@ -121,8 +109,8 @@ public class NuminaCapabilities {
         // Modules
         event.register(IPowerModule.class);
         event.register(IModelSpec.class);
-        event.register(IHighlight.class);
-        event.register(IChameleon.class);
+        event.register(IOtherModItemsAsModules.class);
+
 
         // Player
         event.register(IPlayerKeyStates.class);

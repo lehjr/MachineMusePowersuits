@@ -30,6 +30,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.util.Mth;
 import org.joml.Vector4f;
 
 import java.util.Objects;
@@ -220,12 +221,11 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
      * @return int getValue of this color
      */
     public int getARGBInt() {
-        int val = 0;
-        val = val | ((int) (a * 255) << 24);
-        val = val | ((int) (r * 255) << 16);
-        val = val | ((int) (g * 255) << 8);
-        val = val | ((int) (b * 255));
-        return val;
+        int alpha = (int) (Mth.clamp(a, 0.0F, 1.0F) * 255.0F);
+        int red   = (int) (Mth.clamp(r, 0.0F, 1.0F) * 255.0F);
+        int green = (int) (Mth.clamp(g, 0.0F, 1.0F) * 255.0F);
+        int blue  = (int) (Mth.clamp(b, 0.0F, 1.0F) * 255.0F);
+        return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
 
     /**

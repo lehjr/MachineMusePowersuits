@@ -33,6 +33,7 @@ import lehjr.numina.common.entity.NuminaArmorStand;
 import lehjr.numina.common.registration.NuminaBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -61,6 +62,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -130,8 +132,10 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            player.openMenu(new SimpleMenuProvider((windowID, inventory, pPlayer) ->
-                    new ChargingBaseMenu(windowID, player, pos), title));
+            if (player instanceof ServerPlayer serverPlayer) {
+                NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((windowID, inventory, pPlayer) ->
+                        new ChargingBaseMenu(windowID, player, pos), title), pos);
+            }
             return InteractionResult.CONSUME;
         }
     }

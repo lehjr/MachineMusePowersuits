@@ -144,7 +144,7 @@
 //
 //
 //
-//            private final ResourceLocation GUARDIAN_BEAM_TEXTURE = ResourceLocation.tryBuild("textures/entity/guardian_beam.png");
+//            private final ResourceLocation GUARDIAN_BEAM_TEXTURE = ResourceLocation.fromNamespaceAndPath("textures/entity/guardian_beam.png");
 //
 //
 //            public void doRender(Player source, double x, double y, double z, float entityYaw, float partialTicks) {

@@ -38,9 +38,10 @@ import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -98,10 +99,9 @@ public class ClickableModule extends Clickable {
     @Override
     public List<Component> getToolTip(int x, int y) {
         if (containsPoint(x, y)) {
-            return module.getTooltipLines(Minecraft.getInstance().player,
-                    AdditionalInfo.doAdditionalInfo() ?
-                            TooltipFlag.Default.ADVANCED :
-                            TooltipFlag.Default.NORMAL);
+            return module.getTooltipLines(
+                    Minecraft.getInstance().player,
+                    Screen.hasShiftDown() ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
         }
         return null;
     }

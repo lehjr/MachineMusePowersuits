@@ -42,8 +42,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 
-import java.util.Optional;
-
 /**
  * Requires all module and inventory slots be accounted for before constructing
  *
@@ -54,7 +52,7 @@ public class ModuleTweakGui extends ContainerlessGui {
     Component TINKER_FRAME_LABEL = Component.translatable("gui.powersuits.tinker");
     Component SUMMARY_FRAME_LABEL = Component.translatable(MPSConstants.GUI_EQUIPPED_TOTALS);
 
-    public static final ResourceLocation BACKGROUND = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
     protected ModularItemSelectionFrame itemSelectFrame;
     protected ModuleSelectionFrame moduleSelectFrame;
     protected DetailedSummaryFrame summaryFrame;

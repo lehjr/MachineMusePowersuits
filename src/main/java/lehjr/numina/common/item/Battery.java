@@ -60,7 +60,7 @@ public class Battery extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable Level worldIn, List<Component> tooltips, TooltipFlag flagIn) {
         if (worldIn != null) {
             super.appendHoverText(itemStack, worldIn, tooltips, flagIn);
-            AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);
+            AdditionalInfo.appendHoverText(itemStack, tooltips);
         }
     }
 

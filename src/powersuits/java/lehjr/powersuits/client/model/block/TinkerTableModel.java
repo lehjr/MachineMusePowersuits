@@ -47,7 +47,7 @@ import org.joml.Vector3f;
 import java.util.Random;
 
 public class TinkerTableModel extends Model {
-    public static final ResourceLocation TEXTURE = ResourceLocation.tryBuild(MPSConstants.MOD_ID, "textures/models/tinkertable_tx.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "textures/models/tinkertable_tx.png");
     private final ModelPart root;
     private static Random random = new Random();
     public TinkerTableModel(ModelPart root) {

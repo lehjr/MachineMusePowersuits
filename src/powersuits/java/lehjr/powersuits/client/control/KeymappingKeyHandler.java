@@ -235,7 +235,7 @@ public class KeymappingKeyHandler {
                             registerKeybinding(ItemUtils.getRegistryName(item), false);
                         }
                     },  ()-> {
-                        if (item == Items.CLOCK || item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(ResourceLocation.tryParse("ae2:meteorite_compass"))) {
+                        if (item == Items.CLOCK || item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(ResourceLocation.fromNamespaceAndPath("ae2", "meteorite_compass"))) {
                             registerKeybinding(ItemUtils.getRegistryName(item), false);
                         }
                     });

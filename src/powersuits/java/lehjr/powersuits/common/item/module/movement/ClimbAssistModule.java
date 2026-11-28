@@ -29,7 +29,6 @@ package lehjr.powersuits.common.item.module.movement;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.numina.common.registration.NuminaCapabilities;
 import lehjr.powersuits.common.config.module.MovementModuleConfig;
@@ -37,7 +36,6 @@ import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -45,7 +43,6 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class ClimbAssistModule extends AbstractPowerModule {
     @Nullable

@@ -70,7 +70,7 @@ public abstract class AbstractPowerModule extends Item {
     @Override
     public void appendHoverText(@Nonnull ItemStack itemStack, @Nullable Level worldIn, @Nonnull List<Component> tooltips, @Nonnull TooltipFlag flagIn) {
         if (worldIn != null) {
-            AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);
+            AdditionalInfo.appendHoverText(itemStack, tooltips);
         }
     }
 
